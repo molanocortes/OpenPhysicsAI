@@ -1,0 +1,115 @@
+{
+  "accept": [
+    {
+      "id": "equivalence",
+      "reason": "the cross-section or length is the difference being studied"
+    }
+  ],
+  "designs": [
+    {
+      "geometry": {
+        "path": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/independent/C10.stl",
+        "units": "mm"
+      },
+      "load_region": {
+        "coverage": 0.5,
+        "description": "tip face, loaded",
+        "mode": "patch",
+        "query": {
+          "plane": {
+            "at": "max",
+            "axis": "x",
+            "tolerance": 0.01
+          }
+        },
+        "source": "user"
+      },
+      "mounting_region": {
+        "coverage": 0.5,
+        "description": "root face, fixed",
+        "mode": "patch",
+        "query": {
+          "plane": {
+            "at": "min",
+            "axis": "x",
+            "tolerance": 0.01
+          }
+        },
+        "source": "user"
+      },
+      "name": "C10"
+    },
+    {
+      "geometry": {
+        "path": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/independent/C20.stl",
+        "units": "mm"
+      },
+      "load_region": {
+        "coverage": 0.5,
+        "description": "tip face, loaded",
+        "mode": "patch",
+        "query": {
+          "plane": {
+            "at": "max",
+            "axis": "x",
+            "tolerance": 0.01
+          }
+        },
+        "source": "user"
+      },
+      "mounting_region": {
+        "coverage": 0.5,
+        "description": "root face, fixed",
+        "mode": "patch",
+        "query": {
+          "plane": {
+            "at": "min",
+            "axis": "x",
+            "tolerance": 0.01
+          }
+        },
+        "source": "user"
+      },
+      "name": "C20"
+    }
+  ],
+  "load": {
+    "direction": "-z",
+    "force": "10 N",
+    "kind": "force",
+    "self_weight": false,
+    "source": "user"
+  },
+  "material": {
+    "record": {
+      "density_kg_m3": {
+        "value": 7850
+      },
+      "family": "metal",
+      "id": "steel_nu00",
+      "name": "steel test values, nu 0.0",
+      "poisson_ratio": {
+        "value": 0
+      },
+      "provenance": "evaluation test values",
+      "status": "user_supplied",
+      "youngs_modulus_pa": {
+        "value": 200000000000
+      }
+    },
+    "source": "user"
+  },
+  "mounting": {
+    "description": "fixed root",
+    "idealization": "fixed",
+    "source": "user"
+  },
+  "name": "t1_nu0",
+  "primary_quantity": "load_region_displacement",
+  "question": "evaluation: cantilever tip deflection",
+  "refinement": {
+    "convergence_criterion": 0.02,
+    "element_sizes": ["2.5 mm", "1.25 mm", "0.625 mm"]
+  },
+  "retain_results": "refinement"
+}

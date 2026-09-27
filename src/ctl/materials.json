@@ -1,0 +1,3042 @@
+{
+ "$comment": "NAVIER-AM built-in material library. Every entry carries its status and provenance. Status 'demonstration' means literature-typical magnitudes assembled so that workflows can run end to end; such values are NOT traceable to a specific grade, supplier, test method or dataset, are NOT calibrated, and must be replaced with measured data (tensile tests, DMA, dilatometry, DSC, laser flash, high-temperature tensile tests) before results are used quantitatively. Tables list temperatures in degC and values in the SI unit named by the key; values are interpolated linearly and held constant outside the table. Thermal expansion is the instantaneous (tangent) coefficient; the solver integrates it from the stress-free reference temperature.",
+ "format": "navier-am-materials",
+ "format_version": 1,
+ "materials": [
+  {
+   "id": "pla_generic_demo",
+   "name": "PLA, generic FFF filament (demonstration values)",
+   "family": "polymer",
+   "processes": [
+    "fff"
+   ],
+   "status": "demonstration",
+   "provenance": "Typical magnitudes for commercial PLA filament; the modulus drop through the glass transition only illustrates its shape. Not calibrated.",
+   "density_kg_m3": {
+    "value": 1240
+   },
+   "youngs_modulus_pa": {
+    "t_c": [
+     23,
+     45,
+     55,
+     60,
+     65,
+     70,
+     100,
+     200
+    ],
+    "value": [
+     3000000000.0,
+     2800000000.0,
+     2300000000.0,
+     1200000000.0,
+     250000000.0,
+     50000000.0,
+     20000000.0,
+     2000000.0
+    ]
+   },
+   "poisson_ratio": {
+    "value": 0.36
+   },
+   "expansion_1_per_k": {
+    "t_c": [
+     23,
+     55,
+     65,
+     200
+    ],
+    "value": [
+     6.8e-05,
+     7e-05,
+     0.00015,
+     0.00018
+    ]
+   },
+   "conductivity_w_per_mk": {
+    "value": 0.13
+   },
+   "specific_heat_j_per_kgk": {
+    "t_c": [
+     23,
+     55,
+     65,
+     150,
+     220
+    ],
+    "value": [
+     1250,
+     1450,
+     1750,
+     1900,
+     2000
+    ]
+   },
+   "emissivity": {
+    "value": 0.92
+   },
+   "glass_transition_c": {
+    "value": 60
+   },
+   "strength_pa": {
+    "value": 50000000.0,
+    "note": "order of magnitude of bulk tensile strength; printed parts are weaker and anisotropic"
+   },
+   "not_modelled": [
+    "viscoelastic creep and relaxation (a relaxation-above-Tg approximation is available instead)",
+    "crystallisation kinetics",
+    "raster-direction anisotropy",
+    "interlayer bond strength",
+    "moisture uptake"
+   ]
+  },
+  {
+   "id": "ss316l_lpbf_demo",
+   "name": "Stainless steel 316L, LPBF (demonstration values)",
+   "family": "metal",
+   "processes": [
+    "lpbf"
+   ],
+   "status": "demonstration",
+   "provenance": "Temperature trends of the magnitude reported for austenitic stainless steels in handbooks; room-temperature yield typical of as-built LPBF material. Not traceable to one dataset and not calibrated.",
+   "density_kg_m3": {
+    "value": 7950
+   },
+   "youngs_modulus_pa": {
+    "t_c": [
+     20,
+     200,
+     400,
+     600,
+     800,
+     1000,
+     1200,
+     1375,
+     1450
+    ],
+    "value": [
+     195000000000.0,
+     183000000000.0,
+     167000000000.0,
+     150000000000.0,
+     130000000000.0,
+     105000000000.0,
+     60000000000.0,
+     20000000000.0,
+     1000000000.0
+    ]
+   },
+   "poisson_ratio": {
+    "value": 0.3
+   },
+   "expansion_1_per_k": {
+    "t_c": [
+     20,
+     400,
+     800,
+     1200,
+     1400
+    ],
+    "value": [
+     1.59e-05,
+     1.8e-05,
+     1.95e-05,
+     2.05e-05,
+     2.1e-05
+    ]
+   },
+   "conductivity_w_per_mk": {
+    "t_c": [
+     20,
+     400,
+     800,
+     1200,
+     1400
+    ],
+    "value": [
+     14.0,
+     19.0,
+     24.0,
+     29.0,
+     31.0
+    ]
+   },
+   "specific_heat_j_per_kgk": {
+    "t_c": [
+     20,
+     400,
+     800,
+     1200,
+     1400
+    ],
+    "value": [
+     480,
+     550,
+     610,
+     660,
+     700
+    ]
+   },
+   "emissivity": {
+    "value": 0.4
+   },
+   "solidus_c": {
+    "value": 1375
+   },
+   "liquidus_c": {
+    "value": 1400
+   },
+   "latent_heat_j_per_kg": {
+    "value": 270000.0
+   },
+   "yield_strength_pa": {
+    "t_c": [
+     20,
+     400,
+     600,
+     800,
+     1000,
+     1200,
+     1375
+    ],
+    "value": [
+     450000000.0,
+     330000000.0,
+     280000000.0,
+     170000000.0,
+     60000000.0,
+     15000000.0,
+     3000000.0
+    ]
+   },
+   "hardening_modulus_pa": {
+    "t_c": [
+     20,
+     800,
+     1200
+    ],
+    "value": [
+     1500000000.0,
+     800000000.0,
+     100000000.0
+    ]
+   },
+   "anneal_temperature_c": {
+    "value": 1050,
+    "note": "above this temperature the equivalent plastic strain (hardening) is reset"
+   },
+   "powder": {
+    "packing_fraction": 0.55,
+    "conductivity_w_per_mk": 0.2
+   },
+   "not_modelled": [
+    "melt-pool flow",
+    "keyholing and porosity",
+    "phase transformation and microstructure",
+    "creep",
+    "cracking"
+   ]
+  },
+  {
+   "id": "steel_plate_demo",
+   "name": "Plain carbon steel build plate (demonstration values)",
+   "family": "metal",
+   "processes": [
+    "lpbf",
+    "fff"
+   ],
+   "status": "demonstration",
+   "provenance": "Typical magnitudes for structural carbon steel. Not calibrated.",
+   "density_kg_m3": {
+    "value": 7850
+   },
+   "youngs_modulus_pa": {
+    "t_c": [
+     20,
+     400,
+     600,
+     800
+    ],
+    "value": [
+     210000000000.0,
+     185000000000.0,
+     160000000000.0,
+     110000000000.0
+    ]
+   },
+   "poisson_ratio": {
+    "value": 0.3
+   },
+   "expansion_1_per_k": {
+    "t_c": [
+     20,
+     600
+    ],
+    "value": [
+     1.2e-05,
+     1.45e-05
+    ]
+   },
+   "conductivity_w_per_mk": {
+    "t_c": [
+     20,
+     600
+    ],
+    "value": [
+     45.0,
+     35.0
+    ]
+   },
+   "specific_heat_j_per_kgk": {
+    "t_c": [
+     20,
+     600
+    ],
+    "value": [
+     460,
+     700
+    ]
+   },
+   "emissivity": {
+    "value": 0.6
+   },
+   "yield_strength_pa": {
+    "t_c": [
+     20,
+     400,
+     600,
+     800
+    ],
+    "value": [
+     355000000.0,
+     260000000.0,
+     160000000.0,
+     40000000.0
+    ]
+   },
+   "hardening_modulus_pa": {
+    "value": 1000000000.0
+   },
+   "not_modelled": [
+    "phase transformation"
+   ]
+  },
+  {
+   "id": "air_demo",
+   "name": "Dry air at 20 degC and 1 atm (demonstration values, constant)",
+   "family": "fluid",
+   "processes": [],
+   "status": "demonstration",
+   "provenance": "Typical handbook magnitudes for dry air at 20 degC and 101.325 kPa, held constant at every temperature. Not calibrated. The density does not follow the ideal-gas law here, so buoyancy and thermal expansion of the gas are absent by construction.",
+   "density_kg_m3": {
+    "value": 1.204
+   },
+   "conductivity_w_per_mk": {
+    "value": 0.0257
+   },
+   "specific_heat_j_per_kgk": {
+    "value": 1006
+   },
+   "dynamic_viscosity_pa_s": {
+    "value": 1.81e-05
+   },
+   "not_modelled": [
+    "temperature-dependent properties",
+    "buoyancy (natural convection)",
+    "compressibility",
+    "humidity",
+    "turbulence"
+   ]
+  },
+  {
+   "id": "alsi10mg_lpbf",
+   "name": "AlSi10Mg, LPBF as built (Renishaw; density wrought)",
+   "family": "metal",
+   "processes": [
+    "lpbf"
+   ],
+   "status": "published",
+   "provenance": "As built from the Renishaw data sheet (30 um layers, continuous-wave parameter set AlSi10Mg_500QS_B30, page 5); density wrought (same data sheet, page 2); Poisson's ratio a design value of the cast alloy A357.0. Sourced 2026-09-27, when it replaced the earlier AlSi10Mg record whose values came from unpublished measurements.",
+   "density_kg_m3": {
+    "value": 2700,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series material data sheet, Aluminium AlSi10Mg, part no. H-5800-6790-03-A, issued 08.2024, https://www.renishaw.com/resourcecentre/download/data-sheet-renam-500-series-aluminium-alsi10mg-material-data-sheet--138868?userLanguage=en (accessed 2026-09-27), page 2, typical wrought material properties: density 2.7 g/cm3",
+    "note": "WROUGHT."
+   },
+   "youngs_modulus_pa": {
+    "value": 71000000000.0,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series material data sheet, Aluminium AlSi10Mg, part no. H-5800-6790-03-A, issued 08.2024, https://www.renishaw.com/resourcecentre/download/data-sheet-renam-500-series-aluminium-alsi10mg-material-data-sheet--138868?userLanguage=en (accessed 2026-09-27), page 5 (30 um, continuous wave), as built: 72 +- 2 GPa (XY), 70 +- 5 GPa (Z)",
+    "note": "Mean of XY and Z. Page 4 (30 um, modulated): 69 +- 4 GPa (Z)."
+   },
+   "poisson_ratio": {
+    "value": 0.33,
+    "provenance": "published",
+    "source": "US Department of Defense, MIL-HDBK-5J, Metallic Materials and Elements for Aerospace Vehicle Structures, 31 January 2003, https://everyspec.com/MIL-HDBK/MIL-HDBK-0001-0099/download.php?spec=MIL_HDBK_5J.139.pdf (accessed 2026-09-19), Table 3.9.6.0(b), page 3-511 (PDF page 813): Design mechanical and physical properties of A357.0 aluminum alloy casting, mu = 0.33",
+    "note": "DESIGN VALUE for a cast Al-Si-Mg alloy, not a measurement of the printed AlSi10Mg."
+   },
+   "yield_strength_pa": {
+    "value": 273000000.0,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series material data sheet, Aluminium AlSi10Mg, part no. H-5800-6790-03-A, issued 08.2024, https://www.renishaw.com/resourcecentre/download/data-sheet-renam-500-series-aluminium-alsi10mg-material-data-sheet--138868?userLanguage=en (accessed 2026-09-27), page 5, as built: 283 +- 4 MPa (XY), 263 +- 8 MPa (Z)",
+    "note": "Mean of XY and Z."
+   },
+   "hardening_modulus_pa": {
+    "value": 2157600000.0,
+    "provenance": "inferred",
+    "source": "inferred from the Renishaw as-built values above (elongation after fracture 10 per cent XY, 6 per cent Z, mean used): H = (Rm - Rp0.2) / (A - Rp0.2/E - 0.002) with Rm 433 MPa, Rp0.2 273 MPa, A 8 per cent, E 71 GPa; the documents are those named in this record's yield_strength_pa, strength_pa and youngs_modulus_pa",
+    "note": "A LOWER BOUND: the source gives elongation at break A, not the uniform elongation Ag the formula wants, and A > Ag. A linear fit between two points of the curve; fit or replace it before quoting a plastic strain."
+   },
+   "strength_pa": {
+    "value": 433000000.0,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series material data sheet, Aluminium AlSi10Mg, part no. H-5800-6790-03-A, issued 08.2024, https://www.renishaw.com/resourcecentre/download/data-sheet-renam-500-series-aluminium-alsi10mg-material-data-sheet--138868?userLanguage=en (accessed 2026-09-27), page 5, as built: 424 +- 4 MPa (XY), 442 +- 9 MPa (Z)",
+    "note": "Mean of XY and Z."
+   },
+   "not_modelled": [
+    "kinematic hardening, so no Bauschinger effect on reversed loading",
+    "rate dependence and creep",
+    "anisotropy (the data sheet gives XY and Z; the record takes their mean)",
+    "temperature dependence of any value here (all are room temperature)",
+    "damage and fracture",
+    "the stress-relieved condition (page 5 of the data sheet gives it; this record is as built)"
+   ]
+  },
+  {
+   "id": "ti6al4v_lpbf",
+   "name": "Ti-6Al-4V, LPBF as built (EOS, TIMET, TUHH; thermal values partly wrought)",
+   "family": "metal",
+   "processes": [
+    "lpbf"
+   ],
+   "status": "published",
+   "provenance": "As built from the EOS Ti64 data sheet; conductivity measured on LPBF parts (TUHH, CC BY); Poisson's ratio, melting range and expansion wrought (TIMET). Batch 1 of the materials library (materials/README.md), sourced 2026-09-19. Values are as built (LPBF, no heat treatment) where the source states that condition; every other value names its condition. Every value names the document it was read from, with URL and access date; materials/batch1-sources.md lists them with checksums.",
+   "density_kg_m3": {
+    "value": 4410,
+    "provenance": "published",
+    "source": "EOS GmbH, Material data sheet EOS Titanium Ti64 400W, 07.2022 (bound in the same PDF after the M290 06.2022 sheet; PDF pages 8 and 9), https://www.eos.info/03_system-related-assets/material-related-contents/metal-materials-and-examples/metal-material-datasheet/titan/ti64/eos_ti64_9011-0014_9011-0039_m290_mds_06-22_en.pdf (accessed 2026-09-19), physical properties: density 4.41 g/cm3, parts approx. 100 per cent dense",
+    "note": "Other sources, wrought: TIMET 4.43 g/cm3, Renishaw 4.4 g/cm3, ATI (ELI) 4.47 g/cm3. Chosen: the AM parts' value."
+   },
+   "youngs_modulus_pa": {
+    "value": 110000000000.0,
+    "provenance": "published",
+    "source": "EOS GmbH, Material data sheet EOS Titanium Ti64 400W, 07.2022 (bound in the same PDF after the M290 06.2022 sheet; PDF pages 8 and 9), https://www.eos.info/03_system-related-assets/material-related-contents/metal-materials-and-examples/metal-material-datasheet/titan/ti64/eos_ti64_9011-0014_9011-0039_m290_mds_06-22_en.pdf (accessed 2026-09-19), mechanical properties, as built: modulus 110 +- 15 GPa in XY and in Z",
+    "note": "Range in AM sources: Renishaw RenAM 500 (annealed 800 degC 4 h) 115 to 124 GPa; Renishaw, RenAM 500 series Titanium Ti6Al4V (Grade 23) material data sheet, H-5800-6797-03-A, issued 08.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-titanium-ti6al4v-grade-23-material-data-sheet--139237 (accessed 2026-09-19). Chosen: the as-built value."
+   },
+   "poisson_ratio": {
+    "value": 0.342,
+    "provenance": "published",
+    "source": "TIMET, TIMETAL 6-4 properties (technical manual), physical properties section, https://www.timet.com/assets/local/documents/technicalmanuals/TIMETAL_6-4_Properties.pdf (accessed 2026-09-19): ten observations at TIMET, mean 0.342, range 0.287 to 0.391",
+    "note": "WROUGHT. The same manual quotes a further single value of 0.31; Poisson's ratio depends on texture. No AM source found."
+   },
+   "yield_strength_pa": {
+    "value": 1130000000.0,
+    "provenance": "published",
+    "source": "EOS GmbH, Material data sheet EOS Titanium Ti64 400W, 07.2022 (bound in the same PDF after the M290 06.2022 sheet; PDF pages 8 and 9), https://www.eos.info/03_system-related-assets/material-related-contents/metal-materials-and-examples/metal-material-datasheet/titan/ti64/eos_ti64_9011-0014_9011-0039_m290_mds_06-22_en.pdf (accessed 2026-09-19), as built: Rp0.2 1140 +- 50 MPa (XY) and 1120 +- 80 MPa (Z)",
+    "note": "Mean of XY and Z. Renishaw gives annealed values only (908 to 994 MPa)."
+   },
+   "strength_pa": {
+    "value": 1265000000.0,
+    "provenance": "published",
+    "source": "EOS GmbH, Material data sheet EOS Titanium Ti64 400W, 07.2022 (bound in the same PDF after the M290 06.2022 sheet; PDF pages 8 and 9), https://www.eos.info/03_system-related-assets/material-related-contents/metal-materials-and-examples/metal-material-datasheet/titan/ti64/eos_ti64_9011-0014_9011-0039_m290_mds_06-22_en.pdf (accessed 2026-09-19), as built: Rm 1290 +- 50 MPa (XY) and 1240 +- 50 MPa (Z)",
+    "note": "Mean of XY and Z."
+   },
+   "hardening_modulus_pa": {
+    "value": 1856000000.0,
+    "provenance": "inferred",
+    "source": "inferred from the EOS as-built values above (elongation at break 7 +- 3 per cent XY, 10 +- 3 per cent Z, mean used): H = (Rm - Rp0.2) / (A - Rp0.2/E - 0.002) with Rm 1265 MPa, Rp0.2 1130 MPa, A 8.5 per cent, E 110 GPa; the documents are those named in this record's yield_strength_pa, strength_pa and youngs_modulus_pa",
+    "note": "A LOWER BOUND: the source gives elongation at break A, not the uniform elongation Ag the formula wants, and A > Ag. A linear fit between two points of the curve, as in the alsi10mg_lpbf record; fit or replace it before quoting a plastic strain."
+   },
+   "conductivity_w_per_mk": {
+    "value": 5.62,
+    "provenance": "published",
+    "source": "Bartsch K, Bossen B, Chaudhary W, Landry M, Herzog D, Thermal conductivity of Ti-6Al-4V in laser powder bed fusion, Front. Mech. Eng. 8 (2022) 830104, doi:10.3389/fmech.2022.830104, Table 2, https://www.frontiersin.org/journals/mechanical-engineering/articles/10.3389/fmech.2022.830104/full (accessed 2026-09-19): solid LPBF Ti-6Al-4V 5.62 W/mK, measured by the authors (Section 2, MTPS, room temperature)",
+    "note": "As built, TruPrint 1000, 20 um layers. Wrought: Renishaw 6 to 8 W/mK. Room temperature only; held constant above it."
+   },
+   "specific_heat_j_per_kgk": {
+    "value": 556.25,
+    "provenance": "published",
+    "source": "Bartsch K, Bossen B, Chaudhary W, Landry M, Herzog D, Thermal conductivity of Ti-6Al-4V in laser powder bed fusion, Front. Mech. Eng. 8 (2022) 830104, doi:10.3389/fmech.2022.830104, Table 2, https://www.frontiersin.org/journals/mechanical-engineering/articles/10.3389/fmech.2022.830104/full (accessed 2026-09-19): solid 556.25 J/kgK, which the paper takes from Bartsch et al. 2021",
+    "note": "Room temperature, not measured in the cited paper itself; held constant above it."
+   },
+   "expansion_1_per_k": {
+    "t_c": [
+     20,
+     100,
+     200,
+     300,
+     400,
+     500,
+     600,
+     700,
+     800,
+     900
+    ],
+    "value": [
+     8.883e-06,
+     9.493e-06,
+     1.015e-05,
+     1.068e-05,
+     1.11e-05,
+     1.14e-05,
+     1.157e-05,
+     1.163e-05,
+     1.157e-05,
+     1.138e-05
+    ],
+    "provenance": "inferred",
+    "source": "TIMET, TIMETAL 6-4 properties (technical manual), physical properties section, https://www.timet.com/assets/local/documents/technicalmanuals/TIMETAL_6-4_Properties.pdf (accessed 2026-09-19): dL/L0 (%) = -0.220 + 5.992e-4 T + 5.807e-7 T^2 - 1.994e-10 T^3, T in K, error bar about +-0.025 %",
+    "note": "INFERRED: alpha = d(dL/L0)/dT of the manual's polynomial (zero strain at 20 degC), tabulated 20 to 900 degC; the manual's text states no range of validity, and 900 degC stays below the beta transus. WROUGHT. Mean values 20 to 100 degC: Renishaw 8e-6 to 9e-6 1/K."
+   },
+   "solidus_c": {
+    "value": 1630,
+    "provenance": "published",
+    "source": "TIMET, TIMETAL 6-4 properties (technical manual), physical properties section, https://www.timet.com/assets/local/documents/technicalmanuals/TIMETAL_6-4_Properties.pdf (accessed 2026-09-19): melting range 1630 to 1650 degC",
+    "note": "Range across sources: Renishaw 1635 to 1665 degC, ATI (ELI) 1538 to 1649 degC. Chosen: the alloy producer's technical manual."
+   },
+   "liquidus_c": {
+    "value": 1650,
+    "provenance": "published",
+    "source": "TIMET, TIMETAL 6-4 properties (technical manual), physical properties section, https://www.timet.com/assets/local/documents/technicalmanuals/TIMETAL_6-4_Properties.pdf (accessed 2026-09-19): melting range 1630 to 1650 degC",
+    "note": "See solidus_c."
+   },
+   "not_modelled": [
+    "temperature dependence of the strength values (all room temperature)",
+    "anisotropy: horizontal and vertical values are averaged; both are in the notes",
+    "porosity and surface roughness",
+    "phase transformations and precipitation during heat treatment",
+    "kinematic hardening, rate dependence and creep",
+    "damage and fracture",
+    "latent heat and emissivity: no open source found"
+   ]
+  },
+  {
+   "id": "ss316l_lpbf",
+   "name": "Stainless steel 316L, LPBF as built (Renishaw, EOS, NIST; thermal values partly wrought)",
+   "family": "metal",
+   "processes": [
+    "lpbf"
+   ],
+   "status": "published",
+   "provenance": "As built from the Renishaw and EOS data sheets; thermal values wrought (NIST SRM 316L, Georgia Tech, ATI). Batch 1 of the materials library (materials/README.md), sourced 2026-09-19. Values are as built (LPBF, no heat treatment) where the source states that condition; every other value names its condition. Replaces the demonstration record for structural and thermal use; ss316l_lpbf_demo stays because tests depend on it.",
+   "density_kg_m3": {
+    "value": 7904,
+    "provenance": "published",
+    "source": "Pichler P, Simonds BJ, Sowards JW, Pottlacher G, Measurements of thermophysical properties of solid and liquid NIST SRM 316L stainless steel, J Mater Sci 55 (2020) 4081, doi:10.1007/s10853-019-04261-6, author manuscript PMC8193647, https://pmc.ncbi.nlm.nih.gov/articles/PMC8193647/ (accessed 2026-09-19): room-temperature density (7904 +- 25) kg/m3 of NIST SRM 1155a",
+    "note": "WROUGHT reference material, measured. AM parts: EOS average density >= 7.97 g/cm3; Renishaw wrought 8 g/cm3; ATI 8.027 g/cm3."
+   },
+   "youngs_modulus_pa": {
+    "value": 195000000000.0,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series stainless steel 316L (1.4404) material data sheet, H-5800-6796-03-A, issued 08.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-stainless-steel-316l-14404-material-data-sheet--138902 (accessed 2026-09-19), page 4 (30 um, SS316L_500QS_B30_M_01_A), as built: 191 +- 14 GPa (XY), 199 +- 18 GPa (Z)",
+    "note": "Mean of XY and Z. Range in AM sources: Renishaw other parameter sets 185 to 208 GPa; EOS 2014 typ. 185 (XY) and 180 (Z) GPa, EOS GmbH, Material data sheet EOS StainlessSteel 316L / M280 HHE / 02.2014, page 4 (mirror of the EOS document), https://proto3000.com/wp-content/uploads/2018/03/MSDS-StainlessSteel_316L.pdf (accessed 2026-09-19)."
+   },
+   "poisson_ratio": {
+    "value": 0.3,
+    "provenance": "published",
+    "source": "Euro Inox and The Steel Construction Institute, Design Manual for Structural Stainless Steel, third edition (2006), ISBN 2-87997-204-3, PDF page 28, https://www.edelstahl-rostfrei.de/fileadmin/user_upload/ISER/downloads/Recommend_EN.pdf (accessed 2026-09-19): for the standard austenitic and duplex grades a value of 0.3 can be taken for Poisson's ratio, with E = 200 000 N/mm2 from EN 10088-1",
+    "note": "DESIGN VALUE, not a measurement of the printed alloy. The manual implements EN 1993-1-4; 316L (1.4404) is one of its standard austenitic grades. MIL-HDBK-5J Table 2.7.1.0(b) (page 2-223) gives 0.27 for AISI 301 and, by its footnote c, annealed AISI 316. Chosen: the European design value."
+   },
+   "yield_strength_pa": {
+    "value": 561500000.0,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series stainless steel 316L (1.4404) material data sheet, H-5800-6796-03-A, issued 08.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-stainless-steel-316l-14404-material-data-sheet--138902 (accessed 2026-09-19), page 4, as built: 591 +- 3 MPa (XY), 532 +- 5 MPa (Z)",
+    "note": "Mean of XY and Z. Range: Renishaw other sets 495 to 565 MPa; EOS 530 (XY) and 470 (Z) MPa."
+   },
+   "strength_pa": {
+    "value": 679500000.0,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series stainless steel 316L (1.4404) material data sheet, H-5800-6796-03-A, issued 08.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-stainless-steel-316l-14404-material-data-sheet--138902 (accessed 2026-09-19), page 4, as built: 708 +- 2 MPa (XY), 651 +- 4 MPa (Z)",
+    "note": "Mean of XY and Z. EOS: 640 (XY) and 540 (Z) MPa."
+   },
+   "hardening_modulus_pa": {
+    "value": 220500000.0,
+    "provenance": "inferred",
+    "source": "inferred from the Renishaw as-built values above (elongation after fracture 48 per cent XY, 60 per cent Z, mean used): H = (Rm - Rp0.2) / (A - Rp0.2/E - 0.002) with Rm 679.5 MPa, Rp0.2 561.5 MPa, A 54 per cent, E 195 GPa; the documents are those named in this record's yield_strength_pa, strength_pa and youngs_modulus_pa",
+    "note": "A LOWER BOUND: the source gives elongation at break A, not the uniform elongation Ag the formula wants, and A > Ag. A linear fit between two points of the curve, as in the alsi10mg_lpbf record; fit or replace it before quoting a plastic strain."
+   },
+   "expansion_1_per_k": {
+    "t_c": [
+     62.5,
+     150.0,
+     250.0,
+     350.0
+    ],
+    "value": [
+     1.572e-05,
+     1.752e-05,
+     1.818e-05,
+     1.888e-05
+    ],
+    "provenance": "inferred",
+    "source": "EOS GmbH, EOS StainlessSteel 316L Material Data Sheet (Premium, EOS M 290 20 um, HHE/05.2014 section), PDF pages 6 to 8, https://www.eos.info/03_system-related-assets/material-related-contents/metal-materials-and-examples/metal-material-datasheet/stainlesssteel/material_datasheet_eos_stainlesssteel_316l_en_web.pdf (accessed 2026-09-19), additional data, as manufactured parts, ASTM E228: mean CTE 25-100 degC 15.72e-6, 25-200 16.75e-6, 25-300 17.27e-6, 25-400 17.70e-6 1/K",
+    "note": "INFERRED from the source's MEAN coefficients (from 25 degC to each temperature): strain eps_i = mean_i (T_i - 25); instantaneous alpha = d eps / dT on each interval, placed at the interval midpoint, because the engine integrates an instantaneous coefficient. Integrating this table back reproduces the source's strains within 1.2 per cent. As built. Held constant above 400 degC, where no AM value was found."
+   },
+   "conductivity_w_per_mk": {
+    "t_c": [
+     20,
+     260,
+     340,
+     420,
+     500,
+     580,
+     660,
+     740,
+     820
+    ],
+    "value": [
+     16.0,
+     17.83,
+     18.9,
+     19.82,
+     20.78,
+     21.78,
+     22.79,
+     22.87,
+     23.12
+    ],
+    "provenance": "published",
+    "source": "20 degC: Renishaw, RenAM 500 series stainless steel 316L (1.4404) material data sheet, H-5800-6796-03-A, issued 08.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-stainless-steel-316l-14404-material-data-sheet--138902 (accessed 2026-09-19), typical wrought properties: 16 W/mK (no temperature stated; placed at 20 degC). 260 to 820 degC: Georgia Institute of Technology, Thermophysical Properties Database of Gen3 CSP Materials, Stainless Steel 316 (measured), data file SS316.xlsx, https://gen3csp.gatech.edu/stainless-steel-316/ (accessed 2026-09-19), measured average conductivity",
+    "note": "WROUGHT (316 in the Gen3 database, not 316L). ATI gives 14.6 W/mK for 20 to 100 degC. Linear between 20 and 260 degC."
+   },
+   "specific_heat_j_per_kgk": {
+    "t_c": [
+     20,
+     199.85,
+     299.85,
+     399.85,
+     499.85,
+     599.85,
+     699.85,
+     799.85,
+     899.85,
+     979.85
+    ],
+    "value": [
+     450.0,
+     528.0,
+     537.0,
+     553.0,
+     566.0,
+     595.0,
+     603.0,
+     611.0,
+     619.0,
+     624.0
+    ],
+    "provenance": "published",
+    "source": "20 degC: ATI, Technical data sheet ATI 316, ATI 316L, ATI 317, ATI 317L, physical properties, https://www.atimaterials.com/Products/Documents/datasheets/stainless-specialty-steel/austenitic/ati_316_316l_317_317l_tds_en1.pdf (accessed 2026-09-19): 450 J/kgK at 20 degC. 200 to 980 degC: Pichler P, Simonds BJ, Sowards JW, Pottlacher G, Measurements of thermophysical properties of solid and liquid NIST SRM 316L stainless steel, J Mater Sci 55 (2020) 4081, doi:10.1007/s10853-019-04261-6, author manuscript PMC8193647, https://pmc.ncbi.nlm.nih.gov/articles/PMC8193647/ (accessed 2026-09-19), Table 7 (DSC), every fifth row",
+    "note": "WROUGHT. NIST SRM 1155a, k = 2 uncertainty 5 to 15 J/kgK. Linear between 20 and 200 degC."
+   },
+   "solidus_c": {
+    "value": 1401.85,
+    "provenance": "published",
+    "source": "Pichler P, Simonds BJ, Sowards JW, Pottlacher G, Measurements of thermophysical properties of solid and liquid NIST SRM 316L stainless steel, J Mater Sci 55 (2020) 4081, doi:10.1007/s10853-019-04261-6, author manuscript PMC8193647, https://pmc.ncbi.nlm.nih.gov/articles/PMC8193647/ (accessed 2026-09-19), Table 2: solidus 1675 K +- 15 K",
+    "note": "WROUGHT. Renishaw melting range 1371 to 1399 degC; ATI 1390 to 1440 degC."
+   },
+   "liquidus_c": {
+    "value": 1434.85,
+    "provenance": "published",
+    "source": "Pichler P, Simonds BJ, Sowards JW, Pottlacher G, Measurements of thermophysical properties of solid and liquid NIST SRM 316L stainless steel, J Mater Sci 55 (2020) 4081, doi:10.1007/s10853-019-04261-6, author manuscript PMC8193647, https://pmc.ncbi.nlm.nih.gov/articles/PMC8193647/ (accessed 2026-09-19), Table 2: liquidus 1708 K +- 30 K",
+    "note": "See solidus_c."
+   },
+   "latent_heat_j_per_kg": {
+    "value": 290000,
+    "provenance": "published",
+    "source": "Pichler P, Simonds BJ, Sowards JW, Pottlacher G, Measurements of thermophysical properties of solid and liquid NIST SRM 316L stainless steel, J Mater Sci 55 (2020) 4081, doi:10.1007/s10853-019-04261-6, author manuscript PMC8193647, https://pmc.ncbi.nlm.nih.gov/articles/PMC8193647/ (accessed 2026-09-19): latent heat of fusion 290 kJ/kg (enthalpy 822 to 1112 kJ/kg across melting)",
+    "note": "WROUGHT reference material."
+   },
+   "not_modelled": [
+    "temperature dependence of the strength values (all room temperature)",
+    "anisotropy: horizontal and vertical values are averaged; both are in the notes",
+    "porosity and surface roughness",
+    "phase transformations and precipitation during heat treatment",
+    "kinematic hardening, rate dependence and creep",
+    "damage and fracture",
+    "emissivity: no open source found"
+   ]
+  },
+  {
+   "id": "in718_lpbf",
+   "name": "Inconel 718, LPBF as built (Renishaw; thermal values wrought, Special Metals)",
+   "family": "metal",
+   "processes": [
+    "lpbf"
+   ],
+   "status": "published",
+   "provenance": "As built from the Renishaw data sheet; elastic and thermal tables wrought (Special Metals). Batch 1 of the materials library (materials/README.md), sourced 2026-09-19. Values are as built (LPBF, no heat treatment) where the source states that condition; every other value names its condition.",
+   "density_kg_m3": {
+    "value": 8193,
+    "provenance": "published",
+    "source": "Special Metals Corporation, INCONEL alloy 718 technical bulletin SMC-045, Tables 2, 4 and 5, https://www.specialmetals.com/documents/technical-bulletins/inconel/inconel-alloy-718.pdf (accessed 2026-09-19), Table 2: density annealed 0.296 lb/in3",
+    "note": "WROUGHT, annealed; converted with 1 lb/in3 = 27679.9 kg/m3. Renishaw wrought 8.2 g/cm3; EOS parts min 8.15 to 8.25 g/cm3."
+   },
+   "youngs_modulus_pa": {
+    "value": 185500000000.0,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series Inconel 718 material data sheet, H-5800-6794-03-A, issued 08.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-inconel-718-material-data-sheet--139233 (accessed 2026-09-19), page 6 (60 um, In718_500QS_B60_M_02_A), as built: 184 +- 8 GPa (XY), 187 +- 5 GPa (Z, meander)",
+    "note": "Mean of XY and Z. Page 7 (C60 stripe) as built: 191 (XY), 171 (Z) GPa."
+   },
+   "poisson_ratio": {
+    "t_c": [
+     21.11,
+     93.33,
+     204.44,
+     315.56,
+     426.67,
+     537.78,
+     648.89,
+     760.0,
+     871.11,
+     982.22,
+     1093.33
+    ],
+    "value": [
+     0.294,
+     0.288,
+     0.28,
+     0.272,
+     0.271,
+     0.271,
+     0.283,
+     0.306,
+     0.331,
+     0.341,
+     0.402
+    ],
+    "provenance": "published",
+    "source": "Special Metals Corporation, INCONEL alloy 718 technical bulletin SMC-045, Tables 2, 4 and 5, https://www.specialmetals.com/documents/technical-bulletins/inconel/inconel-alloy-718.pdf (accessed 2026-09-19), Table 4: Poisson's ratio from 70 to 2000 degF, computed by the source from (E - 2G)/2G, dynamic",
+    "note": "WROUGHT, hot-rolled flat solution treated and aged; temperatures converted from degF."
+   },
+   "yield_strength_pa": {
+    "value": 683500000.0,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series Inconel 718 material data sheet, H-5800-6794-03-A, issued 08.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-inconel-718-material-data-sheet--139233 (accessed 2026-09-19), page 6, as built: 735 +- 6 MPa (XY), 632 +- 3 MPa (Z, meander)",
+    "note": "Mean of XY and Z. Page 7 as built: 731 (XY), 588 (Z) MPa. EOS NickelAlloy IN718 data sheet 01.2023 (EOS M 290, 40 um, page 7), as manufactured: 800 (horizontal), 650 (vertical) MPa."
+   },
+   "strength_pa": {
+    "value": 1026500000.0,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series Inconel 718 material data sheet, H-5800-6794-03-A, issued 08.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-inconel-718-material-data-sheet--139233 (accessed 2026-09-19), page 6, as built: 1051 +- 7 MPa (XY), 1002 +- 3 MPa (Z, meander)",
+    "note": "Mean of XY and Z. EOS 01.2023 (page 7), as manufactured: 1090 (horizontal), 970 (vertical) MPa."
+   },
+   "hardening_modulus_pa": {
+    "value": 1011000000.0,
+    "provenance": "inferred",
+    "source": "inferred from the Renishaw as-built values above (elongation after fracture 33 per cent XY, 36 per cent Z, mean used): H = (Rm - Rp0.2) / (A - Rp0.2/E - 0.002) with Rm 1026.5 MPa, Rp0.2 683.5 MPa, A 34.5 per cent, E 185.5 GPa; the documents are those named in this record's yield_strength_pa, strength_pa and youngs_modulus_pa",
+    "note": "A LOWER BOUND: the source gives elongation at break A, not the uniform elongation Ag the formula wants, and A > Ag. A linear fit between two points of the curve, as in the alsi10mg_lpbf record; fit or replace it before quoting a plastic strain."
+   },
+   "conductivity_w_per_mk": {
+    "t_c": [
+     21.11,
+     93.33,
+     204.44,
+     315.56,
+     426.67,
+     537.78,
+     648.89,
+     760.0,
+     871.11,
+     982.22,
+     1093.33
+    ],
+    "value": [
+     11.11,
+     12.4,
+     14.13,
+     16.01,
+     17.74,
+     19.47,
+     21.2,
+     23.08,
+     24.95,
+     26.68,
+     28.27
+    ],
+    "provenance": "published",
+    "source": "Special Metals Corporation, INCONEL alloy 718 technical bulletin SMC-045, Tables 2, 4 and 5, https://www.specialmetals.com/documents/technical-bulletins/inconel/inconel-alloy-718.pdf (accessed 2026-09-19), Table 5: thermal conductivity, annealed 1800 degF/1 hr, 77 to 196 Btu in/(ft2 h degF) from 70 to 2000 degF",
+    "note": "WROUGHT, annealed; the source calculated conductivity from resistivity. Converted with 1 Btu in/(h ft2 degF) = 0.144228 W/(m K)."
+   },
+   "expansion_1_per_k": {
+    "t_c": [
+     57.22,
+     148.89,
+     260.0,
+     371.11,
+     482.22,
+     593.33,
+     704.44
+    ],
+    "value": [
+     1.316e-05,
+     1.381e-05,
+     1.456e-05,
+     1.544e-05,
+     1.535e-05,
+     1.761e-05,
+     2.133e-05
+    ],
+    "provenance": "inferred",
+    "source": "Special Metals Corporation, INCONEL alloy 718 technical bulletin SMC-045, Tables 2, 4 and 5, https://www.specialmetals.com/documents/technical-bulletins/inconel/inconel-alloy-718.pdf (accessed 2026-09-19), Table 5: mean linear expansion from 70 degF, 7.31 to 8.91e-6 per degF at 200 to 1400 degF (annealed and aged)",
+    "note": "INFERRED from the source's MEAN coefficients (from 21.11 degC to each temperature): strain eps_i = mean_i (T_i - 21.11); instantaneous alpha = d eps / dT on each interval, placed at the interval midpoint, because the engine integrates an instantaneous coefficient. Integrating this table back reproduces the source's strains within 0.5 per cent. WROUGHT. Per degF converted to per K with a factor 1.8. EOS NickelAlloy IN718 data sheet 01.2023 (EOS M 290, 40 um, page 8, part condition not stated), 25 degC to 100..700 degC: mean 13.1e-6 to 15.5e-6 1/K."
+   },
+   "specific_heat_j_per_kgk": {
+    "value": 435,
+    "provenance": "published",
+    "source": "Special Metals Corporation, INCONEL alloy 718 technical bulletin SMC-045, Tables 2, 4 and 5, https://www.specialmetals.com/documents/technical-bulletins/inconel/inconel-alloy-718.pdf (accessed 2026-09-19), Table 2: specific heat at 70 degF (21 degC) 435 J/kg degC",
+    "note": "WROUGHT; room temperature only, held constant above it."
+   },
+   "solidus_c": {
+    "value": 1260,
+    "provenance": "published",
+    "source": "Special Metals Corporation, INCONEL alloy 718 technical bulletin SMC-045, Tables 2, 4 and 5, https://www.specialmetals.com/documents/technical-bulletins/inconel/inconel-alloy-718.pdf (accessed 2026-09-19), Table 2: melting range 1260 to 1336 degC",
+    "note": "Renishaw: melting temperature 1290 to 1330 degC."
+   },
+   "liquidus_c": {
+    "value": 1336,
+    "provenance": "published",
+    "source": "Special Metals Corporation, INCONEL alloy 718 technical bulletin SMC-045, Tables 2, 4 and 5, https://www.specialmetals.com/documents/technical-bulletins/inconel/inconel-alloy-718.pdf (accessed 2026-09-19), Table 2: melting range 1260 to 1336 degC",
+    "note": "See solidus_c."
+   },
+   "not_modelled": [
+    "temperature dependence of the strength values (all room temperature)",
+    "anisotropy: horizontal and vertical values are averaged; both are in the notes",
+    "porosity and surface roughness",
+    "phase transformations and precipitation during heat treatment",
+    "kinematic hardening, rate dependence and creep",
+    "damage and fracture",
+    "latent heat and emissivity: no open source found"
+   ]
+  },
+  {
+   "id": "in625_lpbf",
+   "name": "Inconel 625, LPBF as built (Renishaw; thermal values wrought, Special Metals and Georgia Tech)",
+   "family": "metal",
+   "processes": [
+    "lpbf"
+   ],
+   "status": "published",
+   "provenance": "As built from the Renishaw data sheet; elastic and thermal tables wrought (Special Metals, Georgia Tech). Batch 1 of the materials library (materials/README.md), sourced 2026-09-19. Values are as built (LPBF, no heat treatment) where the source states that condition; every other value names its condition.",
+   "density_kg_m3": {
+    "value": 8440,
+    "provenance": "published",
+    "source": "Special Metals Corporation, INCONEL alloy 625 technical bulletin, Tables 2, 3 and 4, https://www.specialmetals.com/documents/technical-bulletins/inconel/inconel-alloy-625.pdf (accessed 2026-09-19), Table 2: density 8.44 g/cm3",
+    "note": "WROUGHT. Renishaw wrought 8.4 g/cm3."
+   },
+   "youngs_modulus_pa": {
+    "value": 187500000000.0,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series Inconel 625 material data sheet, H-5800-6792-03-A, issued 09.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-inconel-625-material-data-sheet--139232 (accessed 2026-09-19), page 5 (60 um, In625_500QS_B60_M_02_A), as built: 203 +- 14 GPa (XY), 172 +- 19 GPa (Z, meander)",
+    "note": "Mean of XY and Z. Page 4 (30 um) as built Z: 139 GPa; page 6 (C60 stripe): 191 (XY), 218 (Z) GPa. Wide scatter; chosen: the page with both directions and the meander strategy used for the other alloys."
+   },
+   "poisson_ratio": {
+    "t_c": [
+     21,
+     93,
+     204,
+     316,
+     427,
+     538,
+     649,
+     760,
+     871
+    ],
+    "value": [
+     0.278,
+     0.28,
+     0.286,
+     0.29,
+     0.295,
+     0.305,
+     0.321,
+     0.34,
+     0.336
+    ],
+    "provenance": "published",
+    "source": "Special Metals Corporation, INCONEL alloy 625 technical bulletin, Tables 2, 3 and 4, https://www.specialmetals.com/documents/technical-bulletins/inconel/inconel-alloy-625.pdf (accessed 2026-09-19), Table 4: Poisson's ratio, annealed, 21 to 871 degC (dynamic, 3/4 in. hot-rolled rod)",
+    "note": "WROUGHT, annealed column. The solution-treated column gives 0.289 to 0.314."
+   },
+   "yield_strength_pa": {
+    "value": 671000000.0,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series Inconel 625 material data sheet, H-5800-6792-03-A, issued 09.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-inconel-625-material-data-sheet--139232 (accessed 2026-09-19), page 5, as built: 724 +- 8 MPa (XY), 618 +- 10 MPa (Z, meander)",
+    "note": "Mean of XY and Z. Page 4 (30 um) Z: 585 MPa; page 6: 718 (XY), 639 (Z) MPa."
+   },
+   "strength_pa": {
+    "value": 999500000.0,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series Inconel 625 material data sheet, H-5800-6792-03-A, issued 09.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-inconel-625-material-data-sheet--139232 (accessed 2026-09-19), page 5, as built: 1040 +- 6 MPa (XY), 959 +- 9 MPa (Z, meander)",
+    "note": "Mean of XY and Z."
+   },
+   "hardening_modulus_pa": {
+    "value": 774000000.0,
+    "provenance": "inferred",
+    "source": "inferred from the Renishaw as-built values above (elongation after fracture 37 per cent XY, 49 per cent Z, mean used): H = (Rm - Rp0.2) / (A - Rp0.2/E - 0.002) with Rm 999.5 MPa, Rp0.2 671 MPa, A 43 per cent, E 187.5 GPa; the documents are those named in this record's yield_strength_pa, strength_pa and youngs_modulus_pa",
+    "note": "A LOWER BOUND: the source gives elongation at break A, not the uniform elongation Ag the formula wants, and A > Ag. A linear fit between two points of the curve, as in the alsi10mg_lpbf record; fit or replace it before quoting a plastic strain."
+   },
+   "conductivity_w_per_mk": {
+    "t_c": [
+     21,
+     38,
+     93,
+     204,
+     316,
+     427,
+     538,
+     649,
+     760,
+     871,
+     982
+    ],
+    "value": [
+     9.8,
+     10.1,
+     10.8,
+     12.5,
+     14.1,
+     15.7,
+     17.5,
+     19.0,
+     20.8,
+     22.8,
+     25.2
+    ],
+    "provenance": "published",
+    "source": "Special Metals Corporation, INCONEL alloy 625 technical bulletin, Tables 2, 3 and 4, https://www.specialmetals.com/documents/technical-bulletins/inconel/inconel-alloy-625.pdf (accessed 2026-09-19), Table 3: thermal conductivity 9.8 to 25.2 W/m degC from 21 to 982 degC, measured at Battelle, material annealed 2100 degF/1 hr",
+    "note": "WROUGHT. Georgia Tech Gen3 CSP measured 15.6 W/mK at 260 degC rising to 28.0 W/mK at 1000 degC, Georgia Institute of Technology, Thermophysical Properties Database of Gen3 CSP Materials, Inconel 625 (measured: LFA 467, STA 449), data file Inconel625.xlsx, https://gen3csp.gatech.edu/inconel-alloy-625/ (accessed 2026-09-19); the two agree within about 10 per cent up to 600 degC."
+   },
+   "expansion_1_per_k": {
+    "t_c": [
+     57.0,
+     148.5,
+     260.0,
+     371.5,
+     482.5,
+     593.5,
+     704.5,
+     815.5,
+     899.0
+    ],
+    "value": [
+     1.28e-05,
+     1.329e-05,
+     1.363e-05,
+     1.476e-05,
+     1.51e-05,
+     1.853e-05,
+     1.813e-05,
+     1.913e-05,
+     2.227e-05
+    ],
+    "provenance": "inferred",
+    "source": "Special Metals Corporation, INCONEL alloy 625 technical bulletin, Tables 2, 3 and 4, https://www.specialmetals.com/documents/technical-bulletins/inconel/inconel-alloy-625.pdf (accessed 2026-09-19), Table 3: mean linear expansion from 70 degF (21 degC), 12.8 to 16.2 um/(m degC) at 93 to 927 degC",
+    "note": "INFERRED from the source's MEAN coefficients (from 21 degC to each temperature): strain eps_i = mean_i (T_i - 21); instantaneous alpha = d eps / dT on each interval, placed at the interval midpoint, because the engine integrates an instantaneous coefficient. Integrating this table back reproduces the source's strains within 0.6 per cent. WROUGHT."
+   },
+   "specific_heat_j_per_kgk": {
+    "t_c": [
+     21,
+     93,
+     204,
+     260,
+     340,
+     420,
+     500,
+     580,
+     660,
+     740,
+     820,
+     900,
+     1000
+    ],
+    "value": [
+     410,
+     427,
+     456,
+     452.3,
+     458.3,
+     463.6,
+     469.4,
+     485.2,
+     554.2,
+     550.2,
+     559.9,
+     557.9,
+     549.7
+    ],
+    "provenance": "published",
+    "source": "21 to 204 degC: Special Metals Corporation, INCONEL alloy 625 technical bulletin, Tables 2, 3 and 4, https://www.specialmetals.com/documents/technical-bulletins/inconel/inconel-alloy-625.pdf (accessed 2026-09-19), Table 2 (calculated values). 260 to 1000 degC: Georgia Institute of Technology, Thermophysical Properties Database of Gen3 CSP Materials, Inconel 625 (measured: LFA 467, STA 449), data file Inconel625.xlsx, https://gen3csp.gatech.edu/inconel-alloy-625/ (accessed 2026-09-19), measured average specific heat (STA 449)",
+    "note": "WROUGHT. The Gen3 values carry a 95 per cent uncertainty of 28 to 91 J/kgK; the jump between 580 and 620 degC is in the measured data. Special Metals' calculated values reach 670 J/kgK at 1093 degC, above the measured ones."
+   },
+   "solidus_c": {
+    "value": 1290,
+    "provenance": "published",
+    "source": "Special Metals Corporation, INCONEL alloy 625 technical bulletin, Tables 2, 3 and 4, https://www.specialmetals.com/documents/technical-bulletins/inconel/inconel-alloy-625.pdf (accessed 2026-09-19), Table 2: melting range 1290 to 1350 degC",
+    "note": "Renishaw: 1290 to 1350 degC, the same."
+   },
+   "liquidus_c": {
+    "value": 1350,
+    "provenance": "published",
+    "source": "Special Metals Corporation, INCONEL alloy 625 technical bulletin, Tables 2, 3 and 4, https://www.specialmetals.com/documents/technical-bulletins/inconel/inconel-alloy-625.pdf (accessed 2026-09-19), Table 2: melting range 1290 to 1350 degC",
+    "note": "See solidus_c."
+   },
+   "not_modelled": [
+    "temperature dependence of the strength values (all room temperature)",
+    "anisotropy: horizontal and vertical values are averaged; both are in the notes",
+    "porosity and surface roughness",
+    "phase transformations and precipitation during heat treatment",
+    "kinematic hardening, rate dependence and creep",
+    "damage and fracture",
+    "latent heat and emissivity: no open source found"
+   ]
+  },
+  {
+   "id": "ss174ph_lpbf",
+   "name": "Stainless steel 17-4PH, LPBF as built (EOS; elastic and thermal values wrought, NIST and suppliers)",
+   "family": "metal",
+   "processes": [
+    "lpbf"
+   ],
+   "status": "published",
+   "provenance": "As built from the EOS data sheet; modulus and Poisson's ratio wrought (NIST), thermal values wrought (Rolled Alloys, Sandmeyer). Batch 1 of the materials library (materials/README.md), sourced 2026-09-19. Values are as built (LPBF, no heat treatment) where the source states that condition; every other value names its condition. As-built 17-4PH is largely martensitic with retained austenite and is normally heat treated; these are the as-built strengths.",
+   "density_kg_m3": {
+    "value": 7790,
+    "provenance": "published",
+    "source": "EOS GmbH, EOS StainlessSteel 17-4PH IndustryLine material data sheet (EOS M 290), PDF pages 3 and 4, https://www.eos.info/03_system-related-assets/material-related-contents/metal-materials-and-examples/metal-material-datasheet/stainlesssteel/material_datasheet_industryline_17-4ph_m290_en_screen.pdf (accessed 2026-09-19), physical properties of parts: part density mean 7.79 g/cm3 (ISO 3369)",
+    "note": "Sandmeyer 7.75 g/cm3 (Condition A), Rolled Alloys 0.282 lb/in3, Renishaw 7.8 g/cm3."
+   },
+   "youngs_modulus_pa": {
+    "value": 193000000000.0,
+    "provenance": "published",
+    "source": "Shives TR, Fields RJ, Modulus of elasticity and Poisson's ratio for types 17-4 PH and 410 stainless steels in compression, NISTIR 4671 (1991), Table 2, https://nvlpubs.nist.gov/nistpubs/Legacy/IR/nistir4671.pdf (accessed 2026-09-19): average of three specimens 193 +- 1.10 GPa, in compression",
+    "note": "WROUGHT bar (about 29.5 HRC), no AM as-built modulus found. Sandmeyer 196 GPa (Condition A); Renishaw solution treated and precipitation hardened AM parts 164 (XY) and 180 (Z) GPa."
+   },
+   "poisson_ratio": {
+    "value": 0.3021,
+    "provenance": "published",
+    "source": "Shives TR, Fields RJ, Modulus of elasticity and Poisson's ratio for types 17-4 PH and 410 stainless steels in compression, NISTIR 4671 (1991), Table 2, https://nvlpubs.nist.gov/nistpubs/Legacy/IR/nistir4671.pdf (accessed 2026-09-19): average Poisson's ratio 0.3021 +- 0.0014",
+    "note": "WROUGHT. Rolled Alloys gives 0.272; the literature value quoted by NIST is 0.291. Chosen: the measurement."
+   },
+   "yield_strength_pa": {
+    "value": 860950000.0,
+    "provenance": "published",
+    "source": "EOS GmbH, EOS StainlessSteel 17-4PH IndustryLine material data sheet (EOS M 290), PDF pages 3 and 4, https://www.eos.info/03_system-related-assets/material-related-contents/metal-materials-and-examples/metal-material-datasheet/stainlesssteel/material_datasheet_industryline_17-4ph_m290_en_screen.pdf (accessed 2026-09-19), as built: Rp0.2 mean 860.6 MPa (XY, n = 72) and 861.3 MPa (Z, n = 84)",
+    "note": "Mean of XY and Z."
+   },
+   "strength_pa": {
+    "value": 905100000.0,
+    "provenance": "published",
+    "source": "EOS GmbH, EOS StainlessSteel 17-4PH IndustryLine material data sheet (EOS M 290), PDF pages 3 and 4, https://www.eos.info/03_system-related-assets/material-related-contents/metal-materials-and-examples/metal-material-datasheet/stainlesssteel/material_datasheet_industryline_17-4ph_m290_en_screen.pdf (accessed 2026-09-19), as built: Rm mean 886.0 MPa (XY, n = 72) and 924.2 MPa (Z, n = 84)",
+    "note": "Mean of XY and Z."
+   },
+   "hardening_modulus_pa": {
+    "value": 228100000.0,
+    "provenance": "inferred",
+    "source": "inferred from the EOS as-built values above (elongation at break 19.9 per cent XY, 20.1 per cent Z) and the NIST modulus: H = (Rm - Rp0.2) / (A - Rp0.2/E - 0.002) with Rm 905.1 MPa, Rp0.2 860.95 MPa, A 20 per cent, E 193 GPa; the documents are those named in this record's yield_strength_pa, strength_pa and youngs_modulus_pa",
+    "note": "A LOWER BOUND: the source gives elongation at break A, not the uniform elongation Ag the formula wants, and A > Ag. A linear fit between two points of the curve, as in the alsi10mg_lpbf record; fit or replace it before quoting a plastic strain."
+   },
+   "conductivity_w_per_mk": {
+    "t_c": [
+     21.11,
+     100.0,
+     200.0,
+     300.0
+    ],
+    "value": [
+     14.88,
+     15.92,
+     16.96,
+     18.0
+    ],
+    "provenance": "published",
+    "source": "Rolled Alloys, Data Sheet 17-4 Stainless, physical properties, https://www.rolledalloys.com/wp-content/uploads/17-4_Data-sheet-rolled-alloys.pdf (accessed 2026-09-19): thermal conductivity 8.6, 9.2, 9.8, 10.4 Btu ft/(ft2 hr degF) at 70, 212, 392, 572 degF",
+    "note": "WROUGHT, condition not stated. Converted with 1 Btu ft/(h ft2 degF) = 1.730735 W/(m K). Sandmeyer: 18.3 W/mK at 100 degC (Condition A)."
+   },
+   "expansion_1_per_k": {
+    "t_c": [
+     60.56,
+     150.0,
+     250.0
+    ],
+    "value": [
+     1.296e-05,
+     1.393e-05,
+     1.501e-05
+    ],
+    "provenance": "inferred",
+    "source": "Rolled Alloys, Data Sheet 17-4 Stainless, physical properties, https://www.rolledalloys.com/wp-content/uploads/17-4_Data-sheet-rolled-alloys.pdf (accessed 2026-09-19): coefficient of thermal expansion 7.2, 7.5, 7.8e-6 in/in degF from 70 degF to 212, 392, 572 degF",
+    "note": "INFERRED from the source's MEAN coefficients (from 21.11 degC to each temperature): strain eps_i = mean_i (T_i - 21.11); instantaneous alpha = d eps / dT on each interval, placed at the interval midpoint, because the engine integrates an instantaneous coefficient. Integrating this table back reproduces the source's strains within 0.8 per cent. WROUGHT. EOS parts after atmospheric heat treatment, 25 degC to 100..500 degC: mean 10.4e-6 to 12.0e-6 1/K."
+   },
+   "specific_heat_j_per_kgk": {
+    "value": 460,
+    "provenance": "published",
+    "source": "Sandmeyer Steel Company, Alloy 17-4PH specification sheet, physical properties (Condition A), https://www.sandmeyersteel.com/wp-content/uploads/17-4PH-Spec-Sheet.pdf (accessed 2026-09-19): specific heat 460 J/kg degC at 20 degC",
+    "note": "WROUGHT, Condition A; held constant above 20 degC."
+   },
+   "solidus_c": {
+    "value": 1404,
+    "provenance": "published",
+    "source": "Sandmeyer Steel Company, Alloy 17-4PH specification sheet, physical properties (Condition A), https://www.sandmeyersteel.com/wp-content/uploads/17-4PH-Spec-Sheet.pdf (accessed 2026-09-19): melting range 1404 to 1440 degC",
+    "note": "Rolled Alloys 2560 to 2625 degF and Renishaw 1404 to 1440 degC agree."
+   },
+   "liquidus_c": {
+    "value": 1440,
+    "provenance": "published",
+    "source": "Sandmeyer Steel Company, Alloy 17-4PH specification sheet, physical properties (Condition A), https://www.sandmeyersteel.com/wp-content/uploads/17-4PH-Spec-Sheet.pdf (accessed 2026-09-19): melting range 1404 to 1440 degC",
+    "note": "See solidus_c."
+   },
+   "not_modelled": [
+    "temperature dependence of the strength values (all room temperature)",
+    "anisotropy: horizontal and vertical values are averaged; both are in the notes",
+    "porosity and surface roughness",
+    "phase transformations and precipitation during heat treatment",
+    "kinematic hardening, rate dependence and creep",
+    "damage and fracture",
+    "latent heat and emissivity: no open source found"
+   ]
+  },
+  {
+   "id": "maraging300_lpbf",
+   "name": "Maraging steel 18Ni300 (1.2709), LPBF as built (EOS MS1; some thermal values wrought)",
+   "family": "metal",
+   "processes": [
+    "lpbf"
+   ],
+   "status": "published",
+   "provenance": "As built from the EOS MS1 data sheet, conductivity and specific heat included; expansion wrought (Renishaw). Batch 1 of the materials library (materials/README.md), sourced 2026-09-19. Values are as built (LPBF, no heat treatment) where the source states that condition; every other value names its condition.",
+   "density_kg_m3": {
+    "value": 8050,
+    "provenance": "published",
+    "source": "EOS GmbH, Material data sheet EOS MaragingSteel MS1/400W, TMS, WEIL / 05.2014, pages 3 to 5 (mirror of the EOS document), https://www.rapiddmls.com/wp-content/uploads/2021/08/6-Maraging-Steel-MS1.pdf (accessed 2026-09-19), physical properties of parts: density 8.0 - 8.1 g/cm3",
+    "note": "The middle of the stated range. Renishaw wrought 8.1 g/cm3."
+   },
+   "youngs_modulus_pa": {
+    "value": 145000000000.0,
+    "provenance": "published",
+    "source": "EOS GmbH, Material data sheet EOS MaragingSteel MS1/400W, TMS, WEIL / 05.2014, pages 3 to 5 (mirror of the EOS document), https://www.rapiddmls.com/wp-content/uploads/2021/08/6-Maraging-Steel-MS1.pdf (accessed 2026-09-19), as built: modulus typ. 150 +- 25 GPa (XY), 140 +- 25 GPa (Z)",
+    "note": "Mean of XY and Z. Renishaw 50 um as built Z: 140 GPa (page 4). Renishaw's 60 um table (page 5) prints the modulus in MPa (191, 161, 169), an evident unit misprint, so it is not used."
+   },
+   "poisson_ratio": {
+    "value": 0.31,
+    "provenance": "published",
+    "source": "US Department of Defense, MIL-HDBK-5J, Metallic Materials and Elements for Aerospace Vehicle Structures, 31 January 2003, https://everyspec.com/MIL-HDBK/MIL-HDBK-0001-0099/download.php?spec=MIL_HDBK_5J.139.pdf (accessed 2026-09-19), Table 2.5.1.0(c), page 2-95 (PDF page 149): Design mechanical and physical properties of 280 (300) maraging steel, mu = 0.31",
+    "note": "DESIGN VALUE for the wrought steel maraged at 900 degF (AMS 6521a sheet and plate, AMS 6514 bar), not a measurement of the printed alloy. The 250 grade gives 0.31 too (Table 2.5.1.0(b))."
+   },
+   "yield_strength_pa": {
+    "value": 1015000000.0,
+    "provenance": "published",
+    "source": "EOS GmbH, Material data sheet EOS MaragingSteel MS1/400W, TMS, WEIL / 05.2014, pages 3 to 5 (mirror of the EOS document), https://www.rapiddmls.com/wp-content/uploads/2021/08/6-Maraging-Steel-MS1.pdf (accessed 2026-09-19), as built: Rp0.2 typ. 1100 +- 100 MPa (XY), 930 +- 150 MPa (Z)",
+    "note": "Mean of XY and Z. Renishaw as built: 972 (XY), 882 to 902 (Z) MPa at 60 um; 822 MPa (Z) at 50 um; Renishaw, RenAM 500 series Maraging Steel M300 (1.2709) material data sheet, H-5800-6795-03-A, issued 08.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-maraging-steel-m300-12709-material-data-sheet--139234 (accessed 2026-09-19)."
+   },
+   "strength_pa": {
+    "value": 1150000000.0,
+    "provenance": "published",
+    "source": "EOS GmbH, Material data sheet EOS MaragingSteel MS1/400W, TMS, WEIL / 05.2014, pages 3 to 5 (mirror of the EOS document), https://www.rapiddmls.com/wp-content/uploads/2021/08/6-Maraging-Steel-MS1.pdf (accessed 2026-09-19), as built: Rm typ. 1200 +- 100 MPa (XY), 1100 +- 150 MPa (Z)",
+    "note": "Mean of XY and Z. Renishaw as built 979 to 1146 MPa."
+   },
+   "hardening_modulus_pa": {
+    "value": 1216000000.0,
+    "provenance": "inferred",
+    "source": "inferred from the EOS as-built values above (elongation at break typ. 12 +- 4 per cent, given for XY only): H = (Rm - Rp0.2) / (A - Rp0.2/E - 0.002) with Rm 1150 MPa, Rp0.2 1015 MPa, A 12 per cent, E 145 GPa; the documents are those named in this record's yield_strength_pa, strength_pa and youngs_modulus_pa",
+    "note": "A LOWER BOUND: the source gives elongation at break A, not the uniform elongation Ag the formula wants, and A > Ag. A linear fit between two points of the curve, as in the alsi10mg_lpbf record; fit or replace it before quoting a plastic strain."
+   },
+   "conductivity_w_per_mk": {
+    "value": 15.0,
+    "provenance": "published",
+    "source": "EOS GmbH, Material data sheet EOS MaragingSteel MS1/400W, TMS, WEIL / 05.2014, pages 3 to 5 (mirror of the EOS document), https://www.rapiddmls.com/wp-content/uploads/2021/08/6-Maraging-Steel-MS1.pdf (accessed 2026-09-19), thermal properties of parts, as built: thermal conductivity typ. 15 +- 0.8 W/m degC",
+    "note": "As built, temperature not stated; held constant. After age hardening EOS gives 20 W/mK. Renishaw wrought: 14 W/mK at 20 degC, 21 at 600, 29 at 1300."
+   },
+   "specific_heat_j_per_kgk": {
+    "value": 450,
+    "provenance": "published",
+    "source": "EOS GmbH, Material data sheet EOS MaragingSteel MS1/400W, TMS, WEIL / 05.2014, pages 3 to 5 (mirror of the EOS document), https://www.rapiddmls.com/wp-content/uploads/2021/08/6-Maraging-Steel-MS1.pdf (accessed 2026-09-19), thermal properties of parts, as built: specific heat capacity typ. 450 +- 20 J/kg degC",
+    "note": "As built; held constant."
+   },
+   "expansion_1_per_k": {
+    "value": 1e-05,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series Maraging Steel M300 (1.2709) material data sheet, H-5800-6795-03-A, issued 08.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-maraging-steel-m300-12709-material-data-sheet--139234 (accessed 2026-09-19), typical wrought material properties: coefficient of thermal expansion 10e-6 1/K",
+    "note": "WROUGHT; no temperature range stated; used as a constant instantaneous coefficient."
+   },
+   "not_modelled": [
+    "temperature dependence of the strength values (all room temperature)",
+    "anisotropy: horizontal and vertical values are averaged; both are in the notes",
+    "porosity and surface roughness",
+    "phase transformations and precipitation during heat treatment",
+    "kinematic hardening, rate dependence and creep",
+    "damage and fracture",
+    "solidus, liquidus, latent heat and emissivity: no open source found (Renishaw states a single melting temperature of 1413 degC, which is not a solidus and liquidus pair)"
+   ]
+  },
+  {
+   "id": "cocr_f75_lpbf",
+   "name": "Cobalt-chromium CoCrMo (ASTM F75), LPBF as built (EOS CobaltChrome MP1)",
+   "family": "metal",
+   "processes": [
+    "lpbf"
+   ],
+   "status": "published",
+   "provenance": "As built from the EOS CobaltChrome MP1 data sheet, conductivity and expansion included. Batch 1 of the materials library (materials/README.md), sourced 2026-09-19. Values are as built (LPBF, no heat treatment) where the source states that condition; every other value names its condition. The EOS sheet states that as-built MP1 meets the chemical and mechanical specifications of ASTM F75 and ISO 5832-4.",
+   "density_kg_m3": {
+    "value": 8300,
+    "provenance": "published",
+    "source": "EOS GmbH, Material data sheet EOS CobaltChrome MP1, WEIL, JMK / 10.2011, pages 3 to 5 (mirror of the EOS document), https://www.rapiddmls.com/wp-content/uploads/2018/05/EOS_CobaltChrome_MP1-Material-Data-Sheet.pdf (accessed 2026-09-19), physical properties of parts: density approx. 8.3 g/cm3",
+    "note": "Renishaw wrought 8.4 g/cm3."
+   },
+   "youngs_modulus_pa": {
+    "value": 195000000000.0,
+    "provenance": "published",
+    "source": "EOS GmbH, Material data sheet EOS CobaltChrome MP1, WEIL, JMK / 10.2011, pages 3 to 5 (mirror of the EOS document), https://www.rapiddmls.com/wp-content/uploads/2018/05/EOS_CobaltChrome_MP1-Material-Data-Sheet.pdf (accessed 2026-09-19), as built: modulus 200 +- 20 GPa (XY), 190 +- 20 GPa (Z)",
+    "note": "Mean of XY and Z. Renishaw as built Z: 224 +- 14 GPa (page 5, 60 um), Renishaw, RenAM 500 series cobalt chrome material data sheet, H-5800-6829-02-A, issued 08.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-cobalt-chrome-material-data-sheet--139236 (accessed 2026-09-19)."
+   },
+   "yield_strength_pa": {
+    "value": 930000000.0,
+    "provenance": "published",
+    "source": "EOS GmbH, Material data sheet EOS CobaltChrome MP1, WEIL, JMK / 10.2011, pages 3 to 5 (mirror of the EOS document), https://www.rapiddmls.com/wp-content/uploads/2018/05/EOS_CobaltChrome_MP1-Material-Data-Sheet.pdf (accessed 2026-09-19), as built: Rp0.2 1060 +- 100 MPa (XY), 800 +- 100 MPa (Z)",
+    "note": "Mean of XY and Z. Renishaw as built Z: 689 MPa."
+   },
+   "strength_pa": {
+    "value": 1275000000.0,
+    "provenance": "published",
+    "source": "EOS GmbH, Material data sheet EOS CobaltChrome MP1, WEIL, JMK / 10.2011, pages 3 to 5 (mirror of the EOS document), https://www.rapiddmls.com/wp-content/uploads/2018/05/EOS_CobaltChrome_MP1-Material-Data-Sheet.pdf (accessed 2026-09-19), as built: Rm 1350 +- 100 MPa (XY), 1200 +- 150 MPa (Z)",
+    "note": "Mean of XY and Z. Renishaw as built Z: 1193 MPa."
+   },
+   "hardening_modulus_pa": {
+    "value": 2051000000.0,
+    "provenance": "inferred",
+    "source": "inferred from the EOS as-built values above (elongation at break 11 +- 3 per cent XY, 24 +- 4 per cent Z, mean used): H = (Rm - Rp0.2) / (A - Rp0.2/E - 0.002) with Rm 1275 MPa, Rp0.2 930 MPa, A 17.5 per cent, E 195 GPa; the documents are those named in this record's yield_strength_pa, strength_pa and youngs_modulus_pa",
+    "note": "A LOWER BOUND: the source gives elongation at break A, not the uniform elongation Ag the formula wants, and A > Ag. A linear fit between two points of the curve, as in the alsi10mg_lpbf record; fit or replace it before quoting a plastic strain."
+   },
+   "conductivity_w_per_mk": {
+    "t_c": [
+     20,
+     300,
+     500,
+     1000
+    ],
+    "value": [
+     13.0,
+     18.0,
+     22.0,
+     33.0
+    ],
+    "provenance": "published",
+    "source": "EOS GmbH, Material data sheet EOS CobaltChrome MP1, WEIL, JMK / 10.2011, pages 3 to 5 (mirror of the EOS document), https://www.rapiddmls.com/wp-content/uploads/2018/05/EOS_CobaltChrome_MP1-Material-Data-Sheet.pdf (accessed 2026-09-19), thermal properties of parts, as built: typ. 13, 18, 22, 33 W/m degC at 20, 300, 500, 1000 degC",
+    "note": "As built. Renishaw wrought 13 W/mK."
+   },
+   "expansion_1_per_k": {
+    "t_c": [
+     260,
+     750
+    ],
+    "value": [
+     1.36e-05,
+     1.51e-05
+    ],
+    "provenance": "inferred",
+    "source": "EOS GmbH, Material data sheet EOS CobaltChrome MP1, WEIL, JMK / 10.2011, pages 3 to 5 (mirror of the EOS document), https://www.rapiddmls.com/wp-content/uploads/2018/05/EOS_CobaltChrome_MP1-Material-Data-Sheet.pdf (accessed 2026-09-19), thermal properties of parts, as built: CTE typ. 13.6e-6 over 20 - 500 degC and 15.1e-6 over 500 - 1000 degC",
+    "note": "INFERRED placement: each value is the mean over its interval, which equals the instantaneous coefficient averaged over it, so it is placed at the interval midpoint (260 and 750 degC). As built."
+   },
+   "solidus_c": {
+    "value": 1350,
+    "provenance": "published",
+    "source": "EOS GmbH, Material data sheet EOS CobaltChrome MP1, WEIL, JMK / 10.2011, pages 3 to 5 (mirror of the EOS document), https://www.rapiddmls.com/wp-content/uploads/2018/05/EOS_CobaltChrome_MP1-Material-Data-Sheet.pdf (accessed 2026-09-19): melting range 1350 - 1430 degC",
+    "note": "Renishaw: 1260 to 1360 degC. Chosen: the AM parts' sheet."
+   },
+   "liquidus_c": {
+    "value": 1430,
+    "provenance": "published",
+    "source": "EOS GmbH, Material data sheet EOS CobaltChrome MP1, WEIL, JMK / 10.2011, pages 3 to 5 (mirror of the EOS document), https://www.rapiddmls.com/wp-content/uploads/2018/05/EOS_CobaltChrome_MP1-Material-Data-Sheet.pdf (accessed 2026-09-19): melting range 1350 - 1430 degC",
+    "note": "See solidus_c."
+   },
+   "not_modelled": [
+    "temperature dependence of the strength values (all room temperature)",
+    "anisotropy: horizontal and vertical values are averaged; both are in the notes",
+    "porosity and surface roughness",
+    "phase transformations and precipitation during heat treatment",
+    "kinematic hardening, rate dependence and creep",
+    "damage and fracture",
+    "Poisson's ratio, specific heat, latent heat and emissivity: no open source found"
+   ]
+  },
+  {
+   "id": "cucrzr_lpbf",
+   "name": "Copper alloy CuCrZr (CW106C, C18150), LPBF as built (EOS; physical values wrought, Luvata)",
+   "family": "metal",
+   "processes": [
+    "lpbf"
+   ],
+   "status": "published",
+   "provenance": "As built from the EOS data sheet, modulus heat treated; physical values wrought (Luvata). Batch 1 of the materials library (materials/README.md), sourced 2026-09-19. Values are as built (LPBF, no heat treatment) where the source states that condition; every other value names its condition. CuCrZr reaches its conductivity and strength only by ageing; as built it is a supersaturated solution with low conductivity.",
+   "density_kg_m3": {
+    "value": 8890,
+    "provenance": "published",
+    "source": "Luvata Pori Oy, Chromium Zirconium Copper CuCrZr, Luvata KrK101 data sheet (2018), physical, electrical and thermal properties, https://luvata.com/wp-content/uploads/2025/09/chromium-zirconium-copper_eng.pdf (accessed 2026-09-19): density 8.89 kg/dm3",
+    "note": "WROUGHT. EOS AM parts: density >= 8.84 g/cm3 (ISO 3369)."
+   },
+   "youngs_modulus_pa": {
+    "value": 122500000000.0,
+    "provenance": "published",
+    "source": "EOS GmbH, EOS CopperAlloy CuCrZr Material Data Sheet (Core), PDF pages 6, 7 and 10, https://www.eos.info/var/assets/05-datasheet-images/Assets_MDS_Metal/EOS_CopperAlloy_CuCrZr/Material_DataSheet_EOS%20_Copper_CuCrZr_en.pdf?v=11 (accessed 2026-09-19), page 6: modulus 130 (horizontal) and 115 (vertical) GPa conductivity-optimized heat treatment, 120 and 125 GPa tensile-optimized",
+    "note": "HEAT TREATED, not as built: EOS gives no as-built modulus. Mean of the four values."
+   },
+   "yield_strength_pa": {
+    "value": 160000000.0,
+    "provenance": "published",
+    "source": "EOS GmbH, EOS CopperAlloy CuCrZr Material Data Sheet (Core), PDF pages 6, 7 and 10, https://www.eos.info/var/assets/05-datasheet-images/Assets_MDS_Metal/EOS_CopperAlloy_CuCrZr/Material_DataSheet_EOS%20_Copper_CuCrZr_en.pdf?v=11 (accessed 2026-09-19), page 10 (EOS M 290 1 kW, 80 um): as manufactured Rp0.2 160 MPa",
+    "note": "Heat treated: 210 MPa (page 10) up to 510 MPa (page 6, tensile-optimized)."
+   },
+   "strength_pa": {
+    "value": 210000000.0,
+    "provenance": "published",
+    "source": "EOS GmbH, EOS CopperAlloy CuCrZr Material Data Sheet (Core), PDF pages 6, 7 and 10, https://www.eos.info/var/assets/05-datasheet-images/Assets_MDS_Metal/EOS_CopperAlloy_CuCrZr/Material_DataSheet_EOS%20_Copper_CuCrZr_en.pdf?v=11 (accessed 2026-09-19), page 10: as manufactured Rm 210 MPa",
+    "note": "Heat treated 340 to 590 MPa."
+   },
+   "hardening_modulus_pa": {
+    "value": 126000000.0,
+    "provenance": "inferred",
+    "source": "inferred from the EOS as-manufactured values above (elongation at break 40 per cent) and the heat-treated modulus: H = (Rm - Rp0.2) / (A - Rp0.2/E - 0.002) with Rm 210 MPa, Rp0.2 160 MPa, A 40 per cent, E 122.5 GPa; the documents are those named in this record's yield_strength_pa, strength_pa and youngs_modulus_pa",
+    "note": "A LOWER BOUND: the source gives elongation at break A, not the uniform elongation Ag the formula wants, and A > Ag. A linear fit between two points of the curve, as in the alsi10mg_lpbf record; fit or replace it before quoting a plastic strain."
+   },
+   "conductivity_w_per_mk": {
+    "value": 94.4,
+    "provenance": "inferred",
+    "source": "inferred from Luvata Pori Oy, Chromium Zirconium Copper CuCrZr, Luvata KrK101 data sheet (2018), physical, electrical and thermal properties, https://luvata.com/wp-content/uploads/2025/09/chromium-zirconium-copper_eng.pdf (accessed 2026-09-19) (320 W/mK at 20 degC for 78 vol % IACS, aged wrought) and EOS GmbH, EOS CopperAlloy CuCrZr Material Data Sheet (Core), PDF pages 6, 7 and 10, https://www.eos.info/var/assets/05-datasheet-images/Assets_MDS_Metal/EOS_CopperAlloy_CuCrZr/Material_DataSheet_EOS%20_Copper_CuCrZr_en.pdf?v=11 (accessed 2026-09-19), page 7 (as manufactured 23 % IACS, ASTM E1004): k = 320 x 23 / 78",
+    "note": "INFERRED by the Wiedemann-Franz proportionality between thermal and electrical conductivity at the same temperature. After ageing EOS measures 76 to 88 % IACS, so an aged part conducts about 3.5 times more."
+   },
+   "specific_heat_j_per_kgk": {
+    "value": 385,
+    "provenance": "published",
+    "source": "Luvata Pori Oy, Chromium Zirconium Copper CuCrZr, Luvata KrK101 data sheet (2018), physical, electrical and thermal properties, https://luvata.com/wp-content/uploads/2025/09/chromium-zirconium-copper_eng.pdf (accessed 2026-09-19): specific heat 385 J/(kg K)",
+    "note": "WROUGHT; held constant."
+   },
+   "expansion_1_per_k": {
+    "value": 1.76e-05,
+    "provenance": "published",
+    "source": "Luvata Pori Oy, Chromium Zirconium Copper CuCrZr, Luvata KrK101 data sheet (2018), physical, electrical and thermal properties, https://luvata.com/wp-content/uploads/2025/09/chromium-zirconium-copper_eng.pdf (accessed 2026-09-19): coefficient of linear expansion 0.0000176 1/K",
+    "note": "WROUGHT; no temperature range stated; used as a constant instantaneous coefficient."
+   },
+   "not_modelled": [
+    "temperature dependence of the strength values (all room temperature)",
+    "anisotropy: horizontal and vertical values are averaged; both are in the notes",
+    "porosity and surface roughness",
+    "phase transformations and precipitation during heat treatment",
+    "kinematic hardening, rate dependence and creep",
+    "damage and fracture",
+    "Poisson's ratio, solidus, liquidus, latent heat and emissivity: no open source found (Luvata states a single melting temperature of 1075 degC)"
+   ]
+  },
+  {
+   "id": "alsi7mg_lpbf",
+   "name": "AlSi7Mg, LPBF as built (Renishaw; physical values wrought)",
+   "family": "metal",
+   "processes": [
+    "lpbf"
+   ],
+   "status": "published",
+   "provenance": "As built from the Renishaw data sheet; physical values wrought (Renishaw). Batch 1 of the materials library (materials/README.md), sourced 2026-09-19. Values are as built (LPBF, no heat treatment) where the source states that condition; every other value names its condition.",
+   "density_kg_m3": {
+    "value": 2680,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series Aluminium AlSi7Mg material data sheet, H-5800-6831-01-A, issued 08.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-aluminium-alsi7mg-material-data-sheet-pdf--139238 (accessed 2026-09-19), typical wrought material properties: density 2.68 g/cm3",
+    "note": "WROUGHT."
+   },
+   "youngs_modulus_pa": {
+    "value": 68000000000.0,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series Aluminium AlSi7Mg material data sheet, H-5800-6831-01-A, issued 08.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-aluminium-alsi7mg-material-data-sheet-pdf--139238 (accessed 2026-09-19), page 4 (30 um, AlSi7Mg_500QS_B30_M_01_A), as built: 72 +- 3 GPa (XY), 64 +- 3 GPa (Z)",
+    "note": "Mean of XY and Z. Page 5 (60 um): 70 (XY), 67 (Z) GPa."
+   },
+   "poisson_ratio": {
+    "value": 0.33,
+    "provenance": "published",
+    "source": "US Department of Defense, MIL-HDBK-5J, Metallic Materials and Elements for Aerospace Vehicle Structures, 31 January 2003, https://everyspec.com/MIL-HDBK/MIL-HDBK-0001-0099/download.php?spec=MIL_HDBK_5J.139.pdf (accessed 2026-09-19), Table 3.9.6.0(b), page 3-511 (PDF page 813): Design mechanical and physical properties of A357.0 aluminum alloy casting, mu = 0.33",
+    "note": "DESIGN VALUE for the cast alloy (A357.0 is AlSi7Mg0.6), not a measurement of the printed alloy."
+   },
+   "yield_strength_pa": {
+    "value": 260500000.0,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series Aluminium AlSi7Mg material data sheet, H-5800-6831-01-A, issued 08.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-aluminium-alsi7mg-material-data-sheet-pdf--139238 (accessed 2026-09-19), page 4, as built: 280 +- 1 MPa (XY), 241 +- 2 MPa (Z)",
+    "note": "Mean of XY and Z. Page 5: 262 (XY), 233 (Z) MPa."
+   },
+   "strength_pa": {
+    "value": 435500000.0,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series Aluminium AlSi7Mg material data sheet, H-5800-6831-01-A, issued 08.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-aluminium-alsi7mg-material-data-sheet-pdf--139238 (accessed 2026-09-19), page 4, as built: 439 +- 2 MPa (XY), 432 +- 5 MPa (Z)",
+    "note": "Mean of XY and Z."
+   },
+   "hardening_modulus_pa": {
+    "value": 1533000000.0,
+    "provenance": "inferred",
+    "source": "inferred from the Renishaw as-built values above (elongation after fracture 15 per cent XY, 9 per cent Z, mean used): H = (Rm - Rp0.2) / (A - Rp0.2/E - 0.002) with Rm 435.5 MPa, Rp0.2 260.5 MPa, A 12 per cent, E 68 GPa; the documents are those named in this record's yield_strength_pa, strength_pa and youngs_modulus_pa",
+    "note": "A LOWER BOUND: the source gives elongation at break A, not the uniform elongation Ag the formula wants, and A > Ag. A linear fit between two points of the curve, as in the alsi10mg_lpbf record; fit or replace it before quoting a plastic strain."
+   },
+   "conductivity_w_per_mk": {
+    "value": 165,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series Aluminium AlSi7Mg material data sheet, H-5800-6831-01-A, issued 08.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-aluminium-alsi7mg-material-data-sheet-pdf--139238 (accessed 2026-09-19), typical wrought material properties: thermal conductivity 150 W/mK to 180 W/mK",
+    "note": "WROUGHT; the middle of the stated range (the source gives no single value). No temperature stated; held constant."
+   },
+   "expansion_1_per_k": {
+    "value": 2.25e-05,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series Aluminium AlSi7Mg material data sheet, H-5800-6831-01-A, issued 08.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-aluminium-alsi7mg-material-data-sheet-pdf--139238 (accessed 2026-09-19), typical wrought material properties: CTE 21e-6 to 24e-6 1/K in the range 20 degC to 100 degC",
+    "note": "WROUGHT; the middle of the stated range, a mean over 20 to 100 degC used as a constant instantaneous coefficient."
+   },
+   "solidus_c": {
+    "value": 555,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series Aluminium AlSi7Mg material data sheet, H-5800-6831-01-A, issued 08.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-aluminium-alsi7mg-material-data-sheet-pdf--139238 (accessed 2026-09-19), typical wrought material properties: melting temperature 555 degC to 620 degC",
+    "note": "Read as solidus and liquidus."
+   },
+   "liquidus_c": {
+    "value": 620,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series Aluminium AlSi7Mg material data sheet, H-5800-6831-01-A, issued 08.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-aluminium-alsi7mg-material-data-sheet-pdf--139238 (accessed 2026-09-19), typical wrought material properties: melting temperature 555 degC to 620 degC",
+    "note": "See solidus_c."
+   },
+   "not_modelled": [
+    "temperature dependence of the strength values (all room temperature)",
+    "anisotropy: horizontal and vertical values are averaged; both are in the notes",
+    "porosity and surface roughness",
+    "phase transformations and precipitation during heat treatment",
+    "kinematic hardening, rate dependence and creep",
+    "damage and fracture",
+    "specific heat, latent heat and emissivity: no open source found"
+   ]
+  },
+  {
+   "id": "scalmalloy_lpbf",
+   "name": "Scalmalloy (Al-Mg-Sc-Zr), LPBF as built (Nikon SLM, Politecnico di Torino)",
+   "family": "metal",
+   "processes": [
+    "lpbf"
+   ],
+   "status": "published",
+   "provenance": "As built from the Nikon SLM data sheet; modulus measured on as-built parts (Politecnico di Torino, CC BY). Batch 1 of the materials library (materials/README.md), sourced 2026-09-19. Values are as built (LPBF, no heat treatment) where the source states that condition; every other value names its condition. Scalmalloy exists only as an AM alloy, so there are no wrought values to fall back on.",
+   "density_kg_m3": {
+    "value": 2700,
+    "provenance": "published",
+    "source": "Nikon SLM Solutions, Scalmalloy material data sheet MDS_Scalmalloy_2024-11.1_EN, pages 2 and 4 (SLM 280, parameter set Scalmalloy_SLM280_PREC_MBP3_V1, 30 um), https://nikon-slm-solutions.com/wp-content/uploads/2024/07/mds5143.pdf (accessed 2026-09-19), powder properties: mass density approx. 2.7 g/cm3, footnote: material density",
+    "note": "The material's density as stated (approximate); parts reach a minimum relative density of 99.9 per cent (page 4)."
+   },
+   "youngs_modulus_pa": {
+    "value": 74000000000.0,
+    "provenance": "published",
+    "source": "Aversa A et al. (Politecnico di Torino), Low-power laser powder bed fusion processing of Scalmalloy, Materials 15 (2022) 3123, PMC9100034, Section 3.4, https://pmc.ncbi.nlm.nih.gov/articles/PMC9100034/ (accessed 2026-09-19): as-built low-VED sample 74 GPa (dynamic, impulse excitation, ASTM E1876)",
+    "note": "As built on a Concept Laser Mlab 100 W system; the high-VED sample gave 70 GPa."
+   },
+   "yield_strength_pa": {
+    "value": 335000000.0,
+    "provenance": "published",
+    "source": "Nikon SLM Solutions, Scalmalloy material data sheet MDS_Scalmalloy_2024-11.1_EN, pages 2 and 4 (SLM 280, parameter set Scalmalloy_SLM280_PREC_MBP3_V1, 30 um), https://nikon-slm-solutions.com/wp-content/uploads/2024/07/mds5143.pdf (accessed 2026-09-19), page 4, non-heat-treated, machined: Rp0.2 mean 325 MPa (vertical), 345 MPa (horizontal)",
+    "note": "Mean of the two directions. Heat treated (ANN): 525 to 540 MPa."
+   },
+   "strength_pa": {
+    "value": 372500000.0,
+    "provenance": "published",
+    "source": "Nikon SLM Solutions, Scalmalloy material data sheet MDS_Scalmalloy_2024-11.1_EN, pages 2 and 4 (SLM 280, parameter set Scalmalloy_SLM280_PREC_MBP3_V1, 30 um), https://nikon-slm-solutions.com/wp-content/uploads/2024/07/mds5143.pdf (accessed 2026-09-19), page 4, non-heat-treated, machined: Rm mean 370 MPa (vertical), 375 MPa (horizontal)",
+    "note": "Mean of the two directions."
+   },
+   "hardening_modulus_pa": {
+    "value": 171600000.0,
+    "provenance": "inferred",
+    "source": "inferred from the Nikon SLM non-heat-treated values above (elongation at break 23 per cent vertical, 22 per cent horizontal) and the Torino modulus: H = (Rm - Rp0.2) / (A - Rp0.2/E - 0.002) with Rm 372.5 MPa, Rp0.2 335 MPa, A 22.5 per cent, E 74 GPa; the documents are those named in this record's yield_strength_pa, strength_pa and youngs_modulus_pa",
+    "note": "A LOWER BOUND: the source gives elongation at break A, not the uniform elongation Ag the formula wants, and A > Ag. A linear fit between two points of the curve, as in the alsi10mg_lpbf record; fit or replace it before quoting a plastic strain."
+   },
+   "not_modelled": [
+    "temperature dependence of the strength values (all room temperature)",
+    "anisotropy: horizontal and vertical values are averaged; both are in the notes",
+    "porosity and surface roughness",
+    "phase transformations and precipitation during heat treatment",
+    "kinematic hardening, rate dependence and creep",
+    "damage and fracture",
+    "Poisson's ratio, conductivity, specific heat, expansion, solidus, liquidus, latent heat and emissivity: no open source found"
+   ]
+  },
+  {
+   "id": "cu_lpbf",
+   "name": "Copper (commercially pure, >99.5 %), LPBF as built (Renishaw; element values from Wikipedia and NIST)",
+   "family": "metal",
+   "processes": [
+    "lpbf"
+   ],
+   "status": "published",
+   "provenance": "As built from the Renishaw data sheet, conductivity measured on the parts; element values from Wikipedia and NIST. Batch 1 of the materials library (materials/README.md), sourced 2026-09-19. Values are as built (LPBF, no heat treatment) where the source states that condition; every other value names its condition. The Renishaw parts reach a bulk density of only about 96 per cent: strength and conductivity are those porous parts'.",
+   "density_kg_m3": {
+    "value": 8935,
+    "provenance": "published",
+    "source": "Wikipedia, Template:Infobox copper, revision 1374044665 of 2026-09-09, https://en.wikipedia.org/w/index.php?title=Template%3AInfobox%20copper&oldid=1374044665 (accessed 2026-09-19): density 8.935 g/cm3 at 20 degC (Arblaster 2018)",
+    "note": "The element, fully dense. Renishaw as-built parts: bulk density >= 96.1 +- 0.8 per cent; Renishaw wrought 8.95 g/cm3."
+   },
+   "youngs_modulus_pa": {
+    "value": 119000000000.0,
+    "provenance": "published",
+    "source": "Wikipedia, Template:Infobox copper, revision 1374044665 of 2026-09-09, https://en.wikipedia.org/w/index.php?title=Template%3AInfobox%20copper&oldid=1374044665 (accessed 2026-09-19): Young's modulus 110 to 128 GPa",
+    "note": "The middle of the stated range; no AM modulus found (Renishaw gives none for CPCu)."
+   },
+   "poisson_ratio": {
+    "value": 0.34,
+    "provenance": "published",
+    "source": "Wikipedia, Template:Infobox copper, revision 1374044665 of 2026-09-09, https://en.wikipedia.org/w/index.php?title=Template%3AInfobox%20copper&oldid=1374044665 (accessed 2026-09-19): Poisson ratio 0.34",
+    "note": "The element."
+   },
+   "yield_strength_pa": {
+    "value": 139000000.0,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series Copper CPCu material data sheet, H-5800-6861-01-A, issued 08.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-copper-cpcu-material-data-sheet-pdf--139239 (accessed 2026-09-19), page 4 (30 um, CPCu_500S_B30_M_01_A), as built: 155 +- 3 MPa (XY), 123 +- 8 MPa (Z)",
+    "note": "Mean of XY and Z. Heat treated (650 degC 4 h): 80 and 71 MPa."
+   },
+   "strength_pa": {
+    "value": 175500000.0,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series Copper CPCu material data sheet, H-5800-6861-01-A, issued 08.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-copper-cpcu-material-data-sheet-pdf--139239 (accessed 2026-09-19), page 4, as built: 212 +- 4 MPa (XY), 139 +- 12 MPa (Z)",
+    "note": "Mean of XY and Z."
+   },
+   "hardening_modulus_pa": {
+    "value": 276900000.0,
+    "provenance": "inferred",
+    "source": "inferred from the Renishaw as-built values above (elongation after fracture 20 per cent XY, 7 per cent Z, mean used) and the element's modulus: H = (Rm - Rp0.2) / (A - Rp0.2/E - 0.002) with Rm 175.5 MPa, Rp0.2 139 MPa, A 13.5 per cent, E 119 GPa; the documents are those named in this record's yield_strength_pa, strength_pa and youngs_modulus_pa",
+    "note": "A LOWER BOUND: the source gives elongation at break A, not the uniform elongation Ag the formula wants, and A > Ag. A linear fit between two points of the curve, as in the alsi10mg_lpbf record; fit or replace it before quoting a plastic strain."
+   },
+   "conductivity_w_per_mk": {
+    "value": 327,
+    "provenance": "published",
+    "source": "Renishaw, RenAM 500 series Copper CPCu material data sheet, H-5800-6861-01-A, issued 08.2024, https://www.renishaw.com/resourcecentre/en/download/data-sheet-renam-500-series-copper-cpcu-material-data-sheet-pdf--139239 (accessed 2026-09-19), page 4, as built, ASTM E1461: 321 +- 1 W/mK (XY), 333 +- 7 W/mK (Z)",
+    "note": "Mean of XY and Z, measured on the AM parts. The element: 401 W/mK (Wikipedia); Renishaw wrought 391 to 401 W/mK."
+   },
+   "specific_heat_j_per_kgk": {
+    "value": 384.6,
+    "provenance": "inferred",
+    "source": "Wikipedia, Template:Infobox copper, revision 1374044665 of 2026-09-09, https://en.wikipedia.org/w/index.php?title=Template%3AInfobox%20copper&oldid=1374044665 (accessed 2026-09-19): molar heat capacity 24.440 J/(mol K); NIST Physical Measurement Laboratory, Atomic Weights and Isotopic Compositions, Cu: standard atomic weight 63.546(3), https://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ele=Cu&ascii=ascii2 (accessed 2026-09-19)",
+    "note": "INFERRED unit conversion: 24.440 / 0.063546 kg/mol. Room temperature; held constant."
+   },
+   "expansion_1_per_k": {
+    "value": 1.664e-05,
+    "provenance": "published",
+    "source": "Wikipedia, Template:Infobox copper, revision 1374044665 of 2026-09-09, https://en.wikipedia.org/w/index.php?title=Template%3AInfobox%20copper&oldid=1374044665 (accessed 2026-09-19): thermal expansion 16.64e-6 1/K at 20 degC (Arblaster 2018)",
+    "note": "The element, at 20 degC; held constant."
+   },
+   "latent_heat_j_per_kg": {
+    "value": 208700,
+    "provenance": "inferred",
+    "source": "Wikipedia, Template:Infobox copper, revision 1374044665 of 2026-09-09, https://en.wikipedia.org/w/index.php?title=Template%3AInfobox%20copper&oldid=1374044665 (accessed 2026-09-19): heat of fusion 13.26 kJ/mol; NIST Physical Measurement Laboratory, Atomic Weights and Isotopic Compositions, Cu: standard atomic weight 63.546(3), https://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ele=Cu&ascii=ascii2 (accessed 2026-09-19)",
+    "note": "INFERRED unit conversion: 13.26e3 / 0.063546 kg/mol. Copper melts at 1084.62 degC (same source); a pure metal has no melting range, so no solidus and liquidus pair is recorded."
+   },
+   "not_modelled": [
+    "temperature dependence of the strength values (all room temperature)",
+    "anisotropy: horizontal and vertical values are averaged; both are in the notes",
+    "porosity and surface roughness",
+    "phase transformations and precipitation during heat treatment",
+    "kinematic hardening, rate dependence and creep",
+    "damage and fracture",
+    "emissivity: no open source found",
+    "melting at a single temperature (1084.62 degC): the record carries no solidus and liquidus pair"
+   ]
+  },
+  {
+   "id": "ti_cp_lpbf",
+   "name": "Titanium, commercially pure grade 2, LPBF as built (EOS; element values from Wikipedia and NIST)",
+   "family": "metal",
+   "processes": [
+    "lpbf"
+   ],
+   "status": "published",
+   "provenance": "As built strength from the EOS data sheet; element values from Wikipedia and NIST. Batch 1 of the materials library (materials/README.md), sourced 2026-09-19. Values are as built (LPBF, no heat treatment) where the source states that condition; every other value names its condition. Strength is the grade 2 parts'; elastic and thermal values are the pure element's.",
+   "density_kg_m3": {
+    "value": 4502,
+    "provenance": "published",
+    "source": "Wikipedia, Template:Infobox titanium, revision 1333869186 of 2026-01-20, https://en.wikipedia.org/w/index.php?title=Template%3AInfobox%20titanium&oldid=1333869186 (accessed 2026-09-19): density 4.502 g/cm3 at 20 degC (Arblaster 2018)",
+    "note": "The element. EOS grade 2 parts: min. 4.5 g/cm3."
+   },
+   "youngs_modulus_pa": {
+    "value": 120000000000.0,
+    "provenance": "published",
+    "source": "Wikipedia, Template:Infobox titanium, revision 1333869186 of 2026-01-20, https://en.wikipedia.org/w/index.php?title=Template%3AInfobox%20titanium&oldid=1333869186 (accessed 2026-09-19): Young's modulus 120 GPa",
+    "note": "The element. Wikipedia cites a tool supplier's web page for this value (kyocera-sgstool.co.uk), a weak reference. No AM modulus found."
+   },
+   "poisson_ratio": {
+    "value": 0.361,
+    "provenance": "published",
+    "source": "Wikipedia, Template:Infobox titanium, revision 1333869186 of 2026-01-20, https://en.wikipedia.org/w/index.php?title=Template%3AInfobox%20titanium&oldid=1333869186 (accessed 2026-09-19): Poisson ratio 0.361",
+    "note": "The element; the same weak reference as the modulus."
+   },
+   "yield_strength_pa": {
+    "value": 560000000.0,
+    "provenance": "published",
+    "source": "EOS GmbH, Material data sheet FlexLine EOS Titanium TiCP grade 2, CR284 v01 / 06.2022, pages 2 and 3, https://www.eos.info/03_system-related-assets/material-related-contents/metal-materials-and-examples/metal-material-datasheet/titan/ticp_m290_material_data_sheet_06-22_flexline_en.pdf (accessed 2026-09-19), page 3, as built: Rp0.2 560 MPa (average of horizontal and vertical samples)",
+    "note": "Heat treated (700 degC 2 h): 445 MPa."
+   },
+   "strength_pa": {
+    "value": 660000000.0,
+    "provenance": "published",
+    "source": "EOS GmbH, Material data sheet FlexLine EOS Titanium TiCP grade 2, CR284 v01 / 06.2022, pages 2 and 3, https://www.eos.info/03_system-related-assets/material-related-contents/metal-materials-and-examples/metal-material-datasheet/titan/ticp_m290_material_data_sheet_06-22_flexline_en.pdf (accessed 2026-09-19), page 3, as built: Rm 660 MPa (average of horizontal and vertical samples)",
+    "note": "Heat treated: 570 MPa."
+   },
+   "hardening_modulus_pa": {
+    "value": 468800000.0,
+    "provenance": "inferred",
+    "source": "inferred from the EOS as-built values above (elongation at break 22 per cent) and the element's modulus: H = (Rm - Rp0.2) / (A - Rp0.2/E - 0.002) with Rm 660 MPa, Rp0.2 560 MPa, A 22 per cent, E 120 GPa; the documents are those named in this record's yield_strength_pa, strength_pa and youngs_modulus_pa",
+    "note": "A LOWER BOUND: the source gives elongation at break A, not the uniform elongation Ag the formula wants, and A > Ag. A linear fit between two points of the curve, as in the alsi10mg_lpbf record; fit or replace it before quoting a plastic strain."
+   },
+   "conductivity_w_per_mk": {
+    "value": 21.9,
+    "provenance": "published",
+    "source": "Wikipedia, Template:Infobox titanium, revision 1333869186 of 2026-01-20, https://en.wikipedia.org/w/index.php?title=Template%3AInfobox%20titanium&oldid=1333869186 (accessed 2026-09-19): thermal conductivity 21.9 W/(m K)",
+    "note": "The element; room temperature; held constant."
+   },
+   "specific_heat_j_per_kgk": {
+    "value": 523.5,
+    "provenance": "inferred",
+    "source": "Wikipedia, Template:Infobox titanium, revision 1333869186 of 2026-01-20, https://en.wikipedia.org/w/index.php?title=Template%3AInfobox%20titanium&oldid=1333869186 (accessed 2026-09-19): molar heat capacity 25.060 J/(mol K); NIST Physical Measurement Laboratory, Atomic Weights and Isotopic Compositions, Ti: standard atomic weight 47.867(1), https://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ele=Ti&ascii=ascii2 (accessed 2026-09-19)",
+    "note": "INFERRED unit conversion: 25.060 / 0.047867 kg/mol. Room temperature; held constant."
+   },
+   "expansion_1_per_k": {
+    "value": 9.68e-06,
+    "provenance": "published",
+    "source": "Wikipedia, Template:Infobox titanium, revision 1333869186 of 2026-01-20, https://en.wikipedia.org/w/index.php?title=Template%3AInfobox%20titanium&oldid=1333869186 (accessed 2026-09-19): thermal expansion 9.68e-6 1/K at 20 degC",
+    "note": "The element (anisotropic crystal; this is the polycrystal value the source gives); held constant."
+   },
+   "latent_heat_j_per_kg": {
+    "value": 295600,
+    "provenance": "inferred",
+    "source": "Wikipedia, Template:Infobox titanium, revision 1333869186 of 2026-01-20, https://en.wikipedia.org/w/index.php?title=Template%3AInfobox%20titanium&oldid=1333869186 (accessed 2026-09-19): heat of fusion 14.15 kJ/mol; NIST Physical Measurement Laboratory, Atomic Weights and Isotopic Compositions, Ti: standard atomic weight 47.867(1), https://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ele=Ti&ascii=ascii2 (accessed 2026-09-19)",
+    "note": "INFERRED unit conversion: 14.15e3 / 0.047867 kg/mol. Titanium melts at 1668 degC (same source); a pure metal has no melting range, so no solidus and liquidus pair is recorded."
+   },
+   "not_modelled": [
+    "temperature dependence of the strength values (all room temperature)",
+    "anisotropy: horizontal and vertical values are averaged; both are in the notes",
+    "porosity and surface roughness",
+    "phase transformations and precipitation during heat treatment",
+    "kinematic hardening, rate dependence and creep",
+    "damage and fracture",
+    "emissivity: no open source found",
+    "melting at a single temperature (1668 degC): the record carries no solidus and liquidus pair"
+   ]
+  },
+  {
+   "id": "pla_fff",
+   "name": "PLA, material extrusion (Prusament and others; printed values)",
+   "family": "polymer",
+   "processes": [
+    "fff"
+   ],
+   "status": "published",
+   "provenance": "Printed strength and modulus from the Prusament PLA sheet; Poisson's ratio, conductivity, expansion, glass transition and melting measured on printed PLA in open-access papers; specific heat the filament maker's (Fillamentum), quoted in a CC BY paper. Batch 2 of the materials library (materials/README.md), sourced 2026-09-19: every value names its document, page and access date (materials/batch2-sources.md); printed values are marked as printed, the rest are the bulk material's.",
+   "density_kg_m3": {
+    "value": 1240,
+    "provenance": "published",
+    "source": "Prusa Polymers, Technical datasheet Prusament PLA, version 1.1 (16-02-2022), pages 1 and 2, https://prusament.com/wp-content/uploads/2022/10/PLA_Prusament_TDS_2021_10_EN.pdf (accessed 2026-09-19): density 1.24 g/cm3 (ISO 1183)",
+    "note": "The filament's material; a printed part with voids is lighter."
+   },
+   "youngs_modulus_pa": {
+    "value": 2350000000.0,
+    "provenance": "published",
+    "source": "Prusa Polymers, Technical datasheet Prusament PLA, version 1.1 (16-02-2022), pages 1 and 2, https://prusament.com/wp-content/uploads/2022/10/PLA_Prusament_TDS_2021_10_EN.pdf (accessed 2026-09-19): tensile modulus 2.3 +- 0.1 GPa (horizontal), 2.4 +- 0.1 GPa (vertical xz), ISO 527-1",
+    "note": "As printed; Original Prusa i3 MK3, 0.20 mm layers, 100 per cent rectilinear infill; mean of the two directions."
+   },
+   "poisson_ratio": {
+    "value": 0.323,
+    "provenance": "published",
+    "source": "Theoretical and Experimental Investigation of 3D-Printed Polylactide Laminate Composites' Mechanical Properties, Polymers (2023), PMC10673164, section 3 (digital image correlation), https://pmc.ncbi.nlm.nih.gov/articles/PMC10673164/ (accessed 2026-09-19): nu12 = 0.323 and nu21 = 0.214 by digital image correlation",
+    "note": "As printed; nu12 is measured along the raster (0 degree samples); nu21 across it. The isotropic model takes nu12."
+   },
+   "yield_strength_pa": {
+    "value": 55000000.0,
+    "provenance": "published",
+    "source": "Prusa Polymers, Technical datasheet Prusament PLA, version 1.1 (16-02-2022), pages 1 and 2, https://prusament.com/wp-content/uploads/2022/10/PLA_Prusament_TDS_2021_10_EN.pdf (accessed 2026-09-19): tensile yield strength 51 +- 3 MPa (horizontal), 59 +- 2 MPa (vertical xz)",
+    "note": "As printed; Mean of the two directions. Filament: 57 +- 1 MPa."
+   },
+   "elongation_at_yield_pct": {
+    "value": 3.05,
+    "provenance": "published",
+    "source": "Prusa Polymers, Technical datasheet Prusament PLA, version 1.1 (16-02-2022), pages 1 and 2, https://prusament.com/wp-content/uploads/2022/10/PLA_Prusament_TDS_2021_10_EN.pdf (accessed 2026-09-19): elongation at yield point 2.9 +- 0.3 % (horizontal), 3.2 +- 1.0 % (vertical xz)",
+    "note": "As printed; Mean."
+   },
+   "glass_transition_c": {
+    "value": 62.8,
+    "provenance": "published",
+    "source": "Specific Heat Capacity and Thermal Conductivity Measurements of PLA-Based 3D-Printed Parts with Milled Carbon Fiber Reinforcement, Entropy 24 (2022) 654, PMC9141791, Table 2, https://pmc.ncbi.nlm.nih.gov/articles/PMC9141791/ (accessed 2026-09-19): Tg 62.8 degC of the printed PLA, first DSC scan",
+    "note": "Printed. UltiMaker, PLA technical data sheet (document version v2.00, April 20 2022; file named v5.00), https://um-support-files.ultimaker.com/materials/2.85mm/tds/PLA/Ultimaker-PLA-TDS-v5.00.pdf (accessed 2026-09-19): 59.1 degC (ISO 11357, DSC 10 degC/min); the Bragg-grating study: 62 +- 2 degC."
+   },
+   "melting_c": {
+    "value": 171.4,
+    "provenance": "published",
+    "source": "Specific Heat Capacity and Thermal Conductivity Measurements of PLA-Based 3D-Printed Parts with Milled Carbon Fiber Reinforcement, Entropy 24 (2022) 654, PMC9141791, Table 2, https://pmc.ncbi.nlm.nih.gov/articles/PMC9141791/ (accessed 2026-09-19): melting peak 171.4 degC of the printed PLA",
+    "note": "UltiMaker, PLA technical data sheet (document version v2.00, April 20 2022; file named v5.00), https://um-support-files.ultimaker.com/materials/2.85mm/tds/PLA/Ultimaker-PLA-TDS-v5.00.pdf (accessed 2026-09-19): 151.8 degC. Grades differ."
+   },
+   "expansion_1_per_k": {
+    "value": 9.75e-05,
+    "provenance": "published",
+    "source": "Characterization of Thermal Expansion Coefficient of 3D Printing Polymeric Materials Using Fiber Bragg Grating Sensors, PMC11433601, Tables 1 and 2, https://pmc.ncbi.nlm.nih.gov/articles/PMC11433601/ (accessed 2026-09-19): PLA 96 +- 5 (0 degree raster, 25 to 50 degC) and 99 +- 5 (90 degree, 25 to 30 degC) x 1e-6 per degC",
+    "note": "As printed; Plasty Mladec PLA printed at 210 degC; mean of the two rasters, a mean over its range used as a constant instantaneous coefficient below the glass transition."
+   },
+   "conductivity_w_per_mk": {
+    "t_c": [
+     22.12,
+     30.0,
+     39.89,
+     49.84
+    ],
+    "value": [
+     0.182,
+     0.184,
+     0.194,
+     0.202
+    ],
+    "provenance": "published",
+    "source": "Experimental Investigation of Thermal Conductivity of Selected 3D-Printed Materials, PMC12428860, Table 5 (100 per cent infill; Zortrax Z-PLA, Z-PETG, Z-ABS printed on a Zortrax M300 Dual), https://pmc.ncbi.nlm.nih.gov/articles/PMC12428860/ (accessed 2026-09-19): PLA 100 per cent infill, 0.182 to 0.202 W/mK at 22 to 50 degC",
+    "note": "As printed; Z-PLA; measurements stopped at 50 degC because the sample deformed near 60 degC."
+   },
+   "specific_heat_j_per_kgk": {
+    "value": 1800,
+    "provenance": "published",
+    "source": "Ramos N, Mittermeier C, Kiendl J, Experimental and numerical investigations on heat transfer in fused filament fabrication 3D-printed specimens, arXiv:2305.04307, Table 1, https://arxiv.org/abs/2305.04307 (accessed 2026-09-19): PLA specific heat capacity 1800 J/kg K, as provided by the filament manufacturer Fillamentum",
+    "note": "The filament maker's value, quoted in the paper; temperature not stated; held constant."
+   },
+   "nozzle_temperature_c": {
+    "min": 200,
+    "max": 220,
+    "provenance": "published",
+    "source": "Prusa Polymers, Technical datasheet Prusament PLA, version 1.1 (16-02-2022), pages 1 and 2, https://prusament.com/wp-content/uploads/2022/10/PLA_Prusament_TDS_2021_10_EN.pdf (accessed 2026-09-19): recommended nozzle temperature 210 +- 10 degC"
+   },
+   "bed_temperature_c": {
+    "min": 40,
+    "max": 60,
+    "provenance": "published",
+    "source": "Prusa Polymers, Technical datasheet Prusament PLA, version 1.1 (16-02-2022), pages 1 and 2, https://prusament.com/wp-content/uploads/2022/10/PLA_Prusament_TDS_2021_10_EN.pdf (accessed 2026-09-19): heatbed temperature 40 to 60 degC"
+   },
+   "not_modelled": [
+    "viscoelastic creep and relaxation",
+    "raster and layer anisotropy (the two print directions are averaged; both are in the notes)",
+    "moisture uptake (a nylon's properties change a lot with water)",
+    "interlayer bond strength and voids",
+    "crystallisation kinetics",
+    "temperature dependence of the modulus through the glass transition (the demonstration record pla_generic_demo carries an illustrative one)"
+   ]
+  },
+  {
+   "id": "abs_fff",
+   "name": "ABS, material extrusion (Polymaker PolyLite ABS and others; printed values)",
+   "family": "polymer",
+   "processes": [
+    "fff"
+   ],
+   "status": "published",
+   "provenance": "Printed strength and modulus from the PolyLite ABS sheet; conductivity and expansion measured on printed ABS in open-access papers. Batch 2 of the materials library (materials/README.md), sourced 2026-09-19: every value names its document, page and access date (materials/batch2-sources.md); printed values are marked as printed, the rest are the bulk material's.",
+   "density_kg_m3": {
+    "value": 1120,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyLite ABS (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/abs-asa/polylite-tm-abs (accessed 2026-09-19): density 1.12 g/cm3 at 23 degC (ISO 1183)",
+    "note": "The filament's material."
+   },
+   "youngs_modulus_pa": {
+    "value": 2163750000.0,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyLite ABS (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/abs-asa/polylite-tm-abs (accessed 2026-09-19): Young's modulus 2246.6 +- 58.2 MPa (X-Y), 2080.9 +- 92.7 MPa (Z), ISO 527",
+    "note": "As printed; specimens printed at 260 degC, bed 90 degC, 100 per cent infill; mean of the two directions."
+   },
+   "strength_pa": {
+    "value": 31550000.0,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyLite ABS (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/abs-asa/polylite-tm-abs (accessed 2026-09-19): tensile strength (X-Y) 33.4 +- 0.6 MPa, a second row labelled X-Y 29.7 +- 0.3 MPa, (Z) 29.7 +- 0.3 MPa",
+    "note": "As printed; The sheet repeats the X-Y label on a second row with the Z value; read as X-Y 33.4 and Z 29.7, and their mean used."
+   },
+   "elongation_at_break_pct": {
+    "value": 10.5,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyLite ABS (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/abs-asa/polylite-tm-abs (accessed 2026-09-19): elongation at break 17.9 +- 1.3 % (X-Y), 3.1 +- 0.3 % (Z)",
+    "note": "As printed; Mean; the directions differ sixfold."
+   },
+   "glass_transition_c": {
+    "value": 101,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyLite ABS (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/abs-asa/polylite-tm-abs (accessed 2026-09-19): glass transition temperature 101 degC (DSC, 10 degC/min)",
+    "note": "The Bragg-grating study measured 92 +- 2 degC on printed eSUN ABS."
+   },
+   "expansion_1_per_k": {
+    "value": 8.75e-05,
+    "provenance": "published",
+    "source": "Characterization of Thermal Expansion Coefficient of 3D Printing Polymeric Materials Using Fiber Bragg Grating Sensors, PMC11433601, Tables 1 and 2, https://pmc.ncbi.nlm.nih.gov/articles/PMC11433601/ (accessed 2026-09-19): ABS 86 +- 3 (0 degree raster) and 89 +- 3 (90 degree) x 1e-6 per degC, 25 to 50 degC",
+    "note": "As printed; eSUN ABS printed at 240 degC; a different ABS from the PolyLite of the other values. Mean of the rasters, used as a constant coefficient."
+   },
+   "conductivity_w_per_mk": {
+    "t_c": [
+     22.03,
+     29.9,
+     39.73,
+     49.76,
+     59.63
+    ],
+    "value": [
+     0.172,
+     0.171,
+     0.18,
+     0.184,
+     0.177
+    ],
+    "provenance": "published",
+    "source": "Experimental Investigation of Thermal Conductivity of Selected 3D-Printed Materials, PMC12428860, Table 5 (100 per cent infill; Zortrax Z-PLA, Z-PETG, Z-ABS printed on a Zortrax M300 Dual), https://pmc.ncbi.nlm.nih.gov/articles/PMC12428860/ (accessed 2026-09-19): ABS 100 per cent infill, 0.171 to 0.184 W/mK at 22 to 60 degC",
+    "note": "As printed; Z-ABS, a different ABS from the PolyLite of the other values."
+   },
+   "nozzle_temperature_c": {
+    "min": 245,
+    "max": 265,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyLite ABS (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/abs-asa/polylite-tm-abs (accessed 2026-09-19): recommended nozzle temperature 245 to 265 degC"
+   },
+   "bed_temperature_c": {
+    "min": 90,
+    "max": 100,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyLite ABS (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/abs-asa/polylite-tm-abs (accessed 2026-09-19): build plate temperature 90 to 100 degC"
+   },
+   "not_modelled": [
+    "viscoelastic creep and relaxation",
+    "raster and layer anisotropy (the two print directions are averaged; both are in the notes)",
+    "moisture uptake (a nylon's properties change a lot with water)",
+    "interlayer bond strength and voids",
+    "crystallisation kinetics",
+    "Poisson's ratio and specific heat: no open source found"
+   ]
+  },
+  {
+   "id": "petg_fff",
+   "name": "PETG, material extrusion (Polymaker PolyLite PETG and others; printed values)",
+   "family": "polymer",
+   "processes": [
+    "fff"
+   ],
+   "status": "published",
+   "provenance": "Printed strength and modulus from the PolyLite PETG sheet; conductivity measured on printed PETG in an open-access paper. Batch 2 of the materials library (materials/README.md), sourced 2026-09-19: every value names its document, page and access date (materials/batch2-sources.md); printed values are marked as printed, the rest are the bulk material's.",
+   "density_kg_m3": {
+    "value": 1250,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyLite PETG (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/petg-pet/polylite-tm-petg (accessed 2026-09-19): density 1.25 g/cm3 at 23 degC",
+    "note": "The filament's material."
+   },
+   "youngs_modulus_pa": {
+    "value": 2007750000.0,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyLite PETG (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/petg-pet/polylite-tm-petg (accessed 2026-09-19): Young's modulus 2116.8 +- 68.1 MPa (X-Y), 1898.7 +- 98.5 MPa (Z)",
+    "note": "As printed; specimens at 240 degC, bed 80 degC; mean."
+   },
+   "strength_pa": {
+    "value": 46800000.0,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyLite PETG (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/petg-pet/polylite-tm-petg (accessed 2026-09-19): tensile strength 50.8 +- 0.9 MPa (X-Y), 42.8 +- 2.8 MPa (Z)",
+    "note": "As printed; Mean."
+   },
+   "elongation_at_break_pct": {
+    "value": 5.85,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyLite PETG (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/petg-pet/polylite-tm-petg (accessed 2026-09-19): elongation at break 8.4 +- 1.7 % (X-Y), 3.3 +- 0.2 % (Z)",
+    "note": "As printed; Mean."
+   },
+   "glass_transition_c": {
+    "value": 81,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyLite PETG (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/petg-pet/polylite-tm-petg (accessed 2026-09-19): glass transition temperature 81 degC (DSC)"
+   },
+   "conductivity_w_per_mk": {
+    "t_c": [
+     22.36,
+     30.22,
+     40.04,
+     50.05,
+     59.78
+    ],
+    "value": [
+     0.198,
+     0.198,
+     0.208,
+     0.211,
+     0.207
+    ],
+    "provenance": "published",
+    "source": "Experimental Investigation of Thermal Conductivity of Selected 3D-Printed Materials, PMC12428860, Table 5 (100 per cent infill; Zortrax Z-PLA, Z-PETG, Z-ABS printed on a Zortrax M300 Dual), https://pmc.ncbi.nlm.nih.gov/articles/PMC12428860/ (accessed 2026-09-19): PET-G 100 per cent infill, 0.198 to 0.211 W/mK at 22 to 60 degC",
+    "note": "As printed; Z-PETG, a different PETG from the PolyLite of the other values."
+   },
+   "nozzle_temperature_c": {
+    "min": 230,
+    "max": 260,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyLite PETG (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/petg-pet/polylite-tm-petg (accessed 2026-09-19): recommended nozzle temperature 230 to 260 degC"
+   },
+   "bed_temperature_c": {
+    "min": 70,
+    "max": 80,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyLite PETG (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/petg-pet/polylite-tm-petg (accessed 2026-09-19): build plate temperature 70 to 80 degC"
+   },
+   "not_modelled": [
+    "viscoelastic creep and relaxation",
+    "raster and layer anisotropy (the two print directions are averaged; both are in the notes)",
+    "moisture uptake (a nylon's properties change a lot with water)",
+    "interlayer bond strength and voids",
+    "crystallisation kinetics",
+    "Poisson's ratio, expansion and specific heat: no open source found"
+   ]
+  },
+  {
+   "id": "asa_fff",
+   "name": "ASA, material extrusion (Polymaker ASA; printed values)",
+   "family": "polymer",
+   "processes": [
+    "fff"
+   ],
+   "status": "published",
+   "provenance": "Printed strength and modulus from the Polymaker ASA sheet. Batch 2 of the materials library (materials/README.md), sourced 2026-09-19: every value names its document, page and access date (materials/batch2-sources.md); printed values are marked as printed, the rest are the bulk material's.",
+   "density_kg_m3": {
+    "value": 1130,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet Polymaker ASA (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/abs-asa/polymaker-tm-asa (accessed 2026-09-19): density 1.13 g/cm3 at 23 degC",
+    "note": "The filament's material."
+   },
+   "youngs_modulus_pa": {
+    "value": 2172000000.0,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet Polymaker ASA (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/abs-asa/polymaker-tm-asa (accessed 2026-09-19): Young's modulus 2379 +- 157 MPa (X-Y), 1965 +- 136 MPa (Z)",
+    "note": "As printed; specimens at 260 degC, bed 90 degC, chamber 90 degC; mean."
+   },
+   "strength_pa": {
+    "value": 37900000.0,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet Polymaker ASA (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/abs-asa/polymaker-tm-asa (accessed 2026-09-19): tensile strength 43.8 +- 0.8 MPa (X-Y), 32 +- 1.8 MPa (Z)",
+    "note": "As printed; Mean."
+   },
+   "elongation_at_break_pct": {
+    "value": 4.175,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet Polymaker ASA (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/abs-asa/polymaker-tm-asa (accessed 2026-09-19): elongation at break 6.7 +- 0.6 % (X-Y), 1.65 +- 0.2 % (Z)",
+    "note": "As printed; Mean."
+   },
+   "glass_transition_c": {
+    "value": 98,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet Polymaker ASA (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/abs-asa/polymaker-tm-asa (accessed 2026-09-19): glass transition temperature 98 degC (DSC)"
+   },
+   "nozzle_temperature_c": {
+    "min": 230,
+    "max": 260,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet Polymaker ASA (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/abs-asa/polymaker-tm-asa (accessed 2026-09-19): recommended nozzle temperature 230 to 260 degC"
+   },
+   "bed_temperature_c": {
+    "min": 75,
+    "max": 95,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet Polymaker ASA (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/abs-asa/polymaker-tm-asa (accessed 2026-09-19): build plate temperature 75 to 95 degC"
+   },
+   "not_modelled": [
+    "viscoelastic creep and relaxation",
+    "raster and layer anisotropy (the two print directions are averaged; both are in the notes)",
+    "moisture uptake (a nylon's properties change a lot with water)",
+    "interlayer bond strength and voids",
+    "crystallisation kinetics",
+    "Poisson's ratio, expansion, conductivity and specific heat: no open source found"
+   ]
+  },
+  {
+   "id": "tpu95a_fff",
+   "name": "TPU, shore 95A, material extrusion (Polymaker PolyFlex TPU95; printed values)",
+   "family": "polymer",
+   "processes": [
+    "fff"
+   ],
+   "status": "published",
+   "provenance": "Printed stiffness and elongation from the PolyFlex TPU95 sheet. Batch 2 of the materials library (materials/README.md), sourced 2026-09-19: every value names its document, page and access date (materials/batch2-sources.md); printed values are marked as printed, the rest are the bulk material's.",
+   "density_kg_m3": {
+    "value": 1220,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyFlex TPU95 (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/tpu/polyflex-tm-tpu95 (accessed 2026-09-19): density 1.20-1.24 g/cm3 at 23 degC",
+    "note": "The middle of the stated range."
+   },
+   "youngs_modulus_pa": {
+    "value": 33600000.0,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyFlex TPU95 (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/tpu/polyflex-tm-tpu95 (accessed 2026-09-19): Young's modulus (X-Y) 33.6 +- 0.9 MPa (ISO 37)",
+    "note": "As printed; specimens at 230 degC, bed 50 degC. An elastomer: this is the initial slope of a strongly non-linear curve (stress 11.1 MPa at 100 per cent, 25.8 MPa at 400 per cent strain)."
+   },
+   "elongation_at_break_pct": {
+    "value": 551.2,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyFlex TPU95 (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/tpu/polyflex-tm-tpu95 (accessed 2026-09-19): elongation at break (X-Y) 551.2 +- 23.5 %",
+    "note": "As printed;"
+   },
+   "nozzle_temperature_c": {
+    "min": 210,
+    "max": 230,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyFlex TPU95 (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/tpu/polyflex-tm-tpu95 (accessed 2026-09-19): recommended nozzle temperature 210 to 230 degC"
+   },
+   "bed_temperature_c": {
+    "min": 25,
+    "max": 60,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyFlex TPU95 (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/tpu/polyflex-tm-tpu95 (accessed 2026-09-19): build plate temperature 25 to 60 degC"
+   },
+   "not_modelled": [
+    "viscoelastic creep and relaxation",
+    "raster and layer anisotropy (the two print directions are averaged; both are in the notes)",
+    "moisture uptake (a nylon's properties change a lot with water)",
+    "interlayer bond strength and voids",
+    "crystallisation kinetics",
+    "hyperelasticity: the linear model is valid only for small strains",
+    "Poisson's ratio, strength at break, glass transition, expansion, conductivity and specific heat: no open source found"
+   ]
+  },
+  {
+   "id": "pc_fff",
+   "name": "Polycarbonate, material extrusion (Polymaker PolyLite PC; printed values)",
+   "family": "polymer",
+   "processes": [
+    "fff"
+   ],
+   "status": "published",
+   "provenance": "Printed strength and modulus from the PolyLite PC sheet. Batch 2 of the materials library (materials/README.md), sourced 2026-09-19: every value names its document, page and access date (materials/batch2-sources.md); printed values are marked as printed, the rest are the bulk material's.",
+   "density_kg_m3": {
+    "value": 1190,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyLite PC (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/polycarbonate/polylite-tm-pc (accessed 2026-09-19): density 1.19 g/cm3 at 23 degC",
+    "note": "The filament's material."
+   },
+   "youngs_modulus_pa": {
+    "value": 2434000000.0,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyLite PC (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/polycarbonate/polylite-tm-pc (accessed 2026-09-19): Young's modulus 2497 +- 154 MPa (X-Y), 2371 +- 55 MPa (Z)",
+    "note": "As printed; mean."
+   },
+   "strength_pa": {
+    "value": 60950000.0,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyLite PC (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/polycarbonate/polylite-tm-pc (accessed 2026-09-19): tensile strength 69.1 +- 3.0 MPa (X-Y), 52.8 +- 1.7 MPa (Z)",
+    "note": "As printed; Mean."
+   },
+   "elongation_at_break_pct": {
+    "value": 3.75,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyLite PC (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/polycarbonate/polylite-tm-pc (accessed 2026-09-19): elongation at break 4.8 +- 0.9 % (X-Y), 2.7 +- 0.1 % (Z)",
+    "note": "As printed; Mean."
+   },
+   "glass_transition_c": {
+    "value": 113,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyLite PC (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/polycarbonate/polylite-tm-pc (accessed 2026-09-19): glass transition temperature 113 degC (DSC)"
+   },
+   "nozzle_temperature_c": {
+    "min": 250,
+    "max": 270,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyLite PC (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/polycarbonate/polylite-tm-pc (accessed 2026-09-19): recommended nozzle temperature 250 to 270 degC"
+   },
+   "bed_temperature_c": {
+    "min": 90,
+    "max": 105,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyLite PC (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/polycarbonate/polylite-tm-pc (accessed 2026-09-19): build plate temperature 90 to 105 degC",
+    "note": "The sheet asks for a chamber at 70 to 100 degC and annealing at 90 degC for 2 h."
+   },
+   "not_modelled": [
+    "viscoelastic creep and relaxation",
+    "raster and layer anisotropy (the two print directions are averaged; both are in the notes)",
+    "moisture uptake (a nylon's properties change a lot with water)",
+    "interlayer bond strength and voids",
+    "crystallisation kinetics",
+    "Poisson's ratio, expansion, conductivity and specific heat: no open source found"
+   ]
+  },
+  {
+   "id": "pa12_fff",
+   "name": "Nylon 12 (PA12), material extrusion (Stratasys FDM Nylon 12; printed values)",
+   "family": "polymer",
+   "processes": [
+    "fff"
+   ],
+   "status": "published",
+   "provenance": "Printed values from the Stratasys FDM Nylon 12 data sheet. Batch 2 of the materials library (materials/README.md), sourced 2026-09-19: every value names its document, page and access date (materials/batch2-sources.md); printed values are marked as printed, the rest are the bulk material's.",
+   "density_kg_m3": {
+    "value": 1010,
+    "provenance": "published",
+    "source": "Stratasys, FDM Nylon 12 data sheet MDS_FDM_Nylon 12_0921a, Tables 3 and 4 (F900, T16 tip, 0.254 mm layers), https://www.stratasys.com/-/media/files/material-spec-sheets/mss_fdm_fdmnylon12_1117a.pdf (accessed 2026-09-19): specific gravity 1.01 at 23 degC (ASTM D792 test method stated as D257 in the sheet)",
+    "note": "Specific gravity read as density relative to water."
+   },
+   "youngs_modulus_pa": {
+    "value": 1380000000.0,
+    "provenance": "published",
+    "source": "Stratasys, FDM Nylon 12 data sheet MDS_FDM_Nylon 12_0921a, Tables 3 and 4 (F900, T16 tip, 0.254 mm layers), https://www.stratasys.com/-/media/files/material-spec-sheets/mss_fdm_fdmnylon12_1117a.pdf (accessed 2026-09-19): tensile modulus 1.51 (0.087) GPa (XZ), 1.25 (0.12) GPa (ZX), ASTM D638",
+    "note": "As printed; mean of XZ and ZX."
+   },
+   "yield_strength_pa": {
+    "value": 45550000.0,
+    "provenance": "published",
+    "source": "Stratasys, FDM Nylon 12 data sheet MDS_FDM_Nylon 12_0921a, Tables 3 and 4 (F900, T16 tip, 0.254 mm layers), https://www.stratasys.com/-/media/files/material-spec-sheets/mss_fdm_fdmnylon12_1117a.pdf (accessed 2026-09-19): yield strength 49.3 (0.48) MPa (XZ), 41.8 (0.67) MPa (ZX)",
+    "note": "As printed; Mean."
+   },
+   "strength_pa": {
+    "value": 37300000.0,
+    "provenance": "published",
+    "source": "Stratasys, FDM Nylon 12 data sheet MDS_FDM_Nylon 12_0921a, Tables 3 and 4 (F900, T16 tip, 0.254 mm layers), https://www.stratasys.com/-/media/files/material-spec-sheets/mss_fdm_fdmnylon12_1117a.pdf (accessed 2026-09-19): strength at break 33.4 (1.7) MPa (XZ), 41.2 (0.72) MPa (ZX)",
+    "note": "As printed; Mean; the XZ samples yield, neck and break lower."
+   },
+   "elongation_at_break_pct": {
+    "value": 18.25,
+    "provenance": "published",
+    "source": "Stratasys, FDM Nylon 12 data sheet MDS_FDM_Nylon 12_0921a, Tables 3 and 4 (F900, T16 tip, 0.254 mm layers), https://www.stratasys.com/-/media/files/material-spec-sheets/mss_fdm_fdmnylon12_1117a.pdf (accessed 2026-09-19): elongation at break 30 (23) % (XZ), 6.5 (0.39) % (ZX)",
+    "note": "As printed; Mean; the XZ scatter is large."
+   },
+   "glass_transition_c": {
+    "value": 34.03,
+    "provenance": "published",
+    "source": "Stratasys, FDM Nylon 12 data sheet MDS_FDM_Nylon 12_0921a, Tables 3 and 4 (F900, T16 tip, 0.254 mm layers), https://www.stratasys.com/-/media/files/material-spec-sheets/mss_fdm_fdmnylon12_1117a.pdf (accessed 2026-09-19): Tg 34.03 degC (ASTM D7426, inflection point)",
+    "note": "As printed;"
+   },
+   "expansion_1_per_k": {
+    "t_c": [
+     -20,
+     27.5,
+     57.5,
+     82.5
+    ],
+    "value": [
+     8.435e-05,
+     8.912e-05,
+     9.823e-05,
+     6.008e-05
+    ],
+    "provenance": "inferred",
+    "source": "Stratasys, FDM Nylon 12 data sheet MDS_FDM_Nylon 12_0921a, Tables 3 and 4 (F900, T16 tip, 0.254 mm layers), https://www.stratasys.com/-/media/files/material-spec-sheets/mss_fdm_fdmnylon12_1117a.pdf (accessed 2026-09-19): mean CTE (XY) 84.35, 89.12, 98.23, 60.08 um/(m degC) over -50 to 10, 10 to 45, 45 to 70, 70 to 95 degC (ASTM E831)",
+    "note": "INFERRED placement: each value is the mean over its interval, which equals the instantaneous coefficient averaged over it, so it is placed at the interval midpoint. As printed, flat (XY)."
+   },
+   "not_modelled": [
+    "viscoelastic creep and relaxation",
+    "raster and layer anisotropy (the two print directions are averaged; both are in the notes)",
+    "moisture uptake (a nylon's properties change a lot with water)",
+    "interlayer bond strength and voids",
+    "crystallisation kinetics",
+    "print temperatures: Stratasys states none (its printers set them)",
+    "Poisson's ratio, melting temperature, conductivity and specific heat: no open source found"
+   ]
+  },
+  {
+   "id": "pa6_66_fff",
+   "name": "Nylon PA6/66 copolymer, material extrusion (Polymaker PolyMide CoPA; printed, dry)",
+   "family": "polymer",
+   "processes": [
+    "fff"
+   ],
+   "status": "published",
+   "provenance": "Printed values from the PolyMide CoPA sheet, dry. No data sheet for an unfilled PA6 filament was found; this copolymer of Nylon 6 and Nylon 6,6 is the nearest, and is named for what it is. Batch 2 of the materials library (materials/README.md), sourced 2026-09-19: every value names its document, page and access date (materials/batch2-sources.md); printed values are marked as printed, the rest are the bulk material's.",
+   "density_kg_m3": {
+    "value": 1120,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyMide CoPA (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/nylon/polymide-tm-copa (accessed 2026-09-19): density 1.12 g/cm3 at 23 degC; the sheet states CoPA is a copolymer of Nylon 6 and Nylon 6,6",
+    "note": "The filament's material."
+   },
+   "youngs_modulus_pa": {
+    "value": 2456000000.0,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyMide CoPA (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/nylon/polymide-tm-copa (accessed 2026-09-19): Young's modulus (dry) 2703 +- 259 MPa (X-Y), 2209 +- 59 MPa (Z)",
+    "note": "As printed; annealed at 80 degC for 6 h and dried 48 h; mean. Wet (6.16 % water): 724 and 660 MPa, a factor of 3.5 lower."
+   },
+   "strength_pa": {
+    "value": 61900000.0,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyMide CoPA (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/nylon/polymide-tm-copa (accessed 2026-09-19): tensile strength (dry) 78.0 +- 0.7 MPa (X-Y), 45.8 +- 1.5 MPa (Z)",
+    "note": "As printed; Mean, dry. Wet: 34.3 and 13.7 MPa."
+   },
+   "elongation_at_break_pct": {
+    "value": 7.0,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyMide CoPA (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/nylon/polymide-tm-copa (accessed 2026-09-19): elongation at break (dry) 12.7 +- 2.1 % (X-Y), 1.3 +- 0.1 % (Z)",
+    "note": "As printed; Mean, dry."
+   },
+   "glass_transition_c": {
+    "value": 66,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyMide CoPA (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/nylon/polymide-tm-copa (accessed 2026-09-19): glass transition temperature 66 degC (DSC)"
+   },
+   "melting_c": {
+    "value": 189,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyMide CoPA (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/nylon/polymide-tm-copa (accessed 2026-09-19): melting temperature 189 degC (DSC)"
+   },
+   "nozzle_temperature_c": {
+    "min": 250,
+    "max": 270,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyMide CoPA (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/nylon/polymide-tm-copa (accessed 2026-09-19): recommended nozzle temperature 250 to 270 degC"
+   },
+   "bed_temperature_c": {
+    "min": 25,
+    "max": 50,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet PolyMide CoPA (Polymaker Wiki), https://wiki.polymaker.com/polymaker-products/more-about-our-products/documents/technical-data-sheets/nylon/polymide-tm-copa (accessed 2026-09-19): build plate temperature 25 to 50 degC"
+   },
+   "not_modelled": [
+    "viscoelastic creep and relaxation",
+    "raster and layer anisotropy (the two print directions are averaged; both are in the notes)",
+    "moisture uptake (a nylon's properties change a lot with water)",
+    "interlayer bond strength and voids",
+    "crystallisation kinetics",
+    "Poisson's ratio, expansion, conductivity and specific heat: no open source found"
+   ]
+  },
+  {
+   "id": "pa6cf_fff",
+   "name": "Carbon-fibre filled nylon PA6-CF (20 per cent), material extrusion (Polymaker Fiberon PA6-CF20; printed, dry)",
+   "family": "polymer",
+   "processes": [
+    "fff"
+   ],
+   "status": "published",
+   "provenance": "Printed values from the Fiberon PA6-CF20 sheet, dry and annealed. Batch 2 of the materials library (materials/README.md), sourced 2026-09-19: every value names its document, page and access date (materials/batch2-sources.md); printed values are marked as printed, the rest are the bulk material's.",
+   "density_kg_m3": {
+    "value": 1170,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet Fiberon PA6-CF20, V1.1, https://cdn.shopify.com/s/files/1/0548/7299/7945/files/TDS_FIBERON_PA6-CF20_V1.1_EN.pdf?v=1733846088 (accessed 2026-09-19): density 1.17 g/cm3 at 23 degC (ISO 1183)"
+   },
+   "youngs_modulus_pa": {
+    "value": 6198000000.0,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet Fiberon PA6-CF20, V1.1, https://cdn.shopify.com/s/files/1/0548/7299/7945/files/TDS_FIBERON_PA6-CF20_V1.1_EN.pdf?v=1733846088 (accessed 2026-09-19): Young's modulus (dry) 8636.5 +- 211.4 MPa (X-Y), 3759.5 +- 118.5 MPa (Z)",
+    "note": "As printed; annealed at 100 degC for 16 h. The fibres make it strongly anisotropic: X-Y is 2.3 times Z, and the isotropic mean misstates both."
+   },
+   "strength_pa": {
+    "value": 81650000.0,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet Fiberon PA6-CF20, V1.1, https://cdn.shopify.com/s/files/1/0548/7299/7945/files/TDS_FIBERON_PA6-CF20_V1.1_EN.pdf?v=1733846088 (accessed 2026-09-19): tensile strength (dry) 109.3 +- 2.4 MPa (X-Y), 54.0 +- 5.2 MPa (Z)",
+    "note": "As printed; Mean, dry."
+   },
+   "elongation_at_break_pct": {
+    "value": 2.0,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet Fiberon PA6-CF20, V1.1, https://cdn.shopify.com/s/files/1/0548/7299/7945/files/TDS_FIBERON_PA6-CF20_V1.1_EN.pdf?v=1733846088 (accessed 2026-09-19): elongation at break (dry) 2.1 +- 0.2 % (X-Y), 1.9 +- 0.4 % (Z)",
+    "note": "As printed; Mean, dry."
+   },
+   "glass_transition_c": {
+    "value": 74.2,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet Fiberon PA6-CF20, V1.1, https://cdn.shopify.com/s/files/1/0548/7299/7945/files/TDS_FIBERON_PA6-CF20_V1.1_EN.pdf?v=1733846088 (accessed 2026-09-19): glass transition temperature 74.2 degC (DSC, 10 degC/min)"
+   },
+   "melting_c": {
+    "value": 218.5,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet Fiberon PA6-CF20, V1.1, https://cdn.shopify.com/s/files/1/0548/7299/7945/files/TDS_FIBERON_PA6-CF20_V1.1_EN.pdf?v=1733846088 (accessed 2026-09-19): melting temperature 218.5 degC (DSC, 10 degC/min)"
+   },
+   "nozzle_temperature_c": {
+    "min": 280,
+    "max": 300,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet Fiberon PA6-CF20, V1.1, https://cdn.shopify.com/s/files/1/0548/7299/7945/files/TDS_FIBERON_PA6-CF20_V1.1_EN.pdf?v=1733846088 (accessed 2026-09-19): nozzle temperature 280-300 degC",
+    "note": "A hardened nozzle is needed: the fibres wear brass in about 9 h."
+   },
+   "bed_temperature_c": {
+    "min": 40,
+    "max": 50,
+    "provenance": "published",
+    "source": "Polymaker, technical data sheet Fiberon PA6-CF20, V1.1, https://cdn.shopify.com/s/files/1/0548/7299/7945/files/TDS_FIBERON_PA6-CF20_V1.1_EN.pdf?v=1733846088 (accessed 2026-09-19): build plate temperature 40-50 degC"
+   },
+   "not_modelled": [
+    "viscoelastic creep and relaxation",
+    "raster and layer anisotropy (the two print directions are averaged; both are in the notes)",
+    "moisture uptake (a nylon's properties change a lot with water)",
+    "interlayer bond strength and voids",
+    "crystallisation kinetics",
+    "fibre orientation: the record is isotropic",
+    "Poisson's ratio, expansion, conductivity and specific heat: no open source found"
+   ]
+  },
+  {
+   "id": "peek_fff",
+   "name": "PEEK, material extrusion (3DXTech ThermaX PEEK printed; thermal values of Victrex 450G bulk)",
+   "family": "polymer",
+   "processes": [
+    "fff"
+   ],
+   "status": "published",
+   "provenance": "Printed strength and modulus from the ThermaX PEEK sheet; melting, expansion and conductivity of moulded Victrex PEEK 450G. Batch 2 of the materials library (materials/README.md), sourced 2026-09-19: every value names its document, page and access date (materials/batch2-sources.md); printed values are marked as printed, the rest are the bulk material's.",
+   "density_kg_m3": {
+    "value": 1300,
+    "provenance": "published",
+    "source": "3DXTech, Technical Data Sheet ThermaX PEEK 3D Printing Filament, TDS Rev 3.0 (printed XY flat, 100 per cent infill), https://cdn.shopify.com/s/files/1/0625/4185/6821/files/Themax_PEEK_TDS_v3.pdf?v=1723942765 (accessed 2026-09-19): density 1.30 g/cc (ISO 1183)",
+    "note": "Victrex 450G (crystalline): 1.30 g/cm3."
+   },
+   "youngs_modulus_pa": {
+    "value": 3720000000.0,
+    "provenance": "published",
+    "source": "3DXTech, Technical Data Sheet ThermaX PEEK 3D Printing Filament, TDS Rev 3.0 (printed XY flat, 100 per cent infill), https://cdn.shopify.com/s/files/1/0625/4185/6821/files/Themax_PEEK_TDS_v3.pdf?v=1723942765 (accessed 2026-09-19): tensile modulus 3720 MPa (ISO 527)",
+    "note": "As printed; XY flat, extruded at 380 to 400 degC. Moulded Victrex 450G: 4000 MPa."
+   },
+   "strength_pa": {
+    "value": 100000000.0,
+    "provenance": "published",
+    "source": "3DXTech, Technical Data Sheet ThermaX PEEK 3D Printing Filament, TDS Rev 3.0 (printed XY flat, 100 per cent infill), https://cdn.shopify.com/s/files/1/0625/4185/6821/files/Themax_PEEK_TDS_v3.pdf?v=1723942765 (accessed 2026-09-19): tensile strength 100 MPa (ISO 527)",
+    "note": "As printed; XY flat. Moulded Victrex 450G yield: 98 MPa."
+   },
+   "elongation_at_break_pct": {
+    "value": 28,
+    "provenance": "published",
+    "source": "3DXTech, Technical Data Sheet ThermaX PEEK 3D Printing Filament, TDS Rev 3.0 (printed XY flat, 100 per cent infill), https://cdn.shopify.com/s/files/1/0625/4185/6821/files/Themax_PEEK_TDS_v3.pdf?v=1723942765 (accessed 2026-09-19): tensile elongation 28 % (ISO 527)",
+    "note": "As printed; XY flat. Moulded Victrex: 25 %."
+   },
+   "glass_transition_c": {
+    "value": 143,
+    "provenance": "published",
+    "source": "3DXTech, Technical Data Sheet ThermaX PEEK 3D Printing Filament, TDS Rev 3.0 (printed XY flat, 100 per cent infill), https://cdn.shopify.com/s/files/1/0625/4185/6821/files/Themax_PEEK_TDS_v3.pdf?v=1723942765 (accessed 2026-09-19): Tg 143 degC (DSC)",
+    "note": "Victrex 450G: onset 143, midpoint 150 degC."
+   },
+   "melting_c": {
+    "value": 343,
+    "provenance": "published",
+    "source": "Victrex, VICTREX PEEK 450G technical data sheet (revision March 2026), pages 1 and 2 (moulded granules, not printed), https://www.victrex.com/-/media/downloads/datasheets/victrex_tds_450g.pdf (accessed 2026-09-19): melting temperature 343 degC (ISO 11357-3)",
+    "note": "BULK, moulded."
+   },
+   "expansion_1_per_k": {
+    "t_c": [
+     20,
+     142,
+     144,
+     300
+    ],
+    "value": [
+     5.5e-05,
+     5.5e-05,
+     0.00014,
+     0.00014
+    ],
+    "provenance": "inferred",
+    "source": "Victrex, VICTREX PEEK 450G technical data sheet (revision March 2026), pages 1 and 2 (moulded granules, not printed), https://www.victrex.com/-/media/downloads/datasheets/victrex_tds_450g.pdf (accessed 2026-09-19): CLTE, average direction, 55 ppm/K below 143 degC and 140 ppm/K above (ISO 11359-2)",
+    "note": "BULK, moulded. INFERRED shape: the two stated values held constant on either side of 143 degC, with a 2 degC ramp between."
+   },
+   "conductivity_w_per_mk": {
+    "value": 0.29,
+    "provenance": "published",
+    "source": "Victrex, VICTREX PEEK 450G technical data sheet (revision March 2026), pages 1 and 2 (moulded granules, not printed), https://www.victrex.com/-/media/downloads/datasheets/victrex_tds_450g.pdf (accessed 2026-09-19): thermal conductivity 0.29 W/m/K at 23 degC, average (ISO 22007-4)",
+    "note": "BULK, moulded; 0.32 along the flow. Held constant."
+   },
+   "nozzle_temperature_c": {
+    "min": 380,
+    "max": 400,
+    "provenance": "published",
+    "source": "3DXTech, Technical Data Sheet ThermaX PEEK 3D Printing Filament, TDS Rev 3.0 (printed XY flat, 100 per cent infill), https://cdn.shopify.com/s/files/1/0625/4185/6821/files/Themax_PEEK_TDS_v3.pdf?v=1723942765 (accessed 2026-09-19): printed specimen conditions, extrusion temperature 380-400 degC"
+   },
+   "bed_temperature_c": {
+    "min": 130,
+    "max": 140,
+    "provenance": "published",
+    "source": "3DXTech, Technical Data Sheet ThermaX PEEK 3D Printing Filament, TDS Rev 3.0 (printed XY flat, 100 per cent infill), https://cdn.shopify.com/s/files/1/0625/4185/6821/files/Themax_PEEK_TDS_v3.pdf?v=1723942765 (accessed 2026-09-19): printed specimen conditions, bed temperature 130-140 degC"
+   },
+   "not_modelled": [
+    "viscoelastic creep and relaxation",
+    "raster and layer anisotropy (the two print directions are averaged; both are in the notes)",
+    "moisture uptake (a nylon's properties change a lot with water)",
+    "interlayer bond strength and voids",
+    "crystallisation kinetics",
+    "crystallinity, which printing conditions change and which changes every property here",
+    "Poisson's ratio and specific heat: no open source found"
+   ]
+  },
+  {
+   "id": "pei9085_fff",
+   "name": "PEI, ULTEM 9085 resin, material extrusion (Stratasys; printed values)",
+   "family": "polymer",
+   "processes": [
+    "fff"
+   ],
+   "status": "published",
+   "provenance": "Printed values from the Stratasys ULTEM 9085 data sheet, including conductivity and diffusivity measured on printed parts. Batch 2 of the materials library (materials/README.md), sourced 2026-09-19: every value names its document, page and access date (materials/batch2-sources.md); printed values are marked as printed, the rest are the bulk material's.",
+   "density_kg_m3": {
+    "value": 1270,
+    "provenance": "published",
+    "source": "Stratasys, ULTEM 9085 resin material data sheet MDS_FDM_ULTEM9085_0525a, Tables 3 and 4 (F900, T16 tip, 0.254 mm layers), https://www.stratasys.com/contentassets/264560ca109a4876a3761fde68c3ab5e/mds_fdm_ultem9085_0525a.pdf?v=49972f (accessed 2026-09-19): specific gravity 1.27 at 23 degC (ASTM D792)",
+    "note": "Specific gravity read as density relative to water."
+   },
+   "youngs_modulus_pa": {
+    "value": 2465000000.0,
+    "provenance": "published",
+    "source": "Stratasys, ULTEM 9085 resin material data sheet MDS_FDM_ULTEM9085_0525a, Tables 3 and 4 (F900, T16 tip, 0.254 mm layers), https://www.stratasys.com/contentassets/264560ca109a4876a3761fde68c3ab5e/mds_fdm_ultem9085_0525a.pdf?v=49972f (accessed 2026-09-19), Table 4: tensile modulus 2.52 (0.062) GPa (XZ), 2.41 (0.15) GPa (ZX), ASTM D638",
+    "note": "As printed; F900, T16 tip; mean."
+   },
+   "yield_strength_pa": {
+    "value": 69200000.0,
+    "provenance": "published",
+    "source": "Stratasys, ULTEM 9085 resin material data sheet MDS_FDM_ULTEM9085_0525a, Tables 3 and 4 (F900, T16 tip, 0.254 mm layers), https://www.stratasys.com/contentassets/264560ca109a4876a3761fde68c3ab5e/mds_fdm_ultem9085_0525a.pdf?v=49972f (accessed 2026-09-19), Table 4: yield strength 69.2 (1.0) MPa (XZ); ZX: no yield",
+    "note": "As printed; XZ only; ZX breaks at 39.4 MPa before yielding."
+   },
+   "strength_pa": {
+    "value": 53750000.0,
+    "provenance": "published",
+    "source": "Stratasys, ULTEM 9085 resin material data sheet MDS_FDM_ULTEM9085_0525a, Tables 3 and 4 (F900, T16 tip, 0.254 mm layers), https://www.stratasys.com/contentassets/264560ca109a4876a3761fde68c3ab5e/mds_fdm_ultem9085_0525a.pdf?v=49972f (accessed 2026-09-19), Table 4: strength at break 68.1 (1.6) MPa (XZ), 39.4 (8.7) MPa (ZX)",
+    "note": "As printed; Mean."
+   },
+   "elongation_at_break_pct": {
+    "value": 3.6500000000000004,
+    "provenance": "published",
+    "source": "Stratasys, ULTEM 9085 resin material data sheet MDS_FDM_ULTEM9085_0525a, Tables 3 and 4 (F900, T16 tip, 0.254 mm layers), https://www.stratasys.com/contentassets/264560ca109a4876a3761fde68c3ab5e/mds_fdm_ultem9085_0525a.pdf?v=49972f (accessed 2026-09-19), Table 4: elongation at break 5.4 (0.50) % (XZ), 1.9 (0.51) % (ZX)",
+    "note": "As printed; Mean."
+   },
+   "glass_transition_c": {
+    "value": 177.3,
+    "provenance": "published",
+    "source": "Stratasys, ULTEM 9085 resin material data sheet MDS_FDM_ULTEM9085_0525a, Tables 3 and 4 (F900, T16 tip, 0.254 mm layers), https://www.stratasys.com/contentassets/264560ca109a4876a3761fde68c3ab5e/mds_fdm_ultem9085_0525a.pdf?v=49972f (accessed 2026-09-19), Table 3: Tg 177.3 degC (ASTM D7426, inflection point)",
+    "note": "An open-access study of printed ULTEM 9085 (PMC11768093) estimates 164 to 171 degC by direction."
+   },
+   "expansion_1_per_k": {
+    "t_c": [
+     5,
+     110
+    ],
+    "value": [
+     4.445e-05,
+     3.231e-05
+    ],
+    "provenance": "inferred",
+    "source": "Stratasys, ULTEM 9085 resin material data sheet MDS_FDM_ULTEM9085_0525a, Tables 3 and 4 (F900, T16 tip, 0.254 mm layers), https://www.stratasys.com/contentassets/264560ca109a4876a3761fde68c3ab5e/mds_fdm_ultem9085_0525a.pdf?v=49972f (accessed 2026-09-19), Table 3: mean CTE (tan, XY) 44.45 um/(m degC) from -50 to 60 degC and 32.31 from 60 to 160 degC (ASTM E831)",
+    "note": "INFERRED placement at the interval midpoints. As printed, XY. Black resin: 47.79 and 38.55 over -50 to 30 and 30 to 165 degC."
+   },
+   "conductivity_w_per_mk": {
+    "t_c": [
+     0,
+     30,
+     60,
+     90
+    ],
+    "value": [
+     0.2136,
+     0.2109,
+     0.2111,
+     0.2095
+    ],
+    "provenance": "published",
+    "source": "Stratasys, ULTEM 9085 resin material data sheet MDS_FDM_ULTEM9085_0525a, Tables 3 and 4 (F900, T16 tip, 0.254 mm layers), https://www.stratasys.com/contentassets/264560ca109a4876a3761fde68c3ab5e/mds_fdm_ultem9085_0525a.pdf?v=49972f (accessed 2026-09-19), Table 3: thermal conductivity 0.2136, 0.2109, 0.2111, 0.2095 W/m K at 0, 30, 60, 90 degC (ASTM E1952)",
+    "note": "As printed;"
+   },
+   "specific_heat_j_per_kgk": {
+    "t_c": [
+     30,
+     60,
+     90
+    ],
+    "value": [
+     1258,
+     1374,
+     1486
+    ],
+    "provenance": "inferred",
+    "source": "Stratasys, ULTEM 9085 resin material data sheet MDS_FDM_ULTEM9085_0525a, Tables 3 and 4 (F900, T16 tip, 0.254 mm layers), https://www.stratasys.com/contentassets/264560ca109a4876a3761fde68c3ab5e/mds_fdm_ultem9085_0525a.pdf?v=49972f (accessed 2026-09-19), Table 3: thermal diffusivity 0.132, 0.121, 0.111 mm2/s and conductivity at 30, 60, 90 degC, specific gravity 1.27",
+    "note": "INFERRED: cp = k / (rho a) from the sheet's own conductivity, diffusivity and density at each temperature."
+   },
+   "not_modelled": [
+    "viscoelastic creep and relaxation",
+    "raster and layer anisotropy (the two print directions are averaged; both are in the notes)",
+    "moisture uptake (a nylon's properties change a lot with water)",
+    "interlayer bond strength and voids",
+    "crystallisation kinetics",
+    "print temperatures: Stratasys states none (its printers set them)",
+    "Poisson's ratio: no open source found"
+   ]
+  },
+  {
+   "id": "s235jr",
+   "name": "Structural steel S235JR, hot rolled, thickness up to 16 mm (Ovako, EN 10025-2)",
+   "family": "metal",
+   "status": "published",
+   "provenance": "Hot rolled, as delivered, from Ovako's Steel Navigator entry for S235JR to EN 10025-2. The mechanical values are the standard's specified values for the thinnest class, up to 16 mm; the physical values are the typical values on the same page. Batch 3 of the materials library (materials/README.md), sourced 2026-09-20. Every value names the document it was read from, with URL and access date; materials/batch3-sources.md lists them with checksums. These are wrought and cast engineering metals, not additive ones: no value here is an as-built LPBF value.",
+   "density_kg_m3": {
+    "value": 7800,
+    "provenance": "published",
+    "source": "Ovako, Steel Navigator, grade S235JR, standard EN10025-2:2004, https://steelnavigator.ovako.com/steel-grades/s235/ (accessed 2026-09-20), Other properties table: density 7800 kg/m3"
+   },
+   "youngs_modulus_pa": {
+    "value": 210000000000.0,
+    "provenance": "published",
+    "source": "Ovako, Steel Navigator, grade S235JR, standard EN10025-2:2004, https://steelnavigator.ovako.com/steel-grades/s235/ (accessed 2026-09-20), Other properties table: Young's modulus 210 GPa"
+   },
+   "poisson_ratio": {
+    "value": 0.3,
+    "provenance": "published",
+    "source": "Ovako, Steel Navigator, grade S235JR, standard EN10025-2:2004, https://steelnavigator.ovako.com/steel-grades/s235/ (accessed 2026-09-20), Other properties table: Poisson's ratio 0.3",
+    "note": "The same table gives a shear modulus of 80 GPa, which with E = 210 GPa would imply 0.3125; the stated 0.3 is recorded."
+   },
+   "yield_strength_pa": {
+    "value": 235000000.0,
+    "provenance": "published",
+    "source": "Ovako, Steel Navigator, grade S235JR, standard EN10025-2:2004, https://steelnavigator.ovako.com/steel-grades/s235/ (accessed 2026-09-20), Mechanical Properties table, thickness < 16 mm: yield strength 235 MPa",
+    "note": "Thinner than 16 mm. The same table falls with thickness: 225 MPa (16.1 to 40 mm), 215 MPa (40.1 to 100 mm), 195 MPa (100.1 to 150 mm), 185 MPa (150.1 to 200 mm)."
+   },
+   "strength_pa": {
+    "value": 360000000.0,
+    "provenance": "published",
+    "source": "Ovako, Steel Navigator, grade S235JR, standard EN10025-2:2004, https://steelnavigator.ovako.com/steel-grades/s235/ (accessed 2026-09-20), Mechanical Properties table, thickness < 16 mm: tensile strength 360 to 510 MPa",
+    "note": "The specified minimum of the range is recorded, which is the value a design may rely on."
+   },
+   "elongation_at_break_pct": {
+    "value": 26,
+    "provenance": "published",
+    "source": "Ovako, Steel Navigator, grade S235JR, standard EN10025-2:2004, https://steelnavigator.ovako.com/steel-grades/s235/ (accessed 2026-09-20), Mechanical Properties table, thickness < 16 mm: elongation A5 26 per cent"
+   },
+   "expansion_1_per_k": {
+    "value": 1.2e-05,
+    "provenance": "published",
+    "source": "Ovako, Steel Navigator, grade S235JR, standard EN10025-2:2004, https://steelnavigator.ovako.com/steel-grades/s235/ (accessed 2026-09-20), Other properties table: CTE 12 micrometre per metre per K over 20 to 300 degC",
+    "note": "A mean coefficient over 20 to 300 degC, not a tangent value, and the only one the source gives; held constant at all temperatures."
+   },
+   "conductivity_w_per_mk": {
+    "value": 42.5,
+    "provenance": "published",
+    "source": "Ovako, Steel Navigator, grade S235JR, standard EN10025-2:2004, https://steelnavigator.ovako.com/steel-grades/s235/ (accessed 2026-09-20), Other properties table: thermal conductivity at ambient 40 to 45 W/m degK",
+    "note": "The middle of the stated range. Ambient only; held constant above it."
+   },
+   "specific_heat_j_per_kgk": {
+    "value": 470,
+    "provenance": "published",
+    "source": "Ovako, Steel Navigator, grade S235JR, standard EN10025-2:2004, https://steelnavigator.ovako.com/steel-grades/s235/ (accessed 2026-09-20), Other properties table: specific heat 460 to 480 J/kg degK at 50 to 100 degC",
+    "note": "The middle of the stated range, which is for 50 to 100 degC."
+   },
+   "hardening_modulus_pa": {
+    "value": 486607000.0,
+    "provenance": "inferred",
+    "source": "inferred from this record's own values, all from Ovako, Steel Navigator, grade S235JR, standard EN10025-2:2004, https://steelnavigator.ovako.com/steel-grades/s235/ (accessed 2026-09-20)",
+    "note": "A LOWER BOUND, and a linear fit between two points of the curve: the source gives the elongation at break A, not the uniform elongation the formula wants, and A is the larger of the two. H = (Rm - Rp0.2) / (A - Rp0.2/E - 0.002) from this record's own yield_strength_pa, strength_pa, elongation_at_break_pct and youngs_modulus_pa. Fit or replace it before quoting a plastic strain."
+   },
+   "not_modelled": [
+    "temperature dependence of the strength and elastic values (room temperature only)",
+    "thickness classes above 16 mm: the record holds the thinnest class, the others are in the notes",
+    "impact toughness (the source gives 27 J at 20 degC, which this library has no key for)",
+    "the difference between S235JR and the other qualities (J0, J2), which is an impact requirement",
+    "emissivity, latent heat and the melting range: the source gives none",
+    "kinematic hardening, rate dependence, creep, damage and fracture"
+   ]
+  },
+  {
+   "id": "s355jr",
+   "name": "Structural steel S355JR, as rolled, thickness up to 16 mm (Ovako, EN 10025-2)",
+   "family": "metal",
+   "status": "published",
+   "provenance": "As rolled, from Ovako's Steel Navigator entry for S355JR to EN 10025-2:2019. Mechanical values are the standard's for the thinnest class, up to 16 mm; physical values are the typical values on the same page. Batch 3 of the materials library (materials/README.md), sourced 2026-09-20. Every value names the document it was read from, with URL and access date; materials/batch3-sources.md lists them with checksums. These are wrought and cast engineering metals, not additive ones: no value here is an as-built LPBF value.",
+   "density_kg_m3": {
+    "value": 7800,
+    "provenance": "published",
+    "source": "Ovako, Steel Navigator, grade S355JR, standard EN10025-2:2019, https://steelnavigator.ovako.com/steel-grades/s355/ (accessed 2026-09-20), Other properties table: density 7800 kg/m3"
+   },
+   "youngs_modulus_pa": {
+    "value": 210000000000.0,
+    "provenance": "published",
+    "source": "Ovako, Steel Navigator, grade S355JR, standard EN10025-2:2019, https://steelnavigator.ovako.com/steel-grades/s355/ (accessed 2026-09-20), Other properties table: Young's modulus 210 GPa"
+   },
+   "poisson_ratio": {
+    "value": 0.3,
+    "provenance": "published",
+    "source": "Ovako, Steel Navigator, grade S355JR, standard EN10025-2:2019, https://steelnavigator.ovako.com/steel-grades/s355/ (accessed 2026-09-20), Other properties table: Poisson's ratio 0.3",
+    "note": "The same table gives a shear modulus of 80 GPa, which with E = 210 GPa would imply 0.3125; the stated 0.3 is recorded."
+   },
+   "yield_strength_pa": {
+    "value": 355000000.0,
+    "provenance": "published",
+    "source": "Ovako, Steel Navigator, grade S355JR, standard EN10025-2:2019, https://steelnavigator.ovako.com/steel-grades/s355/ (accessed 2026-09-20), Mechanical Properties table, as rolled, thickness < 16 mm: yield strength (Rp0.2/ReH) 355 MPa",
+    "note": "Thinner than 16 mm. The same table falls with thickness: 345 MPa (16 to 40 mm), 335 MPa (40 to 63 mm), 325 MPa (63 to 80 mm), 315 MPa (80 to 100 mm)."
+   },
+   "strength_pa": {
+    "value": 470000000.0,
+    "provenance": "published",
+    "source": "Ovako, Steel Navigator, grade S355JR, standard EN10025-2:2019, https://steelnavigator.ovako.com/steel-grades/s355/ (accessed 2026-09-20), Mechanical Properties table: tensile strength 470 to 630 MPa for every thickness class",
+    "note": "The specified minimum of the range is recorded, which is the value a design may rely on."
+   },
+   "elongation_at_break_pct": {
+    "value": 20,
+    "provenance": "published",
+    "source": "Ovako, Steel Navigator, grade S355JR, standard EN10025-2:2019, https://steelnavigator.ovako.com/steel-grades/s355/ (accessed 2026-09-20), Mechanical Properties table: elongation A5 20 to 22 per cent, varying by thickness",
+    "note": "The lower end of the range is recorded."
+   },
+   "expansion_1_per_k": {
+    "value": 1.2e-05,
+    "provenance": "published",
+    "source": "Ovako, Steel Navigator, grade S355JR, standard EN10025-2:2019, https://steelnavigator.ovako.com/steel-grades/s355/ (accessed 2026-09-20), Other properties table: thermal expansion 12 micrometre per metre per K over 20 to 300 degC",
+    "note": "A mean coefficient over 20 to 300 degC, not a tangent value; held constant elsewhere."
+   },
+   "conductivity_w_per_mk": {
+    "value": 42.5,
+    "provenance": "published",
+    "source": "Ovako, Steel Navigator, grade S355JR, standard EN10025-2:2019, https://steelnavigator.ovako.com/steel-grades/s355/ (accessed 2026-09-20), Other properties table: thermal conductivity at ambient 40 to 45 W/m degK",
+    "note": "The middle of the stated range. Ambient only; held constant above it."
+   },
+   "specific_heat_j_per_kgk": {
+    "value": 470,
+    "provenance": "published",
+    "source": "Ovako, Steel Navigator, grade S355JR, standard EN10025-2:2019, https://steelnavigator.ovako.com/steel-grades/s355/ (accessed 2026-09-20), Other properties table: specific heat capacity 460 to 480 J/kg degK at 50/100 degC",
+    "note": "The middle of the stated range, which is for 50 to 100 degC."
+   },
+   "hardening_modulus_pa": {
+    "value": 585810000.0,
+    "provenance": "inferred",
+    "source": "inferred from this record's own values, all from Ovako, Steel Navigator, grade S355JR, standard EN10025-2:2019, https://steelnavigator.ovako.com/steel-grades/s355/ (accessed 2026-09-20)",
+    "note": "A LOWER BOUND, and a linear fit between two points of the curve: the source gives the elongation at break A, not the uniform elongation the formula wants, and A is the larger of the two. H = (Rm - Rp0.2) / (A - Rp0.2/E - 0.002) from this record's own yield_strength_pa, strength_pa, elongation_at_break_pct and youngs_modulus_pa. Fit or replace it before quoting a plastic strain."
+   },
+   "not_modelled": [
+    "temperature dependence of the strength and elastic values (room temperature only)",
+    "thickness classes above 16 mm: the record holds the thinnest class, the others are in the notes",
+    "impact toughness, and the difference between the JR, J0 and J2 qualities",
+    "emissivity, latent heat and the melting range: the source gives none",
+    "kinematic hardening, rate dependence, creep, damage and fracture"
+   ]
+  },
+  {
+   "id": "al6061_t6",
+   "name": "Aluminium 6061-T6, extrusion (Aalco and EN 755-2; specific heat from the NIST fit)",
+   "family": "metal",
+   "status": "published",
+   "provenance": "Extruded and artificially aged (T6). Physical values from the Aalco datasheet, mechanical minimums from BS EN 755-2:2008 as that datasheet states them, specific heat from the NIST cryogenic fit evaluated at room temperature, Poisson's ratio from an ultrasonic measurement on 6061 whose temper the paper does not state. Batch 3 of the materials library (materials/README.md), sourced 2026-09-20. Every value names the document it was read from, with URL and access date; materials/batch3-sources.md lists them with checksums. These are wrought and cast engineering metals, not additive ones: no value here is an as-built LPBF value.",
+   "density_kg_m3": {
+    "value": 2700,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Aluminium Alloy 6061-T6 Extrusions, https://www.aalco.co.uk/datasheets/Aluminium-Alloy-6061-T6-Extrusions_145.ashx (accessed 2026-09-20), Properties table: density 2.70 g/cm3",
+    "note": "An ultrasonic measurement on a 6061 block gives 2705 kg/m3: Measurement of Third-Order Elastic Constants Using Thermal Modulation of Ultrasonic Waves, arXiv:2608.12244, experimental section, https://arxiv.org/html/2608.12244 (accessed 2026-09-20)."
+   },
+   "youngs_modulus_pa": {
+    "value": 70000000000.0,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Aluminium Alloy 6061-T6 Extrusions, https://www.aalco.co.uk/datasheets/Aluminium-Alloy-6061-T6-Extrusions_145.ashx (accessed 2026-09-20), Properties table: modulus of elasticity 70 GPa",
+    "note": "Independently, the NIST cryogenic fit for 6061-T6 evaluated at 293.15 K gives 70.35 GPa (fit valid 2 to 295 K, stated error 1 per cent): NIST Material Measurement Laboratory, cryogenic material properties database, 6061-T6 aluminium, https://trc.nist.gov/cryogenics/materials/6061%20Aluminum/6061_T6Aluminum_rev.htm (accessed 2026-09-20)."
+   },
+   "poisson_ratio": {
+    "value": 0.33,
+    "provenance": "published",
+    "source": "Measurement of Third-Order Elastic Constants Using Thermal Modulation of Ultrasonic Waves, arXiv:2608.12244, experimental section, https://arxiv.org/html/2608.12244 (accessed 2026-09-20): Poisson's ratio 0.33 for the aluminium 6061 block, with measured P wave 6425 m/s and S wave 3104 m/s",
+    "note": "The paper says aluminium 6061 without a temper, so this is 6061 and not specifically T6. No source for a T6 value was found."
+   },
+   "yield_strength_pa": {
+    "value": 240000000.0,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Aluminium Alloy 6061-T6 Extrusions, https://www.aalco.co.uk/datasheets/Aluminium-Alloy-6061-T6-Extrusions_145.ashx (accessed 2026-09-20), Extrusions table to BS EN 755-2:2008, up to 200 mm diameter and across flats: proof stress 240 MPa minimum",
+    "note": "A specified minimum for extrusions, not a measured value. Other product forms have their own minimums."
+   },
+   "strength_pa": {
+    "value": 260000000.0,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Aluminium Alloy 6061-T6 Extrusions, https://www.aalco.co.uk/datasheets/Aluminium-Alloy-6061-T6-Extrusions_145.ashx (accessed 2026-09-20), Extrusions table to BS EN 755-2:2008: tensile strength 260 MPa minimum",
+    "note": "A specified minimum for extrusions. The same table gives 95 HB Brinell hardness, which this library has no key for."
+   },
+   "expansion_1_per_k": {
+    "value": 2.34e-05,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Aluminium Alloy 6061-T6 Extrusions, https://www.aalco.co.uk/datasheets/Aluminium-Alloy-6061-T6-Extrusions_145.ashx (accessed 2026-09-20), Properties table: thermal expansion 23.4 x 10^-6 /K",
+    "note": "The datasheet states no temperature interval for it; held constant."
+   },
+   "conductivity_w_per_mk": {
+    "value": 166,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Aluminium Alloy 6061-T6 Extrusions, https://www.aalco.co.uk/datasheets/Aluminium-Alloy-6061-T6-Extrusions_145.ashx (accessed 2026-09-20), Properties table: thermal conductivity 166 W/m.K",
+    "note": "The NIST cryogenic fit for 6061-T6 at 293.15 K gives 154.37 W/(m K) instead (fit valid 1 to 300 K, stated error 0.5 per cent): NIST Material Measurement Laboratory, cryogenic material properties database, 6061-T6 aluminium, https://trc.nist.gov/cryogenics/materials/6061%20Aluminum/6061_T6Aluminum_rev.htm (accessed 2026-09-20). The supplier's value is recorded and the difference is left visible."
+   },
+   "specific_heat_j_per_kgk": {
+    "value": 943.13,
+    "provenance": "inferred",
+    "source": "evaluated from the log10 polynomial fit and its nine coefficients on NIST Material Measurement Laboratory, cryogenic material properties database, 6061-T6 aluminium, https://trc.nist.gov/cryogenics/materials/6061%20Aluminum/6061_T6Aluminum_rev.htm (accessed 2026-09-20) (specific heat, data and equation 4 to 300 K, stated curve fit error 5 per cent) at T = 293.15 K, giving 943.13 J/(kg K)",
+    "note": "INFERRED: the arithmetic is the page's own fit, evaluated here, not a number the page prints. The fit's sources are given there as Mann (1977) and Touloukian (1965)."
+   },
+   "melting_c": {
+    "value": 650,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Aluminium Alloy 6061-T6 Extrusions, https://www.aalco.co.uk/datasheets/Aluminium-Alloy-6061-T6-Extrusions_145.ashx (accessed 2026-09-20), Properties table: melting point 650 degC",
+    "note": "A single melting point, not a solidus and liquidus pair, so neither of those keys is set."
+   },
+   "not_modelled": [
+    "elongation at break: the extrusions table gives none, so no hardening modulus is inferred either",
+    "plasticity beyond the proof stress",
+    "temperature dependence of the strength values (room temperature only)",
+    "emissivity and latent heat: no source found",
+    "the solidus and liquidus: the source gives a single melting point only",
+    "creep, damage and fracture"
+   ]
+  },
+  {
+   "id": "al7075_t6",
+   "name": "Aluminium 7075-T6, 6 mm sheet (measured strengths from PMC8705241; elastic values from PMC12430867)",
+   "family": "metal",
+   "status": "published",
+   "provenance": "T6, from open-access papers: the strengths and elongation are the base-metal values measured on 6 mm commercial sheet in a laser welding study, the elastic values are those a second paper states for 7075-T6, and the density is the Wikipedia infobox value at a named revision. No thermal property is recorded: no source that was read gives one. Batch 3 of the materials library (materials/README.md), sourced 2026-09-20. Every value names the document it was read from, with URL and access date; materials/batch3-sources.md lists them with checksums. These are wrought and cast engineering metals, not additive ones: no value here is an as-built LPBF value.",
+   "density_kg_m3": {
+    "value": 2810,
+    "provenance": "published",
+    "source": "Wikipedia, 7075 aluminium alloy, revision 1375345274 of 2026-09-17, infobox Physical properties, CC BY-SA, https://en.wikipedia.org/w/index.php?title=7075_aluminium_alloy&oldid=1375345274 (accessed 2026-09-20): density 2.81 g/cm3",
+    "note": "The weakest source in this record. The article's body says 2.810 g/cm3 for 7075A with its own reference; no primary document for the density was read."
+   },
+   "youngs_modulus_pa": {
+    "value": 72373000000.0,
+    "provenance": "published",
+    "source": "Behavior of Defective Aluminum Panels Under Shear Forces Patched with Composite Plates, PMC12430867, Section 2.2 Materials and Properties, CC BY 4.0, https://pmc.ncbi.nlm.nih.gov/articles/PMC12430867/ (accessed 2026-09-20): Young's modulus E = 72.3730 GPa for aluminium 7075-T6",
+    "note": "The paper states it as a given material property without citing a source, so the chain ends there. The same section gives a shear modulus of 27.4586 GPa, which with this E implies a Poisson's ratio of 0.318, while the paper states 0.3."
+   },
+   "poisson_ratio": {
+    "value": 0.3,
+    "provenance": "published",
+    "source": "Behavior of Defective Aluminum Panels Under Shear Forces Patched with Composite Plates, PMC12430867, Section 2.2 Materials and Properties, CC BY 4.0, https://pmc.ncbi.nlm.nih.gov/articles/PMC12430867/ (accessed 2026-09-20): Poisson's ratio nu = 0.3 for aluminium 7075-T6",
+    "note": "See the note on youngs_modulus_pa: the paper's own E and G are not consistent with 0.3."
+   },
+   "yield_strength_pa": {
+    "value": 453000000.0,
+    "provenance": "published",
+    "source": "High-Power Fiber Laser Welding of High-Strength AA7075-T6 Aluminum Alloy Welds for Mechanical Properties Research, PMC8705241, Table 1 (base metal, 6 mm sheet), CC BY 4.0, https://pmc.ncbi.nlm.nih.gov/articles/PMC8705241/ (accessed 2026-09-20): 0.2 per cent proof stress 453 MPa",
+    "note": "MEASURED on the base metal of 6 mm commercial AA7075-T6 sheet, tensile samples prepared to ASME IX."
+   },
+   "strength_pa": {
+    "value": 521000000.0,
+    "provenance": "published",
+    "source": "High-Power Fiber Laser Welding of High-Strength AA7075-T6 Aluminum Alloy Welds for Mechanical Properties Research, PMC8705241, Table 1 (base metal, 6 mm sheet), CC BY 4.0, https://pmc.ncbi.nlm.nih.gov/articles/PMC8705241/ (accessed 2026-09-20): ultimate tensile strength 521 MPa",
+    "note": "Measured on the same base metal. The same table gives 189 HV hardness, which this library has no key for."
+   },
+   "elongation_at_break_pct": {
+    "value": 8,
+    "provenance": "published",
+    "source": "High-Power Fiber Laser Welding of High-Strength AA7075-T6 Aluminum Alloy Welds for Mechanical Properties Research, PMC8705241, Table 1 (base metal, 6 mm sheet), CC BY 4.0, https://pmc.ncbi.nlm.nih.gov/articles/PMC8705241/ (accessed 2026-09-20): elongation 8 per cent"
+   },
+   "hardening_modulus_pa": {
+    "value": 947857000.0,
+    "provenance": "inferred",
+    "source": "inferred from this record's own yield_strength_pa, strength_pa and elongation_at_break_pct (all High-Power Fiber Laser Welding of High-Strength AA7075-T6 Aluminum Alloy Welds for Mechanical Properties Research, PMC8705241, Table 1 (base metal, 6 mm sheet), CC BY 4.0, https://pmc.ncbi.nlm.nih.gov/articles/PMC8705241/ (accessed 2026-09-20)) with the modulus from Behavior of Defective Aluminum Panels Under Shear Forces Patched with Composite Plates, PMC12430867, Section 2.2 Materials and Properties, CC BY 4.0, https://pmc.ncbi.nlm.nih.gov/articles/PMC12430867/ (accessed 2026-09-20)",
+    "note": "A LOWER BOUND, and a linear fit between two points of the curve: the source gives the elongation at break A, not the uniform elongation the formula wants, and A is the larger of the two. H = (Rm - Rp0.2) / (A - Rp0.2/E - 0.002) from this record's own yield_strength_pa, strength_pa, elongation_at_break_pct and youngs_modulus_pa. Fit or replace it before quoting a plastic strain."
+   },
+   "not_modelled": [
+    "every thermal property: conductivity, specific heat, expansion, melting. The Wikipedia revision quotes a conductivity of 130 to 150 W/m K citing a document that was not read, so it is not recorded",
+    "temperature dependence of anything",
+    "the scatter of the measured strengths: the paper gives single values",
+    "emissivity, latent heat, creep, damage and fracture"
+   ]
+  },
+  {
+   "id": "al1050a_h14",
+   "name": "Aluminium 1050A H14, sheet 0.2 to 6 mm (Aalco and EN 485-2)",
+   "family": "metal",
+   "status": "published",
+   "provenance": "Commercially pure aluminium, work hardened to H14, as sheet. Physical values from the Aalco datasheet, mechanical values the BS EN 485-2:2008 minimums that datasheet states. Batch 3 of the materials library (materials/README.md), sourced 2026-09-20. Every value names the document it was read from, with URL and access date; materials/batch3-sources.md lists them with checksums. These are wrought and cast engineering metals, not additive ones: no value here is an as-built LPBF value.",
+   "density_kg_m3": {
+    "value": 2710,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Aluminium Alloy 1050A H14 Sheet, https://www.aalco.co.uk/datasheets/Aluminium-Alloy-1050A-H14-Sheet_57.ashx (accessed 2026-09-20), Properties table: density 2.71 g/cm3"
+   },
+   "youngs_modulus_pa": {
+    "value": 71000000000.0,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Aluminium Alloy 1050A H14 Sheet, https://www.aalco.co.uk/datasheets/Aluminium-Alloy-1050A-H14-Sheet_57.ashx (accessed 2026-09-20), Properties table: modulus of elasticity 71 GPa"
+   },
+   "yield_strength_pa": {
+    "value": 85000000.0,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Aluminium Alloy 1050A H14 Sheet, https://www.aalco.co.uk/datasheets/Aluminium-Alloy-1050A-H14-Sheet_57.ashx (accessed 2026-09-20), Sheet 0.2 mm to 6.00 mm table to BS EN 485-2:2008: proof stress 85 MPa minimum"
+   },
+   "strength_pa": {
+    "value": 105000000.0,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Aluminium Alloy 1050A H14 Sheet, https://www.aalco.co.uk/datasheets/Aluminium-Alloy-1050A-H14-Sheet_57.ashx (accessed 2026-09-20), Sheet 0.2 mm to 6.00 mm table: tensile strength 105 to 145 MPa",
+    "note": "The specified minimum of the range is recorded. The same table gives 34 HB."
+   },
+   "elongation_at_break_pct": {
+    "value": 12,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Aluminium Alloy 1050A H14 Sheet, https://www.aalco.co.uk/datasheets/Aluminium-Alloy-1050A-H14-Sheet_57.ashx (accessed 2026-09-20), Sheet 0.2 mm to 6.00 mm table: elongation 12 per cent minimum"
+   },
+   "expansion_1_per_k": {
+    "value": 2.4e-05,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Aluminium Alloy 1050A H14 Sheet, https://www.aalco.co.uk/datasheets/Aluminium-Alloy-1050A-H14-Sheet_57.ashx (accessed 2026-09-20), Properties table: thermal expansion 24 x 10^-6 /K",
+    "note": "No temperature interval is stated for it; held constant."
+   },
+   "conductivity_w_per_mk": {
+    "value": 222,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Aluminium Alloy 1050A H14 Sheet, https://www.aalco.co.uk/datasheets/Aluminium-Alloy-1050A-H14-Sheet_57.ashx (accessed 2026-09-20), Properties table: thermal conductivity 222 W/m.K"
+   },
+   "melting_c": {
+    "value": 650,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Aluminium Alloy 1050A H14 Sheet, https://www.aalco.co.uk/datasheets/Aluminium-Alloy-1050A-H14-Sheet_57.ashx (accessed 2026-09-20), Properties table: melting point 650 degC",
+    "note": "A single melting point, not a solidus and liquidus pair."
+   },
+   "hardening_modulus_pa": {
+    "value": 171229000.0,
+    "provenance": "inferred",
+    "source": "inferred from this record's own values, all from Aalco Metals, technical datasheet Aluminium Alloy 1050A H14 Sheet, https://www.aalco.co.uk/datasheets/Aluminium-Alloy-1050A-H14-Sheet_57.ashx (accessed 2026-09-20)",
+    "note": "A LOWER BOUND, and a linear fit between two points of the curve: the source gives the elongation at break A, not the uniform elongation the formula wants, and A is the larger of the two. H = (Rm - Rp0.2) / (A - Rp0.2/E - 0.002) from this record's own yield_strength_pa, strength_pa, elongation_at_break_pct and youngs_modulus_pa. Fit or replace it before quoting a plastic strain."
+   },
+   "not_modelled": [
+    "Poisson's ratio: no source for 1050A was found, and the 6061 value is not carried over",
+    "specific heat: the datasheet gives none",
+    "temperature dependence of anything, emissivity, latent heat",
+    "the solidus and liquidus: the source gives a single melting point only",
+    "creep, damage and fracture"
+   ]
+  },
+  {
+   "id": "ss304_1_4301",
+   "name": "Stainless steel 1.4301 (304), sheet up to 8 mm (Aalco and EN 10088-2; specific heat from the NIST fit)",
+   "family": "metal",
+   "status": "published",
+   "provenance": "Austenitic stainless steel in the annealed condition as sheet. Physical values from the Aalco datasheet, mechanical values the EN 10088-2:2005 minimums it states for sheet up to 8 mm, specific heat from the NIST cryogenic fit evaluated at room temperature. Batch 3 of the materials library (materials/README.md), sourced 2026-09-20. Every value names the document it was read from, with URL and access date; materials/batch3-sources.md lists them with checksums. These are wrought and cast engineering metals, not additive ones: no value here is an as-built LPBF value.",
+   "density_kg_m3": {
+    "value": 8000,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Stainless Steel 1.4301 (304) Sheet and Plate, https://www.aalco.co.uk/datasheets/Stainless-Steel-14301-Sheet-and-Plate-Quarto-Plate--CPP-Plate_343.ashx (accessed 2026-09-20), Properties table: density 8.00 g/cm3"
+   },
+   "youngs_modulus_pa": {
+    "value": 193000000000.0,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Stainless Steel 1.4301 (304) Sheet and Plate, https://www.aalco.co.uk/datasheets/Stainless-Steel-14301-Sheet-and-Plate-Quarto-Plate--CPP-Plate_343.ashx (accessed 2026-09-20), Properties table: modulus of elasticity 193 GPa"
+   },
+   "yield_strength_pa": {
+    "value": 230000000.0,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Stainless Steel 1.4301 (304) Sheet and Plate, https://www.aalco.co.uk/datasheets/Stainless-Steel-14301-Sheet-and-Plate-Quarto-Plate--CPP-Plate_343.ashx (accessed 2026-09-20), Sheet (up to 8 mm thick) table to EN 10088-2:2005: proof stress 230 MPa minimum",
+    "note": "Plate from 8 to 75 mm has 210 MPa minimum on the same datasheet."
+   },
+   "strength_pa": {
+    "value": 540000000.0,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Stainless Steel 1.4301 (304) Sheet and Plate, https://www.aalco.co.uk/datasheets/Stainless-Steel-14301-Sheet-and-Plate-Quarto-Plate--CPP-Plate_343.ashx (accessed 2026-09-20), Sheet (up to 8 mm thick) table: tensile strength 540 to 750 MPa",
+    "note": "The specified minimum of the range is recorded. Plate from 8 to 75 mm: 520 to 720 MPa."
+   },
+   "elongation_at_break_pct": {
+    "value": 45,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Stainless Steel 1.4301 (304) Sheet and Plate, https://www.aalco.co.uk/datasheets/Stainless-Steel-14301-Sheet-and-Plate-Quarto-Plate--CPP-Plate_343.ashx (accessed 2026-09-20), Sheet (up to 8 mm thick) table: elongation A50 mm 45 per cent minimum"
+   },
+   "expansion_1_per_k": {
+    "value": 1.72e-05,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Stainless Steel 1.4301 (304) Sheet and Plate, https://www.aalco.co.uk/datasheets/Stainless-Steel-14301-Sheet-and-Plate-Quarto-Plate--CPP-Plate_343.ashx (accessed 2026-09-20), Properties table: thermal expansion 17.2 x 10^-6 /K",
+    "note": "No temperature interval is stated for it; held constant."
+   },
+   "conductivity_w_per_mk": {
+    "value": 16.2,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Stainless Steel 1.4301 (304) Sheet and Plate, https://www.aalco.co.uk/datasheets/Stainless-Steel-14301-Sheet-and-Plate-Quarto-Plate--CPP-Plate_343.ashx (accessed 2026-09-20), Properties table: thermal conductivity 16.2 W/m.K",
+    "note": "The NIST cryogenic fit for 304 at 293.15 K gives 15.13 W/(m K) instead (fit valid 1 to 300 K, stated error 2 per cent): NIST Material Measurement Laboratory, cryogenic material properties database, 304 stainless steel, https://trc.nist.gov/cryogenics/materials/304Stainless/304Stainless_rev.htm (accessed 2026-09-20)."
+   },
+   "specific_heat_j_per_kgk": {
+    "value": 470.53,
+    "provenance": "inferred",
+    "source": "evaluated from the log10 polynomial fit and its coefficients on NIST Material Measurement Laboratory, cryogenic material properties database, 304 stainless steel, https://trc.nist.gov/cryogenics/materials/304Stainless/304Stainless_rev.htm (accessed 2026-09-20) (specific heat, data and equation 4 to 300 K, stated curve fit error 5 per cent) at T = 293.15 K, giving 470.53 J/(kg K)",
+    "note": "INFERRED: the page's own fit, evaluated here, not a number the page prints."
+   },
+   "melting_c": {
+    "value": 1450,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Stainless Steel 1.4301 (304) Sheet and Plate, https://www.aalco.co.uk/datasheets/Stainless-Steel-14301-Sheet-and-Plate-Quarto-Plate--CPP-Plate_343.ashx (accessed 2026-09-20), Properties table: melting point 1450 degC",
+    "note": "A single melting point, not a solidus and liquidus pair."
+   },
+   "hardening_modulus_pa": {
+    "value": 693810000.0,
+    "provenance": "inferred",
+    "source": "inferred from this record's own values, all from Aalco Metals, technical datasheet Stainless Steel 1.4301 (304) Sheet and Plate, https://www.aalco.co.uk/datasheets/Stainless-Steel-14301-Sheet-and-Plate-Quarto-Plate--CPP-Plate_343.ashx (accessed 2026-09-20)",
+    "note": "A LOWER BOUND, and a linear fit between two points of the curve: the source gives the elongation at break A, not the uniform elongation the formula wants, and A is the larger of the two. H = (Rm - Rp0.2) / (A - Rp0.2/E - 0.002) from this record's own yield_strength_pa, strength_pa, elongation_at_break_pct and youngs_modulus_pa. Fit or replace it before quoting a plastic strain."
+   },
+   "not_modelled": [
+    "Poisson's ratio: the datasheet gives none. The Euro Inox design manual cited by batch 2 has it, but its PDF could not be read on this machine, so no value is recorded",
+    "the strong work hardening of austenitic stainless steel: the inferred hardening modulus is a straight line between two points and nothing more",
+    "temperature dependence of anything, emissivity, latent heat",
+    "cold worked and welded conditions",
+    "creep, damage and fracture"
+   ]
+  },
+  {
+   "id": "brass_cw614n",
+   "name": "Brass CW614N (CuZn39Pb3), bar 6 to 80 mm (Aalco and EN 12164)",
+   "family": "metal",
+   "status": "published",
+   "provenance": "Free cutting leaded brass as drawn or extruded bar. Physical values from the Aalco datasheet, mechanical values the EN 12164:2011 values it states for round, flat, square and hexagon bar from 6 to 80 mm diameter or 5 to 60 mm across flats. Batch 3 of the materials library (materials/README.md), sourced 2026-09-20. Every value names the document it was read from, with URL and access date; materials/batch3-sources.md lists them with checksums. These are wrought and cast engineering metals, not additive ones: no value here is an as-built LPBF value.",
+   "density_kg_m3": {
+    "value": 8470,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Copper and Copper Alloys, Brass CW614N Brass Rod, https://www.aalco.co.uk/datasheets/Copper-and-Copper-Alloys-CW614N-Brass-Rod_31.ashx (accessed 2026-09-20), Properties table: density 8.47 g/cm3"
+   },
+   "youngs_modulus_pa": {
+    "value": 97000000000.0,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Copper and Copper Alloys, Brass CW614N Brass Rod, https://www.aalco.co.uk/datasheets/Copper-and-Copper-Alloys-CW614N-Brass-Rod_31.ashx (accessed 2026-09-20), Properties table: modulus of elasticity 97 GPa"
+   },
+   "yield_strength_pa": {
+    "value": 230000000.0,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Copper and Copper Alloys, Brass CW614N Brass Rod, https://www.aalco.co.uk/datasheets/Copper-and-Copper-Alloys-CW614N-Brass-Rod_31.ashx (accessed 2026-09-20), Bar 6 mm to 80 mm diameter, 5 mm to 60 mm across flats table to EN 12164:2011: 0.2 per cent proof stress 230 to 350 MPa",
+    "note": "The bottom of the range is recorded: the range runs with size, the largest bar being the weakest, and the datasheet does not resolve it by size."
+   },
+   "strength_pa": {
+    "value": 360000000.0,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Copper and Copper Alloys, Brass CW614N Brass Rod, https://www.aalco.co.uk/datasheets/Copper-and-Copper-Alloys-CW614N-Brass-Rod_31.ashx (accessed 2026-09-20), same table: tensile strength 360 to 500 MPa",
+    "note": "The bottom of the range, as for the proof stress. The same table gives 90 to 160 HB."
+   },
+   "elongation_at_break_pct": {
+    "value": 5,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Copper and Copper Alloys, Brass CW614N Brass Rod, https://www.aalco.co.uk/datasheets/Copper-and-Copper-Alloys-CW614N-Brass-Rod_31.ashx (accessed 2026-09-20), same table: elongation 20 to 5 per cent",
+    "note": "The bottom of the range is recorded, which pairs with the strongest condition, not with the weakest; the two ends of these ranges cannot be paired reliably from the datasheet, which is why no hardening modulus is inferred."
+   },
+   "expansion_1_per_k": {
+    "value": 2.09e-05,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Copper and Copper Alloys, Brass CW614N Brass Rod, https://www.aalco.co.uk/datasheets/Copper-and-Copper-Alloys-CW614N-Brass-Rod_31.ashx (accessed 2026-09-20), Properties table: thermal expansion 20.9 x 10^-6 /K",
+    "note": "No temperature interval is stated for it; held constant."
+   },
+   "conductivity_w_per_mk": {
+    "value": 123,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Copper and Copper Alloys, Brass CW614N Brass Rod, https://www.aalco.co.uk/datasheets/Copper-and-Copper-Alloys-CW614N-Brass-Rod_31.ashx (accessed 2026-09-20), Properties table: thermal conductivity 123 W/m.K"
+   },
+   "melting_c": {
+    "value": 875,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Copper and Copper Alloys, Brass CW614N Brass Rod, https://www.aalco.co.uk/datasheets/Copper-and-Copper-Alloys-CW614N-Brass-Rod_31.ashx (accessed 2026-09-20), Properties table: melting point 875 degC",
+    "note": "A single melting point, not a solidus and liquidus pair, and brass has a wide freezing range."
+   },
+   "not_modelled": [
+    "Poisson's ratio and specific heat: the datasheet gives neither",
+    "plasticity: the proof stress, tensile strength and elongation are ranges over size and condition that cannot be paired, so no hardening modulus is inferred",
+    "temperature dependence of anything, emissivity, latent heat",
+    "the lead content's effect on anything but machinability",
+    "creep, damage and fracture"
+   ]
+  },
+  {
+   "id": "bronze_cw307g",
+   "name": "Aluminium bronze CW307G (CuAl10Fe5Ni5), bar and rod (Aalco, Def Stan 02-833 / NES 833)",
+   "family": "metal",
+   "status": "published",
+   "provenance": "Nickel aluminium bronze bar and rod, from the Aalco datasheet, which gives the Defence Standard NES 833 equivalence and a composition of 8.5 to 11.0 Al, 4.0 to 4.5 Fe, 4.0 to 5.0 Ni, 0.5 max Mn, balance Cu. Batch 3 of the materials library (materials/README.md), sourced 2026-09-20. Every value names the document it was read from, with URL and access date; materials/batch3-sources.md lists them with checksums. These are wrought and cast engineering metals, not additive ones: no value here is an as-built LPBF value.",
+   "density_kg_m3": {
+    "value": 7580,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Copper and Copper Alloys, Aluminium Bronze CW307G, https://www.aalco.co.uk/datasheets/Copper-and-Copper-Alloys-CW307G_445.ashx (accessed 2026-09-20), Properties table: density 7.58 g/cm3"
+   },
+   "youngs_modulus_pa": {
+    "value": 115000000000.0,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Copper and Copper Alloys, Aluminium Bronze CW307G, https://www.aalco.co.uk/datasheets/Copper-and-Copper-Alloys-CW307G_445.ashx (accessed 2026-09-20), Properties table: modulus of elasticity 115 GPa"
+   },
+   "yield_strength_pa": {
+    "value": 400000000.0,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Copper and Copper Alloys, Aluminium Bronze CW307G, https://www.aalco.co.uk/datasheets/Copper-and-Copper-Alloys-CW307G_445.ashx (accessed 2026-09-20), Properties table: proof stress 400 to 530 MPa",
+    "note": "The bottom of the range is recorded; the datasheet does not resolve the range by size or condition."
+   },
+   "strength_pa": {
+    "value": 600000000.0,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Copper and Copper Alloys, Aluminium Bronze CW307G, https://www.aalco.co.uk/datasheets/Copper-and-Copper-Alloys-CW307G_445.ashx (accessed 2026-09-20), Properties table: tensile strength 600 to 760 MPa",
+    "note": "The bottom of the range. The same table gives 170 to 220 HV."
+   },
+   "elongation_at_break_pct": {
+    "value": 5,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Copper and Copper Alloys, Aluminium Bronze CW307G, https://www.aalco.co.uk/datasheets/Copper-and-Copper-Alloys-CW307G_445.ashx (accessed 2026-09-20), Properties table: elongation A50 mm 15 to 5 per cent",
+    "note": "The bottom of the range is recorded; as with the brass, the ends of these ranges cannot be paired, so no hardening modulus is inferred."
+   },
+   "conductivity_w_per_mk": {
+    "value": 37.7,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Copper and Copper Alloys, Aluminium Bronze CW307G, https://www.aalco.co.uk/datasheets/Copper-and-Copper-Alloys-CW307G_445.ashx (accessed 2026-09-20), Properties table: thermal conductivity 37.7 W/m.K"
+   },
+   "melting_c": {
+    "value": 1035,
+    "provenance": "published",
+    "source": "Aalco Metals, technical datasheet Copper and Copper Alloys, Aluminium Bronze CW307G, https://www.aalco.co.uk/datasheets/Copper-and-Copper-Alloys-CW307G_445.ashx (accessed 2026-09-20), Properties table: melting point 1035 degC",
+    "note": "A single melting point, not a solidus and liquidus pair."
+   },
+   "not_modelled": [
+    "Poisson's ratio, specific heat and thermal expansion: the datasheet gives none of the three",
+    "plasticity: the ranges cannot be paired, so no hardening modulus is inferred",
+    "temperature dependence of anything, emissivity, latent heat",
+    "the cast conditions of the same alloy, which differ from bar and rod",
+    "creep, damage and fracture"
+   ]
+  },
+  {
+   "id": "cast_iron_gjl250",
+   "name": "Grey cast iron EN-GJL-250, lamellar graphite, as cast (measured in PMC8402146; density per EN 1561)",
+   "family": "metal",
+   "status": "published",
+   "provenance": "Grey cast iron with lamellar graphite, as cast. The strengths and the modulus are measured values from an open-access paper on castings made in 3D printed ceramic moulds, tested to SR EN 10002-1:1990 on 4 mm diameter specimens; the density and the grade's strength range are from foundry statements of EN 1561. READ THE NOTE ON THE MODULUS BEFORE USING THIS RECORD. Batch 3 of the materials library (materials/README.md), sourced 2026-09-20. Every value names the document it was read from, with URL and access date; materials/batch3-sources.md lists them with checksums. These are wrought and cast engineering metals, not additive ones: no value here is an as-built LPBF value.",
+   "density_kg_m3": {
+    "value": 7200,
+    "provenance": "published",
+    "source": "Grey Cast Iron EN-JL1040 and EN-GJL-250, standard EN 1561:1997 Founding. Grey cast irons, https://www.iron-foundry.com/Grey-Cast-Iron-EN-JL1040-GJL-250.html (accessed 2026-09-20): density 7.20 g/cm3",
+    "note": "The measurement paper's own reference table (Table 3 of Cast Iron Parts Obtained in Ceramic Molds Produced by Binder Jetting 3D Printing, Morphological and Mechanical Characterization, PMC8402146, CC BY 4.0, https://pmc.ncbi.nlm.nih.gov/articles/PMC8402146/ (accessed 2026-09-20)) lists 7250 kg/m3 instead."
+   },
+   "youngs_modulus_pa": {
+    "value": 37000000000.0,
+    "provenance": "published",
+    "source": "Cast Iron Parts Obtained in Ceramic Molds Produced by Binder Jetting 3D Printing, Morphological and Mechanical Characterization, PMC8402146, CC BY 4.0, https://pmc.ncbi.nlm.nih.gov/articles/PMC8402146/ (accessed 2026-09-20), Table 1: modulus of elasticity from 36 896.98 to 37 056.19 MPa over 20 specimens of EN-GJL-250, tensile tests to SR EN 10002-1:1990 on specimens with d0 = 4 mm and L0 = 60 mm",
+    "note": "TREAT AS PROVISIONAL AND REPLACE BEFORE QUANTITATIVE USE. The authors themselves record that this measured modulus differs from the value they had taken for comparison: their Table 3 carries 120 000 MPa for the same grade, from a commercial software material library. That library value is not recorded here because its own source cannot be checked. Grey cast iron also has no straight elastic portion, so a modulus depends on how it is taken from the curve, and a 4 mm specimen is small enough for the test machine's own compliance to enter the slope. A record of 37 GPa will predict roughly three times the deflection that the 120 GPa value would."
+   },
+   "strength_pa": {
+    "value": 274240000.0,
+    "provenance": "published",
+    "source": "Cast Iron Parts Obtained in Ceramic Molds Produced by Binder Jetting 3D Printing, Morphological and Mechanical Characterization, PMC8402146, CC BY 4.0, https://pmc.ncbi.nlm.nih.gov/articles/PMC8402146/ (accessed 2026-09-20), Table 1: tensile strength from 273.03 to 275.45 MPa over 20 specimens",
+    "note": "The middle of the reported minimum and maximum. The grade's specified range is 250 to 350 MPa (Grey Cast Iron EN-JL1040 and EN-GJL-250, standard EN 1561:1997 Founding. Grey cast irons, https://www.iron-foundry.com/Grey-Cast-Iron-EN-JL1040-GJL-250.html (accessed 2026-09-20)) and 250 to 350 MPa (Boro Foundry, Grey Iron Casting Grades, Specifications to EN 1561, https://borofoundry.co.uk/grey-iron-grades (accessed 2026-09-20)), so the castings sit near the bottom of the grade."
+   },
+   "elongation_at_break_pct": {
+    "value": 0.9,
+    "provenance": "published",
+    "source": "Cast Iron Parts Obtained in Ceramic Molds Produced by Binder Jetting 3D Printing, Morphological and Mechanical Characterization, PMC8402146, CC BY 4.0, https://pmc.ncbi.nlm.nih.gov/articles/PMC8402146/ (accessed 2026-09-20), Table 1: elongation at break from 0.9 to 2.98 per cent",
+    "note": "The bottom of the measured range. Boro Foundry, Grey Iron Casting Grades, Specifications to EN 1561, https://borofoundry.co.uk/grey-iron-grades (accessed 2026-09-20) gives 0.8 to 0.3 per cent for the grade."
+   },
+   "not_modelled": [
+    "the 0.2 per cent proof stress: the foundry source gives a 0.1 per cent proof stress of 165 to 228 MPa instead, which is not the same quantity and is not recorded under the 0.2 per cent key",
+    "the difference in strength between tension and compression, which is large for grey iron, and the non-linear curve from the first load: a single modulus and a single strength cannot represent it",
+    "Poisson's ratio, thermal conductivity, specific heat, thermal expansion and the melting range: no source that could be read gives any of them for this grade",
+    "the section thickness dependence of the grade's strength",
+    "graphite flake size and matrix structure (the source's castings were pearlitic)",
+    "creep, damage and fracture"
+   ]
+  },
+  {
+   "id": "mg_az91",
+   "name": "Magnesium AZ91, squeeze cast, unreinforced (measured in PMC10342948)",
+   "family": "metal",
+   "status": "published",
+   "provenance": "Squeeze cast AZ91 in the unreinforced condition, from an open-access paper on its tensile behaviour up to 300 degC. The yield stress and tensile strength at 20 degC are the authors' own measurements; density, modulus, expansion and strain at fracture are the general properties the same paper tabulates for the alloy. Batch 3 of the materials library (materials/README.md), sourced 2026-09-20. Every value names the document it was read from, with URL and access date; materials/batch3-sources.md lists them with checksums. These are wrought and cast engineering metals, not additive ones: no value here is an as-built LPBF value.",
+   "density_kg_m3": {
+    "value": 1800,
+    "provenance": "published",
+    "source": "Tensile Deformation and Fracture of Unreinforced AZ91 and Reinforced AZ91-C at Temperatures up to 300 degC, PMC10342948, CC BY 4.0, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10342948/ (accessed 2026-09-20), Table 1 general properties: density 1.8 g/cm3"
+   },
+   "youngs_modulus_pa": {
+    "value": 45000000000.0,
+    "provenance": "published",
+    "source": "Tensile Deformation and Fracture of Unreinforced AZ91 and Reinforced AZ91-C at Temperatures up to 300 degC, PMC10342948, CC BY 4.0, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10342948/ (accessed 2026-09-20), Table 1 general properties: Young's modulus 45 GPa",
+    "note": "A tabulated general property of the alloy, not a measurement reported in this paper."
+   },
+   "yield_strength_pa": {
+    "value": 109000000.0,
+    "provenance": "published",
+    "source": "Tensile Deformation and Fracture of Unreinforced AZ91 and Reinforced AZ91-C at Temperatures up to 300 degC, PMC10342948, CC BY 4.0, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10342948/ (accessed 2026-09-20): yield stress of AZ91 at 20 degC, 109 MPa",
+    "note": "MEASURED by the authors in tension at 20 degC on the unreinforced alloy."
+   },
+   "strength_pa": {
+    "value": 198000000.0,
+    "provenance": "published",
+    "source": "Tensile Deformation and Fracture of Unreinforced AZ91 and Reinforced AZ91-C at Temperatures up to 300 degC, PMC10342948, CC BY 4.0, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10342948/ (accessed 2026-09-20): maximum tensile strength about 198 MPa at 20 degC",
+    "note": "Measured by the authors. The same tests give about 90 MPa at 300 degC, so the room temperature value is not safe above room temperature."
+   },
+   "elongation_at_break_pct": {
+    "value": 9,
+    "provenance": "published",
+    "source": "Tensile Deformation and Fracture of Unreinforced AZ91 and Reinforced AZ91-C at Temperatures up to 300 degC, PMC10342948, CC BY 4.0, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10342948/ (accessed 2026-09-20), Table 1 general properties: typical strain at fracture 9 per cent",
+    "note": "A tabulated typical value, not this paper's measurement."
+   },
+   "expansion_1_per_k": {
+    "value": 2.1e-05,
+    "provenance": "published",
+    "source": "Tensile Deformation and Fracture of Unreinforced AZ91 and Reinforced AZ91-C at Temperatures up to 300 degC, PMC10342948, CC BY 4.0, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10342948/ (accessed 2026-09-20), Table 1 general properties: coefficient of thermal expansion 19 to 23 x 10^-6 /K at 50 to 200 degC",
+    "note": "The middle of the stated range, which is for 50 to 200 degC."
+   },
+   "not_modelled": [
+    "Poisson's ratio, thermal conductivity and specific heat: the paper gives none of them",
+    "the fall of strength with temperature, which the paper measures to 300 degC but gives as curves, not as a table this library could carry",
+    "the difference between squeeze cast, die cast and sand cast AZ91, and the AZ91D variant specifically",
+    "no hardening modulus is inferred: the strain at fracture is a tabulated typical value while the strengths are measured, so the two do not belong to one curve",
+    "emissivity, latent heat, creep, damage and fracture"
+   ]
+  }
+ ]
+}

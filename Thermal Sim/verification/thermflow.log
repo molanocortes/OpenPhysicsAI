@@ -1,0 +1,12 @@
+== capabilities and setup through MCP tools
+== thermal boundary conditions
+== transient thermal job and energy balance
+  bar: 1.2923 W removed, cold face 235.385 degC (analytic 235.385 degC), energy closure 1.20e-11, enthalpy mismatch 6.33e-15
+== anisotropic conductivity through the operation layer
+  anisotropic: k_x = 5.0 W/(m K) gives 0.7636 W and a 147.269 degC cold face (isotropic k = 20.0: 1.2923 W, 235.385 degC)
+== latent heat of melting through the operation layer
+  melting: 716.815 mm^3 molten, peak 1392.9 degC with latent heat and 1669.4 degC without it
+== thermomechanical run: temperature history drives the deformation
+  thermomechanical: largest displacement 0.2855 mm from the thermal expansion of the heated bar
+
+ALL THERMAL FLOW TESTS PASSED: 95 passed, 0 failed

@@ -1,0 +1,150 @@
+{
+  "analysis": "transient_thermal",
+  "energy": {
+    "boundary_j": 0,
+    "closure_error": 4.490630090003833e-14,
+    "enthalpy_change_j": 7999.999999999621,
+    "enthalpy_mismatch": 2.6147972675972858e-15,
+    "note": "the stored energy of every step must equal the heat delivered by sources, boundary faces and prescribed-temperature nodes; enthalpy_change_j is the same energy obtained by integrating the enthalpy function over the elements, which checks the capacity model itself rather than the linear solve",
+    "prescribed_nodes_j": 0,
+    "sources_j": 8000.000000000001,
+    "stored_j": 7999.999999999642,
+    "supplied_j": 8000.000000000001,
+    "worst_step_balance_error": 6.464517809945391e-13,
+    "worst_step_enthalpy_mismatch": 3.0553337637702655e-13
+  },
+  "files": [
+    {
+      "bytes": 23865,
+      "format": "navier-am-thermal-results 1: JSON header and little-endian arrays",
+      "name": "results.nvt",
+      "sha256": "e1bea6b2f49f0f88a98091e65704951e5061d1e397c8c83dddf4d2e73c327658"
+    }
+  ],
+  "history": [
+    {
+      "max_c": 20,
+      "min_c": 20,
+      "time_s": 0
+    },
+    {
+      "max_c": 221.82727519337942,
+      "min_c": 221.8272751933789,
+      "time_s": 2
+    },
+    {
+      "max_c": 410.0913164275946,
+      "min_c": 410.0913164275936,
+      "time_s": 4
+    },
+    {
+      "max_c": 588.2351925011532,
+      "min_c": 588.2351925011521,
+      "time_s": 6
+    },
+    {
+      "max_c": 758.5025746676221,
+      "min_c": 758.5025746676209,
+      "time_s": 8
+    },
+    {
+      "max_c": 922.1509838677213,
+      "min_c": 922.1509838677201,
+      "time_s": 10
+    },
+    {
+      "max_c": 1080.5791689005782,
+      "min_c": 1080.5791689005769,
+      "time_s": 12
+    },
+    {
+      "max_c": 1234.2203222391763,
+      "min_c": 1234.220322239175,
+      "time_s": 14
+    },
+    {
+      "max_c": 1375.4148698850963,
+      "min_c": 1375.4148698850954,
+      "time_s": 16
+    },
+    {
+      "max_c": 1384.1682880911567,
+      "min_c": 1384.168288091153,
+      "time_s": 18
+    },
+    {
+      "max_c": 1392.9203735708757,
+      "min_c": 1392.920373570866,
+      "time_s": 20
+    }
+  ],
+  "interpretation": ["Heat conduction only: no convection inside the material, no phase change and no latent heat; convection and radiation act as boundary conditions with coefficients the user supplies.", "Material properties are evaluated per element at its mean temperature, and the voxel mesh has a staircase boundary, so surface temperatures on curved or inclined faces depend on the element size."],
+  "model": {
+    "analysis": "transient_thermal",
+    "boundary_faces": 0,
+    "element_size_mm": [2.5, 2.5, 2.5],
+    "elements": 64,
+    "initial_temperature_c": 20,
+    "materials": [
+      {
+        "conductivity_at_20c": 14,
+        "density_at_20c": 7950,
+        "material": "ss316l_lpbf_demo",
+        "specific_heat_at_20c": 480,
+        "status": "demonstration",
+        "target": "block"
+      }
+    ],
+    "mesh_hash": "6722e59dc6c6da384a4bff79ea4948c5611bd311dec594ed317ab7c134c99ed7",
+    "nodes": 125,
+    "thermal_conditions": [
+      {
+        "applies_to": "block",
+        "kind": "heat_source",
+        "name": "heating",
+        "nominal_power_w": 399.99999999999955
+      }
+    ],
+    "time": {
+      "capacity": "lumped",
+      "end_s": 20,
+      "integration": "backward Euler",
+      "step_s": 0.25,
+      "steps": 80,
+      "stored_times": 11
+    }
+  },
+  "phase_change": {
+    "largest_molten_volume_mm3": 716.8149428348378,
+    "model": "equilibrium liquid fraction, linear between solidus and liquidus; latent heat carried in the enthalpy"
+  },
+  "setup_warnings": [
+    {
+      "code": "PHASE_CHANGE_ACTIVE",
+      "message": "'block' melts between 1375.0 and 1400.0 degC with 270000 J/kg of latent heat: the enthalpy formulation is used and a mushy interval of 25.0 K is assumed to be at equilibrium"
+    },
+    {
+      "code": "DEMONSTRATION_MATERIAL",
+      "message": "'block' uses the demonstration material 'ss316l_lpbf_demo': temperatures follow its uncalibrated conductivity and heat capacity"
+    }
+  ],
+  "solver": {
+    "largest_picard_iterations": 11,
+    "steps": 80,
+    "total_cg_iterations": 1647
+  },
+  "temperature": {
+    "final_max_c": 1392.9203735708757,
+    "final_min_c": 1392.920373570866,
+    "max_at_s": 20,
+    "max_c": 1392.9203735708757,
+    "min_c": 20
+  },
+  "units": {
+    "energy": "J",
+    "length": "mm",
+    "stress": "MPa",
+    "temperature": "degC",
+    "time": "s"
+  }
+}

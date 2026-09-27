@@ -1,0 +1,31 @@
+{
+ "case": "clamped_C3D8I_160x16x16",
+ "element": "C3D8I",
+ "mesh": [
+  160,
+  16,
+  16
+ ],
+ "root": "clamped",
+ "nu": 0.3,
+ "element_size_mm": 0.625,
+ "nodes": 46529,
+ "elements": 40960,
+ "ccx_rc": 0,
+ "ccx_seconds": 16.306112051010132,
+ "status": "solved",
+ "tip_mean_uz_area_weighted_mm": 0.02001146273437502,
+ "tip_mean_uz_nodal_mm": 0.02001152093425607,
+ "reaction_n": [
+  1.652933e-11,
+  1.00527e-10,
+  10.0
+ ],
+ "reaction_balance": 0.0,
+ "reaction_print_resolution": 5e-07,
+ "strain_energy_nmm": 0.1000573,
+ "energy_displacement_mm": 0.020011460000000002,
+ "energy_vs_work": 0.9999998633595627,
+ "weight_sum": 1.0,
+ "ccx_messages": []
+}

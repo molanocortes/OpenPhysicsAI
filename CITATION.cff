@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+title: OpenPhysicsAI
+message: If you use this software or its challenge data, cite it as below and cite the source named with any measured data you use.
+type: software
+authors:
+  - family-names: Molano Cortes
+    given-names: Juan Sebastian
+repository-code: https://github.com/molanocortes/OpenPhysicsAI
+license: Apache-2.0
+keywords:
+  - additive manufacturing simulation
+  - laser powder bed fusion distortion
+  - inherent strain calibration
+  - residual stress
+  - finite element analysis
+  - open source Simufact alternative
+  - engineering benchmark
+  - AI agents
+abstract: Open-source, AI-native engineering simulation with public challenges against measured reality. Additive-manufacturing process simulation (LPBF, FFF), structures, heat and fluids, driven by people through a native app and by AI agents through typed operations, with pre-registered validation and replayable leaderboards.

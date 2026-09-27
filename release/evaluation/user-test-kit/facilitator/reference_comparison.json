@@ -1,0 +1,212 @@
+{
+ "generated_by": "the developer's own reference run with the rc2 development build (not usability evidence)",
+ "study_hash": "3145152d97d81b34557b9705200eb22bb8954338b277d7b05ed8fb2f96cdffe4",
+ "status": "complete",
+ "wall_seconds": 261.18529200553894,
+ "regions": [
+  {
+   "design": "U",
+   "mounting_area_mm2": 600.0000000000016,
+   "load_area_mm2": 600.0000000000016,
+   "lever_arm_mm": 99.99999999999959
+  },
+  {
+   "design": "S",
+   "mounting_area_mm2": 600.0000000000016,
+   "load_area_mm2": 600.0000000000016,
+   "lever_arm_mm": 99.99999999999959
+  }
+ ],
+ "comparison": {
+  "better": "lower",
+  "combined_discretisation_error_estimate": 0.0037291243234988548,
+  "convergence_criterion": 0.02,
+  "convergence_criterion_met_by_all": true,
+  "difference": 0.00641167518894159,
+  "element_size_mm": 0.5,
+  "estimates_available": true,
+  "meshes_compared": 3,
+  "outcome": "resolved",
+  "primary_quantity": "load_region_displacement",
+  "ranking": [
+   "S",
+   "U"
+  ],
+  "ranking_by_mesh": [
+   {
+    "element_size_mm": 2,
+    "ranking": [
+     "S",
+     "U"
+    ],
+    "relative_difference": 0.05214722011614904
+   },
+   {
+    "element_size_mm": 1,
+    "ranking": [
+     "S",
+     "U"
+    ],
+    "relative_difference": 0.049427170791093517
+   },
+   {
+    "element_size_mm": 0.5,
+    "ranking": [
+     "S",
+     "U"
+    ],
+    "relative_difference": 0.048168307512114844
+   }
+  ],
+  "ranking_consistent_on_tested_meshes": true,
+  "ranking_robustness": [
+   {
+    "ranking_unchanged": true,
+    "reason": "every design uses the same material and the loads are forces: all displacements scale with 1/E, so the ranking and the ratio between designs do not depend on E; absolute values scale with it",
+    "sensitivity": "youngs_modulus"
+   },
+   {
+    "element_size_mm": 0.5,
+    "largest_relative_change": 0.09090909243794025,
+    "parameter": "Young's modulus x 1.1",
+    "ranking_unchanged": true,
+    "relative_change": [
+     {
+      "baseline": 0.1331098292654145,
+      "design": "U",
+      "relative_change": -0.09090909243794025,
+      "value": 0.1210089354923265
+     },
+     {
+      "baseline": 0.12669815407647292,
+      "design": "S",
+      "relative_change": -0.09090909178537854,
+      "value": 0.11518013995849681
+     }
+    ],
+    "scaling_error": 1.6817341963459853e-09,
+    "scaling_verified": true,
+    "sensitivity": "youngs_modulus"
+   },
+   {
+    "element_size_mm": 0.5,
+    "largest_relative_change": 0.011000319685653763,
+    "parameter": "own weight added",
+    "ranking_unchanged": true,
+    "relative_change": [
+     {
+      "baseline": 0.1331098292654145,
+      "design": "U",
+      "relative_change": 0.011000319685653763,
+      "value": 0.13457407994063686
+     },
+     {
+      "baseline": 0.12669815407647292,
+      "design": "S",
+      "relative_change": 0.006388400662195899,
+      "value": 0.12750755264787406
+     }
+    ],
+    "sensitivity": "self_weight"
+   }
+  ],
+  "relative_difference": 0.048168307512114844,
+  "statement": "Lower predicted load-region displacement under the modeled conditions: design S (0.1267 mm) against design U (0.13311 mm) at 0.5 mm elements, a 4.8% difference. The difference is larger than the sum of the two values' estimated discretisation errors (0.002 mm and 0.0017 mm; grid convergence index, which is an estimate, not a bound). Every design met the 2% convergence criterion (change between its two finest meshes, relative to the finer).",
+  "sum_of_last_changes": 0.001276081898427539,
+  "values": [
+   {
+    "convergence_criterion_met": true,
+    "design": "U",
+    "discretisation_error_estimate": 0.0016867996533976384,
+    "estimate_available": true,
+    "estimate_method": "grid convergence index (Roache) over the three finest valid meshes with their observed order",
+    "last_relative_change": 0.004269423220919396,
+    "load_region_displacement_mm": 0.1331098292654145,
+    "mass_geometry_kg": 0.05831999999999861,
+    "observed_order": 1.0077225919625032,
+    "peak_displacement_mm": 0.15507725193433972,
+    "relative_discretisation_error_estimate": 0.012672239628782351,
+    "safety_factor": 3,
+    "stiffness_n_per_mm": 147.34674447592266,
+    "stiffness_per_mass_n_per_mm_kg": 2526.521681685977,
+    "valid_meshes": 3,
+    "value": 0.1331098292654145
+   },
+   {
+    "convergence_criterion_met": true,
+    "design": "S",
+    "discretisation_error_estimate": 0.0020423246701012166,
+    "estimate_available": true,
+    "estimate_method": "grid convergence index (Roache) over the three finest valid meshes with their observed order",
+    "last_relative_change": 0.005586345812125707,
+    "load_region_displacement_mm": 0.12669815407647292,
+    "mass_geometry_kg": 0.05831999999999749,
+    "observed_order": 1.0283341691306365,
+    "peak_displacement_mm": 0.156518011028351,
+    "relative_discretisation_error_estimate": 0.016119608726647295,
+    "safety_factor": 3,
+    "stiffness_n_per_mm": 154.80336034072494,
+    "stiffness_per_mass_n_per_mm_kg": 2654.378606665494,
+    "valid_meshes": 3,
+    "value": 0.12669815407647292
+   }
+  ]
+ },
+ "levels": {
+  "U": [
+   {
+    "element_size_mm": 2,
+    "elements": 2700,
+    "valid": true,
+    "load_region_displacement_mm": 0.131398822242982,
+    "mass_geometry_kg": 0.05831999999999861
+   },
+   {
+    "element_size_mm": 1,
+    "elements": 21600,
+    "valid": true,
+    "load_region_displacement_mm": 0.13254152706941613,
+    "mass_geometry_kg": 0.05831999999999861
+   },
+   {
+    "element_size_mm": 0.5,
+    "elements": 172800,
+    "valid": true,
+    "load_region_displacement_mm": 0.1331098292654145,
+    "mass_geometry_kg": 0.05831999999999861
+   }
+  ],
+  "S": [
+   {
+    "element_size_mm": 2,
+    "elements": 2700,
+    "valid": true,
+    "load_region_displacement_mm": 0.12454673893647447,
+    "mass_geometry_kg": 0.05831999999999749
+   },
+   {
+    "element_size_mm": 1,
+    "elements": 21600,
+    "valid": true,
+    "load_region_displacement_mm": 0.12599037437404376,
+    "mass_geometry_kg": 0.05831999999999749
+   },
+   {
+    "element_size_mm": 0.5,
+    "elements": 172800,
+    "valid": true,
+    "load_region_displacement_mm": 0.12669815407647292,
+    "mass_geometry_kg": 0.05831999999999749
+   }
+  ]
+ },
+ "important_uncertainties": [
+  "Self-weight: adding each bracket's own weight changes the load-region displacement by up to 1.10%; the ranking is unchanged.",
+  "Discretisation, design U: last change +0.43% (relative to the finer mesh) meets the 2% criterion; discretisation-error estimate 0.0017 (1.3%; observed order 1.01, safety factor 3: asymptotic behaviour not demonstrated by three meshes).",
+  "Geometry approximation, design U: the finest voxel mesh has -0.00% volume error against the STL.",
+  "Discretisation, design S: last change +0.56% (relative to the finer mesh) meets the 2% criterion; discretisation-error estimate 0.002 (1.6%; observed order 1.03, safety factor 3: asymptotic behaviour not demonstrated by three meshes).",
+  "Geometry approximation, design S: the finest voxel mesh has -0.00% volume error against the STL.",
+  "Load distribution and location: a uniform traction over the load region is assumed; a payload bearing on part of it or with an offset centre of mass is not assessed.",
+  "Manufacturing (machined): its effect on stiffness is represented only through the material values given."
+ ]
+}

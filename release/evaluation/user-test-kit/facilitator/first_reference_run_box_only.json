@@ -1,0 +1,42 @@
+{
+ "note": "first reference run with box-only regions (z within +-1 mm): the triangle-centroid box also selected the lowest strips of the end face and of both side faces",
+ "mounting_area_mm2": [
+  700.000000000004,
+  700.000000000004
+ ],
+ "load_area_mm2": [
+  704.0000000000041,
+  704.0000000000041
+ ],
+ "outcome": "ranking_consistent_on_tested_meshes",
+ "values_mm": {
+  "U": 0.12659184785114816,
+  "S": 0.12296256615389534
+ },
+ "ranking_by_mesh": [
+  {
+   "element_size_mm": 2,
+   "ranking": [
+    "S",
+    "U"
+   ],
+   "relative_difference": 0.05177492031741778
+  },
+  {
+   "element_size_mm": 1,
+   "ranking": [
+    "S",
+    "U"
+   ],
+   "relative_difference": 0.03637463811983762
+  },
+  {
+   "element_size_mm": 0.5,
+   "ranking": [
+    "S",
+    "U"
+   ],
+   "relative_difference": 0.02866915807659495
+  }
+ ]
+}

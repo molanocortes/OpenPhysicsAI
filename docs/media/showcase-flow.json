@@ -1,0 +1,17 @@
+{
+ "scene": "glider, models/showcase-sailplane.stl",
+ "quality": "draft",
+ "aoa_deg": 8.0,
+ "develop_steps": 2600,
+ "steps_per_frame": 10,
+ "frames": 44,
+ "particles": 14000,
+ "emitter": "sheet",
+ "camera_orbit": "140 38",
+ "zoom": 0.8,
+ "gif_bytes": 2300451,
+ "status": [
+  "[info] advancing 10 steps",
+  "[data] solver     D3Q19 recursive regularized, bulk tau 1.00, LES Cs = 0.140, 8 threads, 75.1 MLUPS, 0.0 steps/s"
+ ]
+}

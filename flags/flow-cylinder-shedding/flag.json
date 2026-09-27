@@ -1,0 +1,68 @@
+{
+ "id": "flow-cylinder-shedding",
+ "category": "fluid flow",
+ "title": "How often a cylinder sheds vortices",
+ "question": "A long circular cylinder lies across a steady, uniform stream of air at low speed. Above a Reynolds number of about 40 it sheds vortices alternately from its two sides. Report the shedding frequency as a Strouhal number St = f d / U at each Reynolds number Re = U d / nu.",
+ "conditions": {
+  "fluid": "air at low speed (incompressible), low free-stream turbulence (a wind tunnel)",
+  "body": "circular cylinders of several diameters, long compared with their diameter, spanning the tunnel",
+  "correction": "the measurements are corrected for tunnel blockage (unbounded flow is asked for); end effects were not corrected",
+  "measurement": "hot-wire anemometry in the wake, frequencies from Lissajous figures"
+ },
+ "outputs": [
+  {
+   "name": "strouhal",
+   "unit": "1",
+   "meaning": "f d / U, f the shedding frequency of one side"
+  }
+ ],
+ "cases": [
+  {
+   "case": "re060",
+   "inputs": {
+    "reynolds": 60
+   }
+  },
+  {
+   "case": "re080",
+   "inputs": {
+    "reynolds": 80
+   }
+  },
+  {
+   "case": "re120",
+   "inputs": {
+    "reynolds": 120
+   }
+  },
+  {
+   "case": "re145",
+   "inputs": {
+    "reynolds": 145
+   }
+  }
+ ],
+ "practice": [
+  {
+   "case": "re100",
+   "inputs": {
+    "reynolds": 100
+   },
+   "answers": {
+    "strouhal": 0.1671
+   },
+   "note": "from the same measurements, public"
+  }
+ ],
+ "metric": "log_ratio",
+ "sealed": {
+  "sha256": "87e0a337ff1dc9a8bee5baa4f6b4940cc38f68332e40c939f353fdff49892892",
+  "sealed_on": "2026-09-25"
+ },
+ "tier": "trial",
+ "leads_to": "car-wake",
+ "label": "T1",
+ "subtitle": "Leads to flag 01 · the Strouhal number from Re 60 to 145",
+ "status": "rebuilding",
+ "rebuild_note": "Scored with the lab's two-dimensional lattice solver; being rebuilt natively in 3D."
+}

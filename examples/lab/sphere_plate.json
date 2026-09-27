@@ -1,0 +1,68 @@
+{
+ "domain": "impact",
+ "title": "Copper sphere at 800 m/s against a 4 mm copper plate",
+ "provenance": {
+  "erosion": "fail_strain 1.5 is assumed for the demonstration, not measured"
+ },
+ "symmetry": "quarter",
+ "bodies": [
+  {
+   "shape": "box",
+   "lo_m": [
+    0,
+    0,
+    -0.004
+   ],
+   "hi_m": [
+    0.03,
+    0.03,
+    0.0
+   ],
+   "cells": [
+    60,
+    60,
+    8
+   ],
+   "material": "ofhc_copper",
+   "velocity_m_s": [
+    0,
+    0,
+    0
+   ],
+   "fail_strain": 1.5,
+   "fail_strain_source": "assumed for a demonstration"
+  },
+  {
+   "shape": "sphere",
+   "center_m": [
+    0,
+    0,
+    0.0052
+   ],
+   "radius_m": 0.005,
+   "cells": 8,
+   "material": "ofhc_copper",
+   "velocity_m_s": [
+    0,
+    0,
+    -800
+   ],
+   "fail_strain": 1.5,
+   "fail_strain_source": "assumed for a demonstration"
+  }
+ ],
+ "run": {
+  "end_time_s": 3e-05,
+  "frames": 40,
+  "mirror": true
+ },
+ "controls": [
+  {
+   "label": "sphere speed, m/s (downward)",
+   "path": "bodies.1.velocity_m_s.2",
+   "min": -1500,
+   "max": -200,
+   "log": false
+  }
+ ]
+}

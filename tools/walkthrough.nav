@@ -1,0 +1,65 @@
+# Acceptance walkthrough: the owner's own part, from launch to a written report, by clicking only.
+# Run it:  ./navier --workspace /tmp/navier-walkthrough --exec 'exec tools/walkthrough.nav'
+# Timed and checked off-screen by:  python3 tools/uicheck.py --walkthrough
+# Every step goes through the real input path: uiclick presses a control, uiclickat clicks a point of the 3D view,
+# uikeys types into the panel field. Nothing here uses an 'am' operation directly.
+# The owner's part is not in the repository: uicheck.py replaces @WALK_PART@ with $NAVIER_WALK_PART; to run it by hand,
+# replace @WALK_PART@ with the path of a copy of Zero_Final_Assembly_Complete.stl.
+workspace solid
+frames 8
+echo WALK start
+load '@WALK_PART@'
+frames 6
+uiclick MM
+frames 14
+fem fit
+frames 8
+screenshot docs/app/walk-1-part.png
+echo WALK part
+uiclick "2 MESH"
+frames 4
+uiclick GENERATE
+frames 40
+screenshot docs/app/walk-2-mesh.png
+echo WALK mesh
+uiclick "3 MATERIAL"
+frames 4
+uiclick "SS316L DEMO"
+frames 8
+echo WALK material
+uiclick "4 HOLD & LOAD"
+frames 6
+uiclickat 250 700
+frames 8
+uiclick HOLD
+frames 10
+uiclickat 300 500
+frames 8
+uiclick "load magnitude"
+frames 4
+uikeys 500
+frames 4
+uiclick LOAD
+frames 12
+screenshot docs/app/walk-3-conditions.png
+echo WALK conditions
+uiclick "5 SOLVE"
+frames 6
+uiclick SOLVE
+frames 10
+solid wait 600
+frames 25
+uiclick "6 RESULTS"
+frames 10
+screenshot docs/app/walk-4-result.png
+echo WALK solved
+uiclick "CHECK MESH"
+frames 20
+solid wait 900
+frames 30
+screenshot docs/app/walk-5-convergence.png
+echo WALK converged
+uiclick REPORT
+frames 40
+screenshot docs/app/walk-6-report.png
+echo WALK done

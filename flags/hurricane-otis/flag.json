@@ -1,0 +1,14 @@
+{
+ "id": "hurricane-otis",
+ "number": 12,
+ "tier": "holy-grail",
+ "stone": "the atmosphere and the ocean",
+ "stone_short": "the Earth",
+ "difficulty": 6,
+ "title": "The storm that surprised everyone",
+ "subtitle": "Hurricane Otis, 2023: from tropical storm to Category 5 in a day",
+ "short": "Hurricane",
+ "status": "preparing",
+ "hook": "In October 2023 Hurricane Otis grew from a tropical storm into a Category 5 hurricane in about a day and struck Acapulco almost unannounced. Every forecast missed it. Predict it.",
+ "note": "In preparation: the cases, the outputs and their units are written here when the flag opens, and the measured values are sealed at the same moment (tools/flags.py seal)."
+}

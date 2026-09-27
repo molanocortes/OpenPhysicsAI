@@ -1,0 +1,15 @@
+# arm_demo.nav - opens the printed-arm mechanics demonstration in the analysis workspace
+# build the project first: python3 demo/build_arm_demo.py
+# then: ./navier --workspace demo/workspace --exec "exec demo/arm_demo.nav"
+# (wait lets the static job finish before framing; it runs the tunnel, so the script pauses it again)
+workspace solid
+solid open arm_demo
+am mesh_generate element_size=2mm
+solid run static
+solid wait 120
+fem field von_mises
+fem deform auto
+wait 120
+pause
+fem fit
+am mech_assembly_inspect

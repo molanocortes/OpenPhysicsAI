@@ -1,0 +1,88 @@
+name: flag score
+
+# The second half of scoring a pull request that enters a flag or a trial (the first is flag-entry.yml). It runs main's
+# code only, never the pull request's: it reads the rerun's predictions as data, scores them against the sealed answers
+# (the repository secret OPAI_SEALED_JSON, set by a maintainer with
+# `python3 tools/flags.py export-sealed | gh secret set OPAI_SEALED_JSON`), logs the attempt on the boards of main,
+# answers on the pull request with the scores and labels it: flag: capture, flag: record, flag: scored,
+# flag: tomorrow (one scored submission per entry per day) or flag: not scored.
+
+on:
+  workflow_run:
+    workflows: ['flag entry rerun']
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  actions: read
+
+concurrency:
+  group: flag-score
+  cancel-in-progress: false
+
+jobs:
+  score:
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/download-artifact@v4
+        with:
+          name: flag-entry
+          path: judge
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Which pull request, and who opened it
+        id: pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          n=$(tr -cd 0-9 < judge/pr.txt | head -c 8)
+          test -n "$n"
+          gh api "repos/$GITHUB_REPOSITORY/pulls/$n" > pr.json
+          if [ "$(jq -r .head.sha pr.json)" != "$HEAD_SHA" ]; then
+            echo "the pull request has moved on since this rerun; its newest commit is scored by its own run"
+            exit 0
+          fi
+          echo "number=$n" >> "$GITHUB_OUTPUT"
+          echo "author=$(jq -r .user.login pr.json)" >> "$GITHUB_OUTPUT"
+          gh api --paginate "repos/$GITHUB_REPOSITORY/pulls/$n/files" --jq '.[].filename' > files.txt
+      - name: Score against the sealed answers
+        if: steps.pr.outputs.number != ''
+        env:
+          OPAI_SEALED_JSON: ${{ secrets.OPAI_SEALED_JSON }}
+          AUTHOR: ${{ steps.pr.outputs.author }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          python3 tools/flags.py judge --predictions judge/predictions.json --entry-json judge/entry.json \
+            --author "$AUTHOR" --sha "$HEAD_SHA" --files files.txt --comment comment.md --label label.txt
+      - name: Log the attempt on the boards
+        if: steps.pr.outputs.number != ''
+        env:
+          N: ${{ steps.pr.outputs.number }}
+          AUTHOR: ${{ steps.pr.outputs.author }}
+        run: |
+          git config user.name "OpenPhysicsAI judge"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add flags README.md
+          if ! git diff --cached --quiet; then
+            git commit -q -m "Scored: pull request $N by @$AUTHOR"
+            for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; sleep 10; done
+          fi
+      - name: Answer on the pull request
+        if: steps.pr.outputs.number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          N: ${{ steps.pr.outputs.number }}
+        run: |
+          gh pr comment "$N" --body-file comment.md
+          label=$(head -1 label.txt)
+          gh label create "$label" --color 2f81f7 --description "set by the flag score workflow" --force
+          gh pr edit "$N" --remove-label "flag: capture,flag: record,flag: scored,flag: tomorrow,flag: not scored" || true
+          gh pr edit "$N" --add-label "$label"

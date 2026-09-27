@@ -1,0 +1,41 @@
+# Native CFD photography. Reproduce at 1800x1100 with --scene glider.
+workspace fluid
+scene glider
+quality normal
+aoa 9
+view speed
+cmap hydro
+linecmap turbo
+surface solid
+slice off
+volume off
+floorgrid off
+box off
+hud off
+streamlines plane
+streamlines seeds 120
+streamlines width 1.4
+streamlines steps 900
+streamlines size 0.35 0.8
+particles on
+particles count 35000
+particles size 0.8
+particles emitter sheet
+vortices off
+bloom 0.18
+exposure 1.15
+camera orbit 30 22
+camera zoom 1.25
+start
+wait 2200
+frames 100
+screenshot docs/images/showcase-flow-particles.png
+particles off
+streamlines off
+vortices level 25
+view vorticity
+cmap icefire
+frames 30
+screenshot docs/images/showcase-flow-vortices.png
+status
+quit

@@ -1,0 +1,22 @@
+{
+ "id": "car-wake",
+ "number": 1,
+ "tier": "flag",
+ "stone": "turbulence",
+ "stone_short": "turbulence",
+ "difficulty": 3,
+ "title": "The wake of a car",
+ "subtitle": "The Ahmed body, its rear slanted at 25 degrees, in a wind of 40 m/s",
+ "short": "Car wake",
+ "status": "preparing",
+ "hook": "Every car on the road pays for the air it drags behind it. Predict how much, for the shape every car aerodynamicist tests first.",
+ "trials": [
+  "flow-cylinder-shedding"
+ ],
+ "media": {
+  "src": "docs/media/lab/cylinder-mounted-3d-view.gif",
+  "alt": "A finite cylinder standing on the ground in a stream: its three-dimensional wake of vortices",
+  "caption": "The lab today: a finite cylinder standing on the ground at Reynolds number 1000, its 3D wake computed by the GPU flow engine that will attempt this flag. Not the car yet."
+ },
+ "note": "In preparation: the cases, the outputs and their units are written here when the flag opens, and the measured values are sealed at the same moment (tools/flags.py seal)."
+}

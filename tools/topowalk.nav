@@ -1,0 +1,63 @@
+# The optimisation walkthrough: a bracket held and loaded, optimised, the surviving part exported as an STL and
+# printed in the LPBF build simulation (T21 items 3 and 4).
+#   ./navier --headless --size 1600x1000 --workspace /tmp/navier-topo --exec 'exec tools/topowalk.nav'
+workspace solid
+frames 4
+echo TOPO start
+am project_create '{"name": "topo_bracket", "description": "stiffness optimisation of the sample bracket"}'
+am geometry_import '{"path": "samples/bracket.stl", "units": "mm", "name": "bracket"}'
+am material_assign '{"body": "bracket", "material": "ss316l_lpbf_demo", "source": "user"}'
+am mesh_generate '{"element_size": "1 mm"}'
+am selection_create '{"name": "foot", "query": {"all": [{"facing": {"direction": "down"}}, {"plane": {"axis": "z", "at": "min"}}]}, "source": "user"}'
+am selection_create '{"name": "top", "query": {"extreme": {"direction": "+z"}}, "source": "user"}'
+am boundary_apply '{"name": "hold", "kind": "fixed", "selection": "foot", "source": "user"}'
+am boundary_apply '{"name": "push", "kind": "force", "selection": "top", "force": ["0.5 kN", 0, 0], "source": "user"}'
+solid run static
+solid wait 300
+frames 20
+fem fit
+fem edges on
+fem shadows on
+frames 6
+screenshot /tmp/navier-topowalk-before.png
+# through the panel, with real clicks: open OPTIMISE, then press OPTIMISE NOW
+uiclick OPTIMISE
+frames 6
+screenshot /tmp/navier-topowalk-panel.png
+uiclick "OPTIMISE NOW"
+frames 8
+screenshot /tmp/navier-topowalk-running.png
+fem optimwait 600
+frames 12
+fem fit
+frames 6
+screenshot /tmp/navier-topowalk-after.png
+fem density
+uiclick "EXPORT STL"
+frames 10
+fem optipart /tmp/navier-topowalk-optimised.stl
+frames 10
+fem fit
+camera zoom 0.7
+frames 6
+fem export /tmp/navier-topowalk-part.png 2
+echo TOPO optimised
+
+# the chain the gallery shows: the optimised part goes straight into the print simulation
+am project_create '{"name": "optimised_print", "description": "the optimised bracket, printed"}'
+am geometry_import '{"path": "/tmp/navier-topowalk-optimised.stl", "units": "mm", "name": "optimised"}'
+am material_assign '{"body": "optimised", "material": "alsi10mg_lpbf", "source": "user"}'
+am mesh_generate '{"element_size": "0.8 mm"}'
+am lpbf_build_run '{"body": "optimised", "build_orientation": "Y", "layer_thickness_sim": "0.8 mm", "inherent_strain": {"exx": -0.0012226242259139248, "eyy": -0.0034058581422344394, "ezz": -0.03, "provenance": "calibrated", "source": "the elastic strain of the P17 preset in src/ctl/print_profiles.json"}, "material": {"youngs_modulus": "71000 MPa", "poissons_ratio": 0.33, "provenance": "user"}, "label": "optimised bracket"}'
+solid wait 600
+frames 20
+fem follow
+frames 20
+fem fit
+camera zoom 0.55
+fem step last
+fem edges on
+frames 8
+fem export /tmp/navier-topowalk-print.png 2
+echo TOPO printed
+quit

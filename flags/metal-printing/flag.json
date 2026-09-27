@@ -1,0 +1,19 @@
+{
+ "id": "metal-printing",
+ "number": 5,
+ "tier": "flag",
+ "stone": "phase change",
+ "stone_short": "phase change",
+ "difficulty": 4,
+ "title": "Printing metal",
+ "subtitle": "NIST AM-Bench: laser tracks on nickel alloy, the melt pool and the metal it leaves",
+ "short": "Metal printing",
+ "status": "preparing",
+ "hook": "A laser draws a line on a metal plate. Predict the pool it melts and the crystals it leaves behind.",
+ "media": {
+  "src": "docs/media/lab/melt-pool-flow.gif",
+  "alt": "A laser crosses a steel plate; the melt pool, stirred by its surface, grows wide and shallow",
+  "caption": "The lab today: a laser track in 316L with Marangoni flow in the melt; the pool grows wider and shallower than conduction alone makes it. The keyhole and the crystals are what this flag adds."
+ },
+ "note": "In preparation: the cases, the outputs and their units are written here when the flag opens, and the measured values are sealed at the same moment (tools/flags.py seal)."
+}

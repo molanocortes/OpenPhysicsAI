@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<VTKFile type="Collection" version="1.0" byte_order="LittleEndian">
+  <Collection>
+    <DataSet timestep="0" group="" part="0" file="time_0000.vtu"/>
+    <DataSet timestep="1000" group="" part="0" file="time_0001.vtu"/>
+    <DataSet timestep="2000" group="" part="0" file="time_0002.vtu"/>
+    <DataSet timestep="3000" group="" part="0" file="time_0003.vtu"/>
+    <DataSet timestep="4000" group="" part="0" file="time_0004.vtu"/>
+    <DataSet timestep="5000" group="" part="0" file="time_0005.vtu"/>
+    <DataSet timestep="6000" group="" part="0" file="time_0006.vtu"/>
+    <DataSet timestep="7000" group="" part="0" file="time_0007.vtu"/>
+    <DataSet timestep="8000" group="" part="0" file="time_0008.vtu"/>
+    <DataSet timestep="9000" group="" part="0" file="time_0009.vtu"/>
+    <DataSet timestep="10000" group="" part="0" file="time_0010.vtu"/>
+    <DataSet timestep="11000" group="" part="0" file="time_0011.vtu"/>
+    <DataSet timestep="12000" group="" part="0" file="time_0012.vtu"/>
+    <DataSet timestep="13000" group="" part="0" file="time_0013.vtu"/>
+    <DataSet timestep="14000" group="" part="0" file="time_0014.vtu"/>
+    <DataSet timestep="15000" group="" part="0" file="time_0015.vtu"/>
+    <DataSet timestep="16000" group="" part="0" file="time_0016.vtu"/>
+    <DataSet timestep="17000" group="" part="0" file="time_0017.vtu"/>
+    <DataSet timestep="18000" group="" part="0" file="time_0018.vtu"/>
+    <DataSet timestep="19000" group="" part="0" file="time_0019.vtu"/>
+    <DataSet timestep="20000" group="" part="0" file="time_0020.vtu"/>
+  </Collection>
+</VTKFile>

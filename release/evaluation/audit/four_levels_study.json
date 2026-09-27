@@ -1,0 +1,740 @@
+{
+  "check_at_submission": {
+    "accepted": [],
+    "assumptions": [
+      {
+        "effect": "not assessed: no mounting alternative was declared",
+        "source": "user",
+        "subject": "mounting_idealization",
+        "text": "The mounting region is idealised as rigidly fixed (all displacements zero): back face clamped to a rigid wall (the stiffest idealisation of a bolted joint). No contact, slip, fastener or wall flexibility is modelled."
+      },
+      {
+        "effect": "a different g scales every displacement equally and does not change the ranking",
+        "source": "default",
+        "subject": "gravitational_acceleration",
+        "text": "The payload weighs mass x standard gravity 9.80665 m/s^2, applied statically: no dynamic amplification from shocks, vibration or handling."
+      },
+      {
+        "effect": "not assessed",
+        "source": "default",
+        "subject": "load_distribution",
+        "text": "The load acts as a uniform traction over the load region, so its resultant passes through the region's centroid. A payload that bears on part of the region, or whose centre of mass is offset, loads the bracket differently."
+      },
+      {
+        "effect": "not assessed; the weight of each design is reported",
+        "source": "default",
+        "subject": "self_weight",
+        "text": "The bracket's own weight is not applied: only the payload loads it."
+      }
+    ],
+    "designs": [
+      {
+        "geometry": {
+          "bounds_design_mm": {
+            "max": [80, 40, 60],
+            "min": [0, 0, 0]
+          },
+          "bytes": 83284,
+          "closed_solid": true,
+          "components": 1,
+          "design_to_build_translation_mm": [0, 0, 0],
+          "file": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/navier-0.3.0-rc1-macos-arm64/share/navier/examples/bracket_comparison/geometry/bracket_a_plain.stl",
+          "repairs": {
+            "degenerate_faces_found": 0,
+            "degenerate_faces_removed": 0,
+            "duplicate_faces_found": 0,
+            "duplicate_faces_removed": 0,
+            "faces_flipped_for_consistency": 0,
+            "holes_filled": "none (no automatic hole filling)",
+            "inconsistent_edges_found": 0,
+            "non_orientable_components": 0,
+            "opposite_duplicate_faces": 0,
+            "shells_reoriented": 0
+          },
+          "self_intersecting_face_pairs": 0,
+          "sha256": "7cf8844569be4b9bd80fab7c8f2033eadd160e29b012760e2bb35ddab8ebef19",
+          "size_mm": [80, 40, 60],
+          "stored_copy": "inputs/part-7cf8844569be.stl",
+          "surface_area_mm2": 13312,
+          "surface_patches": 8,
+          "topology": {
+            "analysis_triangles": 1664,
+            "boundary_loops": 0,
+            "closed_components": 1,
+            "closed_solid": true,
+            "components": 1,
+            "consistently_oriented": true,
+            "merged_duplicate_vertices": 4158,
+            "nested_shells": 0,
+            "nonmanifold_edges": 0,
+            "open_edges": 0,
+            "source_triangles": 1664,
+            "surface_patches": 8,
+            "unique_vertices": 834,
+            "watertight": true,
+            "weld_tolerance_mm": 0.00010770329614269008
+          },
+          "triangles": 1664,
+          "units": "mm",
+          "units_check": {
+            "assessment": "plausible: with mm the part is 80 mm across its largest extent",
+            "criterion": "largest extent between 1 mm and 1000 mm (typical additive manufacturing parts)",
+            "declared_unit": "mm",
+            "header_note": "the file header mentions units; headers are free text and not authoritative",
+            "header_text": "bracket A: L, 8 mm plates",
+            "if_unit_were": [
+              {
+                "largest_extent_mm": 80,
+                "plausible": true,
+                "unit": "mm"
+              },
+              {
+                "largest_extent_mm": 800,
+                "plausible": true,
+                "unit": "cm"
+              },
+              {
+                "largest_extent_mm": 80000,
+                "plausible": false,
+                "unit": "m"
+              },
+              {
+                "largest_extent_mm": 2032,
+                "plausible": false,
+                "unit": "in"
+              },
+              {
+                "largest_extent_mm": 24384,
+                "plausible": false,
+                "unit": "ft"
+              },
+              {
+                "largest_extent_mm": 0.07999999999999999,
+                "plausible": false,
+                "unit": "um"
+              }
+            ],
+            "largest_extent_in_file_units": 80,
+            "largest_extent_mm": 80,
+            "plausible": true
+          },
+          "volume_mm3": 42239.999999999876,
+          "wall_thickness": {
+            "median_mm": 8,
+            "method": "inward rays from area-stratified surface points to the opposite surface",
+            "min_location_design_mm": [76.25894627189112, 14.365997229371875, 59.999999999999986],
+            "min_mm": 7.999999999999986,
+            "p05_mm": 8
+          }
+        },
+        "name": "A",
+        "own_weight_to_load_ratio": 0.03801599999999989,
+        "regions": {
+          "lever_arm_design_mm": [72, 4.973799150320701e-14, 30.000000000000057],
+          "lever_arm_length_mm": 78.00000000000003,
+          "load": {
+            "area_mm2": 256.00000000000006,
+            "bounds_design_mm": {
+              "max": [80, 28, 60],
+              "min": [64, 12, 60]
+            },
+            "centroid_design_mm": [72, 19.999999999999993, 60.000000000000014],
+            "description": "16 x 16 mm pad on top of the arm tip where the 3 kg item sits",
+            "mean_normal": [0, 0, 1],
+            "patches": [6],
+            "plane_spread_mm": 0,
+            "query_design_frame": {
+              "box": {
+                "max": [81, 29, 61],
+                "min": [63, 11, 59]
+              }
+            },
+            "selection": "load",
+            "set_hash": "75b1238222b0ab6e77894f69e00fd244220e4746de62bb92b6bdb89a163df246",
+            "source": "user",
+            "triangles": 32
+          },
+          "mounting": {
+            "area_mm2": 2400.0000000000064,
+            "bounds_design_mm": {
+              "max": [0, 40, 60],
+              "min": [0, 0, 0]
+            },
+            "centroid_design_mm": [0, 19.999999999999943, 29.999999999999957],
+            "description": "back face bolted against the wall",
+            "mean_normal": [-1, 0, 0],
+            "patches": [7],
+            "plane_spread_mm": 0,
+            "query_design_frame": {
+              "plane": {
+                "at": "min",
+                "axis": "x",
+                "tolerance": 0.01
+              }
+            },
+            "selection": "mounting",
+            "set_hash": "24adf489688279548e78759f073d6b6ee0823353d8953b2f6c874b7ee8432cae",
+            "source": "user",
+            "triangles": 300
+          }
+        },
+        "resolution_plan": {
+          "coarsest_mesh": {
+            "bodies": [
+              {
+                "area_mesh_mm2": 13312.00000000022,
+                "area_ratio_mesh_to_stl": 1.000000000000041,
+                "area_stl_mm2": 13311.99999999967,
+                "name": "part",
+                "volume_error_percent": 6.577339173755037e-13,
+                "volume_mesh_mm3": 42239.999999999935,
+                "volume_stl_mm3": 42239.99999999966
+              }
+            ],
+            "element_size_mm": 4,
+            "elements": 660,
+            "nodes": 1122,
+            "selections": [
+              {
+                "area_ratio": 0.9999999999999953,
+                "mesh_area_mm2": 2399.999999999995,
+                "mesh_faces": 150,
+                "name": "mounting",
+                "stl_area_mm2": 2400.0000000000064
+              },
+              {
+                "area_ratio": 1,
+                "mesh_area_mm2": 256.00000000000006,
+                "mesh_faces": 16,
+                "name": "load",
+                "stl_area_mm2": 256.00000000000006
+              }
+            ],
+            "setup_errors": [],
+            "setup_ready": true,
+            "warnings": []
+          },
+          "levels": [
+            {
+              "element_size_mm": 4,
+              "elements_across_thin_walls": 2,
+              "estimated_elements": 660,
+              "within_element_limit": true
+            },
+            {
+              "element_size_mm": 2,
+              "elements_across_thin_walls": 4,
+              "estimated_elements": 5280,
+              "within_element_limit": true
+            },
+            {
+              "element_size_mm": 1,
+              "elements_across_thin_walls": 8,
+              "estimated_elements": 42240,
+              "within_element_limit": true
+            },
+            {
+              "element_size_mm": 0.5,
+              "elements_across_thin_walls": 16,
+              "estimated_elements": 337920,
+              "within_element_limit": true
+            }
+          ]
+        },
+        "setup_complete": true
+      },
+      {
+        "geometry": {
+          "bounds_design_mm": {
+            "max": [80, 40, 60],
+            "min": [0, 0, 0]
+          },
+          "bytes": 80884,
+          "closed_solid": true,
+          "components": 1,
+          "design_to_build_translation_mm": [0, 0, 0],
+          "file": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/navier-0.3.0-rc1-macos-arm64/share/navier/examples/bracket_comparison/geometry/bracket_b_chamfer.stl",
+          "repairs": {
+            "degenerate_faces_found": 0,
+            "degenerate_faces_removed": 0,
+            "duplicate_faces_found": 0,
+            "duplicate_faces_removed": 0,
+            "faces_flipped_for_consistency": 0,
+            "holes_filled": "none (no automatic hole filling)",
+            "inconsistent_edges_found": 0,
+            "non_orientable_components": 0,
+            "opposite_duplicate_faces": 0,
+            "shells_reoriented": 0
+          },
+          "self_intersecting_face_pairs": 0,
+          "sha256": "806efa160faedf8b5b3fb6bef1e4e9a8e764bc0caa4445cca76f9069deb0c528",
+          "size_mm": [80, 40, 60],
+          "stored_copy": "inputs/part-806efa160fae.stl",
+          "surface_area_mm2": 13325.64501987818,
+          "surface_patches": 9,
+          "topology": {
+            "analysis_triangles": 1616,
+            "boundary_loops": 0,
+            "closed_components": 1,
+            "closed_solid": true,
+            "components": 1,
+            "consistently_oriented": true,
+            "merged_duplicate_vertices": 4038,
+            "nested_shells": 0,
+            "nonmanifold_edges": 0,
+            "open_edges": 0,
+            "source_triangles": 1616,
+            "surface_patches": 9,
+            "unique_vertices": 810,
+            "watertight": true,
+            "weld_tolerance_mm": 0.00010770329614269008
+          },
+          "triangles": 1616,
+          "units": "mm",
+          "units_check": {
+            "assessment": "plausible: with mm the part is 80 mm across its largest extent",
+            "criterion": "largest extent between 1 mm and 1000 mm (typical additive manufacturing parts)",
+            "declared_unit": "mm",
+            "header_note": "the file header mentions units; headers are free text and not authoritative",
+            "header_text": "bracket B: L, 8 mm plates, 24 mm inner chamfer",
+            "if_unit_were": [
+              {
+                "largest_extent_mm": 80,
+                "plausible": true,
+                "unit": "mm"
+              },
+              {
+                "largest_extent_mm": 800,
+                "plausible": true,
+                "unit": "cm"
+              },
+              {
+                "largest_extent_mm": 80000,
+                "plausible": false,
+                "unit": "m"
+              },
+              {
+                "largest_extent_mm": 2032,
+                "plausible": false,
+                "unit": "in"
+              },
+              {
+                "largest_extent_mm": 24384,
+                "plausible": false,
+                "unit": "ft"
+              },
+              {
+                "largest_extent_mm": 0.07999999999999999,
+                "plausible": false,
+                "unit": "um"
+              }
+            ],
+            "largest_extent_in_file_units": 80,
+            "largest_extent_mm": 80,
+            "plausible": true
+          },
+          "volume_mm3": 53759.99999999974,
+          "wall_thickness": {
+            "median_mm": 13.24528587182902,
+            "method": "inward rays from area-stratified surface points to the opposite surface",
+            "min_location_design_mm": [78.624943501263, 11.74105372810887, 59.999999999999986],
+            "min_mm": 7.999999999999986,
+            "p05_mm": 8
+          }
+        },
+        "name": "B",
+        "own_weight_to_load_ratio": 0.048383999999999754,
+        "regions": {
+          "lever_arm_design_mm": [72, 4.973799150320701e-14, 30.000000000000057],
+          "lever_arm_length_mm": 78.00000000000003,
+          "load": {
+            "area_mm2": 256.00000000000006,
+            "bounds_design_mm": {
+              "max": [80, 28, 60],
+              "min": [64, 12, 60]
+            },
+            "centroid_design_mm": [72, 19.999999999999993, 60.000000000000014],
+            "description": "16 x 16 mm pad on top of the arm tip where the 3 kg item sits",
+            "mean_normal": [0, 0, 1],
+            "patches": [7],
+            "plane_spread_mm": 0,
+            "query_design_frame": {
+              "box": {
+                "max": [81, 29, 61],
+                "min": [63, 11, 59]
+              }
+            },
+            "selection": "load",
+            "set_hash": "fb696c07ad9f9a9805bbfd78ec28abad385d172391a80ae69ab10d8191821c06",
+            "source": "user",
+            "triangles": 32
+          },
+          "mounting": {
+            "area_mm2": 2400.0000000000064,
+            "bounds_design_mm": {
+              "max": [0, 40, 60],
+              "min": [0, 0, 0]
+            },
+            "centroid_design_mm": [0, 19.999999999999943, 29.999999999999957],
+            "description": "back face bolted against the wall",
+            "mean_normal": [-1, 0, 0],
+            "patches": [8],
+            "plane_spread_mm": 0,
+            "query_design_frame": {
+              "plane": {
+                "at": "min",
+                "axis": "x",
+                "tolerance": 0.01
+              }
+            },
+            "selection": "mounting",
+            "set_hash": "df97a5ba66e20b7df9a28c70482c259107fe0aff170a549b067ecd5826daf70c",
+            "source": "user",
+            "triangles": 300
+          }
+        },
+        "resolution_plan": {
+          "coarsest_mesh": {
+            "bodies": [
+              {
+                "area_mesh_mm2": 13792.000000000231,
+                "area_ratio_mesh_to_stl": 1.0349968034888173,
+                "area_stl_mm2": 13325.645019877831,
+                "name": "part",
+                "volume_error_percent": -3.571428571428842,
+                "volume_mesh_mm3": 51839.999999999636,
+                "volume_stl_mm3": 53759.999999999774
+              }
+            ],
+            "element_size_mm": 4,
+            "elements": 810,
+            "nodes": 1287,
+            "selections": [
+              {
+                "area_ratio": 0.9999999999999953,
+                "mesh_area_mm2": 2399.999999999995,
+                "mesh_faces": 150,
+                "name": "mounting",
+                "stl_area_mm2": 2400.0000000000064
+              },
+              {
+                "area_ratio": 1,
+                "mesh_area_mm2": 256.00000000000006,
+                "mesh_faces": 16,
+                "name": "load",
+                "stl_area_mm2": 256.00000000000006
+              }
+            ],
+            "setup_errors": [],
+            "setup_ready": true,
+            "warnings": ["the mesh of 'part' differs from the STL volume by -3.6%: refine the mesh for stiffness- or weight-sensitive results"]
+          },
+          "levels": [
+            {
+              "element_size_mm": 4,
+              "elements_across_thin_walls": 2,
+              "estimated_elements": 840,
+              "within_element_limit": true
+            },
+            {
+              "element_size_mm": 2,
+              "elements_across_thin_walls": 4,
+              "estimated_elements": 6720,
+              "within_element_limit": true
+            },
+            {
+              "element_size_mm": 1,
+              "elements_across_thin_walls": 8,
+              "estimated_elements": 53760,
+              "within_element_limit": true
+            },
+            {
+              "element_size_mm": 0.5,
+              "elements_across_thin_walls": 16,
+              "estimated_elements": 430080,
+              "within_element_limit": true
+            }
+          ]
+        },
+        "setup_complete": true
+      }
+    ],
+    "equivalence": {
+      "checks": [
+        {
+          "design": "B",
+          "difference": 0,
+          "difference_vector_mm": [0, 0, 0],
+          "ok": true,
+          "quantity": "lever_arm",
+          "reference": 78.00000000000003,
+          "tolerance": 1.5600000000000005,
+          "unit": "mm",
+          "value": 78.00000000000003
+        },
+        {
+          "design": "B",
+          "difference": 0,
+          "ok": true,
+          "quantity": "load_region_area",
+          "reference": 256.00000000000006,
+          "tolerance": 5.120000000000001,
+          "unit": "mm2",
+          "value": 256.00000000000006
+        },
+        {
+          "design": "B",
+          "difference": 0,
+          "ok": true,
+          "quantity": "mounting_region_area",
+          "reference": 2400.0000000000064,
+          "tolerance": 48.00000000000013,
+          "unit": "mm2",
+          "value": 2400.0000000000064
+        },
+        {
+          "design": "B",
+          "difference": 0,
+          "ok": true,
+          "quantity": "mounting_normal_angle",
+          "reference": 0,
+          "tolerance": 5,
+          "unit": "deg",
+          "value": 0
+        },
+        {
+          "design": "B",
+          "difference": 0,
+          "ok": true,
+          "quantity": "load_normal_angle",
+          "reference": 0,
+          "tolerance": 5,
+          "unit": "deg",
+          "value": 0
+        }
+      ],
+      "definition": "every design against the first: the lever arm from the mounting-region centroid to the load-region centroid (design frame), the areas of both regions and their mean normals. Equal face ids are not evidence of equivalence; these physical quantities are",
+      "reference_design": "A",
+      "status": "equivalent",
+      "tolerances": {
+        "angle_deg": 5,
+        "position_mm": 1,
+        "relative": 0.02
+      }
+    },
+    "not_evaluated": [
+      {
+        "item": "dynamic loads, impact and vibration",
+        "reason": "the load is static"
+      },
+      {
+        "item": "strength margin or safety",
+        "reason": "no failure criterion and no validated strength data for the modelled condition; stress peaks at ideal supports and sharp corners are singular"
+      },
+      {
+        "item": "fatigue",
+        "reason": "cyclic loading is not modelled"
+      },
+      {
+        "item": "fastener loads, pull-out and joint slip",
+        "reason": "the mounting is an ideal support; fasteners and contact are not modelled"
+      },
+      {
+        "item": "buckling and geometric nonlinearity",
+        "reason": "linear static analysis; large-deformation indicators are checked after solving"
+      },
+      {
+        "item": "creep and temperature effects",
+        "reason": "properties at the reference temperature, time-independent"
+      }
+    ],
+    "plan": {
+      "analyses": 8,
+      "element_sizes_mm": [4, 2, 1, 0.5],
+      "limits": {
+        "max_elements": 450000,
+        "max_wall_seconds": 5400
+      },
+      "order": "every design at each element size from coarse to fine, then the sensitivities at the chosen size"
+    },
+    "questions": [],
+    "unsupported": [],
+    "warnings": []
+  },
+  "created": "2026-09-16T21:28:36Z",
+  "format": "navier-comparison-study-file",
+  "format_version": 1,
+  "resolved": {
+    "analysis": {
+      "formulation": "incompatible_modes",
+      "physics": "static, small-strain linear elasticity, isotropic material",
+      "reference_temperature_c": 20,
+      "solver": "auto"
+    },
+    "decision": "choose between version A (plain L, 8 mm plates) and version B (the same with a 24 mm inner chamfer)",
+    "designs": [
+      {
+        "description": "plain L bracket, 8 mm wall plate and arm, sharp inner corner",
+        "geometry": {
+          "bytes": 83284,
+          "path": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/navier-0.3.0-rc1-macos-arm64/share/navier/examples/bracket_comparison/geometry/bracket_a_plain.stl",
+          "sha256": "7cf8844569be4b9bd80fab7c8f2033eadd160e29b012760e2bb35ddab8ebef19",
+          "units": "mm",
+          "units_source": "user"
+        },
+        "load_region": {
+          "coverage": 0.5,
+          "description": "16 x 16 mm pad on top of the arm tip where the 3 kg item sits",
+          "mode": "triangle",
+          "query": {
+            "box": {
+              "max": [81, 29, 61],
+              "min": [63, 11, 59]
+            }
+          },
+          "source": "user"
+        },
+        "mounting_region": {
+          "coverage": 0.5,
+          "description": "back face bolted against the wall",
+          "mode": "patch",
+          "query": {
+            "plane": {
+              "at": "min",
+              "axis": "x",
+              "tolerance": 0.01
+            }
+          },
+          "source": "user"
+        },
+        "name": "A"
+      },
+      {
+        "description": "the same bracket with a 24 mm inner chamfer",
+        "geometry": {
+          "bytes": 80884,
+          "path": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/navier-0.3.0-rc1-macos-arm64/share/navier/examples/bracket_comparison/geometry/bracket_b_chamfer.stl",
+          "sha256": "806efa160faedf8b5b3fb6bef1e4e9a8e764bc0caa4445cca76f9069deb0c528",
+          "units": "mm",
+          "units_source": "user"
+        },
+        "load_region": {
+          "coverage": 0.5,
+          "description": "16 x 16 mm pad on top of the arm tip where the 3 kg item sits",
+          "mode": "triangle",
+          "query": {
+            "box": {
+              "max": [81, 29, 61],
+              "min": [63, 11, 59]
+            }
+          },
+          "source": "user"
+        },
+        "mounting_region": {
+          "coverage": 0.5,
+          "description": "back face bolted against the wall",
+          "mode": "patch",
+          "query": {
+            "plane": {
+              "at": "min",
+              "axis": "x",
+              "tolerance": 0.01
+            }
+          },
+          "source": "user"
+        },
+        "name": "B"
+      }
+    ],
+    "equivalence": {
+      "angle_tolerance_deg": 5,
+      "position_tolerance_mm": 1,
+      "relative_tolerance": 0.02
+    },
+    "format": "navier-comparison-study",
+    "format_version": 1,
+    "limits": {
+      "max_elements": 450000,
+      "max_wall_seconds": 5400
+    },
+    "load": {
+      "description": "3 kg item resting on the pad; z points up in both files",
+      "direction": [0, 0, -1],
+      "direction_source": "user",
+      "distribution": "uniform_over_region",
+      "force_n": 29.41995,
+      "force_vector_n": [0, 0, -29.41995],
+      "gravity_m_s2": 9.80665,
+      "gravity_source": "default",
+      "kind": "payload_mass",
+      "mass_kg": 3,
+      "self_weight": false,
+      "source": "user"
+    },
+    "manufacturing": {
+      "effective_properties": "not_available",
+      "notes": "machined from plate; the material is treated as homogeneous and isotropic",
+      "process": "machined",
+      "source": "user"
+    },
+    "material": {
+      "density_kg_m3": 2700,
+      "id": "al6061_t6_nominal",
+      "library": false,
+      "name": "Aluminium 6061-T6, nominal handbook values",
+      "poisson_ratio": 0.33,
+      "record": {
+        "density_kg_m3": {
+          "value": 2700
+        },
+        "family": "metal",
+        "id": "al6061_t6_nominal",
+        "name": "Aluminium 6061-T6, nominal handbook values",
+        "poisson_ratio": {
+          "value": 0.33
+        },
+        "provenance": "nominal handbook values for 6061-T6 (E 68.9 GPa, nu 0.33, density 2700 kg/m3); not measured for this batch; confirm against the supplier's certificate",
+        "status": "user_supplied",
+        "youngs_modulus_pa": {
+          "value": 68900000000
+        }
+      },
+      "reference": "nominal handbook values for 6061-T6 aluminium",
+      "source": "database",
+      "status": "user_supplied",
+      "youngs_modulus_pa": 68900000000
+    },
+    "mounting": {
+      "boundary_kind": "fixed",
+      "description": "back face clamped to a rigid wall (the stiffest idealisation of a bolted joint)",
+      "idealization": "fixed",
+      "source": "user"
+    },
+    "name": "bracket_ab_4levels",
+    "quantities": {
+      "load_region_displacement": "area-weighted mean displacement of the load region along the load direction (mm); lower is stiffer",
+      "mass": "density x closed STL volume (kg), with the mesh volume reported beside it",
+      "primary": "load_region_displacement",
+      "stiffness": "load / work-conjugate displacement = |F|^2 / (load work) (N/mm); higher is stiffer"
+    },
+    "question": "Here are two versions of my bracket. They attach through the back face and carry approximately 3 kg on the pad at the end of the arm. Compare their stiffness and mass, explain the assumptions, and tell me what information could change the comparison.",
+    "refinement": {
+      "constant_ratio": true,
+      "convergence_criterion": 0.02,
+      "element_sizes_mm": [4, 2, 1, 0.5]
+    },
+    "retain_results": "refinement",
+    "sensitivity": {
+      "level": "finest",
+      "self_weight": false
+    }
+  },
+  "software": {
+    "compiler": "Apple LLVM 17.0.0 (clang-1700.0.13.5)",
+    "contract_version": "0.5.0",
+    "name": "NAVIER",
+    "version": "0.3.0-rc1"
+  },
+  "study_hash": "6e3532240acab5e24f6202763ab38331542ba2013db27a8164fc834b44f46b1e",
+  "study_hash_covers": "the resolved study without file locations (geometry is identified by SHA-256)"
+}

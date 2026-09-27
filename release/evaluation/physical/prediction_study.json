@@ -1,0 +1,212 @@
+{
+  "name": "physical_protocol_prediction",
+  "question": "Predicted load-pad displacement of brackets A and B in the physical test set-up (PROTOCOL.md), for test planning and comparison.",
+  "decision": "choose between version A (plain L, 8 mm plates) and version B (the same with a 24 mm inner chamfer)",
+  "designs": [
+    {
+      "name": "A",
+      "description": "plain L bracket, 8 mm wall plate and arm, sharp inner corner",
+      "geometry": {
+        "path": "<source tree>/examples/bracket_comparison/geometry/bracket_a_plain.stl",
+        "units": "mm",
+        "units_source": "user"
+      },
+      "mounting_region": {
+        "query": {
+          "any": [
+            {
+              "all": [
+                {
+                  "plane": {
+                    "axis": "x",
+                    "at": "min"
+                  }
+                },
+                {
+                  "facing": {
+                    "direction": "-x",
+                    "max_angle_deg": 5
+                  }
+                }
+              ]
+            },
+            {
+              "all": [
+                {
+                  "box": {
+                    "min": [
+                      7.5,
+                      -0.5,
+                      -0.5
+                    ],
+                    "max": [
+                      8.5,
+                      40.5,
+                      24.5
+                    ]
+                  }
+                },
+                {
+                  "facing": {
+                    "direction": "+x",
+                    "max_angle_deg": 5
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "mode": "triangle",
+        "description": "back face against the steel base and the front strip under the clamp plate (x = 8 mm, z 0-24 mm)",
+        "source": "user"
+      },
+      "load_region": {
+        "query": {
+          "box": {
+            "min": [
+              63,
+              11,
+              59
+            ],
+            "max": [
+              81,
+              29,
+              61
+            ]
+          }
+        },
+        "mode": "triangle",
+        "description": "16 x 16 mm pad on top of the arm tip where the 3 kg item sits",
+        "source": "user"
+      }
+    },
+    {
+      "name": "B",
+      "description": "the same bracket with a 24 mm inner chamfer",
+      "geometry": {
+        "path": "<source tree>/examples/bracket_comparison/geometry/bracket_b_chamfer.stl",
+        "units": "mm",
+        "units_source": "user"
+      },
+      "mounting_region": {
+        "query": {
+          "any": [
+            {
+              "all": [
+                {
+                  "plane": {
+                    "axis": "x",
+                    "at": "min"
+                  }
+                },
+                {
+                  "facing": {
+                    "direction": "-x",
+                    "max_angle_deg": 5
+                  }
+                }
+              ]
+            },
+            {
+              "all": [
+                {
+                  "box": {
+                    "min": [
+                      7.5,
+                      -0.5,
+                      -0.5
+                    ],
+                    "max": [
+                      8.5,
+                      40.5,
+                      24.5
+                    ]
+                  }
+                },
+                {
+                  "facing": {
+                    "direction": "+x",
+                    "max_angle_deg": 5
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "mode": "triangle",
+        "description": "back face against the steel base and the front strip under the clamp plate (x = 8 mm, z 0-24 mm)",
+        "source": "user"
+      },
+      "load_region": {
+        "query": {
+          "box": {
+            "min": [
+              63,
+              11,
+              59
+            ],
+            "max": [
+              81,
+              29,
+              61
+            ]
+          }
+        },
+        "mode": "triangle",
+        "description": "16 x 16 mm pad on top of the arm tip where the 3 kg item sits",
+        "source": "user"
+      }
+    }
+  ],
+  "material": {
+    "record": {
+      "id": "printed_planning_values",
+      "name": "printed polymer, planning values",
+      "family": "polymer",
+      "status": "user_supplied",
+      "provenance": "planning values for the protocol: E 3.5 GPa, nu 0.35, density 1240.0 kg/m3; replaced by the coupon modulus in analyze.py",
+      "youngs_modulus_pa": {
+        "value": 3500000000.0
+      },
+      "poisson_ratio": {
+        "value": 0.35
+      },
+      "density_kg_m3": {
+        "value": 1240.0
+      }
+    },
+    "source": "user",
+    "reference": "PROTOCOL.md planning values"
+  },
+  "manufacturing": {
+    "process": "unspecified",
+    "source": "user",
+    "notes": "printed specimens are modelled as homogeneous and isotropic; PROTOCOL.md reports this model difference"
+  },
+  "mounting": {
+    "idealization": "fixed",
+    "description": "clamped between the steel base and the clamp plate (ideal rigid clamp)",
+    "source": "user"
+  },
+  "load": {
+    "kind": "payload_mass",
+    "mass": "3.0 kg",
+    "direction": "-z",
+    "source": "user",
+    "description": "largest load step of the protocol"
+  },
+  "primary_quantity": "load_region_displacement",
+  "refinement": {
+    "element_sizes": [
+      "4 mm",
+      "2 mm",
+      "1 mm"
+    ],
+    "convergence_criterion": 0.02
+  },
+  "limits": {
+    "max_elements": 400000,
+    "max_wall_time": "30 min"
+  },
+  "retain_results": "none"
+}

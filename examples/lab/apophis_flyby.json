@@ -1,0 +1,222 @@
+{
+ "domain": "orbit",
+ "title": "Apophis passes the Earth, 13 April 2029",
+ "provenance": {
+  "vectors": "JPL Horizons, barycentric (500@0), ecliptic J2000, TDB, epoch 2029-04-12, retrieved 2026-09-25",
+  "gm": "DE440, https://ssd.jpl.nasa.gov/astro_par.html (read 2026-09-25)",
+  "radii": "mean radii for drawing only",
+  "queries": [
+   "https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND=%2710%27&OBJ_DATA=%27NO%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%400%27&START_TIME=%272029-04-12%27&STOP_TIME=%272029-04-13%27&STEP_SIZE=%271+d%27&VEC_TABLE=%272%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27&VEC_LABELS=%27NO%27&TIME_TYPE=%27TDB%27",
+   "https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND=%27199%27&OBJ_DATA=%27NO%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%400%27&START_TIME=%272029-04-12%27&STOP_TIME=%272029-04-13%27&STEP_SIZE=%271+d%27&VEC_TABLE=%272%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27&VEC_LABELS=%27NO%27&TIME_TYPE=%27TDB%27",
+   "https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND=%27299%27&OBJ_DATA=%27NO%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%400%27&START_TIME=%272029-04-12%27&STOP_TIME=%272029-04-13%27&STEP_SIZE=%271+d%27&VEC_TABLE=%272%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27&VEC_LABELS=%27NO%27&TIME_TYPE=%27TDB%27",
+   "https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND=%27399%27&OBJ_DATA=%27NO%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%400%27&START_TIME=%272029-04-12%27&STOP_TIME=%272029-04-13%27&STEP_SIZE=%271+d%27&VEC_TABLE=%272%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27&VEC_LABELS=%27NO%27&TIME_TYPE=%27TDB%27",
+   "https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND=%27301%27&OBJ_DATA=%27NO%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%400%27&START_TIME=%272029-04-12%27&STOP_TIME=%272029-04-13%27&STEP_SIZE=%271+d%27&VEC_TABLE=%272%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27&VEC_LABELS=%27NO%27&TIME_TYPE=%27TDB%27",
+   "https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND=%274%27&OBJ_DATA=%27NO%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%400%27&START_TIME=%272029-04-12%27&STOP_TIME=%272029-04-13%27&STEP_SIZE=%271+d%27&VEC_TABLE=%272%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27&VEC_LABELS=%27NO%27&TIME_TYPE=%27TDB%27",
+   "https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND=%275%27&OBJ_DATA=%27NO%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%400%27&START_TIME=%272029-04-12%27&STOP_TIME=%272029-04-13%27&STEP_SIZE=%271+d%27&VEC_TABLE=%272%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27&VEC_LABELS=%27NO%27&TIME_TYPE=%27TDB%27",
+   "https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND=%276%27&OBJ_DATA=%27NO%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%400%27&START_TIME=%272029-04-12%27&STOP_TIME=%272029-04-13%27&STEP_SIZE=%271+d%27&VEC_TABLE=%272%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27&VEC_LABELS=%27NO%27&TIME_TYPE=%27TDB%27",
+   "https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND=%277%27&OBJ_DATA=%27NO%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%400%27&START_TIME=%272029-04-12%27&STOP_TIME=%272029-04-13%27&STEP_SIZE=%271+d%27&VEC_TABLE=%272%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27&VEC_LABELS=%27NO%27&TIME_TYPE=%27TDB%27",
+   "https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND=%278%27&OBJ_DATA=%27NO%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%400%27&START_TIME=%272029-04-12%27&STOP_TIME=%272029-04-13%27&STEP_SIZE=%271+d%27&VEC_TABLE=%272%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27&VEC_LABELS=%27NO%27&TIME_TYPE=%27TDB%27",
+   "https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND=%279%27&OBJ_DATA=%27NO%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%400%27&START_TIME=%272029-04-12%27&STOP_TIME=%272029-04-13%27&STEP_SIZE=%271+d%27&VEC_TABLE=%272%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27&VEC_LABELS=%27NO%27&TIME_TYPE=%27TDB%27",
+   "https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND=%2799942%3B%27&OBJ_DATA=%27NO%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%400%27&START_TIME=%272029-04-12%27&STOP_TIME=%272029-04-13%27&STEP_SIZE=%271+d%27&VEC_TABLE=%272%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27&VEC_LABELS=%27NO%27&TIME_TYPE=%27TDB%27"
+  ],
+  "comparison": "JPL SBDB close-approach API, orbit 220: 2029-Apr-13 21:46 TDB, 0.000254090910 au (38 011.5 km) from the Earth centre; retrieved 2026-09-25. A prediction from observations, not a measurement."
+ },
+ "epoch_tdb": "2029-04-12",
+ "relativity": true,
+ "stages": 6,
+ "step_days": 0.02,
+ "bodies": [
+  {
+   "name": "sun",
+   "gm_km3_s2": 132712440041.27942,
+   "radius_km": 695700,
+   "position_km": [
+    171690.4484807249,
+    -129255.7904869726,
+    4659.47885606499
+   ],
+   "velocity_km_s": [
+    -0.002156200289923096,
+    0.00864367077436962,
+    6.241907647267821e-06
+   ]
+  },
+  {
+   "name": "mercury",
+   "gm_km3_s2": 22031.868551,
+   "radius_km": 2440.5,
+   "position_km": [
+    -9589836.405266983,
+    45344430.69137335,
+    4616373.133110793
+   ],
+   "velocity_km_s": [
+    -57.40455629157056,
+    -8.437552430484802,
+    4.574099510052815
+   ]
+  },
+  {
+   "name": "venus",
+   "gm_km3_s2": 324858.592,
+   "radius_km": 6051.8,
+   "position_km": [
+    90263353.4894561,
+    59828727.86289436,
+    -4369276.541783255
+   ],
+   "velocity_km_s": [
+    -19.51303548241031,
+    29.01227379708417,
+    1.52449255296197
+   ]
+  },
+  {
+   "name": "earth",
+   "gm_km3_s2": 398600.435507,
+   "radius_km": 6371.0,
+   "position_km": [
+    -138896760.5241158,
+    -56220294.06228082,
+    8788.921033121645
+   ],
+   "velocity_km_s": [
+    10.65644784358118,
+    -27.74070083608554,
+    0.001684615809594447
+   ]
+  },
+  {
+   "name": "moon",
+   "gm_km3_s2": 4902.800118,
+   "radius_km": 1737.4,
+   "position_km": [
+    -138492043.3490042,
+    -56211526.22966454,
+    44015.13689130172
+   ],
+   "velocity_km_s": [
+    10.6425834167878,
+    -26.77033244974465,
+    0.01170762907357847
+   ]
+  },
+  {
+   "name": "mars",
+   "gm_km3_s2": 42828.375816,
+   "radius_km": 3389.5,
+   "position_km": [
+    -238343458.7237706,
+    -53021159.4371874,
+    4743691.402592003
+   ],
+   "velocity_km_s": [
+    6.145240767245659,
+    -21.57557887044547,
+    -0.603109611567823
+   ]
+  },
+  {
+   "name": "jupiter",
+   "gm_km3_s2": 126712764.1,
+   "radius_km": 69911,
+   "position_km": [
+    -755146219.4272437,
+    -307035404.3754952,
+    18179720.2801962
+   ],
+   "velocity_km_s": [
+    4.765487467224247,
+    -11.49764755082543,
+    -0.05884346957725306
+   ]
+  },
+  {
+   "name": "saturn",
+   "gm_km3_s2": 37940584.8418,
+   "radius_km": 58232,
+   "position_km": [
+    999076357.71457,
+    940608754.984015,
+    -56137582.90402013
+   ],
+   "velocity_km_s": [
+    -7.142853455113048,
+    7.014871865651547,
+    0.1624007491543753
+   ]
+  },
+  {
+   "name": "uranus",
+   "gm_km3_s2": 5794556.4,
+   "radius_km": 25362,
+   "position_km": [
+    828629969.650793,
+    2760971759.222453,
+    -481918.6958696842
+   ],
+   "velocity_km_s": [
+    -6.572634901084414,
+    1.639957244208053,
+    0.09122429069011273
+   ]
+  },
+  {
+   "name": "neptune",
+   "gm_km3_s2": 6836527.10058,
+   "radius_km": 24622,
+   "position_km": [
+    4419492426.526374,
+    640065324.0647491,
+    -115032865.131584
+   ],
+   "velocity_km_s": [
+    -0.8145510315597911,
+    5.411430501171414,
+    -0.09266860142309175
+   ]
+  },
+  {
+   "name": "pluto",
+   "gm_km3_s2": 975.5,
+   "radius_km": 1188.3,
+   "position_km": [
+    3349156975.897753,
+    -4235658000.587427,
+    -515533634.8618598
+   ],
+   "velocity_km_s": [
+    4.434425072781895,
+    2.134319063877142,
+    -1.511076297177707
+   ]
+  },
+  {
+   "name": "apophis",
+   "gm_km3_s2": 0.0,
+   "radius_km": 0.2,
+   "position_km": [
+    -139637503.3358926,
+    -56827459.20185478,
+    -263701.4975772239
+   ],
+   "velocity_km_s": [
+    14.87018163196754,
+    -23.92633980573659,
+    1.648253056293298
+   ]
+  }
+ ],
+ "run": {
+  "end_days": 3.0,
+  "frames": 90,
+  "paths": true,
+  "frame_origin": "earth"
+ },
+ "adaptive": true,
+ "tolerance": 1e-13,
+ "track": {
+  "a": "earth",
+  "b": "apophis"
+ }
+}

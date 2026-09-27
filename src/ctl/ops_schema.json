@@ -1,0 +1,4184 @@
+{
+  "$comment": "NAVIER additive-manufacturing control contract. Single source of truth: embedded in every binary, served as the MCP tool input schemas, and used to validate every request from the terminal, the UI, the control socket and MCP. Quantity fields accept a number in the unit given by x-unit, or a string with an explicit unit such as \"0.2 mm\" or \"60 degC\". Coordinates are in the build frame unless stated otherwise: right-handed, +Z is the build direction, origin at the centre of the build plate's top surface.",
+  "contract": "navier-am",
+  "contract_version": "0.6.0",
+  "$defs": {
+    "expected_revision": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Optional optimistic-concurrency guard: the project revision this change is based on (every response reports the current revision). If the project changed in the meantime the request fails with REVISION_CONFLICT and nothing is modified."
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "Optional client-chosen key that makes this request safe to retry: repeating it with identical parameters returns the original result instead of applying the change twice."
+    },
+    "provenance": {
+      "type": "string",
+      "enum": [
+        "user",
+        "inferred",
+        "default",
+        "calibrated"
+      ],
+      "description": "Where a value came from: 'user' = stated by the user; 'inferred' = deduced by the assistant from context or an image; 'default' = assumed without evidence; 'calibrated' = fitted to measurements. Anything other than 'user' is recorded as an assumption and shown in setup summaries."
+    },
+    "length_unit": {
+      "type": "string",
+      "enum": [
+        "mm",
+        "cm",
+        "m",
+        "um",
+        "in",
+        "ft"
+      ]
+    },
+    "axis": {
+      "type": "string",
+      "enum": [
+        "+X",
+        "-X",
+        "+Y",
+        "-Y",
+        "+Z",
+        "-Z"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 63,
+      "description": "Identifier made of letters, digits, '_', '-' and '.'."
+    },
+    "angle": {
+      "type": [
+        "number",
+        "string"
+      ],
+      "x-unit": "deg",
+      "x-dimension": "angle",
+      "description": "Angle in degrees, or a string with a unit (\"0.5 rad\")."
+    },
+    "length": {
+      "type": [
+        "number",
+        "string"
+      ],
+      "x-unit": "mm",
+      "x-dimension": "length",
+      "description": "Length in mm, or a string with a unit (\"0.25 in\")."
+    },
+    "point_mm": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 3,
+      "maxItems": 3,
+      "description": "[x, y, z] in mm, build frame."
+    },
+    "direction": {
+      "type": [
+        "string",
+        "array"
+      ],
+      "items": {
+        "type": "number"
+      },
+      "minItems": 3,
+      "maxItems": 3,
+      "description": "A named build-frame direction (+x -x +y -y +z -z up down) or a vector [x, y, z]."
+    },
+    "camera": {
+      "type": "object",
+      "description": "Either a preset view framing the bodies, or an explicit camera. The response returns the exact camera so pixels can be mapped back to geometry.",
+      "properties": {
+        "preset": {
+          "type": "string",
+          "enum": [
+            "iso",
+            "iso_back",
+            "front",
+            "back",
+            "left",
+            "right",
+            "top",
+            "bottom"
+          ],
+          "description": "front looks along +y, right along -x, top looks down (-z)."
+        },
+        "eye_mm": {
+          "$ref": "#/$defs/point_mm"
+        },
+        "target_mm": {
+          "$ref": "#/$defs/point_mm"
+        },
+        "up": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "fov_deg": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 120,
+          "description": "Vertical field of view; 0 gives an orthographic view."
+        }
+      },
+      "additionalProperties": false
+    },
+    "selection_query": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 1,
+      "description": "Exactly one predicate per object; combine with all, any and not. Lengths in mm and directions in the build frame.",
+      "properties": {
+        "all": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/selection_query"
+          },
+          "minItems": 1,
+          "description": "Faces matching every sub-query."
+        },
+        "any": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/selection_query"
+          },
+          "minItems": 1,
+          "description": "Faces matching at least one sub-query."
+        },
+        "not": {
+          "$ref": "#/$defs/selection_query"
+        },
+        "patches": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 1,
+          "description": "Patch ids from surfaces_list or a labelled view."
+        },
+        "triangles": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 1,
+          "description": "Analysis-surface triangle ids (as stored for picked triangle selections)."
+        },
+        "adjacent_to": {
+          "type": "object",
+          "properties": {
+            "patches": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "patches"
+          ],
+          "additionalProperties": false,
+          "description": "Patches sharing an edge with the given patches."
+        },
+        "facing": {
+          "type": "object",
+          "properties": {
+            "direction": {
+              "$ref": "#/$defs/direction"
+            },
+            "max_angle_deg": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 180,
+              "default": 10
+            }
+          },
+          "required": [
+            "direction"
+          ],
+          "additionalProperties": false,
+          "description": "Faces whose outward normal lies within max_angle_deg of a direction."
+        },
+        "plane": {
+          "type": "object",
+          "properties": {
+            "axis": {
+              "type": "string",
+              "enum": [
+                "x",
+                "y",
+                "z"
+              ]
+            },
+            "at": {
+              "type": [
+                "string",
+                "number"
+              ],
+              "description": "\"min\" or \"max\" of the body along the axis, or a coordinate in mm."
+            },
+            "point": {
+              "$ref": "#/$defs/point_mm"
+            },
+            "normal": {
+              "$ref": "#/$defs/direction"
+            },
+            "tolerance": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "default": 0.01,
+              "description": "mm"
+            }
+          },
+          "additionalProperties": false,
+          "description": "Faces lying on a plane: axis + at, or point + normal."
+        },
+        "extreme": {
+          "type": "object",
+          "properties": {
+            "direction": {
+              "$ref": "#/$defs/direction"
+            },
+            "tolerance": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "default": 0.01,
+              "description": "mm"
+            }
+          },
+          "required": [
+            "direction"
+          ],
+          "additionalProperties": false,
+          "description": "The outermost faces along a direction, e.g. the top-most surface."
+        },
+        "box": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "$ref": "#/$defs/point_mm"
+            },
+            "max": {
+              "$ref": "#/$defs/point_mm"
+            }
+          },
+          "required": [
+            "min",
+            "max"
+          ],
+          "additionalProperties": false,
+          "description": "Faces whose triangle centroids lie in a box."
+        },
+        "sphere": {
+          "type": "object",
+          "properties": {
+            "center": {
+              "$ref": "#/$defs/point_mm"
+            },
+            "radius": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "mm"
+            }
+          },
+          "required": [
+            "center",
+            "radius"
+          ],
+          "additionalProperties": false
+        },
+        "near": {
+          "type": "object",
+          "properties": {
+            "point": {
+              "$ref": "#/$defs/point_mm"
+            },
+            "distance": {
+              "type": "number",
+              "minimum": 0,
+              "description": "mm"
+            }
+          },
+          "required": [
+            "point",
+            "distance"
+          ],
+          "additionalProperties": false,
+          "description": "Faces within a distance of a point."
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "planar",
+            "cylindrical",
+            "other"
+          ]
+        },
+        "cylinder": {
+          "type": "object",
+          "properties": {
+            "radius_min": {
+              "type": "number",
+              "minimum": 0,
+              "description": "mm"
+            },
+            "radius_max": {
+              "type": "number",
+              "minimum": 0,
+              "description": "mm"
+            },
+            "hole": {
+              "type": "boolean",
+              "description": "true: concave (holes); false: convex (bosses)"
+            }
+          },
+          "additionalProperties": false
+        },
+        "area": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number",
+              "minimum": 0,
+              "description": "mm^2"
+            },
+            "max": {
+              "type": "number",
+              "minimum": 0,
+              "description": "mm^2"
+            }
+          },
+          "additionalProperties": false,
+          "description": "Patches by area."
+        },
+        "pick": {
+          "type": "object",
+          "properties": {
+            "view_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "pixel": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 2,
+              "maxItems": 2,
+              "description": "[x, y] pixel of the rendered view"
+            },
+            "triangle_only": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": [
+            "view_id",
+            "pixel"
+          ],
+          "additionalProperties": false,
+          "description": "The patch under a pixel of a view rendered by this server."
+        }
+      },
+      "additionalProperties": false
+    },
+    "property": {
+      "type": "object",
+      "description": "SI value: {\"value\": number}, or a temperature table {\"t_c\": [degC, ...], \"value\": [...]} interpolated linearly.",
+      "properties": {
+        "value": {
+          "type": [
+            "number",
+            "array"
+          ],
+          "items": {
+            "type": "number"
+          }
+        },
+        "t_c": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 1,
+          "maxItems": 64
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "scalar": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number"
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "study_source": {
+      "type": "string",
+      "enum": [
+        "user",
+        "measured",
+        "database",
+        "inferred",
+        "default"
+      ],
+      "description": "Where a value came from: user = stated by the user; measured = measured on the real part or material; database = a handbook, datasheet or library value; inferred = deduced by the assistant from context; default = assumed without evidence. Values not stated by the user are recorded as assumptions."
+    },
+    "study_region": {
+      "type": "object",
+      "description": "Faces of one design as a selection query in the design frame: the STL file's axes and origin, lengths in mm.",
+      "properties": {
+        "query": {
+          "$ref": "#/$defs/selection_query"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "patch",
+            "triangle"
+          ],
+          "default": "patch",
+          "description": "patch selects whole face patches; triangle selects matching triangles (part of a large face)."
+        },
+        "coverage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0.5
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500,
+          "description": "What the region is physically, e.g. 'back face bolted to the wall'."
+        },
+        "source": {
+          "$ref": "#/$defs/study_source"
+        }
+      },
+      "required": [
+        "query",
+        "description"
+      ],
+      "additionalProperties": false
+    },
+    "study_material": {
+      "type": "object",
+      "description": "A library material (id) or a material record, with the source of its values.",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/name"
+        },
+        "record": {
+          "type": "object",
+          "description": "A material record as for material_define: id, name, family, status, provenance, youngs_modulus_pa, poisson_ratio and density_kg_m3 as {\"value\": ...} or temperature tables."
+        },
+        "source": {
+          "$ref": "#/$defs/study_source"
+        },
+        "reference": {
+          "type": "string",
+          "maxLength": 1000,
+          "description": "Datasheet, handbook, test report or user statement behind the values."
+        }
+      },
+      "required": [
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "comparison_study": {
+      "type": "object",
+      "description": "A comparison of two to four designs of one part under the same mounting and load. Coordinates are in each design's frame (its STL axes, mm). Missing information that changes the answer is returned as a question, never guessed.",
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/name"
+        },
+        "question": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 4000,
+          "description": "The user's engineering question, verbatim."
+        },
+        "decision": {
+          "type": "string",
+          "maxLength": 2000,
+          "description": "What the user wants to decide with the answer."
+        },
+        "designs": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "$ref": "#/$defs/name"
+              },
+              "description": {
+                "type": "string",
+                "maxLength": 1000
+              },
+              "geometry": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4000,
+                    "description": "STL file (binary or ASCII), a closed solid."
+                  },
+                  "units": {
+                    "type": "string",
+                    "enum": [
+                      "mm",
+                      "cm",
+                      "m",
+                      "in",
+                      "ft",
+                      "um",
+                      "unknown"
+                    ],
+                    "description": "Length unit of the numbers in the file. Never guess: omit it or use unknown when the user has not said, and the check asks."
+                  },
+                  "units_source": {
+                    "$ref": "#/$defs/study_source"
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "additionalProperties": false
+              },
+              "mounting_region": {
+                "$ref": "#/$defs/study_region"
+              },
+              "load_region": {
+                "$ref": "#/$defs/study_region"
+              },
+              "material": {
+                "$ref": "#/$defs/study_material"
+              }
+            },
+            "required": [
+              "name",
+              "geometry",
+              "mounting_region",
+              "load_region"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "material": {
+          "$ref": "#/$defs/study_material"
+        },
+        "manufacturing": {
+          "type": "object",
+          "properties": {
+            "process": {
+              "type": "string",
+              "enum": [
+                "unspecified",
+                "machined",
+                "sheet_metal",
+                "cast",
+                "molded",
+                "fff",
+                "sla",
+                "sls",
+                "mjf",
+                "lpbf",
+                "other"
+              ],
+              "default": "unspecified"
+            },
+            "source": {
+              "$ref": "#/$defs/study_source"
+            },
+            "orientation": {
+              "type": "string",
+              "maxLength": 500,
+              "description": "Printed parts: build orientation relative to the design frame."
+            },
+            "infill_percent": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "layer_height": {
+              "$ref": "#/$defs/length"
+            },
+            "effective_properties": {
+              "type": "string",
+              "enum": [
+                "not_available",
+                "bulk_values_assumed",
+                "measured_for_this_process"
+              ],
+              "default": "not_available",
+              "description": "Whether the material values apply to parts made by this process in this orientation."
+            },
+            "notes": {
+              "type": "string",
+              "maxLength": 2000
+            }
+          },
+          "additionalProperties": false
+        },
+        "mounting": {
+          "type": "object",
+          "properties": {
+            "idealization": {
+              "type": "string",
+              "enum": [
+                "fixed",
+                "frictionless_normal"
+              ],
+              "description": "fixed: every displacement of the mounting region is zero (a rigid clamp, the stiffest idealisation); frictionless_normal: only the normal displacement is zero (flat faces normal to x, y or z)."
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 1000
+            },
+            "source": {
+              "$ref": "#/$defs/study_source"
+            }
+          },
+          "required": [
+            "idealization",
+            "source"
+          ],
+          "additionalProperties": false
+        },
+        "load": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "payload_mass",
+                "force"
+              ],
+              "description": "payload_mass: a carried mass under gravity (force = mass x g, both recorded); force: a force magnitude."
+            },
+            "mass": {
+              "type": [
+                "number",
+                "string"
+              ],
+              "x-unit": "kg",
+              "x-dimension": "mass",
+              "description": "Payload mass (kind payload_mass). A mass is not a force: g is recorded separately."
+            },
+            "gravity": {
+              "type": [
+                "number",
+                "string"
+              ],
+              "x-unit": "m/s^2",
+              "x-dimension": "acceleration",
+              "description": "Default: standard gravity 9.80665 m/s^2, recorded as a default."
+            },
+            "gravity_source": {
+              "$ref": "#/$defs/study_source"
+            },
+            "force": {
+              "type": [
+                "number",
+                "string"
+              ],
+              "x-unit": "N",
+              "x-dimension": "force",
+              "description": "Force magnitude (kind force)."
+            },
+            "direction": {
+              "$ref": "#/$defs/direction"
+            },
+            "direction_source": {
+              "$ref": "#/$defs/study_source"
+            },
+            "self_weight": {
+              "type": "boolean",
+              "default": false,
+              "description": "Also apply each design's own weight along the load direction (distinct from the payload)."
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 1000
+            },
+            "source": {
+              "$ref": "#/$defs/study_source"
+            }
+          },
+          "required": [
+            "kind",
+            "direction",
+            "source"
+          ],
+          "additionalProperties": false
+        },
+        "primary_quantity": {
+          "type": "string",
+          "enum": [
+            "load_region_displacement",
+            "stiffness"
+          ],
+          "default": "load_region_displacement",
+          "description": "The quantity that decides the comparison: the area-weighted mean displacement of the load region along the load, or the load divided by its work-conjugate displacement."
+        },
+        "refinement": {
+          "type": "object",
+          "properties": {
+            "element_sizes": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 4,
+              "items": {
+                "$ref": "#/$defs/length"
+              },
+              "description": "Voxel element sizes of the refinement study, ideally halving (for example 4, 2, 1 mm)."
+            },
+            "convergence_criterion": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 0.5,
+              "default": 0.02,
+              "description": "Largest relative change between the two finest meshes for a quantity to count as converged."
+            }
+          },
+          "required": [
+            "element_sizes"
+          ],
+          "additionalProperties": false
+        },
+        "sensitivity": {
+          "type": "object",
+          "properties": {
+            "youngs_modulus_relative": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 10
+              },
+              "description": "Range of Young's modulus as factors, e.g. [0.8, 1.2]; displacements scale with 1/E, verified by one run at the upper factor."
+            },
+            "poisson_ratio": {
+              "type": "array",
+              "maxItems": 4,
+              "items": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 0.49
+              }
+            },
+            "mounting_alternatives": {
+              "type": "array",
+              "maxItems": 2,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "#/$defs/name"
+                  },
+                  "idealization": {
+                    "type": "string",
+                    "enum": [
+                      "fixed",
+                      "frictionless_normal"
+                    ]
+                  },
+                  "description": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1000
+                  },
+                  "regions": {
+                    "type": "object",
+                    "maxProperties": 4,
+                    "description": "Per design name, another mounting region; designs not listed keep theirs.",
+                    "additionalProperties": {
+                      "$ref": "#/$defs/study_region"
+                    }
+                  }
+                },
+                "required": [
+                  "name",
+                  "idealization",
+                  "description"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "self_weight": {
+              "type": "boolean",
+              "default": false
+            },
+            "level": {
+              "type": "string",
+              "enum": [
+                "finest",
+                "second_finest",
+                "coarsest"
+              ],
+              "default": "finest"
+            }
+          },
+          "additionalProperties": false
+        },
+        "equivalence": {
+          "type": "object",
+          "properties": {
+            "position_tolerance": {
+              "$ref": "#/$defs/length"
+            },
+            "relative_tolerance": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "default": 0.02
+            },
+            "angle_tolerance_deg": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 90,
+              "default": 5
+            }
+          },
+          "additionalProperties": false
+        },
+        "limits": {
+          "type": "object",
+          "properties": {
+            "max_elements": {
+              "type": "integer",
+              "minimum": 1000,
+              "maximum": 2000000,
+              "default": 400000,
+              "description": "Per analysis; a finer level that needs more is skipped and reported."
+            },
+            "max_wall_time": {
+              "type": [
+                "number",
+                "string"
+              ],
+              "x-unit": "s",
+              "x-dimension": "time",
+              "description": "Whole study; default 1800 s. No analysis starts after it is used up."
+            }
+          },
+          "additionalProperties": false
+        },
+        "analysis": {
+          "type": "object",
+          "properties": {
+            "formulation": {
+              "type": "string",
+              "enum": [
+                "incompatible_modes",
+                "full_integration"
+              ],
+              "default": "incompatible_modes"
+            },
+            "solver": {
+              "type": "string",
+              "enum": [
+                "auto",
+                "direct",
+                "iterative"
+              ],
+              "default": "auto"
+            },
+            "reference_temperature": {
+              "type": [
+                "number",
+                "string"
+              ],
+              "x-unit": "degC",
+              "x-dimension": "temperature"
+            }
+          },
+          "additionalProperties": false
+        },
+        "retain_results": {
+          "type": "string",
+          "enum": [
+            "refinement",
+            "all",
+            "none"
+          ],
+          "default": "refinement",
+          "description": "Which full result fields (results.nvr) stay on disk: refinement keeps the mesh levels and removes sensitivity runs after their quantities are recorded; all keeps every run; none keeps only specifications and summaries. Hashes are always recorded, and study_replay regenerates any field."
+        },
+        "accept": {
+          "type": "array",
+          "maxItems": 32,
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 1000
+              }
+            },
+            "required": [
+              "id",
+              "reason"
+            ],
+            "additionalProperties": false
+          },
+          "description": "Acceptable questions from a check that the user answered by accepting the assumption, with the user's reason."
+        },
+        "notes": {
+          "type": "array",
+          "maxItems": 32,
+          "items": {
+            "type": "object",
+            "properties": {
+              "subject": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              },
+              "source": {
+                "$ref": "#/$defs/study_source"
+              }
+            },
+            "required": [
+              "subject",
+              "text",
+              "source"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "name",
+        "question",
+        "designs",
+        "mounting",
+        "load",
+        "refinement"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "operations": [
+    {
+      "name": "capabilities_get",
+      "title": "Capabilities and model limitations",
+      "kind": "query",
+      "description": "Reports what this server can do and how: operations, analysis types with their fidelity, element and solver technology, material data status, resource limits, unit and coordinate conventions, and explicit model limitations (effects that are NOT simulated). Read it before planning a setup and before interpreting results.",
+      "input": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "project_create",
+      "title": "Create a project",
+      "kind": "mutation",
+      "description": "Creates a new empty project and makes it the active project. A project is a directory holding project.json (the resolved, reproducible specification), copies of imported inputs and run results. Only directories inside the server's allowed write roots can be used.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/$defs/name",
+            "description": "Project name; also the default directory name."
+          },
+          "directory": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "Project directory. Relative paths are resolved against the server workspace. Default: <workspace>/<name>."
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 2000,
+            "default": "",
+            "description": "Free text describing the intent, e.g. the user's original request."
+          },
+          "overwrite": {
+            "type": "boolean",
+            "default": false,
+            "description": "Allow replacing project.json in a directory that already holds a project (existing run folders stay on disk)."
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "project_open",
+      "title": "Open a project",
+      "kind": "mutation",
+      "description": "Opens a saved project (its directory or its project.json) and makes it active. Input files are verified against the SHA-256 recorded in the project, and geometry, surfaces and placement are rebuilt deterministically from the stored specification.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "Project directory or path of its project.json."
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "project_save",
+      "title": "Save the project",
+      "kind": "mutation",
+      "idempotent": true,
+      "description": "Atomically writes the complete resolved specification of the active project to project.json in its directory: inputs with hashes, units, placement, repairs, assumptions, and every setting with its provenance.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "project_inspect",
+      "title": "Inspect the project",
+      "kind": "query",
+      "description": "Returns the state of the active project: revision, bodies with units and placement, recorded assumptions and the recent change journal. Choose sections to keep the answer small.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "sections": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "summary",
+                "bodies",
+                "assumptions",
+                "journal"
+              ]
+            },
+            "minItems": 1,
+            "maxItems": 8,
+            "default": [
+              "summary",
+              "bodies",
+              "assumptions"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "geometry_import",
+      "title": "Import STL geometry",
+      "kind": "mutation",
+      "description": "Imports an ASCII or binary STL file as a body of the active project and reports diagnostics: triangle and vertex counts, degenerate and duplicate faces, open and non-manifold edges, winding consistency, connected components, nested shells (cavities), holes, volume, bounding box, and a unit plausibility check. The file is hashed and copied into the project; optional repairs are applied to an analysis copy and always reported. STL stores no units, so 'units' is required: if the user did not state it, pass your best inference with units_source 'inferred' (or 'default') and explain it in units_note, and it is recorded as an assumption. The body is placed on the build plate with up_axis along the build direction.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "STL file path."
+          },
+          "units": {
+            "$ref": "#/$defs/length_unit",
+            "description": "Length unit of the coordinates stored in the file."
+          },
+          "units_source": {
+            "$ref": "#/$defs/provenance",
+            "default": "user"
+          },
+          "units_note": {
+            "type": "string",
+            "maxLength": 500,
+            "default": "",
+            "description": "Why this unit was chosen when the user did not state it."
+          },
+          "name": {
+            "$ref": "#/$defs/name",
+            "description": "Body name. Default: the file name without extension."
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "part",
+              "support",
+              "build_plate"
+            ],
+            "default": "part",
+            "description": "part = the printed part; support = a separately modelled support structure; build_plate = plate geometry supplied as STL."
+          },
+          "up_axis": {
+            "$ref": "#/$defs/axis",
+            "default": "+Z",
+            "description": "Axis of the file's coordinate system that points up along the build direction on the machine. CAD and slicer exports are usually Z-up; some viewers and game tools export Y-up."
+          },
+          "up_axis_source": {
+            "$ref": "#/$defs/provenance",
+            "default": "default"
+          },
+          "repair": {
+            "type": "object",
+            "description": "Optional, reported repairs applied to the analysis copy; the stored source mesh is never modified.",
+            "properties": {
+              "remove_degenerate": {
+                "type": "boolean",
+                "default": true,
+                "description": "Drop zero-area faces and faces collapsed by vertex welding."
+              },
+              "remove_duplicate_faces": {
+                "type": "boolean",
+                "default": true,
+                "description": "Drop exact repeats of a face with the same orientation."
+              },
+              "orient_outward": {
+                "type": "boolean",
+                "default": true,
+                "description": "Make winding consistent within each shell, with normals pointing out of the material (into cavities)."
+              }
+            },
+            "additionalProperties": false,
+            "default": {}
+          },
+          "replace": {
+            "type": "boolean",
+            "default": false,
+            "description": "Replace an existing body with the same name."
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "path",
+          "units"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "geometry_place",
+      "title": "Orient and place a body on the build plate",
+      "kind": "mutation",
+      "description": "Sets the build orientation and position of a body. Orientation is composed as: map up_axis of the file to build +Z, rotate about build Z by rotate_z, then apply the extra rotations in order. The rotated body is translated so that its footprint centre is at position and its lowest point is z_offset above the plate top (z = 0). Omitted fields keep their current values. Changing the placement makes meshes and results built on the old placement stale.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "$ref": "#/$defs/name",
+            "description": "Body to place. Default: the first part."
+          },
+          "up_axis": {
+            "$ref": "#/$defs/axis",
+            "description": "File axis that becomes the build direction (+Z)."
+          },
+          "up_axis_source": {
+            "$ref": "#/$defs/provenance",
+            "default": "user"
+          },
+          "rotate_z": {
+            "$ref": "#/$defs/angle",
+            "description": "Rotation about build Z in degrees, counter-clockwise seen from above, applied after the up-axis mapping."
+          },
+          "rotations": {
+            "type": "array",
+            "maxItems": 8,
+            "description": "Additional rotations about build axes applied in order after rotate_z; replaces the previous list.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "axis": {
+                  "type": "string",
+                  "enum": [
+                    "x",
+                    "y",
+                    "z"
+                  ]
+                },
+                "angle": {
+                  "$ref": "#/$defs/angle"
+                }
+              },
+              "required": [
+                "axis",
+                "angle"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "position": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/length"
+            },
+            "minItems": 2,
+            "maxItems": 2,
+            "description": "Footprint centre [x, y] on the plate, mm."
+          },
+          "z_offset": {
+            "$ref": "#/$defs/length",
+            "description": "Height of the lowest point above the plate top, mm (for example the support height)."
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "geometry_diagnostics",
+      "title": "Geometry diagnostics",
+      "kind": "query",
+      "description": "Detailed geometry report for a body: topology (open and non-manifold edges, holes with size and location, winding, components, nested shells), repairs applied, unit plausibility, and optional expensive checks: self-intersections between faces that share no vertex, and local wall thickness from inward ray casts. Lengths are reported in mm in the build frame.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "$ref": "#/$defs/name",
+            "description": "Body name. Default: the first part."
+          },
+          "self_intersections": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "run",
+              "skip"
+            ],
+            "default": "auto",
+            "description": "auto runs the check for bodies with up to 500000 triangles."
+          },
+          "thickness": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "run",
+              "skip"
+            ],
+            "default": "auto",
+            "description": "auto runs the check for bodies with up to 500000 triangles."
+          },
+          "thickness_samples": {
+            "type": "integer",
+            "minimum": 16,
+            "maximum": 200000,
+            "default": 4000
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "geometry_repair",
+      "title": "Repair a surface",
+      "kind": "mutation",
+      "description": "Makes a triangle soup into something the volume mesher can trust, and counts every change: vertices welded, degenerate and duplicate facets removed, shells that are not the part dropped, and holes filled up to a stated number of boundary edges. A repair changes the part, so it is never automatic: the caller asks for it and states where the hole size comes from. The answer lists the facets dropped and added with the diagnostics before and after, and the repaired surface is stored in the project like any other input.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "$ref": "#/$defs/name",
+            "description": "Body name. Default: the first part."
+          },
+          "keep_largest_shell": {
+            "type": "boolean",
+            "default": true,
+            "description": "Drop every edge-connected shell but the largest by area. A sheet of zero thickness left inside a part is what a ray-parity inside test cannot survive."
+          },
+          "max_hole_edges": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100000,
+            "default": 64,
+            "description": "Fill a boundary loop of at most this many edges. 0 fills none. Filling a hole invents material."
+          },
+          "provenance": {
+            "$ref": "#/$defs/provenance",
+            "description": "Where the hole size comes from. Required: the repair changes the geometry."
+          }
+        },
+        "required": [
+          "provenance"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "surfaces_list",
+      "title": "List surface patches",
+      "kind": "query",
+      "description": "Lists the face-like patches recovered from the STL triangles of a body (STL has no named CAD faces): id, type (planar, cylindrical with radius and hole/boss, other), area, centroid, outward normal, facing (up/down/side), bounds, adjacent patches and tags such as bottom, top, on_build_plate and overhang. Use the ids or geometric predicates to create selections.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "$ref": "#/$defs/name",
+            "description": "Body name. Default: the first part."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "any",
+              "planar",
+              "cylindrical",
+              "other"
+            ],
+            "default": "any"
+          },
+          "facing": {
+            "type": "string",
+            "enum": [
+              "any",
+              "up",
+              "down",
+              "side"
+            ],
+            "default": "any"
+          },
+          "min_area_mm2": {
+            "type": "number",
+            "minimum": 0,
+            "default": 0
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "area",
+              "z_max",
+              "z_min",
+              "id"
+            ],
+            "default": "area"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 500,
+            "default": 60
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "geometry_pick",
+      "title": "Pick geometry with a ray",
+      "kind": "query",
+      "description": "Casts a ray against the analysis surface of the project's bodies and reports what it hits: the body, the triangle, the surface patch and its area, type, facing and outward normal. The ray is given in the build frame in millimetres, so an application that draws the part itself (the native 3D view) can turn the pointer into a patch id and build a selection from it, without rendering an image first. view_pick answers the same question for a rendered view.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "origin_mm": {
+            "$ref": "#/$defs/point_mm",
+            "description": "Where the ray starts, build frame, mm."
+          },
+          "direction": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 3,
+            "maxItems": 3,
+            "description": "Where it points, build frame; it does not have to be a unit vector."
+          }
+        },
+        "required": [
+          "origin_mm",
+          "direction"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "selection_create",
+      "title": "Create a named surface selection",
+      "kind": "mutation",
+      "description": "Creates (or with replace, redefines) a named selection of faces on one body from a query, e.g. the bottom face: {\"all\": [{\"facing\": {\"direction\": \"down\"}}, {\"plane\": {\"axis\": \"z\", \"at\": \"min\"}}]}. Returns the resolved faces with area, centroid, mean normal and bounds, and, when a mesh exists, how many mesh faces carry it. Record the interpretation of the user's words in description. Boundary conditions refer to selections by name; redefining a selection makes conditions built on its previous faces stale.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/$defs/name"
+          },
+          "body": {
+            "$ref": "#/$defs/name",
+            "description": "Body name. Default: the first part."
+          },
+          "query": {
+            "$ref": "#/$defs/selection_query"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "patch",
+              "triangle"
+            ],
+            "default": "patch",
+            "description": "patch selects whole patches whose matching area reaches coverage; triangle selects matching triangles only."
+          },
+          "coverage": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "default": 0.5
+          },
+          "keep_largest": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000,
+            "default": 0,
+            "description": "Keep only the N largest matching patches (0 = all)."
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 500,
+            "default": "",
+            "description": "What the selection represents, e.g. 'base bonded to the build plate'."
+          },
+          "source": {
+            "$ref": "#/$defs/provenance",
+            "default": "inferred"
+          },
+          "replace": {
+            "type": "boolean",
+            "default": false
+          },
+          "preview": {
+            "type": "boolean",
+            "default": false,
+            "description": "Attach a rendered image with the selection highlighted."
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "name",
+          "query"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "selection_list",
+      "title": "List selections",
+      "kind": "query",
+      "description": "Lists named selections with their resolved area, faces and staleness (a selection is stale when a geometry or placement change made it resolve to different faces).",
+      "input": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "$ref": "#/$defs/name"
+          },
+          "detailed": {
+            "type": "boolean",
+            "default": false,
+            "description": "Include the query and the set hash."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "selection_delete",
+      "title": "Delete a selection",
+      "kind": "mutation",
+      "destructive": true,
+      "description": "Deletes a named selection. Refuses when boundary conditions use it, unless cascade is true, in which case those conditions are removed as well and listed.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/$defs/name"
+          },
+          "cascade": {
+            "type": "boolean",
+            "default": false
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "selection_preview",
+      "title": "Preview selections",
+      "kind": "query",
+      "description": "Renders the geometry with up to eight selections highlighted in distinct colours, patch ids labelled, and the build plate grid, and returns the image with its exact camera and a view_id for picking.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "names": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/name"
+            },
+            "minItems": 1,
+            "maxItems": 8
+          },
+          "camera": {
+            "$ref": "#/$defs/camera"
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 200,
+            "maximum": 2400,
+            "default": 900
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 150,
+            "maximum": 1800,
+            "default": 650
+          },
+          "label_patches": {
+            "type": "boolean",
+            "default": true,
+            "description": "Draw patch ids at visible patch centres."
+          },
+          "show_build_plate": {
+            "type": "boolean",
+            "default": true
+          },
+          "show_mesh": {
+            "type": "boolean",
+            "default": false,
+            "description": "Show the voxel mesh boundary instead of the STL surface."
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "default": ""
+          }
+        },
+        "required": [
+          "names"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "view_render",
+      "title": "Render a view",
+      "kind": "query",
+      "description": "Renders the project geometry (or its mesh) from a preset or explicit camera and returns a PNG image, the exact camera (eye, target, up, field of view, pixel convention) and a view_id. Visible patch ids are labelled so the user's words, or annotations the user draws on this image, can be mapped to faces; view_pick converts pixels of this image into faces and points. Images of unknown cameras (photographs, other software) cannot be picked.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "highlight": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/name"
+            },
+            "maxItems": 8,
+            "description": "Selections to highlight."
+          },
+          "camera": {
+            "$ref": "#/$defs/camera"
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 200,
+            "maximum": 2400,
+            "default": 900
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 150,
+            "maximum": 1800,
+            "default": 650
+          },
+          "label_patches": {
+            "type": "boolean",
+            "default": true,
+            "description": "Draw patch ids at visible patch centres."
+          },
+          "show_build_plate": {
+            "type": "boolean",
+            "default": true
+          },
+          "show_mesh": {
+            "type": "boolean",
+            "default": false,
+            "description": "Show the voxel mesh boundary instead of the STL surface."
+          },
+          "style": {"type": "string", "enum": ["default", "showcase"], "description": "showcase: the capture preset of the repository media. A dark neutral background and none of the renderer's own annotations (title, colour bar, maximum marker, axis triad); the reply still carries the legend, the stored time and the exact camera, from which a compositor draws them."},
+            "title": {
+            "type": "string",
+            "maxLength": 200,
+            "default": ""
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "view_pick",
+      "title": "Pick geometry at pixels of a rendered view",
+      "kind": "query",
+      "description": "Casts rays through pixels of an image rendered by view_render or selection_preview and returns, per pixel, the body, patch, triangle, 3D point (mm) and surface normal hit first. Fails when the geometry or placement changed after the view was rendered.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "view_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32
+          },
+          "pixels": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "minItems": 1,
+            "maxItems": 64,
+            "description": "[[x, y], ...] with the origin at the top-left corner"
+          }
+        },
+        "required": [
+          "view_id",
+          "pixels"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "materials_list",
+      "title": "List materials",
+      "kind": "query",
+      "description": "Lists the material library and the project's materials with status (demonstration, user_supplied, calibrated, measured, published), provenance, values at 20 degC and temperature-dependent properties. A measured or published library entry names the source of every value; a demonstration entry is not for design. Pass id for one full record.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 63
+          },
+          "family": {
+            "type": "string",
+            "enum": [
+              "any",
+              "polymer",
+              "metal",
+              "other",
+              "fluid"
+            ],
+            "default": "any"
+          },
+          "process": {
+            "type": "string",
+            "enum": [
+              "any",
+              "fff",
+              "lpbf"
+            ],
+            "default": "any"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "material_list",
+      "title": "Material library at a glance",
+      "kind": "query",
+      "description": "Every material record (library and project) with its status, process group (metal powder bed (LPBF), plastic filament (FFF), fluid, other), the property names it carries, what it lacks for a stress analysis (Young's modulus, Poisson's ratio), a heat analysis (density, conductivity, specific heat) and a thermal-stress analysis (both, and expansion), and the first line of where its numbers come from; counts of records, of those with a source on every value, and of demonstration records. Use materials_list with id for one record in full.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "process": {
+            "type": "string",
+            "enum": [
+              "any",
+              "fff",
+              "lpbf"
+            ],
+            "default": "any"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "material_define",
+      "title": "Define a project material",
+      "kind": "mutation",
+      "description": "Stores a material record in the project. Values are SI in the unit named by each key (youngs_modulus_pa in Pa). Use status user_supplied for values the user provided and calibrated only for values fitted to measurements; never make up properties for a named grade.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "material": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/name"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 159
+              },
+              "family": {
+                "type": "string",
+                "enum": [
+                  "polymer",
+                  "metal",
+                  "other",
+                  "fluid"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "user_supplied",
+                  "calibrated",
+                  "demonstration"
+                ]
+              },
+              "provenance": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 2000,
+                "description": "Where the values come from: datasheet, test report, user statement."
+              },
+              "processes": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "fff",
+                    "lpbf"
+                  ]
+                }
+              },
+              "density_kg_m3": {
+                "$ref": "#/$defs/property"
+              },
+              "youngs_modulus_pa": {
+                "$ref": "#/$defs/property"
+              },
+              "poisson_ratio": {
+                "$ref": "#/$defs/property"
+              },
+              "expansion_1_per_k": {
+                "$ref": "#/$defs/property"
+              },
+              "conductivity_w_per_mk": {
+                "$ref": "#/$defs/property"
+              },
+              "conductivity_w_per_mk_2": {
+                "$ref": "#/$defs/property",
+                "description": "Second principal conductivity. Giving it makes the material anisotropic; conductivity_w_per_mk is then the first principal value."
+              },
+              "conductivity_w_per_mk_3": {
+                "$ref": "#/$defs/property",
+                "description": "Third principal conductivity (defaults to the first when omitted)."
+              },
+              "conductivity_axes": {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 3,
+                "items": {
+                  "type": "array",
+                  "minItems": 3,
+                  "maxItems": 3,
+                  "items": {
+                    "type": "number"
+                  }
+                },
+                "description": "Three orthonormal rows: the principal directions of the conductivity expressed in the body frame. Omit for axes aligned with the body. Requires conductivity_w_per_mk_2."
+              },
+              "specific_heat_j_per_kgk": {
+                "$ref": "#/$defs/property"
+              },
+              "emissivity": {
+                "$ref": "#/$defs/property"
+              },
+              "yield_strength_pa": {
+                "$ref": "#/$defs/property"
+              },
+              "hardening_modulus_pa": {
+                "$ref": "#/$defs/property"
+              },
+              "dynamic_viscosity_pa_s": {
+                "$ref": "#/$defs/property",
+                "description": "Dynamic viscosity of a fluid (family fluid): a flow domain of conjugate_heat_transfer needs it, with constant density, specific heat and conductivity."
+              },
+              "solidus_c": {
+                "$ref": "#/$defs/scalar"
+              },
+              "liquidus_c": {
+                "$ref": "#/$defs/scalar"
+              },
+              "latent_heat_j_per_kg": {
+                "$ref": "#/$defs/scalar"
+              },
+              "anneal_temperature_c": {
+                "$ref": "#/$defs/scalar"
+              },
+              "glass_transition_c": {
+                "$ref": "#/$defs/scalar"
+              },
+              "strength_pa": {
+                "$ref": "#/$defs/scalar"
+              },
+              "powder": {
+                "type": "object"
+              },
+              "not_modelled": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 300
+                }
+              },
+              "calibration": {
+                "type": "string",
+                "maxLength": 2000
+              },
+              "notes": {
+                "type": "string",
+                "maxLength": 2000
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "family",
+              "status",
+              "provenance"
+            ],
+            "additionalProperties": false
+          },
+          "replace": {
+            "type": "boolean",
+            "default": false
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "material"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "material_assign",
+      "title": "Assign a material",
+      "kind": "mutation",
+      "description": "Assigns a material id to a body or to build_plate. source says where the choice came from: user when the user named the material; inferred or default choices are recorded as assumptions.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "$ref": "#/$defs/name",
+            "description": "Body name, or build_plate."
+          },
+          "material": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 63
+          },
+          "source": {
+            "$ref": "#/$defs/provenance"
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 255,
+            "default": ""
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "body",
+          "material",
+          "source"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mesh_generate",
+      "title": "Generate the volume mesh",
+      "kind": "mutation",
+      "description": "Builds the volume mesh of all part and support bodies. method voxel (the default, and the mesh every print analysis needs): a layer-aligned voxel mesh of 8-node hexahedra whose boundary is a staircase; the response quantifies volume and area errors and boundary distances against the STL, maps selections onto mesh faces and warns about thin walls. method tet: a conforming tetrahedral mesh by isosurface stuffing (docs/contracts/tet-mesh.md), 10-node quadratic elements by default, whose surface nodes lie on the STL; sharp edges are rounded at the surface cell scale, walls thinner than 1.5 cells are refined locally, and the response reports the dihedral angles, aspect ratio, distance of the surface to the STL and the volume error. Only static structural analyses run on it. Element sizes are numerical choices: confirm results by halving them.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "element_size": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "mm",
+            "x-dimension": "length",
+            "description": "Element edge length in mm or a string with a unit. Omit both sizes to rebuild the mesh from the project's stored settings (after project_open), or to get an automatic size when none are stored."
+          },
+          "element_size_z": {
+            "$ref": "#/$defs/length",
+            "description": "Element height; defaults to element_size."
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "voxel",
+              "tet"
+            ],
+            "default": "voxel",
+            "description": "voxel: hexahedra on a layer-aligned grid (element_size). tet: a conforming tetrahedral mesh (surface_size, interior_size, order)."
+          },
+          "surface_size": {
+            "$ref": "#/$defs/length",
+            "description": "method tet: the cell size at the surface (mm); defaults to element_size, else the automatic size."
+          },
+          "interior_size": {
+            "$ref": "#/$defs/length",
+            "description": "method tet: the largest cell inside (mm); default four times surface_size."
+          },
+          "order": {
+            "type": "integer",
+            "enum": [
+              1,
+              2
+            ],
+            "default": 2,
+            "description": "method tet: 1 for 4-node tetrahedra (they lock in bending; for comparison), 2 for 10-node quadratic tetrahedra with curved surface faces."
+          },
+          "thin_wall_levels": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2,
+            "default": 2,
+            "description": "method tet: how many times a cell may be halved below surface_size where a wall is thinner than 1.5 cells (2: down to a quarter; 0: never, so walls thinner than about a cell can be lost). A numerical choice, reported."
+          },
+          "include_build_plate": {
+            "type": "boolean",
+            "default": false
+          },
+          "plate_thickness": {
+            "$ref": "#/$defs/length",
+            "default": 10
+          },
+          "plate_margin": {
+            "$ref": "#/$defs/length",
+            "default": 5
+          },
+          "max_elements": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20000000,
+            "default": 400000
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mesh_inspect",
+      "title": "Inspect the mesh",
+      "kind": "query",
+      "description": "Reports whether a mesh exists and is current, its settings, element counts, quality, approximation errors and selection mapping; render: true adds an image of the mesh boundary.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "render": {
+            "type": "boolean",
+            "default": false
+          },
+          "show_build_plate": {
+            "type": "boolean",
+            "default": true
+          },
+          "camera": {
+            "$ref": "#/$defs/camera"
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 200,
+            "maximum": 2400,
+            "default": 900
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 150,
+            "maximum": 1800,
+            "default": 650
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "default": ""
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "boundary_apply",
+      "title": "Apply a boundary condition",
+      "kind": "mutation",
+      "description": "Applies a support, a load or a thermal condition. Mechanical: fixed (all displacements zero), displacement (components in mm; omitted or null components stay free), frictionless_support (zero normal displacement on a flat face normal to x, y or z), force (total N, distributed by area), pressure (MPa, positive pushes into the surface), traction (MPa vector), gravity (acceleration vector, whole model, no selection). Thermal, used by thermal and thermomechanical analyses and ignored by static_structural: temperature, heat_flux, convection and radiation on a selection, heat_source on a body. Use only the supports, loads and coefficients the user stated; set source accordingly.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/$defs/name"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "fixed",
+              "displacement",
+              "frictionless_support",
+              "force",
+              "pressure",
+              "traction",
+              "gravity",
+              "temperature",
+              "heat_flux",
+              "convection",
+              "radiation",
+              "heat_source"
+            ]
+          },
+          "selection": {
+            "$ref": "#/$defs/name"
+          },
+          "displacement": {
+            "type": "object",
+            "description": "Prescribed displacement components in mm (build frame).",
+            "properties": {
+              "x": {
+                "type": [
+                  "number",
+                  "string",
+                  "null"
+                ],
+                "x-unit": "mm",
+                "x-dimension": "length"
+              },
+              "y": {
+                "type": [
+                  "number",
+                  "string",
+                  "null"
+                ],
+                "x-unit": "mm",
+                "x-dimension": "length"
+              },
+              "z": {
+                "type": [
+                  "number",
+                  "string",
+                  "null"
+                ],
+                "x-unit": "mm",
+                "x-dimension": "length"
+              }
+            },
+            "additionalProperties": false
+          },
+          "force": {
+            "type": "array",
+            "items": {
+              "type": [
+                "number",
+                "string"
+              ],
+              "x-unit": "N",
+              "x-dimension": "force"
+            },
+            "minItems": 3,
+            "maxItems": 3,
+            "description": "Total force [x, y, z] in N, build frame."
+          },
+          "pressure": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "MPa",
+            "x-dimension": "pressure",
+            "description": "Positive pushes into the surface."
+          },
+          "traction": {
+            "type": "array",
+            "items": {
+              "type": [
+                "number",
+                "string"
+              ],
+              "x-unit": "MPa",
+              "x-dimension": "pressure"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "acceleration": {
+            "type": "array",
+            "items": {
+              "type": [
+                "number",
+                "string"
+              ],
+              "x-unit": "m/s^2",
+              "x-dimension": "acceleration"
+            },
+            "minItems": 3,
+            "maxItems": 3,
+            "description": "Gravity vector in m/s^2, e.g. [0, 0, -9.81] when +z points up."
+          },
+          "temperature": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "degC",
+            "x-dimension": "temperature",
+            "description": "Prescribed surface temperature."
+          },
+          "heat_flux": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "W/m^2",
+            "x-dimension": "heat_flux",
+            "description": "Heat flux into the body; negative cools."
+          },
+          "convection": {
+            "type": "object",
+            "properties": {
+              "coefficient": {
+                "type": [
+                  "number",
+                  "string"
+                ],
+                "x-unit": "W/(m^2*K)",
+                "x-dimension": "heat_transfer_coefficient"
+              },
+              "ambient": {
+                "type": [
+                  "number",
+                  "string"
+                ],
+                "x-unit": "degC",
+                "x-dimension": "temperature"
+              }
+            },
+            "required": [
+              "coefficient",
+              "ambient"
+            ],
+            "additionalProperties": false,
+            "description": "Newton cooling h (T - ambient). The coefficient is a correlation value: use the one the user gives, or state the assumption."
+          },
+          "radiation": {
+            "type": "object",
+            "properties": {
+              "emissivity": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "ambient": {
+                "type": [
+                  "number",
+                  "string"
+                ],
+                "x-unit": "degC",
+                "x-dimension": "temperature"
+              }
+            },
+            "required": [
+              "emissivity",
+              "ambient"
+            ],
+            "additionalProperties": false,
+            "description": "Grey-body radiation eps sigma (T^4 - ambient^4) to large surroundings."
+          },
+          "power_density": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "W/m^3",
+            "x-dimension": "volumetric_power",
+            "description": "Volumetric heating of a whole body."
+          },
+          "body": {
+            "$ref": "#/$defs/name",
+            "description": "Body a volumetric condition (heat_source) acts on."
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 500,
+            "default": ""
+          },
+          "source": {
+            "$ref": "#/$defs/provenance"
+          },
+          "replace": {
+            "type": "boolean",
+            "default": false
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          },
+          "schedule": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 32,
+            "items": {
+              "type": "object",
+              "properties": {
+                "time": {
+                  "type": [
+                    "number",
+                    "string"
+                  ],
+                  "x-unit": "s",
+                  "x-dimension": "time"
+                },
+                "factor": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "time",
+                "factor"
+              ],
+              "additionalProperties": false
+            },
+            "description": "Thermal conditions only: a piecewise-constant multiplier in time. From each entry's time until the next entry the condition acts with its value multiplied by factor (heat flux, power density, convection coefficient or emissivity; a prescribed temperature is held with factor 1 and released with 0). The first entry must be at time 0. Transient steps land exactly on every entry time, so a switch-on or switch-off is never smeared over a step."
+          }
+        },
+        "required": [
+          "name",
+          "kind",
+          "source"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "boundary_list",
+      "title": "List boundary conditions",
+      "kind": "query",
+      "description": "Lists supports and loads with their values, source, selection state (current, stale, selection_changed, missing), selection area, load resultants and mesh mapping.",
+      "input": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "boundary_remove",
+      "title": "Remove a boundary condition",
+      "kind": "mutation",
+      "destructive": true,
+      "description": "Removes a boundary condition by name.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/$defs/name"
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "interface_define",
+      "title": "Define a thermal interface",
+      "kind": "mutation",
+      "idempotent": true,
+      "engine_lock": true,
+      "description": "Declares how heat crosses where two bodies touch: perfect, a contact conductance, a thin layer or insulated. The bodies must meet face to face in the current mesh; gaps, edge-only contact, overlapping geometry and junctions with a third body are refused with a diagnostic. Only the thermal model is split: the bodies stay bonded mechanically. Returns the coverage (faces, area, bounds), the total conductance and resistance, and any exterior thermal condition whose selection reaches onto the interface (which the mesh treats as internal, so it is not double counted).",
+      "input": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/$defs/name"
+          },
+          "body_a": {
+            "$ref": "#/$defs/name",
+            "description": "One body of the pair. Heat rates are reported from body_b into body_a."
+          },
+          "body_b": {
+            "$ref": "#/$defs/name"
+          },
+          "model": {
+            "type": "string",
+            "enum": [
+              "perfect",
+              "conductance",
+              "thin_layer",
+              "insulated"
+            ],
+            "description": "perfect: no temperature jump (shared nodes). conductance: q = h (T_b - T_a) with a contact conductance h. thin_layer: h = layer conductivity / thickness, a layer without heat capacity. insulated: no heat crosses. In every model the bodies stay bonded mechanically."
+          },
+          "conductance": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "W/(m^2*K)",
+            "x-dimension": "heat_transfer_coefficient",
+            "description": "Contact conductance h (model conductance). A contact resistance R'' is h = 1/R''."
+          },
+          "layer": {
+            "type": "object",
+            "properties": {
+              "thickness": {
+                "type": [
+                  "number",
+                  "string"
+                ],
+                "x-unit": "mm",
+                "x-dimension": "length"
+              },
+              "conductivity": {
+                "type": [
+                  "number",
+                  "string"
+                ],
+                "x-unit": "W/(m*K)",
+                "x-dimension": "thermal_conductivity"
+              }
+            },
+            "required": [
+              "thickness",
+              "conductivity"
+            ],
+            "additionalProperties": false,
+            "description": "Model thin_layer."
+          },
+          "replace": {
+            "type": "boolean",
+            "default": false
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 511,
+            "default": ""
+          },
+          "source": {
+            "$ref": "#/$defs/provenance"
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "name",
+          "body_a",
+          "body_b",
+          "model",
+          "source"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "interface_list",
+      "title": "List thermal interfaces",
+      "kind": "query",
+      "engine_lock": true,
+      "description": "Every declared interface with its coverage and validity in the current mesh, and the pairs of bodies that touch without an interface (treated as perfectly bonded).",
+      "input": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "interface_remove",
+      "title": "Remove a thermal interface",
+      "kind": "mutation",
+      "idempotent": true,
+      "engine_lock": true,
+      "description": "Removes an interface; the two bodies are again perfectly bonded where they touch.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/$defs/name"
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "interface_preview",
+      "title": "Preview a thermal interface",
+      "kind": "query",
+      "engine_lock": true,
+      "description": "Renders body_a's mesh with the interface faces highlighted and returns the coverage report, so the paired surfaces can be checked before solving.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/$defs/name"
+          },
+          "camera": {
+            "$ref": "#/$defs/camera"
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 200,
+            "maximum": 2400,
+            "default": 900
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 150,
+            "maximum": 1800,
+            "default": 650
+          },
+          "label_patches": {
+            "type": "boolean",
+            "default": true,
+            "description": "Draw patch ids at visible patch centres."
+          },
+          "show_build_plate": {
+            "type": "boolean",
+            "default": true
+          },
+          "show_mesh": {
+            "type": "boolean",
+            "default": false,
+            "description": "Show the voxel mesh boundary instead of the STL surface."
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "default": ""
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "setup_validate",
+      "title": "Validate the analysis setup",
+      "kind": "query",
+      "description": "Checks, without changing anything, that the chosen analysis can be solved: current mesh, materials with the properties that analysis needs, valid selections and boundary conditions, no conflicts, loads mapped onto the mesh, and (for static analyses) no unconstrained rigid-body motion. Returns errors with hints, warnings, the model summary, assumptions and, when ready, the specification hash.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "analysis": {
+            "type": "string",
+            "enum": [
+              "static_structural",
+              "transient_thermal",
+              "thermomechanical",
+              "conjugate_heat_transfer"
+            ],
+            "default": "static_structural",
+            "description": "conjugate_heat_transfer: a resolved laminar flow (lattice Boltzmann, steady, computed once) through a fluid body carries heat away from the solid bodies it touches; the fluid's energy is transported by advection (SUPG) and exchanged with the solids through their shared nodes, with no convection coefficient. Needs flow; coupling and structural_response are optional."
+          },
+          "end_time": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "s",
+            "x-dimension": "time",
+            "description": "Transient analyses: simulated duration."
+          },
+          "time_step": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "s",
+            "x-dimension": "time",
+            "description": "Fixed stepping: the step. Adaptive stepping: the first step (optional; default 1e-3 of end_time)."
+          },
+          "theta": {
+            "type": "number",
+            "minimum": 0.5,
+            "maximum": 1,
+            "default": 1,
+            "description": "Time integration: 1 backward Euler (robust), 0.5 Crank-Nicolson (second order)."
+          },
+          "capacity": {
+            "type": "string",
+            "enum": [
+              "lumped",
+              "consistent"
+            ],
+            "default": "lumped"
+          },
+          "initial_temperature": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "degC",
+            "x-dimension": "temperature",
+            "default": 20
+          },
+          "stress_free_temperature": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "degC",
+            "x-dimension": "temperature",
+            "description": "Thermomechanical: temperature at which the part carries no thermal stress. Default: the initial temperature."
+          },
+          "output_every": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1,
+            "description": "Store every n-th step."
+          },
+          "max_iterations": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2000,
+            "default": 50,
+            "description": "Largest number of nonlinear (Picard) iterations per step. Latent heat needs many more than conduction alone: in a mushy zone dH/dT is large, so temperature_tolerance is effectively an energy tolerance and both usually have to be tightened together."
+          },
+          "temperature_tolerance": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "default": 1e-06,
+            "description": "K: convergence of those iterations."
+          },
+          "formulation": {
+            "type": "string",
+            "enum": [
+              "incompatible_modes",
+              "full_integration"
+            ],
+            "default": "incompatible_modes",
+            "description": "hex8 with Wilson-Taylor incompatible modes (accurate in bending) or plain full integration (stiff in bending)."
+          },
+          "reference_temperature": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "degC",
+            "x-dimension": "temperature",
+            "default": 20,
+            "description": "Temperature at which temperature-dependent material properties are evaluated."
+          },
+          "property_evaluation": {
+            "type": "string",
+            "enum": [
+              "quadrature_point",
+              "element_mean"
+            ],
+            "default": "quadrature_point",
+            "description": "Where temperature-dependent and anisotropic conductivity is evaluated. quadrature_point integrates the property over the element (default); element_mean uses one value per element at its mean temperature and is kept for comparison with the earlier formulation."
+          },
+          "capacity_model": {
+            "type": "string",
+            "enum": [
+              "enthalpy_secant",
+              "element_rho_cp"
+            ],
+            "default": "enthalpy_secant",
+            "description": "enthalpy_secant uses (H(T1)-H(T0))/(T1-T0), so the stored energy of a step equals the enthalpy change exactly and latent heat is carried without double counting. element_rho_cp uses rho*cp at the element mean temperature and ignores latent heat."
+          },
+          "phase_change": {
+            "type": "boolean",
+            "default": true,
+            "description": "Apply the latent heat of materials that state a solidus, a liquidus and a latent heat. The liquid fraction is linear between solidus and liquidus (local equilibrium); hysteresis and undercooling are not modelled."
+          },
+          "time_stepping": {
+            "type": "string",
+            "enum": [
+              "fixed",
+              "adaptive"
+            ],
+            "default": "fixed",
+            "description": "fixed: steps of time_step. adaptive: the step follows an error estimate (step doubling, measured in temperature and in enthalpy) and is rejected and retried when the estimate exceeds the tolerance; time_step is then only the first step. A completed adaptive run reports its error estimates, not a guarantee: global error accumulates over steps."
+          },
+          "temporal_relative_tolerance": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 0.5,
+            "description": "Adaptive: allowed local error per step relative to the temperature change since the initial temperature (and to the enthalpy change), never relative to the absolute temperature. Default 0.001 when time_stepping is adaptive; rejected with fixed steps."
+          },
+          "temporal_temperature_tolerance": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "K",
+            "x-dimension": "temperature_difference",
+            "description": "Adaptive: absolute allowed local error per step, a temperature difference (K). Checked at every node, not averaged. Default 0.01 when time_stepping is adaptive; rejected with fixed steps."
+          },
+          "temporal_enthalpy_tolerance": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "J/m^3",
+            "x-dimension": "energy_density",
+            "description": "Adaptive: absolute allowed local enthalpy error per step at every Gauss point. Default: the temperature tolerance times rho*cp of each material, which makes a phase transition, where a small temperature error is a large latent-energy error, control the step."
+          },
+          "temporal_error_measure": {
+            "type": "string",
+            "enum": [
+              "temperature_and_enthalpy",
+              "temperature"
+            ],
+            "default": "temperature_and_enthalpy",
+            "description": "temperature alone can hide a large latent-energy error near melting; use it only to compare against the default."
+          },
+          "min_time_step": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "s",
+            "x-dimension": "time",
+            "exclusiveMinimum": 0,
+            "description": "Adaptive: the smallest step the controller may use; a step that needs less fails with MIN_STEP. Default 1e-10 of end_time."
+          },
+          "max_time_step": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "s",
+            "x-dimension": "time",
+            "exclusiveMinimum": 0,
+            "description": "Adaptive: the largest step. Default end_time."
+          },
+          "step_safety": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1,
+            "default": 0.9
+          },
+          "max_step_growth": {
+            "type": "number",
+            "exclusiveMinimum": 1,
+            "maximum": 100,
+            "default": 3
+          },
+          "max_step_shrink": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "exclusiveMaximum": 1,
+            "default": 0.2,
+            "description": "The largest reduction applied at once after a rejection (new step >= factor * old step)."
+          },
+          "max_rejections": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "default": 25,
+            "description": "Consecutive rejections of one step before the run fails with TOO_MANY_REJECTIONS."
+          },
+          "max_steps": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100000000,
+            "default": 1000000,
+            "description": "Accepted steps before the run fails with STEP_LIMIT."
+          },
+          "output_times": {
+            "type": "array",
+            "maxItems": 256,
+            "items": {
+              "type": [
+                "number",
+                "string"
+              ],
+              "x-unit": "s",
+              "x-dimension": "time"
+            },
+            "description": "Times (after 0, up to end_time, increasing) at which the temperature field is stored. Steps land on them exactly. The initial state and the end are always stored."
+          },
+          "output_interval": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "s",
+            "x-dimension": "time",
+            "exclusiveMinimum": 0,
+            "description": "Store the field every output_interval seconds (steps land on each). Used when output_times is not given; output_every applies to fixed steps only when neither is given."
+          },
+          "checkpoint_interval": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "s",
+            "x-dimension": "time",
+            "minimum": 0,
+            "description": "Transient runs: write a checkpoint at the first accepted step after every multiple of this physical time (0: none). Checkpoints never change the step sequence."
+          },
+          "checkpoint_wall_interval": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "s",
+            "x-dimension": "time",
+            "minimum": 0,
+            "description": "Transient runs: write a checkpoint when this much wall-clock time has passed since the last one (default 60 s; 0: none)."
+          },
+          "flow": {
+            "type": "object",
+            "description": "conjugate_heat_transfer: the flow domain. The fluid enters at the smallest x of the fluid body's bounding box and leaves at its largest x; the mesh must have cubic cells. The flow is steady, laminar, incompressible, with constant properties from the fluid material (family fluid, with dynamic_viscosity_pa_s), and does not depend on temperature (no buoyancy).",
+            "properties": {
+              "fluid_body": {
+                "type": "string",
+                "description": "The body that is the flow domain (a closed solid in the geometry, e.g. a channel box touching the heated part)."
+              },
+              "inlet_velocity": {
+                "type": [
+                  "number",
+                  "string"
+                ],
+                "x-unit": "m/s",
+                "x-dimension": "speed",
+                "description": "Uniform velocity along +x over the inlet plane."
+              },
+              "inlet_temperature": {
+                "type": [
+                  "number",
+                  "string"
+                ],
+                "x-unit": "degC",
+                "x-dimension": "temperature",
+                "description": "Temperature of the entering fluid (also of any backflow at the outlet). Defaults to initial_temperature."
+              },
+              "walls": {
+                "type": "object",
+                "description": "Flow condition on the four sides of the fluid box (default no_slip each). periodic applies to the flow only: for the temperature those sides are adiabatic.",
+                "properties": {
+                  "y_min": {
+                    "type": "string",
+                    "enum": [
+                      "no_slip",
+                      "slip",
+                      "periodic"
+                    ]
+                  },
+                  "y_max": {
+                    "type": "string",
+                    "enum": [
+                      "no_slip",
+                      "slip",
+                      "periodic"
+                    ]
+                  },
+                  "z_min": {
+                    "type": "string",
+                    "enum": [
+                      "no_slip",
+                      "slip",
+                      "periodic"
+                    ]
+                  },
+                  "z_max": {
+                    "type": "string",
+                    "enum": [
+                      "no_slip",
+                      "slip",
+                      "periodic"
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              },
+              "steady_tolerance": {
+                "type": "number",
+                "minimum": 0,
+                "description": "The lattice run stops when the momentum field changes by less than this fraction of the inlet velocity over 200 lattice steps (default 2e-6)."
+              }
+            },
+            "required": [
+              "fluid_body",
+              "inlet_velocity"
+            ],
+            "additionalProperties": false
+          },
+          "coupling": {
+            "type": "object",
+            "description": "conjugate_heat_transfer: how fluid and solids are coupled. partitioned (default): two participants iterated every step until the interface temperature stops changing (Dirichlet on the fluid side, the fluid's heat to the solids), with Aitken relaxation; the coupling error is reported separately. monolithic: one system, no iteration.",
+            "properties": {
+              "scheme": {
+                "type": "string",
+                "enum": [
+                  "partitioned",
+                  "monolithic"
+                ]
+              },
+              "relative_tolerance": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "description": "Partitioned: the iteration ends when the interface temperature changes by less than this fraction of itself (default 1e-8)."
+              },
+              "max_iterations": {
+                "type": "integer",
+                "minimum": 2,
+                "maximum": 1000,
+                "description": "Partitioned: iterations per step before the step is rejected and retried smaller (default 50)."
+              },
+              "relaxation": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1,
+                "description": "Partitioned: the first relaxation factor before Aitken's (default 0.5)."
+              }
+            },
+            "additionalProperties": false
+          },
+          "structural_response": {
+            "type": "boolean",
+            "description": "conjugate_heat_transfer: also solve the solid bodies' thermal expansion at every stored time (one-way; the fluid has no stiffness). Default false."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "analysis_run",
+      "title": "Run an analysis",
+      "kind": "mutation",
+      "idempotent": true,
+      "description": "Validates the setup and starts the solve as a background job. static_structural solves the elastic problem; transient_thermal steps heat conduction with the thermal conditions (needs end_time and time_step); thermomechanical additionally solves the structure at every stored time with the thermal strain from the stress-free temperature; conjugate_heat_transfer computes a steady laminar flow through a fluid body once and couples the fluid's energy with the solids it touches (partitioned or monolithic), optionally with their thermal expansion. Returns at once with job_id, run directory and specification hash; an identical analysis already queued or running is returned instead of a duplicate. Poll job_status; jobs and results survive client disconnects.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "analysis": {
+            "type": "string",
+            "enum": [
+              "static_structural",
+              "transient_thermal",
+              "thermomechanical",
+              "conjugate_heat_transfer"
+            ],
+            "default": "static_structural",
+            "description": "conjugate_heat_transfer: a resolved laminar flow (lattice Boltzmann, steady, computed once) through a fluid body carries heat away from the solid bodies it touches; the fluid's energy is transported by advection (SUPG) and exchanged with the solids through their shared nodes, with no convection coefficient. Needs flow; coupling and structural_response are optional."
+          },
+          "end_time": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "s",
+            "x-dimension": "time",
+            "description": "Transient analyses: simulated duration."
+          },
+          "time_step": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "s",
+            "x-dimension": "time",
+            "description": "Fixed stepping: the step. Adaptive stepping: the first step (optional; default 1e-3 of end_time)."
+          },
+          "theta": {
+            "type": "number",
+            "minimum": 0.5,
+            "maximum": 1,
+            "default": 1,
+            "description": "Time integration: 1 backward Euler (robust), 0.5 Crank-Nicolson (second order)."
+          },
+          "capacity": {
+            "type": "string",
+            "enum": [
+              "lumped",
+              "consistent"
+            ],
+            "default": "lumped"
+          },
+          "initial_temperature": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "degC",
+            "x-dimension": "temperature",
+            "default": 20
+          },
+          "stress_free_temperature": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "degC",
+            "x-dimension": "temperature",
+            "description": "Thermomechanical: temperature at which the part carries no thermal stress. Default: the initial temperature."
+          },
+          "output_every": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1,
+            "description": "Store every n-th step."
+          },
+          "max_iterations": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2000,
+            "default": 50,
+            "description": "Largest number of nonlinear (Picard) iterations per step. Latent heat needs many more than conduction alone: in a mushy zone dH/dT is large, so temperature_tolerance is effectively an energy tolerance and both usually have to be tightened together."
+          },
+          "temperature_tolerance": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "default": 1e-06,
+            "description": "K: convergence of those iterations."
+          },
+          "formulation": {
+            "type": "string",
+            "enum": [
+              "incompatible_modes",
+              "full_integration"
+            ],
+            "default": "incompatible_modes",
+            "description": "hex8 with Wilson-Taylor incompatible modes (accurate in bending) or plain full integration (stiff in bending)."
+          },
+          "reference_temperature": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "degC",
+            "x-dimension": "temperature",
+            "default": 20,
+            "description": "Temperature at which temperature-dependent material properties are evaluated."
+          },
+          "solver": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "direct",
+              "iterative"
+            ],
+            "default": "auto"
+          },
+          "tolerance": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 0.0001,
+            "default": 1e-10,
+            "description": "Relative residual of the iterative solver."
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 127,
+            "default": ""
+          },
+          "allow_duplicate": {
+            "type": "boolean",
+            "default": false
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          },
+          "property_evaluation": {
+            "type": "string",
+            "enum": [
+              "quadrature_point",
+              "element_mean"
+            ],
+            "default": "quadrature_point",
+            "description": "Where temperature-dependent and anisotropic conductivity is evaluated. quadrature_point integrates the property over the element (default); element_mean uses one value per element at its mean temperature and is kept for comparison with the earlier formulation."
+          },
+          "capacity_model": {
+            "type": "string",
+            "enum": [
+              "enthalpy_secant",
+              "element_rho_cp"
+            ],
+            "default": "enthalpy_secant",
+            "description": "enthalpy_secant uses (H(T1)-H(T0))/(T1-T0), so the stored energy of a step equals the enthalpy change exactly and latent heat is carried without double counting. element_rho_cp uses rho*cp at the element mean temperature and ignores latent heat."
+          },
+          "phase_change": {
+            "type": "boolean",
+            "default": true,
+            "description": "Apply the latent heat of materials that state a solidus, a liquidus and a latent heat. The liquid fraction is linear between solidus and liquidus (local equilibrium); hysteresis and undercooling are not modelled."
+          },
+          "time_stepping": {
+            "type": "string",
+            "enum": [
+              "fixed",
+              "adaptive"
+            ],
+            "default": "fixed",
+            "description": "fixed: steps of time_step. adaptive: the step follows an error estimate (step doubling, measured in temperature and in enthalpy) and is rejected and retried when the estimate exceeds the tolerance; time_step is then only the first step. A completed adaptive run reports its error estimates, not a guarantee: global error accumulates over steps."
+          },
+          "temporal_relative_tolerance": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 0.5,
+            "description": "Adaptive: allowed local error per step relative to the temperature change since the initial temperature (and to the enthalpy change), never relative to the absolute temperature. Default 0.001 when time_stepping is adaptive; rejected with fixed steps."
+          },
+          "temporal_temperature_tolerance": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "K",
+            "x-dimension": "temperature_difference",
+            "description": "Adaptive: absolute allowed local error per step, a temperature difference (K). Checked at every node, not averaged. Default 0.01 when time_stepping is adaptive; rejected with fixed steps."
+          },
+          "temporal_enthalpy_tolerance": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "J/m^3",
+            "x-dimension": "energy_density",
+            "description": "Adaptive: absolute allowed local enthalpy error per step at every Gauss point. Default: the temperature tolerance times rho*cp of each material, which makes a phase transition, where a small temperature error is a large latent-energy error, control the step."
+          },
+          "temporal_error_measure": {
+            "type": "string",
+            "enum": [
+              "temperature_and_enthalpy",
+              "temperature"
+            ],
+            "default": "temperature_and_enthalpy",
+            "description": "temperature alone can hide a large latent-energy error near melting; use it only to compare against the default."
+          },
+          "min_time_step": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "s",
+            "x-dimension": "time",
+            "exclusiveMinimum": 0,
+            "description": "Adaptive: the smallest step the controller may use; a step that needs less fails with MIN_STEP. Default 1e-10 of end_time."
+          },
+          "max_time_step": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "s",
+            "x-dimension": "time",
+            "exclusiveMinimum": 0,
+            "description": "Adaptive: the largest step. Default end_time."
+          },
+          "step_safety": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1,
+            "default": 0.9
+          },
+          "max_step_growth": {
+            "type": "number",
+            "exclusiveMinimum": 1,
+            "maximum": 100,
+            "default": 3
+          },
+          "max_step_shrink": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "exclusiveMaximum": 1,
+            "default": 0.2,
+            "description": "The largest reduction applied at once after a rejection (new step >= factor * old step)."
+          },
+          "max_rejections": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "default": 25,
+            "description": "Consecutive rejections of one step before the run fails with TOO_MANY_REJECTIONS."
+          },
+          "max_steps": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100000000,
+            "default": 1000000,
+            "description": "Accepted steps before the run fails with STEP_LIMIT."
+          },
+          "output_times": {
+            "type": "array",
+            "maxItems": 256,
+            "items": {
+              "type": [
+                "number",
+                "string"
+              ],
+              "x-unit": "s",
+              "x-dimension": "time"
+            },
+            "description": "Times (after 0, up to end_time, increasing) at which the temperature field is stored. Steps land on them exactly. The initial state and the end are always stored."
+          },
+          "output_interval": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "s",
+            "x-dimension": "time",
+            "exclusiveMinimum": 0,
+            "description": "Store the field every output_interval seconds (steps land on each). Used when output_times is not given; output_every applies to fixed steps only when neither is given."
+          },
+          "checkpoint_interval": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "s",
+            "x-dimension": "time",
+            "minimum": 0,
+            "description": "Transient runs: write a checkpoint at the first accepted step after every multiple of this physical time (0: none). Checkpoints never change the step sequence."
+          },
+          "checkpoint_wall_interval": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "s",
+            "x-dimension": "time",
+            "minimum": 0,
+            "description": "Transient runs: write a checkpoint when this much wall-clock time has passed since the last one (default 60 s; 0: none)."
+          },
+          "flow": {
+            "type": "object",
+            "description": "conjugate_heat_transfer: the flow domain. The fluid enters at the smallest x of the fluid body's bounding box and leaves at its largest x; the mesh must have cubic cells. The flow is steady, laminar, incompressible, with constant properties from the fluid material (family fluid, with dynamic_viscosity_pa_s), and does not depend on temperature (no buoyancy).",
+            "properties": {
+              "fluid_body": {
+                "type": "string",
+                "description": "The body that is the flow domain (a closed solid in the geometry, e.g. a channel box touching the heated part)."
+              },
+              "inlet_velocity": {
+                "type": [
+                  "number",
+                  "string"
+                ],
+                "x-unit": "m/s",
+                "x-dimension": "speed",
+                "description": "Uniform velocity along +x over the inlet plane."
+              },
+              "inlet_temperature": {
+                "type": [
+                  "number",
+                  "string"
+                ],
+                "x-unit": "degC",
+                "x-dimension": "temperature",
+                "description": "Temperature of the entering fluid (also of any backflow at the outlet). Defaults to initial_temperature."
+              },
+              "walls": {
+                "type": "object",
+                "description": "Flow condition on the four sides of the fluid box (default no_slip each). periodic applies to the flow only: for the temperature those sides are adiabatic.",
+                "properties": {
+                  "y_min": {
+                    "type": "string",
+                    "enum": [
+                      "no_slip",
+                      "slip",
+                      "periodic"
+                    ]
+                  },
+                  "y_max": {
+                    "type": "string",
+                    "enum": [
+                      "no_slip",
+                      "slip",
+                      "periodic"
+                    ]
+                  },
+                  "z_min": {
+                    "type": "string",
+                    "enum": [
+                      "no_slip",
+                      "slip",
+                      "periodic"
+                    ]
+                  },
+                  "z_max": {
+                    "type": "string",
+                    "enum": [
+                      "no_slip",
+                      "slip",
+                      "periodic"
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              },
+              "steady_tolerance": {
+                "type": "number",
+                "minimum": 0,
+                "description": "The lattice run stops when the momentum field changes by less than this fraction of the inlet velocity over 200 lattice steps (default 2e-6)."
+              }
+            },
+            "required": [
+              "fluid_body",
+              "inlet_velocity"
+            ],
+            "additionalProperties": false
+          },
+          "coupling": {
+            "type": "object",
+            "description": "conjugate_heat_transfer: how fluid and solids are coupled. partitioned (default): two participants iterated every step until the interface temperature stops changing (Dirichlet on the fluid side, the fluid's heat to the solids), with Aitken relaxation; the coupling error is reported separately. monolithic: one system, no iteration.",
+            "properties": {
+              "scheme": {
+                "type": "string",
+                "enum": [
+                  "partitioned",
+                  "monolithic"
+                ]
+              },
+              "relative_tolerance": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "description": "Partitioned: the iteration ends when the interface temperature changes by less than this fraction of itself (default 1e-8)."
+              },
+              "max_iterations": {
+                "type": "integer",
+                "minimum": 2,
+                "maximum": 1000,
+                "description": "Partitioned: iterations per step before the step is rejected and retried smaller (default 50)."
+              },
+              "relaxation": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1,
+                "description": "Partitioned: the first relaxation factor before Aitken's (default 0.5)."
+              }
+            },
+            "additionalProperties": false
+          },
+          "structural_response": {
+            "type": "boolean",
+            "description": "conjugate_heat_transfer: also solve the solid bodies' thermal expansion at every stored time (one-way; the fluid has no stiffness). Default false."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "topology_optimize",
+      "title": "Optimise the shape for stiffness",
+      "kind": "mutation",
+      "idempotent": true,
+      "description": "Removes material where it carries little load: a density (SIMP) topology optimisation of the meshed part, minimising compliance under a volume constraint, with the supports and loads already set up. Runs on the voxel mesh (8-node hexahedra); a tetrahedral mesh is refused. The elements that carry a support or a load stay solid, so the optimiser cannot delete the faces you picked. Starts a background job and returns at once with job_id; poll job_status, then read the field with topology_result. The result is a compliance-optimal density field for one load case: no stress constraint, no manufacturing constraint, and the part that comes out (the elements above 0.5 density) still has to be checked as a design.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "volume_fraction": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1,
+            "default": 0.3,
+            "description": "Fraction of the meshed volume to keep."
+          },
+          "filter_radius": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "mm",
+            "x-dimension": "length",
+            "description": "Radius of the sensitivity filter, the length below which the design is not allowed to vary. Default 1.5 element widths. It is part of the answer: a result without its filter radius cannot be compared with another."
+          },
+          "penalty": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 6,
+            "default": 3,
+            "description": "SIMP penalisation exponent; 3 is the published value and pushes the densities towards solid or void."
+          },
+          "max_iterations": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "default": 60,
+            "description": "Upper bound on the updates; one linear solve per iteration."
+          },
+          "change_tolerance": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "default": 0.01,
+            "description": "Stop when the largest density change of an update is at or below this."
+          },
+          "move_limit": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1,
+            "default": 0.2,
+            "description": "Largest density change an element may make in one update."
+          },
+          "passive_layers": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3,
+            "default": 1,
+            "description": "0: nothing is held solid (the published benchmark problems). 1: the elements that carry a support or a load. 2 or 3: that many rings of node neighbours around them."
+          },
+          "formulation": {
+            "type": "string",
+            "enum": [
+              "incompatible_modes",
+              "full_integration"
+            ],
+            "default": "incompatible_modes",
+            "description": "Element formulation of the solves inside the loop."
+          },
+          "solver": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "direct",
+              "iterative"
+            ],
+            "default": "auto"
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 120,
+            "description": "A name for the run, shown in job_list."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "topology_result",
+      "title": "Read an optimisation result",
+      "kind": "query",
+      "engine_lock": false,
+      "idempotent": true,
+      "description": "The summary of a finished topology_optimize run: settings, iteration count, compliance at the start and at the end, the volume fraction reached, the iteration history, and how many elements are above 0.5 density. With include_density it also returns the density of every element, base64 little-endian float32 in element order, which is what the app draws and what an STL of the surviving part is built from.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "description": "The job returned by topology_optimize."
+          },
+          "include_density": {
+            "type": "boolean",
+            "default": false,
+            "description": "Include the density field itself (four bytes per element)."
+          }
+        },
+        "required": [
+          "job_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "job_status",
+      "title": "Job status",
+      "kind": "query",
+      "engine_lock": false,
+      "description": "State (queued, running, succeeded, failed, cancelled, paused; 'interrupted' for a run of an earlier session that stopped with a checkpoint), progress, stage, the last checkpoint and structured error details (failure class, last accepted time, checkpoint availability, recovery options); when succeeded, the result summary. wait_seconds blocks until the job ends or the time passes.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 63,
+            "description": "Job id from analysis_run or job_list."
+          },
+          "wait_seconds": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 60,
+            "default": 0
+          }
+        },
+        "required": [
+          "job_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "job_cancel",
+      "title": "Cancel a job",
+      "kind": "mutation",
+      "idempotent": true,
+      "engine_lock": false,
+      "description": "Cancels a queued job at once, or asks a running solve to stop at its next accepted step. A cancelled transient run writes a checkpoint first and publishes no results (a partial history is not a result); job_resume can still finish it. Finished jobs are unchanged.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 63,
+            "description": "Job id from analysis_run or job_list."
+          }
+        },
+        "required": [
+          "job_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "job_checkpoint",
+      "title": "Checkpoint a running job",
+      "kind": "mutation",
+      "idempotent": true,
+      "engine_lock": false,
+      "description": "Asks a running transient thermal or thermomechanical job to write a checkpoint at its next accepted step; the job continues. A checkpoint is not a cancellation. job_status reports the last checkpoint (time, sequence, file).",
+      "input": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 63,
+            "description": "Job id from analysis_run or job_list."
+          }
+        },
+        "required": [
+          "job_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "job_pause",
+      "title": "Pause a running job",
+      "kind": "mutation",
+      "idempotent": true,
+      "engine_lock": false,
+      "description": "Asks a running transient job to write a checkpoint at its next accepted step and stop in state 'paused'. job_resume continues it later, in this or another session, as the same physical run.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 63,
+            "description": "Job id from analysis_run or job_list."
+          }
+        },
+        "required": [
+          "job_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "job_resume",
+      "title": "Resume a paused, cancelled, failed or interrupted run",
+      "kind": "mutation",
+      "idempotent": true,
+      "engine_lock": true,
+      "description": "Continues a transient run from its newest valid checkpoint, in its own run directory and under its own job id. Refused when the mesh, resolved materials, resolved conditions or physics settings hash differently from the checkpoint (details list what changed). Only checkpoint_interval, checkpoint_wall_interval and max_steps may be changed. Returns at once; poll job_status.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 63,
+            "description": "Job id from analysis_run or job_list."
+          },
+          "checkpoint_interval": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "s",
+            "x-dimension": "time",
+            "minimum": 0
+          },
+          "checkpoint_wall_interval": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "x-unit": "s",
+            "x-dimension": "time",
+            "minimum": 0
+          },
+          "max_steps": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100000000
+          }
+        },
+        "required": [
+          "job_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "job_list",
+      "title": "List jobs",
+      "kind": "query",
+      "engine_lock": false,
+      "description": "Jobs of this server session, newest first.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 64,
+            "default": 32
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "results_query",
+      "title": "Query results",
+      "kind": "query",
+      "engine_lock": false,
+      "description": "Statistics (min, max, mean, percentiles) and locations of the largest (and for signed quantities the smallest) values of a result over the whole model, a body or a selection. Locations flag supported nodes, where stresses are singular. For transient analyses it reports the chosen quantity at one stored time (time_s or time_index), optionally with its history.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 63,
+            "description": "Job id from analysis_run or job_list."
+          },
+          "quantity": {
+            "type": "string",
+            "enum": [
+              "displacement",
+              "von_mises",
+              "stress",
+              "principal_stress",
+              "strain",
+              "temperature"
+            ],
+            "description": "Default: von_mises for static analyses, temperature for transient ones."
+          },
+          "component": {
+            "type": "string",
+            "enum": [
+              "magnitude",
+              "x",
+              "y",
+              "z",
+              "xx",
+              "yy",
+              "zz",
+              "xy",
+              "yz",
+              "zx",
+              "max",
+              "mid",
+              "min"
+            ],
+            "description": "displacement: magnitude (default), x, y, z; stress and strain: xx, yy, zz, xy, yz, zx (engineering shear strain); principal_stress: max (default), mid, min."
+          },
+          "value_kind": {
+            "type": "string",
+            "enum": [
+              "nodal_average",
+              "gauss_point"
+            ],
+            "default": "nodal_average"
+          },
+          "selection": {
+            "$ref": "#/$defs/name"
+          },
+          "body": {
+            "$ref": "#/$defs/name"
+          },
+          "top": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 5
+          },
+          "time_s": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Transient results: report the stored time nearest to this one. Default: the end of the analysis."
+          },
+          "time_index": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Transient results: index of a stored time instead of time_s."
+          },
+          "history": {
+            "type": "boolean",
+            "default": false,
+            "description": "Transient results: also return the value over every stored time."
+          }
+        },
+        "required": [
+          "job_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "results_quantities",
+      "title": "Engineering quantities of a static result",
+      "kind": "query",
+      "engine_lock": false,
+      "description": "Evaluates defined engineering quantities of a finished static_structural job from its stored result, each returned with its definition: the area-weighted mean displacement of a selection along a direction (use this, not the largest nodal displacement, when a question concerns a region); for force and traction loads the work-conjugate displacement W/|F| and the stiffness |F|^2/W; applied loads, body forces and reactions with their force and moment balance about a point; for each load how far the voxel staircase moved its line of action; mass of the mesh and of the STL geometry at the recorded density; and small-deformation indicators with their criteria. Stress peaks are reported by results_query and the job summary, not here.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 63,
+            "description": "Job id of a static_structural run (analysis_run, job_list, or a run folder of the open project)."
+          },
+          "regions": {
+            "type": "array",
+            "maxItems": 16,
+            "description": "Selections whose area-weighted mean displacement to evaluate, each along a direction.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "selection": {
+                  "$ref": "#/$defs/name"
+                },
+                "direction": {
+                  "$ref": "#/$defs/direction"
+                }
+              },
+              "required": [
+                "selection",
+                "direction"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "loads": {
+            "type": "array",
+            "maxItems": 16,
+            "items": {
+              "$ref": "#/$defs/name"
+            },
+            "description": "Force or traction conditions whose work-conjugate displacement and stiffness to evaluate. Default: every force and traction load."
+          },
+          "about": {
+            "$ref": "#/$defs/point_mm"
+          }
+        },
+        "required": [
+          "job_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "results_probe",
+      "title": "Probe results at points",
+      "kind": "query",
+      "engine_lock": false,
+      "description": "Interpolates displacement and stress at points (mm, build frame, undeformed geometry) and reports the containing element's Gauss-point von Mises range. For transient analyses it interpolates the temperature (and, for thermomechanical runs, displacement and stress) at one stored time, with an optional history.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 63,
+            "description": "Job id from analysis_run or job_list."
+          },
+          "points_mm": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/point_mm"
+            },
+            "minItems": 1,
+            "maxItems": 64
+          },
+          "time_s": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Transient results: report the stored time nearest to this one. Default: the end of the analysis."
+          },
+          "time_index": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Transient results: index of a stored time instead of time_s."
+          },
+          "history": {
+            "type": "boolean",
+            "default": false,
+            "description": "Transient results: also return the value over every stored time."
+          }
+        },
+        "required": [
+          "job_id",
+          "points_mm"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "results_interface",
+      "title": "Interface temperatures and heat",
+      "kind": "query",
+      "engine_lock": false,
+      "description": "For a transient run with thermal interfaces: at a stored time, both sides' area-weighted temperatures, the temperature jump (mean, smallest, largest), the heat rate from body_b into body_a, the cumulative heat over the run, and each body's own energy balance as an independent check of that heat.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 63
+          },
+          "interface": {
+            "type": "string",
+            "maxLength": 63,
+            "description": "Interface name; all interfaces when omitted."
+          },
+          "time_s": {
+            "type": "number",
+            "minimum": 0
+          },
+          "time_index": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "job_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "results_render",
+      "title": "Render a result",
+      "kind": "query",
+      "engine_lock": false,
+      "description": "Renders a nodal-average result on the (magnified) deformed mesh with a legend, the undeformed outline and a marker at the maximum; returns the PNG, the exact camera and the legend range. An image is not evidence of correctness: check the summary checks. Transient analyses render a stored time (time_s or time_index).",
+      "input": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 63,
+            "description": "Job id from analysis_run or job_list."
+          },
+          "quantity": {
+            "type": "string",
+            "enum": [
+              "displacement",
+              "von_mises",
+              "stress",
+              "principal_stress",
+              "strain",
+              "temperature"
+            ],
+            "description": "Default: von_mises for static analyses, temperature for transient ones."
+          },
+          "component": {
+            "type": "string",
+            "enum": [
+              "magnitude",
+              "x",
+              "y",
+              "z",
+              "xx",
+              "yy",
+              "zz",
+              "xy",
+              "yz",
+              "zx",
+              "max",
+              "mid",
+              "min"
+            ],
+            "description": "displacement: magnitude (default), x, y, z; stress and strain: xx, yy, zz, xy, yz, zx (engineering shear strain); principal_stress: max (default), mid, min."
+          },
+          "deformation_scale": {
+            "type": [
+              "number",
+              "string"
+            ],
+            "minimum": 0,
+            "default": "auto",
+            "description": "Displacement magnification, or \"auto\"."
+          },
+          "body_opacity": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number",
+              "minimum": 0.05,
+              "maximum": 1
+            },
+            "description": "Per body, how solid it is drawn: 1 solid (the default), below 1 as glass. A body drawn as glass lets the bodies behind it show through, which is how one body of an assembly is shown with its result inside the rest."
+          },
+          "show_undeformed": {
+            "type": "boolean",
+            "default": true
+          },
+          "range": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2,
+            "description": "[min, max] of the colour scale in display units."
+          },
+          "colormap": {
+            "type": "string",
+            "enum": [
+              "turbo",
+              "viridis",
+              "coolwarm", "heat"
+            ]
+          },
+          "camera": {
+            "$ref": "#/$defs/camera"
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 200,
+            "maximum": 2400,
+            "default": 900
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 150,
+            "maximum": 1800,
+            "default": 650
+          },
+          "groups": {"type": "array", "items": {"type": "string", "enum": ["part", "support", "plate"]}, "minItems": 1, "description": "Results of a printing process: which element groups are drawn (default: all). The range and the maximum are then those of the groups drawn."},
+            "style": {"type": "string", "enum": ["default", "showcase"], "description": "showcase: the capture preset of the repository media. A dark neutral background and none of the renderer's own annotations (title, colour bar, maximum marker, axis triad); the reply still carries the legend, the stored time and the exact camera, from which a compositor draws them."},
+            "title": {
+            "type": "string",
+            "maxLength": 200,
+            "default": ""
+          },
+          "time_s": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Transient results: report the stored time nearest to this one. Default: the end of the analysis."
+          },
+          "time_index": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Transient results: index of a stored time instead of time_s."
+          },
+          "show_deformation": {
+            "type": "boolean",
+            "default": false,
+            "description": "Thermomechanical: draw the deformed shape."
+          }
+        },
+        "required": [
+          "job_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "results_export",
+      "title": "Export results",
+      "kind": "mutation",
+      "idempotent": true,
+      "engine_lock": false,
+      "description": "Writes results files with SHA-256 hashes. Static runs export VTU, nodal CSV and the summary; transient runs export one VTU per stored time with a series.pvd collection, a CSV history and the summary.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 63,
+            "description": "Job id from analysis_run or job_list."
+          },
+          "formats": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "vtu",
+                "csv",
+                "summary"
+              ]
+            },
+            "minItems": 1,
+            "maxItems": 3,
+            "default": [
+              "vtu",
+              "csv",
+              "summary"
+            ]
+          },
+          "directory": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000,
+            "description": "Default: the run directory. Must lie within the server's write roots."
+          }
+        },
+        "required": [
+          "job_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "study_check",
+      "title": "Check a comparison study",
+      "kind": "query",
+      "description": "Resolves a comparison study of two to four designs (engineering question, geometry with units, mounting and load regions, material and manufacturing information, payload mass or force, refinement schedule, sensitivities, limits) without solving. It imports each design into a temporary project, resolves the regions in the design frame, checks that the designs are mounted and loaded equivalently (lever arm, areas, normals), meshes the coarsest size to find unmapped regions and rigid-body motion, and returns status ready, needs_input or not_supported with focused questions (blocking ones must be answered or, when acceptable, accepted with the user's reason), recorded assumptions with how their effect is assessed, what the workflow does not evaluate, and labelled images of the regions. Nothing is written to the workspace.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "definition": {
+            "$ref": "#/$defs/comparison_study"
+          },
+          "file": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000,
+            "description": "A JSON file holding the definition, instead of definition."
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "study_run",
+      "title": "Run a comparison study",
+      "kind": "mutation",
+      "idempotent": true,
+      "description": "Checks the definition as study_check does and, only when it is ready, writes the study directory (request.json, the immutable resolved study.json with its hash) and starts one background job that sets up each design as an ordinary project, meshes and solves it at every element size, runs the declared sensitivities, and writes evidence.json and report.md (the Engineering Evidence Record). Returns the job id at once; job_status shows progress by design and mesh. A study that needs input fails with the questions in details.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "definition": {
+            "$ref": "#/$defs/comparison_study"
+          },
+          "file": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000,
+            "description": "A JSON file holding the definition, instead of definition."
+          },
+          "directory": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000,
+            "description": "Study directory (default <workspace>/<name>); must not hold a study already."
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "study_evidence",
+      "title": "Read a study's evidence record",
+      "kind": "query",
+      "description": "Returns the Engineering Evidence Record of a finished comparison study (by job_id or directory): the outcome statement and code, the compared quantities, the ranking on each tested mesh, each design's convergence criterion (met or not) and discretisation-error estimate (or why none is offered), the robustness of the ranking, the numerical-evidence table, interpretation, important uncertainties, what was not evaluated, failures with recovery options, and reproduction data. detail full adds the modeled conditions, assumptions and every mesh level's checks, costs and run identities; include_report adds the Markdown report.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 63
+          },
+          "directory": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          },
+          "detail": {
+            "type": "string",
+            "enum": [
+              "summary",
+              "full"
+            ],
+            "default": "summary"
+          },
+          "include_report": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "study_replay",
+      "title": "Replay a comparison study",
+      "kind": "mutation",
+      "idempotent": true,
+      "description": "Reruns a study written by study_run from its study.json and request.json, using the geometry copies stored in the study (verified by SHA-256), into <directory>/replays/<time> or into. The replayed study must resolve to the same hash; when the job finishes its record carries a replay section comparing every quantity at every mesh with the original (relative tolerance 1e-9, bitwise identity reported).",
+      "input": {
+        "type": "object",
+        "properties": {
+          "directory": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          },
+          "into": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "directory"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

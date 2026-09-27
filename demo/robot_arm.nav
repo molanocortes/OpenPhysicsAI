@@ -1,0 +1,14 @@
+# robot_arm.nav - opens the printed robot arm demonstration in the analysis workspace
+# build it first: python3 demo/build_robot_demo.py
+# then: ./navier --workspace demo/workspace --exec "exec demo/robot_arm.nav"
+workspace solid
+solid open robot_arm
+am mesh_generate element_size=2mm
+solid run static
+solid wait 180
+fem field von_mises
+fem deform auto
+wait 1500
+pause
+fem fit
+am mech_assembly_inspect

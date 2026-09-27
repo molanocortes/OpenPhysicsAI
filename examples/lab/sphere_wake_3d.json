@@ -1,0 +1,52 @@
+{
+ "domain": "flow",
+ "model": "lbm3d",
+ "title": "A sphere sheds hairpin vortices: Reynolds number 300, in 3D",
+ "fluid": {
+  "kinematic_viscosity_m2_s": 1.589e-05,
+  "density_kg_m3": 1.1614,
+  "source": "Incropera, DeWitt, Bergman and Lavine, Fundamentals of Heat and Mass Transfer, 6th ed. (2007), table A.4 (air at 300 K and 1 atm): nu 15.89e-6 m2/s, rho 1.1614 kg/m3, 300 K; typed from the table, not re-checked against a copy in this session"
+ },
+ "stream": {
+  "speed_m_s": 0.23835
+ },
+ "box_m": [
+  -0.06,
+  -0.06,
+  -0.06,
+  0.18,
+  0.06,
+  0.06
+ ],
+ "cell_m": 0.00125,
+ "lattice_speed": 0.05,
+ "sides": "slip",
+ "sponge_cells": 8,
+ "bodies": [
+  {
+   "shape": "sphere",
+   "centre_m": [
+    0,
+    0,
+    0
+   ],
+   "radius_m": 0.01
+  }
+ ],
+ "disturbance": {
+  "noise_fraction": 0.05,
+  "inlet_noise_fraction": 0.01,
+  "note": "random disturbances in the start and at the inlet, as in any real stream; seeded, so the run repeats"
+ },
+ "reference": {
+  "area_m2": 0.00031415926535897936,
+  "length_m": 0.02
+ },
+ "run": {
+  "end_s": 6.7128,
+  "frames": 48,
+  "output_stride": 2,
+  "output_from_s": 5.0346,
+  "average_from_s": 4.1955
+ }
+}

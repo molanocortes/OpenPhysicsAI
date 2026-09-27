@@ -1,0 +1,404 @@
+{
+ "R1": {
+  "reference_mm": {
+   "C10": 0.020156,
+   "C20": 0.160312
+  },
+  "C10": {
+   "finest_mm": 0.020011462915574724,
+   "relative_error": -0.007170921037173872,
+   "values_mm": [
+    0.019962175087268913,
+    0.019997251134530117,
+    0.020011462915574724
+   ],
+   "refinement": {
+    "change_definition": "change between consecutive valid meshes relative to the finer mesh's value: (q_fine - q_coarse) / |q_fine|",
+    "convergence_criterion": 0.02,
+    "convergence_criterion_met": true,
+    "discretisation_error_estimate": 2.904123994054592e-05,
+    "element_sizes_mm": [
+     2.5,
+     1.25,
+     0.625
+    ],
+    "estimate_available": true,
+    "estimate_conditions": [
+     {
+      "condition": "at least three valid meshes",
+      "met": true,
+      "observed": "3 valid meshes"
+     },
+     {
+      "condition": "constant refinement ratio of at least 1.3 over the three finest meshes",
+      "met": true,
+      "observed": "ratios 2 and 2"
+     },
+     {
+      "condition": "monotone change over the three finest meshes",
+      "met": true,
+      "observed": "changes +3.508e-05 and +1.421e-05"
+     },
+     {
+      "condition": "the geometry is represented identically on the three finest meshes (volume error within 1e-6)",
+      "met": true,
+      "observed": "volume errors 1.41e-12%, 6.93e-12%, 4.96e-11%"
+     },
+     {
+      "condition": "observed order of the three finest meshes within [0.5, 4]",
+      "met": true,
+      "observed": "p = 1.3"
+     }
+    ],
+    "estimate_method": "grid convergence index (Roache) over the three finest valid meshes with their observed order",
+    "estimate_nature": "a grid convergence index: an estimate of the discretisation error of the finest value, not a bound and not a confidence interval",
+    "estimate_unavailable_reasons": [],
+    "finest_value": 0.020011462915574724,
+    "last_relative_change": 0.0007101820144066858,
+    "observed_order": 1.3033988119449187,
+    "observed_orders": [
+     {
+      "element_sizes_mm": [
+       2.5,
+       1.25,
+       0.625
+      ],
+      "order": 1.3033988119449187
+     }
+    ],
+    "reading": "last change +0.07% (relative to the finer mesh) meets the 2% criterion; discretisation-error estimate 2.9e-05 (0.15%; observed order 1.3, safety factor 3: asymptotic behaviour not demonstrated by three meshes)",
+    "relative_changes": [
+     0.0017540434445330593,
+     0.0007101820144066858
+    ],
+    "relative_discretisation_error_estimate": 0.0014512302305466837,
+    "richardson_extrapolated_value": 0.02002114332888824,
+    "safety_factor": 3,
+    "safety_factor_basis": "safety factor 3: asymptotic behaviour not demonstrated by three meshes",
+    "values": [
+     0.019962175087268913,
+     0.019997251134530117,
+     0.020011462915574724
+    ]
+   }
+  },
+  "C20": {
+   "finest_mm": 0.1591833802325845,
+   "relative_error": -0.007040145263083941,
+   "values_mm": [
+    0.15881269253800517,
+    0.15906183831691226,
+    0.1591833802325845
+   ],
+   "refinement": {
+    "change_definition": "change between consecutive valid meshes relative to the finer mesh's value: (q_fine - q_coarse) / |q_fine|",
+    "convergence_criterion": 0.02,
+    "convergence_criterion_met": true,
+    "discretisation_error_estimate": 0.0003473038407486647,
+    "element_sizes_mm": [
+     2.5,
+     1.25,
+     0.625
+    ],
+    "estimate_available": true,
+    "estimate_conditions": [
+     {
+      "condition": "at least three valid meshes",
+      "met": true,
+      "observed": "3 valid meshes"
+     },
+     {
+      "condition": "constant refinement ratio of at least 1.3 over the three finest meshes",
+      "met": true,
+      "observed": "ratios 2 and 2"
+     },
+     {
+      "condition": "monotone change over the three finest meshes",
+      "met": true,
+      "observed": "changes +0.0002491 and +0.0001215"
+     },
+     {
+      "condition": "the geometry is represented identically on the three finest meshes (volume error within 1e-6)",
+      "met": true,
+      "observed": "volume errors 3.9e-13%, 5.93e-13%, -8.47e-13%"
+     },
+     {
+      "condition": "observed order of the three finest meshes within [0.5, 4]",
+      "met": true,
+      "observed": "p = 1.04"
+     }
+    ],
+    "estimate_method": "grid convergence index (Roache) over the three finest valid meshes with their observed order",
+    "estimate_nature": "a grid convergence index: an estimate of the discretisation error of the finest value, not a bound and not a confidence interval",
+    "estimate_unavailable_reasons": [],
+    "finest_value": 0.1591833802325845,
+    "last_relative_change": 0.000763533953699495,
+    "observed_order": 1.035536195625915,
+    "observed_orders": [
+     {
+      "element_sizes_mm": [
+       2.5,
+       1.25,
+       0.625
+      ],
+      "order": 1.035536195625915
+     }
+    ],
+    "reading": "last change +0.08% (relative to the finer mesh) meets the 2% criterion; discretisation-error estimate 0.00035 (0.22%; observed order 1.04, safety factor 3: asymptotic behaviour not demonstrated by three meshes)",
+    "relative_changes": [
+     0.0015663454009043315,
+     0.000763533953699495
+    ],
+    "relative_discretisation_error_estimate": 0.0021817845571642934,
+    "richardson_extrapolated_value": 0.15929914817950072,
+    "safety_factor": 3,
+    "safety_factor_basis": "safety factor 3: asymptotic behaviour not demonstrated by three meshes",
+    "values": [
+     0.15881269253800517,
+     0.15906183831691226,
+     0.1591833802325845
+    ]
+   }
+  },
+  "stiffness_ratio": 7.95460986056615,
+  "reference_ratio": 7.953562214725144
+ },
+ "E1": {
+  "wall_seconds": 34.71352505683899,
+  "comparison": {
+   "better": "lower",
+   "combined_discretisation_error_estimate": null,
+   "convergence_criterion": 0.02,
+   "convergence_criterion_met_by_all": false,
+   "difference": 0.016624874534842404,
+   "element_size_mm": 1,
+   "estimates_available": false,
+   "meshes_compared": 3,
+   "outcome": "ranking_consistent_on_tested_meshes",
+   "primary_quantity": "load_region_displacement",
+   "ranking": [
+    "B",
+    "A"
+   ],
+   "ranking_by_mesh": [
+    {
+     "element_size_mm": 4,
+     "ranking": [
+      "B",
+      "A"
+     ],
+     "relative_difference": 0.6052052394661962
+    },
+    {
+     "element_size_mm": 2,
+     "ranking": [
+      "B",
+      "A"
+     ],
+     "relative_difference": 0.6392789062966341
+    },
+    {
+     "element_size_mm": 1,
+     "ranking": [
+      "B",
+      "A"
+     ],
+     "relative_difference": 0.6545373541679026
+    }
+   ],
+   "ranking_consistent_on_tested_meshes": true,
+   "ranking_robustness": [
+    {
+     "ranking_unchanged": true,
+     "reason": "every design uses the same material and the loads are forces: all displacements scale with 1/E, so the ranking and the ratio between designs do not depend on E; absolute values scale with it",
+     "sensitivity": "youngs_modulus"
+    },
+    {
+     "element_size_mm": 1,
+     "largest_relative_change": 0.0909090911499043,
+     "parameter": "Young's modulus x 1.1",
+     "ranking_unchanged": true,
+     "relative_change": [
+      {
+       "baseline": 0.025399428205250717,
+       "design": "A",
+       "relative_change": -0.0909090911499043,
+       "value": 0.02309038927138413
+      },
+      {
+       "baseline": 0.008774553670408315,
+       "design": "B",
+       "relative_change": -0.09090909097024968,
+       "value": 0.007976866972561827
+      }
+     ],
+     "scaling_error": 2.648946617611614e-10,
+     "scaling_verified": true,
+     "sensitivity": "youngs_modulus"
+    },
+    {
+     "element_size_mm": 1,
+     "largest_relative_change": 0.00791404672435106,
+     "parameter": "Poisson's ratio 0.3",
+     "ranking_unchanged": true,
+     "relative_change": [
+      {
+       "baseline": 0.025399428205250717,
+       "design": "A",
+       "relative_change": 0.00791404672435106,
+       "value": 0.02560044046683887
+      },
+      {
+       "baseline": 0.008774553670408315,
+       "design": "B",
+       "relative_change": 0.00621109637396045,
+       "value": 0.00882905326889371
+      }
+     ],
+     "sensitivity": "poisson_ratio"
+    },
+    {
+     "element_size_mm": 1,
+     "largest_relative_change": 0.008756776361281332,
+     "parameter": "Poisson's ratio 0.36",
+     "ranking_unchanged": true,
+     "relative_change": [
+      {
+       "baseline": 0.025399428205250717,
+       "design": "A",
+       "relative_change": -0.008756776361281332,
+       "value": 0.025177011092752916
+      },
+      {
+       "baseline": 0.008774553670408315,
+       "design": "B",
+       "relative_change": -0.0068923839485573206,
+       "value": 0.008714076077534638
+      }
+     ],
+     "sensitivity": "poisson_ratio"
+    }
+   ],
+   "relative_difference": 0.6545373541679026,
+   "statement": "Lower predicted load-region displacement under the modeled conditions on every tested mesh: design B against design A, a difference of 60.5% to 65.5% over 3 meshes (4 to 1 mm); at 1 mm 0.0087746 mm against 0.025399 mm. No discretisation-error estimate is available for design B (the voxel representation of the geometry changes with the mesh, so the meshes discretise different shapes (volume errors -3.57%, -1.79%, -0.893%)), so the size of the difference is not estimated beyond the tested meshes. The difference at the finest mesh (0.017 mm) is larger than the sum of the designs' last changes between meshes (0.00052 mm). Convergence criterion (2% change between the two finest meshes, relative to the finer) not met by design B (-3.53%), so the size of the difference is less certain than the ranking.",
+   "sum_of_last_changes": 0.000524906905109623,
+   "values": [
+    {
+     "convergence_criterion_met": true,
+     "design": "A",
+     "discretisation_error_estimate": 0.0006101061112945791,
+     "estimate_available": true,
+     "estimate_method": "grid convergence index (Roache) over the three finest valid meshes with their observed order",
+     "last_relative_change": 0.008458973834048129,
+     "load_region_displacement_mm": 0.025399428205250717,
+     "mass_geometry_kg": 0.11404799999999907,
+     "observed_order": 1.0401705919579058,
+     "peak_displacement_mm": 0.030047728344209296,
+     "relative_discretisation_error_estimate": 0.024020466380753187,
+     "safety_factor": 3,
+     "stiffness_n_per_mm": 1158.2918230386574,
+     "stiffness_per_mass_n_per_mm_kg": 10156.178302457447,
+     "valid_meshes": 3,
+     "value": 0.025399428205250717
+    },
+    {
+     "convergence_criterion_met": false,
+     "design": "B",
+     "discretisation_error_estimate": null,
+     "estimate_available": false,
+     "estimate_unavailable_reasons": [
+      "the voxel representation of the geometry changes with the mesh, so the meshes discretise different shapes (volume errors -3.57%, -1.79%, -0.893%)"
+     ],
+     "last_relative_change": -0.03533556442503304,
+     "load_region_displacement_mm": 0.008774553670408315,
+     "mass_geometry_kg": 0.1451519999999994,
+     "peak_displacement_mm": 0.01106879001657874,
+     "relative_discretisation_error_estimate": null,
+     "stiffness_n_per_mm": 3352.871394384022,
+     "stiffness_per_mass_n_per_mm_kg": 23099.036833002894,
+     "valid_meshes": 3,
+     "value": 0.008774553670408315
+    }
+   ]
+  },
+  "job_id": "job-20260916-225742-0f9a-10"
+ },
+ "R2": {
+  "outcome": "reproduced",
+  "compared": 24,
+  "bitwise_identical": 24,
+  "largest_relative_difference": 0
+ },
+ "E2": {
+  "status": "needs_input",
+  "questions": [
+   "B.units"
+  ]
+ },
+ "E3": {
+  "questions": [
+   "study.material"
+  ]
+ },
+ "E4": {
+  "questions": [
+   "A.mounting_region.ambiguous",
+   "B.mounting_region.ambiguous",
+   "equivalence"
+  ]
+ },
+ "E5": {
+  "questions": [
+   "A.mounting_underconstrained",
+   "B.mounting_underconstrained"
+  ]
+ },
+ "E6": {
+  "outcome": "cannot_establish",
+  "statement": "The comparison cannot be established: no mesh level completed validly for every design. Design A: the mesh volume differs from the geometry by 22.4%: this mesh does not represent the design (walls or features too thin for the element size); the mesh volume differs from the geometry by -21.2%: this mesh does not represent the design (walls or features too thin for the element size). Design T: the mounting region is not represented on this mesh; the mesh volume differs from the geometry by 17.6%: this mesh does not represent the design (walls or features too thin for the element size); the mesh volume differs from the geometry by 52.9%: this mesh does not represent the design (walls or features too thin for the element size)."
+ },
+ "E7": {
+  "classification": {
+   "A": [
+    "outside_small_deformation_assumption",
+    "outside_small_deformation_assumption",
+    "outside_small_deformation_assumption"
+   ],
+   "B": [
+    "geometric_nonlinearity_possible",
+    "geometric_nonlinearity_possible",
+    "geometric_nonlinearity_possible"
+   ]
+  },
+  "statement": "The comparison cannot be established: no mesh level completed validly for every design. Design A: deformation outside the small-deformation assumption."
+ },
+ "E8": {
+  "questions": [
+   "manufacturing.printed_properties"
+  ]
+ },
+ "E9": {
+  "outcome": "too_small_to_distinguish",
+  "statement": "Difference too small to distinguish: designs A and A_tip differ by 0.07% in load-region displacement at 1 mm elements, not more than the sum of their last changes between meshes (0.00043 mm); no discretisation-error estimate is available for design A_tip (the voxel representation of the geometry changes with the mesh, so the meshes discretise different shapes (volume errors -0.763%, -0.382%, -0.191%)). Every design met the 2% convergence criterion (change between its two finest meshes, relative to the finer).",
+  "relative_difference": 0.0007258806109408546,
+  "combined_discretisation_error_estimate": null,
+  "sum_of_last_changes": 0.0004261727872411636
+ },
+ "E10": {
+  "unsupported": [
+   "strength_or_safety"
+  ]
+ },
+ "E11": {
+  "state": "failed",
+  "code": "IO_ERROR",
+  "message": "the analyses finished, but the evidence record evidence.json could not be written (write error on '<scratch>/tmp-sf2/studyflow-50yt7pou/ws/e11/evidence.json': Is a directory). Free space or fix the permissions, then run study_replay on the directory; the design projects keep the runs and this job's error details hold the comparison"
+ },
+ "E12": {
+  "state": "failed",
+  "code": "IO_ERROR"
+ },
+ "E13": {
+  "stderr": "navier-mcp: cannot add read root '/usr/navier-e13-13': the limit of 16 read roots is reached. Roots in use (defaults included): ~, /tmp, /Volumes, /usr/navier-e13-0, /usr/navier-e13-1, /usr/navier-e13-2, /usr/navier-e13-3, /usr/navier-e13-4, /usr/navier-e13-5, /usr/navier-e13-6, /usr/navier-e13-7, /usr/navier-e13-8, /usr/navier-e13-9, /usr/navier-e13-10, /usr/navier-e13-11, /usr/navier-"
+ }
+}

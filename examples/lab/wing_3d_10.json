@@ -1,0 +1,54 @@
+{
+ "domain": "flow",
+ "model": "lbm3d",
+ "title": "A finite wing at 10 degrees: tip vortices, NACA 0012, Re 100 000",
+ "fluid": {
+  "kinematic_viscosity_m2_s": 1.589e-05,
+  "density_kg_m3": 1.1614,
+  "source": "Incropera, DeWitt, Bergman and Lavine, Fundamentals of Heat and Mass Transfer, 6th ed. (2007), table A.4 (air at 300 K and 1 atm): nu 15.89e-6 m2/s, rho 1.1614 kg/m3, 300 K; typed from the table, not re-checked against a copy in this session"
+ },
+ "stream": {
+  "speed_m_s": 15.89
+ },
+ "box_m": [
+  -0.1,
+  -0.1,
+  -0.15000000000000002,
+  0.4,
+  0.4,
+  0.15000000000000002
+ ],
+ "cell_m": 0.004166666666666667,
+ "lattice_speed": 0.05,
+ "sides": "slip",
+ "les": {
+  "smagorinsky": 0.12
+ },
+ "collision": "regularized",
+ "sponge_cells": 8,
+ "bodies": [
+  {
+   "shape": "wing",
+   "naca": "0012",
+   "root_leading_edge_m": [
+    0,
+    0,
+    0
+   ],
+   "chord_m": 0.1,
+   "span_m": 0.3,
+   "angle_deg": 10.0
+  }
+ ],
+ "reference": {
+  "area_m2": 0.03,
+  "length_m": 0.1
+ },
+ "run": {
+  "end_s": 0.10069,
+  "frames": 48,
+  "output_stride": 1,
+  "output_from_s": 0.03776,
+  "average_from_s": 0.05035
+ }
+}

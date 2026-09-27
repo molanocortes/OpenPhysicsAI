@@ -1,0 +1,130 @@
+{
+ "domain": "fire",
+ "title": "An office cooled by a ceiling diffuser",
+ "box_m": [
+  0,
+  0,
+  0,
+  4.8,
+  3.2,
+  2.4
+ ],
+ "cell_m": 0.1,
+ "ambient_temperature_k": 294.15,
+ "reference_temperature_k": 294.15,
+ "sides": {
+  "x-": "wall",
+  "x+": "wall",
+  "y-": "wall",
+  "y+": "wall",
+  "z-": "wall",
+  "z+": "wall"
+ },
+ "turbulence": "vreman",
+ "vents": [
+  {
+   "name": "supply diffuser",
+   "side": "z+",
+   "rect_m": [
+    1.0,
+    1.4,
+    1.4,
+    1.8
+   ],
+   "speed_m_s": 0.5,
+   "temperature_k": 290.15
+  }
+ ],
+ "openings": [
+  {
+   "name": "return grille",
+   "side": "z+",
+   "rect_m": [
+    3.6,
+    1.4,
+    4.0,
+    1.8
+   ]
+  }
+ ],
+ "obstacles": [
+  {
+   "name": "desk 1",
+   "box_m": [
+    0.6,
+    0.4,
+    0.7,
+    2.0,
+    1.2,
+    0.8
+   ]
+  },
+  {
+   "name": "desk 2",
+   "box_m": [
+    2.8,
+    2.0,
+    0.7,
+    4.2,
+    2.8,
+    0.8
+   ]
+  }
+ ],
+ "heat_sources": [
+  {
+   "name": "person 1",
+   "box_m": [
+    1.1,
+    1.3,
+    0.0,
+    1.5,
+    1.6,
+    1.2
+   ],
+   "power_w": 75
+  },
+  {
+   "name": "person 2",
+   "box_m": [
+    3.3,
+    1.6,
+    0.0,
+    3.7,
+    1.9,
+    1.2
+   ],
+   "power_w": 75
+  },
+  {
+   "name": "computer 1",
+   "box_m": [
+    1.8,
+    0.5,
+    0.8,
+    2.0,
+    0.7,
+    1.2
+   ],
+   "power_w": 100
+  },
+  {
+   "name": "computer 2",
+   "box_m": [
+    2.9,
+    2.5,
+    0.8,
+    3.1,
+    2.7,
+    1.2
+   ],
+   "power_w": 100
+  }
+ ],
+ "source": "demonstration: the room, its furniture and its loads are chosen, not from a building. A seated person gives about 75 W of sensible heat (ASHRAE Handbook, Fundamentals, 2021, ch. 18); the supply, 0.08 m^3/s at 17 C, is about eight air changes an hour.",
+ "run": {
+  "end_s": 600.0,
+  "frames": 120,
+  "average_from_s": 300.0
+ }
+}

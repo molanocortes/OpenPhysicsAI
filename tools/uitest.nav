@@ -1,0 +1,84 @@
+# UI test: clicks every button, slider and panel control through the real input path (4-frame clicks).
+# Run it off-screen (LOAD STL would open a file dialog in a window):
+#   ./navier --headless --size 1440x900 --exec "exec tools/uitest.nav"
+frames 90
+uiclick "START EXPERIMENT"
+frames 120
+uiclick PAUSE
+frames 15
+uiclick "run state"
+frames 15
+uiclick RESET
+frames 15
+uiclick "LOAD STL"
+frames 15
+uiclick Ux
+frames 10
+uiclick PRESSURE
+frames 10
+uiclick Cp
+frames 10
+uiclick VORTICITY
+frames 10
+uiclick Q
+frames 10
+uiclick SPEED
+frames 10
+uiclick STREAMLINES
+frames 10
+uiclick STREAMLINES
+frames 10
+uiclick PARTICLES
+frames 10
+uiclick PARTICLES
+frames 10
+uiclick VORTICES
+frames 10
+uiclick VORTICES
+frames 10
+uiclick SURFACE
+frames 10
+uiclick SURFACE
+frames 10
+uiclick VOLUME
+frames 10
+uiclick VOLUME
+frames 10
+uiclick SLICE
+frames 15
+uiclick sl_slice 0.25
+frames 10
+uiclick SLICE
+frames 10
+uiclick sl_speed 0.25
+frames 10
+speed
+uiclick sl_aoa 0.25
+frames 20
+aoa
+uiclick sl_rough 0.6
+frames 10
+roughness
+uiclick sl_temp 0.4
+frames 10
+temp
+uiclick sl_turb 0.3
+frames 10
+turbulence
+uiclick legend
+frames 10
+uiclick "line colours"
+frames 10
+uiclick axes
+frames 10
+uiclick performance
+frames 10
+uiclick Cd
+frames 10
+uiclick steps
+frames 10
+uiclick terminal
+frames 10
+uiclick lattice
+frames 30
+screenshot build/uitest.png

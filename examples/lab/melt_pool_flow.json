@@ -1,0 +1,60 @@
+{
+ "domain": "melt",
+ "title": "Marangoni flow in a laser melt pool",
+ "metal": {
+  "density_kg_m3": 7904.0,
+  "solidus_k": 1675.0,
+  "liquidus_k": 1708.0,
+  "latent_heat_j_kg": 290000.0,
+  "specific_heat_solid_j_kgk": 580.0,
+  "conductivity_solid_w_mk": 22.0,
+  "specific_heat_liquid_j_kgk": 800.0,
+  "conductivity_liquid_w_mk": 30.0,
+  "emissivity": 0.4,
+  "source": "wrought 316L (the materials library, src/ctl/materials.json, record ss316l_lpbf): density, solidus 1675 K, liquidus 1708 K and latent heat 290 kJ/kg from Pichler, Simonds, Sowards and Pottlacher, Measurements of thermophysical properties of solid and liquid NIST SRM 316L stainless steel, J Mater Sci 55 (2020) 4081; solid specific heat 580 J/(kg K), the mean of their DSC values from 200 to 980 C, and conductivity 22 W/(m K), the Georgia Tech measurements near 700 C, held constant; the liquid's 800 J/(kg K) and 30 W/(m K) and the emissivity 0.4 are assumed, of the magnitude reported for liquid stainless steels (demonstration values)"
+ },
+ "melt_flow": {
+  "viscosity_pa_s": 0.006,
+  "dsigma_dT_n_mk": -0.0004,
+  "source": "demonstration values of the magnitude reported for liquid iron-based alloys: viscosity 6 mPa s, surface tension falling 0.4 mN/m per kelvin (a steel low in sulphur; with more sulphur dsigma/dT turns positive and the flow reverses)"
+ },
+ "block": {
+  "size_m": [
+   0.0008,
+   0.0003,
+   0.00015
+  ],
+  "origin_m": [
+   0.0,
+   0.0,
+   -0.00015
+  ],
+  "cell_m": 5e-06,
+  "output_every": 2
+ },
+ "beam": {
+  "power_w": 200.0,
+  "absorptivity": 0.35,
+  "radius_m": 4e-05,
+  "tracks": [
+   {
+    "from_m": [
+     0.0001,
+     0.00015
+    ],
+    "to_m": [
+     0.0007,
+     0.00015
+    ],
+    "speed_m_s": 0.8
+   }
+  ],
+  "source": "as laser_tracks: 200 W, 0.8 m/s, 80 um spot; absorptivity 0.35 (demonstration)"
+ },
+ "initial_temperature_k": 293.15,
+ "convection_w_m2k": 10.0,
+ "run": {
+  "end_s": 0.0009,
+  "frames": 45
+ }
+}

@@ -1,0 +1,81 @@
+{
+ "domain": "melt",
+ "title": "A laser melts three tracks into steel",
+ "metal": {
+  "density_kg_m3": 7904.0,
+  "solidus_k": 1675.0,
+  "liquidus_k": 1708.0,
+  "latent_heat_j_kg": 290000.0,
+  "specific_heat_solid_j_kgk": 580.0,
+  "conductivity_solid_w_mk": 22.0,
+  "specific_heat_liquid_j_kgk": 800.0,
+  "conductivity_liquid_w_mk": 30.0,
+  "emissivity": 0.4,
+  "source": "wrought 316L (the materials library, src/ctl/materials.json, record ss316l_lpbf): density, solidus 1675 K, liquidus 1708 K and latent heat 290 kJ/kg from Pichler, Simonds, Sowards and Pottlacher, Measurements of thermophysical properties of solid and liquid NIST SRM 316L stainless steel, J Mater Sci 55 (2020) 4081; solid specific heat 580 J/(kg K), the mean of their DSC values from 200 to 980 C, and conductivity 22 W/(m K), the Georgia Tech measurements near 700 C, held constant; the liquid's 800 J/(kg K) and 30 W/(m K) and the emissivity 0.4 are assumed, of the magnitude reported for liquid stainless steels (demonstration values)"
+ },
+ "block": {
+  "size_m": [
+   0.002,
+   0.0006,
+   0.0003
+  ],
+  "origin_m": [
+   0.0,
+   0.0,
+   -0.0003
+  ],
+  "cell_m": 5e-06,
+  "output_every": 2,
+  "bottom_held_k": 293.15
+ },
+ "beam": {
+  "power_w": 200.0,
+  "absorptivity": 0.35,
+  "radius_m": 4e-05,
+  "tracks": [
+   {
+    "from_m": [
+     0.0002,
+     0.00022
+    ],
+    "to_m": [
+     0.0018,
+     0.00022
+    ],
+    "speed_m_s": 0.8,
+    "pause_s": 0.0
+   },
+   {
+    "from_m": [
+     0.0018,
+     0.0003
+    ],
+    "to_m": [
+     0.0002,
+     0.0003
+    ],
+    "speed_m_s": 0.8,
+    "pause_s": 5e-05
+   },
+   {
+    "from_m": [
+     0.0002,
+     0.00038
+    ],
+    "to_m": [
+     0.0018,
+     0.00038
+    ],
+    "speed_m_s": 0.8,
+    "pause_s": 5e-05
+   }
+  ],
+  "source": "a typical LPBF process point (200 W, 0.8 m/s, 80 um spot); absorptivity 0.35 of a bare steel surface at 1.07 um, a demonstration value (a powder bed absorbs more)"
+ },
+ "initial_temperature_k": 293.15,
+ "convection_w_m2k": 10.0,
+ "run": {
+  "end_s": 0.0068,
+  "frames": 68
+ }
+}

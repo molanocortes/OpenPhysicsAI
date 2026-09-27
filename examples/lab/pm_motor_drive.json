@@ -1,0 +1,385 @@
+{
+ "domain": "magnet",
+ "title": "A motor spins up and heats: 12 slots, 4 poles, 5 A/mm2",
+ "provenance": {
+  "design": "demonstration, not a product",
+  "steel": "linear, relative permeability 4000 assumed"
+ },
+ "grid": {
+  "nx": 390,
+  "ny": 390,
+  "cell_m": 0.0003333333333333333
+ },
+ "materials": [
+  {
+   "name": "n42",
+   "relative_permeability": 1.11,
+   "remanence_t": 1.315,
+   "source": "Arnold Magnetic Technologies, N42 sintered NdFeB datasheet (rev. 210607): nominal Br 1315 mT and HcB 943 kA/m; relative permeability of the straight demagnetisation line through them, Br / (mu0 HcB) = 1.11"
+  },
+  {
+   "name": "steel",
+   "relative_permeability": 4000.0,
+   "source": "assumed linear lamination steel; with a 1 mm air gap the torque is insensitive to this above about a thousand (checked in docs/lab/magnet.md); saturation not modelled"
+  },
+  {
+   "name": "copper",
+   "relative_permeability": 1.0,
+   "conductivity_s_m": 58000000.0,
+   "source": "International Annealed Copper Standard: 100 % IACS = 5.8e7 S/m at 20 C"
+  },
+  {
+   "name": "aluminium",
+   "relative_permeability": 1.0,
+   "source": "aluminium is non-magnetic: relative permeability 1"
+  }
+ ],
+ "regions": [
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.06,
+    0.064,
+    0,
+    360
+   ],
+   "material": "aluminium"
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.06,
+    0,
+    360
+   ],
+   "material": "steel"
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    -7.5,
+    7.5
+   ],
+   "material": "copper",
+   "phase": "A",
+   "phase_sign": 1
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    22.5,
+    37.5
+   ],
+   "material": "copper",
+   "phase": "C",
+   "phase_sign": -1
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    52.5,
+    67.5
+   ],
+   "material": "copper",
+   "phase": "B",
+   "phase_sign": 1
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    82.5,
+    97.5
+   ],
+   "material": "copper",
+   "phase": "A",
+   "phase_sign": -1
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    112.5,
+    127.5
+   ],
+   "material": "copper",
+   "phase": "C",
+   "phase_sign": 1
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    142.5,
+    157.5
+   ],
+   "material": "copper",
+   "phase": "B",
+   "phase_sign": -1
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    172.5,
+    187.5
+   ],
+   "material": "copper",
+   "phase": "A",
+   "phase_sign": 1
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    202.5,
+    217.5
+   ],
+   "material": "copper",
+   "phase": "C",
+   "phase_sign": -1
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    232.5,
+    247.5
+   ],
+   "material": "copper",
+   "phase": "B",
+   "phase_sign": 1
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    262.5,
+    277.5
+   ],
+   "material": "copper",
+   "phase": "A",
+   "phase_sign": -1
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    292.5,
+    307.5
+   ],
+   "material": "copper",
+   "phase": "C",
+   "phase_sign": 1
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    322.5,
+    337.5
+   ],
+   "material": "copper",
+   "phase": "B",
+   "phase_sign": -1
+  },
+  {
+   "circle_m": [
+    0.065,
+    0.065,
+    0.026
+   ],
+   "material": "steel",
+   "rotor": true
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.026,
+    0.03,
+    -40.0,
+    40.0
+   ],
+   "material": "n42",
+   "magnetisation": "radial",
+   "magnetisation_angle_deg": 1,
+   "rotor": true
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.026,
+    0.03,
+    50.0,
+    130.0
+   ],
+   "material": "n42",
+   "magnetisation": "radial",
+   "magnetisation_angle_deg": -1,
+   "rotor": true
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.026,
+    0.03,
+    140.0,
+    220.0
+   ],
+   "material": "n42",
+   "magnetisation": "radial",
+   "magnetisation_angle_deg": 1,
+   "rotor": true
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.026,
+    0.03,
+    230.0,
+    310.0
+   ],
+   "material": "n42",
+   "magnetisation": "radial",
+   "magnetisation_angle_deg": -1,
+   "rotor": true
+  },
+  {
+   "circle_m": [
+    0.065,
+    0.065,
+    0.008
+   ],
+   "material": "air",
+   "rotor": true
+  }
+ ],
+ "rotor": {
+  "centre_m": [
+   0.065,
+   0.065
+  ],
+  "torque_radius_m": 0.0305,
+  "pole_pairs": 2
+ },
+ "currents": {
+  "peak_density_a_m2": 5000000.0,
+  "electrical_angle_at_zero_deg": 180.0
+ },
+ "run": {
+  "angle_from_deg": 0.0,
+  "angle_to_deg": 30.0,
+  "frames": 31
+ },
+ "drive": {
+  "source": "demonstration drive: stack length, fill factor and load are chosen, not taken from a product",
+  "stack_length_m": 0.05,
+  "fill_factor": 0.45,
+  "rotor_radius_m": 0.03,
+  "copper_temperature_coefficient_1_k": 0.00393,
+  "copper_temperature_coefficient_source": "IEC 60028 (1925), International Standard of Resistance for Copper: 0.00393 per K at 20 C",
+  "initial_temperature_k": 313.15,
+  "torque_table": {
+   "period_deg": 30.0,
+   "points": 31
+  },
+  "load": {
+   "torque_n_m": 0.0,
+   "fan_n_m_s2": 8.6e-05,
+   "source": "a fan load sized so that the motor settles near 3000 rpm"
+  },
+  "spin_up": {
+   "duration_s": 0.5,
+   "frames": 40,
+   "step_s": 2e-05
+  },
+  "heat_run": {
+   "duration_s": 5400.0,
+   "frames": 60,
+   "steps_per_frame": 2
+  },
+  "thermal": {
+   "air": {
+    "thermal_conductivity_w_mk": 0.0263,
+    "volumetric_heat_capacity_j_m3k": 1169.5298,
+    "density_kg_m3": 1.1614,
+    "source": "Incropera, DeWitt, Bergman and Lavine, Fundamentals of Heat and Mass Transfer, 6th ed. (2007), table A.4 (air at 300 K); still air: convection in the gap not modelled, 300 K; typed from the table, not re-checked against a copy in this session"
+   },
+   "steel": {
+    "thermal_conductivity_w_mk": 63.9,
+    "volumetric_heat_capacity_j_m3k": 3399088.0,
+    "density_kg_m3": 7832.0,
+    "source": "Incropera, DeWitt, Bergman and Lavine, Fundamentals of Heat and Mass Transfer, 6th ed. (2007), table A.1 (plain carbon steel AISI 1010), standing in for lamination steel, whose conductivity across the laminations is lower (assumption), 300 K; typed from the table, not re-checked against a copy in this session"
+   },
+   "copper": {
+    "thermal_conductivity_w_mk": 1.0,
+    "volumetric_heat_capacity_j_m3k": 1547642.25,
+    "density_kg_m3": 4019.85,
+    "source": "assumed: the equivalent conductivity of an impregnated winding across its wires, about 1 W/(m K) (the range 0.5 to 1.5 reported by Boglietti et al., IEEE Trans. Ind. Electron. 56, 2009); heat capacity of its copper share only (fill factor 0.45, copper from Incropera, DeWitt, Bergman and Lavine, Fundamentals of Heat and Mass Transfer, 6th ed. (2007), table A.1), 300 K; typed from the table, not re-checked against a copy in this session"
+   },
+   "n42": {
+    "thermal_conductivity_w_mk": 8.5,
+    "volumetric_heat_capacity_j_m3k": 3420000.0,
+    "density_kg_m3": 7600.0,
+    "source": "Neorem Magnets, characteristic physical properties of sintered NdFeB at 20 C: density 7.6 g/cm3, specific heat 450 J/(kg K), thermal conductivity 8 to 9 W/(m K) (8.5 used)"
+   },
+   "aluminium": {
+    "thermal_conductivity_w_mk": 237.0,
+    "volumetric_heat_capacity_j_m3k": 2439906.0,
+    "density_kg_m3": 2702.0,
+    "held_temperature_k": 313.15,
+    "source": "Incropera, DeWitt, Bergman and Lavine, Fundamentals of Heat and Mass Transfer, 6th ed. (2007), table A.1 (pure aluminium); the housing is held at 40 C by its cooling water (assumption), 300 K; typed from the table, not re-checked against a copy in this session"
+   }
+  }
+ },
+ "controls": [
+  {
+   "label": "current density, A/m^2",
+   "path": "currents.peak_density_a_m2",
+   "min": 1000000.0,
+   "max": 10000000.0,
+   "log": false
+  },
+  {
+   "label": "fan load, N m s^2",
+   "path": "drive.load.fan_n_m_s2",
+   "min": 1e-06,
+   "max": 0.0001,
+   "log": true
+  }
+ ]
+}

@@ -1,0 +1,71 @@
+# Three of the gallery images, rendered by the app itself (T22 item 6). docs/images/GALLERY.md names the script under each image.
+# Run it:  ./navier --headless --size 1600x1000 --workspace /tmp/navier-gallery --exec 'exec tools/gallery.nav'
+# Every image is a screenshot of this window; nothing is drawn anywhere else.
+workspace solid
+frames 6
+echo GALLERY start
+
+# 1: the owner's assembly with its result and feature edges, and the frame times with and without ambient occlusion.
+# The assembly is not in the repository: replace @ASSEMBLY_STL@ with the path of a copy of Zero_Final_Assembly_Complete.stl.
+load '@ASSEMBLY_STL@'
+frames 8
+uiclick MM
+frames 10
+am material_assign '{"body": "Zero_Final_Assembly_Complete", "material": "ss316l_lpbf_demo", "source": "user"}'
+am mesh_generate '{"element_size": "2 mm"}'
+am selection_create '{"name": "end_fixed", "query": {"patches": [0]}, "source": "user"}'
+am selection_create '{"name": "end_loaded", "query": {"patches": [2]}, "source": "user"}'
+am boundary_apply '{"name": "hold", "kind": "fixed", "selection": "end_fixed", "source": "user"}'
+am boundary_apply '{"name": "push", "kind": "force", "selection": "end_loaded", "force": [0, 0, "-500 N"], "source": "user"}'
+solid run static
+solid wait 600
+frames 20
+fem fit
+fem edges on
+fem shadows on
+frames 8
+fem export docs/images/gallery-assembly-result.png 3
+echo GALLERY assembly
+perf
+fem shadows off
+frames 60
+perf
+fem shadows on
+frames 60
+perf
+# this assembly is a single piece (its two closed shells are an outer shell and one cavity), so glass and the
+# exploded view are shown on the three-body sample of tools/gallery_three.nav instead.
+
+# 5: the filleted bracket on 10-node tetrahedra, the stress at the fillet
+am project_create '{"name": "gallery_bracket", "description": "L bracket with a 3 mm fillet, TET10"}'
+am geometry_import '{"path": "/tmp/navier-gallery/bracket_fillet.stl", "units": "mm", "name": "bracket"}'
+am material_assign '{"body": "bracket", "material": "ss316l_lpbf_demo", "source": "user"}'
+am mesh_generate '{"method": "tet", "surface_size": "1.5 mm", "order": 2}'
+am selection_create '{"name": "foot", "query": {"all": [{"facing": {"direction": "down"}}, {"plane": {"axis": "z", "at": "min"}}]}, "source": "user"}'
+am selection_create '{"name": "top", "query": {"extreme": {"direction": "+z"}}, "source": "user"}'
+am boundary_apply '{"name": "bolted", "kind": "fixed", "selection": "foot", "source": "user"}'
+am boundary_apply '{"name": "push", "kind": "force", "selection": "top", "force": ["0.5 kN", 0, 0], "source": "user"}'
+solid run static
+solid wait 300
+frames 20
+fem fit
+fem edges on
+frames 8
+fem export docs/images/gallery-fillet-tet10.png 3
+echo GALLERY fillet
+
+# 6: a frame of the LPBF build, the part on its supports as the machine leaves it
+am project_create '{"name": "gallery_build", "description": "the calibration cantilever, built layer by layer"}'
+am geometry_import '{"path": "samples/cantilever.stl", "units": "mm", "name": "cantilever"}'
+am material_assign '{"body": "cantilever", "material": "alsi10mg_lpbf", "source": "user"}'
+am mesh_generate '{"element_size": "1 mm"}'
+am lpbf_build_run '{"body": "cantilever", "build_orientation": "Y", "layer_thickness_sim": "1 mm", "inherent_strain": {"exx": -0.0012226242259139248, "eyy": -0.0034058581422344394, "ezz": -0.03, "provenance": "calibrated", "source": "the elastic strain of the P17 preset in src/ctl/print_profiles.json"}, "material": {"youngs_modulus": "71000 MPa", "poissons_ratio": 0.33, "provenance": "user"}, "cut": {"height": "2.5 mm", "kerf": "0.3 mm", "from_x": "10 mm", "provenance": "assumed"}, "label": "gallery"}'
+solid wait 600
+frames 20
+fem fit
+fem step last
+fem edges on
+frames 8
+fem export docs/images/gallery-lpbf-build.png 3
+echo GALLERY build
+quit

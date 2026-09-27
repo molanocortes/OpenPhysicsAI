@@ -1,0 +1,83 @@
+# CONTROLS tabs (FLOW / MODEL / TIME / LINES), Option-drag and playback through the real input path. Run it off-screen:
+#   ./navier --headless --size 1440x900 --exec "exec tools/controls_test.nav"
+frames 60
+export build/controls_test_model.stl
+load build/controls_test_model.stl
+frames 20
+uiclick "X 90°"
+frames 15
+uiclick "Y 90°"
+frames 15
+uiclick "Z 90°"
+frames 15
+uiclick Z-UP
+frames 15
+uiclick FLIP
+frames 15
+uiclick AUTO
+frames 15
+uiclick sl_pitch 0.6
+frames 15
+uiclick sl_yaw 0.7
+frames 15
+uiclick sl_roll 0.4
+frames 15
+uiclick sl_fit 0.5
+frames 15
+aoa
+yaw
+roll
+fit
+uidrag 300 250 420 200 alt frames 20
+frames 30
+uidrag 300 250 360 250 alt shift frames 10
+frames 30
+aoa
+yaw
+roll
+screenshot build/controls_model.png
+uiclick RESET
+frames 20
+aoa
+uiclick TIME
+frames 10
+start
+wait 200
+uiclick sl_playback 0.5
+frames 90
+playback
+uiclick sl_ulb 0.7
+frames 20
+ulb
+playback slower
+playback faster
+playback max
+screenshot build/controls_time.png
+uiclick "+10"
+frames 30
+uiclick DRAFT
+wait 100
+uiclick LINES
+frames 10
+uiclick GRID
+frames 10
+uiclick sl_rake_x 0.3
+frames 10
+uiclick sl_rake_y 0.6
+frames 10
+uiclick sl_rake_z 0.4
+frames 10
+uiclick sl_rake_size 0.5
+frames 10
+uiclick sl_seeds 0.5
+frames 10
+streamlines
+uiclick POINT
+frames 10
+uiclick AUTO
+frames 10
+streamlines
+screenshot build/controls_lines.png
+uiclick FLOW
+frames 10
+screenshot build/controls_flow.png

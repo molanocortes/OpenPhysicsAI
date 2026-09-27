@@ -1,0 +1,290 @@
+{
+  "date": "2026-09-19",
+  "voxel_mm": 0.25,
+  "note": "the runs of 2026-09-19 that the contract reports, collected from the scratch drivers that demo/verify_supports.py consolidates",
+  "S5": {
+    "explicit": {
+      "on_plate_mm": 0.013043205370463058,
+      "after_removal_mm": 0.013055776980388987,
+      "support_elements": 2688,
+      "volume_mm3": 42.0,
+      "wall_s": 150
+    },
+    "homogenised_isotropic_first": {
+      "on_plate_mm": 0.013083347009648581,
+      "after_removal_mm": 0.013004185280956433,
+      "support_elements": 6144,
+      "volume_mm3": 42.0,
+      "wall_s": 296
+    },
+    "solid_fill": {
+      "on_plate_mm": 0.01292845239999018,
+      "after_removal_mm": 0.012510622639299182,
+      "wall_s": 318
+    },
+    "criterion_pct": 10
+  },
+  "S5b": {
+    "explicit": {
+      "on_plate_mm": 0.02230146470441945,
+      "after_removal_mm": 0.0227386714400752,
+      "support_elements": 5376,
+      "part_elements": 6144,
+      "volume_mm3": 83.9999999999947,
+      "held_321": true,
+      "tear_off": {
+        "largest_nodal_force_n": 14.367885398465333,
+        "sum_of_nodal_force_magnitudes_n": 2655.0638572523294,
+        "resultant_n": [
+          -1.0440537323574972e-12,
+          -3.290479000384039e-12,
+          2.0083490426259232e-11
+        ],
+        "definition": "the forces the removed elements exerted on the part that stays, at the nodes they share with it, just before removal: the load the part releases when they go. The resultant is zero when the part stood on them alone"
+      },
+      "wall_s": 59.1
+    },
+    "solid": {
+      "on_plate_mm": 0.012141752029007784,
+      "after_removal_mm": 0.019174166881325956,
+      "support_elements": 12288,
+      "part_elements": 6144,
+      "volume_mm3": 192.00000000001873,
+      "held_321": true,
+      "tear_off": {
+        "largest_nodal_force_n": 11.568997306960846,
+        "sum_of_nodal_force_magnitudes_n": 3993.739658406865,
+        "resultant_n": [
+          -3.818834137803151e-12,
+          3.008293614215063e-11,
+          1.3107115393040658e-10
+        ],
+        "definition": "the forces the removed elements exerted on the part that stays, at the nodes they share with it, just before removal: the load the part releases when they go. The resultant is zero when the part stood on them alone"
+      },
+      "wall_s": 198.2
+    },
+    "homogenised_isotropic_first": {
+      "on_plate_mm": 0.017658416039611432,
+      "after_removal_mm": 0.024404159608784858,
+      "support_elements": 12288,
+      "part_elements": 6144,
+      "volume_mm3": 84.00000000001071,
+      "held_321": true,
+      "tear_off": {
+        "largest_nodal_force_n": 8.105625641486887,
+        "sum_of_nodal_force_magnitudes_n": 2643.2004857282345,
+        "resultant_n": [
+          -1.490618739552474e-11,
+          5.07349717793204e-12,
+          1.8824497516334304e-11
+        ],
+        "definition": "the forces the removed elements exerted on the part that stays, at the nodes they share with it, just before removal: the load the part releases when they go. The resultant is zero when the part stood on them alone"
+      },
+      "wall_s": 198.1
+    },
+    "homogenised_orthotropic": {
+      "on_plate_mm": 0.017051241732038203,
+      "after_removal_mm": 0.02537237298089007,
+      "support_elements": 12288,
+      "part_elements": 6144,
+      "volume_mm3": 84.00000000001071,
+      "held_321": true,
+      "tear_off": {
+        "largest_nodal_force_n": 8.285954965255181,
+        "sum_of_nodal_force_magnitudes_n": 2595.8615674772223,
+        "resultant_n": [
+          -1.5059453684074242e-11,
+          3.02219360648337e-12,
+          3.907274503944791e-11
+        ],
+        "definition": "the forces the removed elements exerted on the part that stays, at the nodes they share with it, just before removal: the load the part releases when they go. The resultant is zero when the part stood on them alone"
+      },
+      "wall_s": 190.6,
+      "profiles_uz_mm_x_-6_to_6": {
+        "before_z6": [
+          -0.00159,
+          -0.0024,
+          -0.00266,
+          -0.00281,
+          -0.00291,
+          -0.00298,
+          -0.00302,
+          -0.00305,
+          -0.00307,
+          -0.00308,
+          -0.00309,
+          -0.00309,
+          -0.00309,
+          -0.00309,
+          -0.00309,
+          -0.00308,
+          -0.00307,
+          -0.00305,
+          -0.00302,
+          -0.00298,
+          -0.00291,
+          -0.00281,
+          -0.00266,
+          -0.0024,
+          -0.00159
+        ],
+        "before_z4": [
+          0.00298,
+          -0.00133,
+          -0.00393,
+          -0.00537,
+          -0.00617,
+          -0.00658,
+          -0.00679,
+          -0.00686,
+          -0.00688,
+          -0.00686,
+          -0.00683,
+          -0.00681,
+          -0.0068,
+          -0.00681,
+          -0.00683,
+          -0.00686,
+          -0.00688,
+          -0.00686,
+          -0.00679,
+          -0.00658,
+          -0.00617,
+          -0.00537,
+          -0.00393,
+          -0.00133,
+          0.00298
+        ],
+        "after_z6": [
+          -0.00655,
+          -0.00887,
+          -0.01081,
+          -0.01265,
+          -0.01432,
+          -0.0158,
+          -0.01706,
+          -0.01812,
+          -0.01897,
+          -0.01962,
+          -0.02009,
+          -0.02036,
+          -0.02045,
+          -0.02036,
+          -0.02009,
+          -0.01962,
+          -0.01897,
+          -0.01812,
+          -0.01706,
+          -0.0158,
+          -0.01432,
+          -0.01265,
+          -0.01081,
+          -0.00887,
+          -0.00655
+        ],
+        "after_z4": [
+          -0.00132,
+          -0.00808,
+          -0.01275,
+          -0.016,
+          -0.01839,
+          -0.02022,
+          -0.02164,
+          -0.02276,
+          -0.02362,
+          -0.02426,
+          -0.0247,
+          -0.02495,
+          -0.02504,
+          -0.02495,
+          -0.0247,
+          -0.02426,
+          -0.02362,
+          -0.02276,
+          -0.02164,
+          -0.02022,
+          -0.01839,
+          -0.016,
+          -0.01275,
+          -0.00808,
+          -0.00132
+        ]
+      }
+    },
+    "criterion_pct": 10
+  },
+  "S6": {
+    "explicit": {
+      "deck_top_T_end_of_print_c": 95.3093097795562,
+      "at_time_s": 191.99999999999997,
+      "print_time_s": 191.99999999999997,
+      "bed_c": 60.0,
+      "rise_above_bed_k": 35.3093097795562,
+      "heat_into_bed_during_print_j": 2.0384804364809046,
+      "heat_into_bed_j": -2.520608812801748,
+      "probe_node_mm": [
+        0,
+        0,
+        6
+      ],
+      "warp_z_min_mm": -0.020190935213682374,
+      "compute_s": 448.05569300003117,
+      "wall_s": 448.2
+    },
+    "homogenised_skin_only": {
+      "deck_top_T_end_of_print_c": 104.75172640732143,
+      "at_time_s": 191.99999999999997,
+      "print_time_s": 191.99999999999997,
+      "bed_c": 60.0,
+      "rise_above_bed_k": 44.75172640732143,
+      "heat_into_bed_during_print_j": 6.955554040225321,
+      "heat_into_bed_j": 7.639302278325849,
+      "probe_node_mm": [
+        0,
+        0,
+        6
+      ],
+      "warp_z_min_mm": -0.0194670508969773,
+      "compute_s": 1162.0062069999985,
+      "wall_s": 1164.3,
+      "supports": {
+        "elements": 6144,
+        "volume_mm3": 41.99999999999994,
+        "removed_after_release": 6144,
+        "tear_off": {
+          "largest_nodal_force_n": 0.026846483380735742,
+          "sum_of_nodal_force_magnitudes_n": 11.57897352135408,
+          "definition": "the forces the supports exerted on the part at the nodes they share with it, just before their removal after the bed release"
+        }
+      }
+    },
+    "homogenised_with_surface_exchange": {
+      "deck_top_T_end_of_print_c": 98.50300126992425,
+      "at_time_s": 191.99999999999997,
+      "print_time_s": 191.99999999999997,
+      "bed_c": 60.0,
+      "rise_above_bed_k": 38.503001269924255,
+      "heat_into_bed_during_print_j": 4.237825041516636,
+      "heat_into_bed_j": 0.9415458050747687,
+      "probe_node_mm": [
+        0,
+        0,
+        6
+      ],
+      "warp_z_min_mm": -0.019099812812743356,
+      "compute_s": 645.3685529999784,
+      "wall_s": 646.8,
+      "supports": {
+        "elements": 6144,
+        "volume_mm3": 41.99999999999994,
+        "removed_after_release": 6144,
+        "tear_off": {
+          "largest_nodal_force_n": 0.037345726226007236,
+          "sum_of_nodal_force_magnitudes_n": 16.003530872548268,
+          "definition": "the forces the supports exerted on the part at the nodes they share with it, just before their removal after the bed release"
+        }
+      }
+    },
+    "criterion_pct": 5
+  }
+}

@@ -1,0 +1,8 @@
+# Karman vortex street behind a circular cylinder (Re ~ 150, spanwise periodic).
+# Watch the alternating vortices on the slice; the FORCES panel reports the Strouhal number (~0.18-0.2).
+scene cylinder
+view uz
+cmap coolwarm
+slice z 0.5
+streamlines off
+start

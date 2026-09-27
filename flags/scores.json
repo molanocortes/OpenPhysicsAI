@@ -1,0 +1,45 @@
+{
+ "scored_on": "2026-09-27",
+ "capture_at": 90,
+ "band": 5,
+ "entries": [
+  {
+   "who": "molanocortes",
+   "ai": "Claude Opus 5.5",
+   "libraries": [
+    "OpenPhysicsAI"
+   ],
+   "baseline": false,
+   "open": true,
+   "entry": "reference",
+   "title": "OpenPhysicsAI reference",
+   "commit": "3c038b8 with local changes",
+   "date": "2026-09-26",
+   "flags": {
+    "flow-cylinder-shedding": 65,
+    "gas-shock-bubble": 90,
+    "gas-sphere-bowshock": 45,
+    "orbit-planets-2020": 100
+   }
+  },
+  {
+   "who": "molanocortes",
+   "ai": "none",
+   "libraries": [
+    "closed-form correlations"
+   ],
+   "baseline": true,
+   "open": true,
+   "entry": "textbook",
+   "title": "Textbook formulas",
+   "commit": "3c038b8 with local changes",
+   "date": "2026-09-26",
+   "flags": {
+    "flow-cylinder-shedding": 0,
+    "gas-shock-bubble": 65,
+    "gas-sphere-bowshock": 40,
+    "orbit-planets-2020": 0
+   }
+  }
+ ]
+}

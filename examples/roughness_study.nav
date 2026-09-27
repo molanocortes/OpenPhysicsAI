@@ -1,0 +1,5 @@
+# How surface roughness changes the drag of a submarine hull in sea water at 2 m/s.
+# Roughness is swept from smooth to 2 mm (values in metres); results go to submarine_roughness.csv.
+scene submarine
+init flow
+sweep roughness 0 0.002 0.0005 steps 3000 submarine_roughness.csv

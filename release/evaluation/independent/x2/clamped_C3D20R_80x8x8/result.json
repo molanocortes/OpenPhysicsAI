@@ -1,0 +1,31 @@
+{
+ "case": "clamped_C3D20R_80x8x8",
+ "element": "C3D20R",
+ "mesh": [
+  80,
+  8,
+  8
+ ],
+ "root": "clamped",
+ "nu": 0.3,
+ "element_size_mm": 1.25,
+ "nodes": 24705,
+ "elements": 5120,
+ "ccx_rc": 0,
+ "ccx_seconds": 5.0457868576049805,
+ "status": "solved",
+ "tip_mean_uz_area_weighted_mm": 0.02001176140624999,
+ "tip_mean_uz_nodal_mm": 0.02001185128888889,
+ "reaction_n": [
+  -8.303214e-11,
+  -3.750009e-11,
+  10.0
+ ],
+ "reaction_balance": 0.0,
+ "reaction_print_resolution": 5e-07,
+ "strain_energy_nmm": 0.1000588,
+ "energy_displacement_mm": 0.02001176,
+ "energy_vs_work": 0.9999999297288248,
+ "weight_sum": 0.9999999999999988,
+ "ccx_messages": []
+}

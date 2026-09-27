@@ -1,0 +1,19 @@
+{
+ "id": "radar-almond",
+ "number": 7,
+ "tier": "flag",
+ "stone": "electromagnetic waves",
+ "stone_short": "EM waves",
+ "difficulty": 2,
+ "title": "The radar signature of a stealth shape",
+ "subtitle": "The NASA almond: how much radar comes back, from every angle",
+ "short": "Radar",
+ "status": "preparing",
+ "hook": "Shine radar on a smooth metal almond and very little comes back. Predict how little, from every angle.",
+ "media": {
+  "src": "docs/media/lab/radar-aircraft-view.gif",
+  "alt": "A radar pulse at 300 MHz sweeps over an aircraft 15 m long and scatters from it, in 3D",
+  "caption": "The lab today: a radar pulse at 300 MHz meets an aircraft 15 m long, Maxwell's equations on a 3D grid. The almond asks for the returned signal to a fraction of a decibel."
+ },
+ "note": "In preparation: the cases, the outputs and their units are written here when the flag opens, and the measured values are sealed at the same moment (tools/flags.py seal)."
+}

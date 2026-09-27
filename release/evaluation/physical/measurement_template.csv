@@ -1,0 +1,3 @@
+# NAVIER physical comparison: measurement template (PROTOCOL.md). One row per reading. Lines starting with # are ignored.
+# record_type: specimen | reading | coupon | environment. Leave unused columns empty. Units are in the column names.
+record_type,specimen_id,design,print_job,date_iso,operator_code,temperature_c,humidity_pct,mass_g,wall_thickness_mm_1,wall_thickness_mm_2,wall_thickness_mm_3,arm_thickness_mm_1,arm_thickness_mm_2,arm_thickness_mm_3,width_mm,cycle,load_kg,hold_s,pad_indicator_mm,base_indicator_mm,coupon_width_mm,coupon_thickness_mm,coupon_span_mm,coupon_slope_n_per_mm,notes

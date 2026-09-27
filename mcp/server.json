@@ -1,0 +1,20 @@
+{
+  "$comment": "Draft manifest for listing the MCP server in public registries once the repository is public. Field names follow the MCP registry's server.json convention as understood on 2026-09-19; check the registry's current schema before submitting.",
+  "name": "io.github.molanocortes/openphysicsai",
+  "description": "Open-source engineering simulation for AI agents: additive-manufacturing process simulation (LPBF, FFF), structural and thermal finite elements, conjugate heat transfer, with typed schema-validated operations, provenance on every input, pre-registered validation and replayable evidence records.",
+  "repository": {"url": "https://github.com/molanocortes/OpenPhysicsAI", "source": "github"},
+  "version": "0.4.0-dev",
+  "packages": [
+    {
+      "registry_type": "source",
+      "identifier": "https://github.com/molanocortes/OpenPhysicsAI",
+      "transport": {"type": "stdio"},
+      "runtime_hint": "navier-mcp",
+      "notes": "Build with `make` (macOS today; Linux headless build is task T1). Run `navier-mcp --allow-read <folder with your STL files>`."
+    }
+  ],
+  "capabilities": {
+    "tools": "69 typed operations: project, geometry import and repair, voxel meshing, selections, materials with provenance, boundary conditions, static structural, transient thermal, thermomechanical, conjugate heat transfer, FFF print, LPBF build with calibration, comparison studies with evidence records, results queries, probes, renders and exports"
+  },
+  "keywords": ["simulation", "finite element", "additive manufacturing", "3D printing", "LPBF", "distortion", "residual stress", "thermal", "CFD", "engineering", "validation", "benchmark"]
+}

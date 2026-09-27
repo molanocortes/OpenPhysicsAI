@@ -1,0 +1,101 @@
+{
+ "domain": "acoustic",
+ "title": "A loudspeaker fills a room: coil, cone and sound",
+ "provenance": {
+  "source": "driver from its maker's sheet; room size and wall absorption 0.15 are demonstration values"
+ },
+ "room_m": [
+  3.0,
+  2.4,
+  2.4
+ ],
+ "dx_m": 0.03,
+ "speed_of_sound_m_s": 343.2,
+ "density_kg_m3": 1.204,
+ "materials": [
+  {
+   "name": "plaster",
+   "absorption_normal": 0.15
+  },
+  {
+   "name": "sofa",
+   "absorption_normal": 0.7
+  }
+ ],
+ "walls": {
+  "all": "plaster"
+ },
+ "boxes": [
+  {
+   "box_m": [
+    2.1,
+    0.5,
+    0.0,
+    2.9,
+    1.9,
+    0.45
+   ],
+   "material": "sofa"
+  }
+ ],
+ "speaker": {
+  "face": "x_low",
+  "centre_m": [
+   1.2,
+   1.1
+  ],
+  "driver": {
+   "re_ohm": 6.4,
+   "le_h": 0.00073,
+   "bl_t_m": 7.82,
+   "mms_kg": 0.0179,
+   "cms_m_n": 0.00112,
+   "sd_m2": 0.01247,
+   "fs_hz": 35.7,
+   "qms": 1.22,
+   "source": "Dayton Audio RS180-8 specification sheet (part 295-355): Thiele-Small parameters as published"
+  },
+  "drive": {
+   "voltage_peak_v": 4.002,
+   "frequency_hz": 400,
+   "cycles": 4
+  }
+ },
+ "receivers": [
+  {
+   "position_m": [
+    1.0,
+    1.2,
+    1.1
+   ]
+  },
+  {
+   "position_m": [
+    2.4,
+    1.2,
+    1.1
+   ]
+  }
+ ],
+ "run": {
+  "end_time_s": 0.016,
+  "frames": 48,
+  "volume": true
+ },
+ "controls": [
+  {
+   "label": "tone, Hz",
+   "path": "speaker.drive.frequency_hz",
+   "min": 100,
+   "max": 1000,
+   "log": true
+  },
+  {
+   "label": "drive voltage, V peak",
+   "path": "speaker.drive.voltage_peak_v",
+   "min": 0.5,
+   "max": 20,
+   "log": true
+  }
+ ]
+}

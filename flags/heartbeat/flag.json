@@ -1,0 +1,19 @@
+{
+ "id": "heartbeat",
+ "number": 13,
+ "tier": "holy-grail",
+ "stone": "life",
+ "stone_short": "life",
+ "difficulty": 6,
+ "title": "A human heartbeat",
+ "subtitle": "One person's heart, from its MRI: the blood it pumps and the vortex inside",
+ "short": "Heartbeat",
+ "status": "preparing",
+ "hook": "A heart beats some three billion times in a lifetime. Predict one beat of one person's heart.",
+ "media": {
+  "src": "docs/media/lab/heart-valve.gif",
+  "alt": "A three-leaflet valve in an aortic root opens as blood jets through it and closes into a seal",
+  "caption": "The lab today: a three-leaflet valve in an aortic root opens, jets and closes through a heartbeat, the blood and the leaflets computed together on the GPU. The heart that drives it is what this flag asks for."
+ },
+ "note": "In preparation: the cases, the outputs and their units are written here when the flag opens, and the measured values are sealed at the same moment (tools/flags.py seal)."
+}

@@ -1,0 +1,1868 @@
+{
+  "export": {
+    "directory": "Thermal Sim/examples/04_three_domain_cht/export",
+    "files": [
+      {
+        "bytes": 1876,
+        "contents": "one VTK XML file per stored time (temperature_c, and displacement and von Mises for thermomechanical runs) with a series.pvd collection carrying the times",
+        "files_written": 26,
+        "format": "vtu",
+        "path": "Thermal Sim/examples/04_three_domain_cht/export/series.pvd",
+        "sha256": "321451886de803423901bd26009337f3c48bf6b5172473dc399a8524b1403590"
+      },
+      {
+        "bytes": 1416,
+        "contents": "one row per stored time: temperature range and, when present, the mechanical peaks",
+        "format": "csv",
+        "path": "Thermal Sim/examples/04_three_domain_cht/export/history.csv",
+        "sha256": "e840d7ccd8600168d315ea2dc34644db4fbb55d9d976efa54a7ef88dd10bf470"
+      }
+    ],
+    "job_id": "job-20260916-124247-2045-1"
+  },
+  "probes": [
+    {
+      "displacement_mm": {
+        "x": 0.00666060442265208,
+        "y": -4.3898458464631106e-16,
+        "z": 4.653375057838652e-06
+      },
+      "element": 89,
+      "history": [
+        {
+          "temperature_c": 20,
+          "time_s": 0
+        },
+        {
+          "temperature_c": 22.472294150273456,
+          "time_s": 300
+        },
+        {
+          "temperature_c": 24.728377699396503,
+          "time_s": 600
+        },
+        {
+          "temperature_c": 26.792236097069917,
+          "time_s": 900
+        },
+        {
+          "temperature_c": 28.68252503323083,
+          "time_s": 1200
+        },
+        {
+          "temperature_c": 30.414362902634537,
+          "time_s": 1500
+        },
+        {
+          "temperature_c": 32.001476121755104,
+          "time_s": 1800
+        },
+        {
+          "temperature_c": 33.456363285595046,
+          "time_s": 2100
+        },
+        {
+          "temperature_c": 34.791232134842744,
+          "time_s": 2400
+        },
+        {
+          "temperature_c": 36.01382210077696,
+          "time_s": 2700
+        },
+        {
+          "temperature_c": 37.134590675226946,
+          "time_s": 3000
+        },
+        {
+          "temperature_c": 38.162347778885305,
+          "time_s": 3300
+        },
+        {
+          "temperature_c": 39.10657535329369,
+          "time_s": 3600
+        },
+        {
+          "temperature_c": 39.973160023555806,
+          "time_s": 3900
+        },
+        {
+          "temperature_c": 40.76878129935852,
+          "time_s": 4200
+        },
+        {
+          "temperature_c": 41.499299682499384,
+          "time_s": 4500
+        },
+        {
+          "temperature_c": 42.17013068025295,
+          "time_s": 4800
+        },
+        {
+          "temperature_c": 42.786214295045454,
+          "time_s": 5100
+        },
+        {
+          "temperature_c": 43.35207557198049,
+          "time_s": 5400
+        },
+        {
+          "temperature_c": 43.87185615543848,
+          "time_s": 5700
+        },
+        {
+          "temperature_c": 44.349349466595584,
+          "time_s": 6000
+        },
+        {
+          "temperature_c": 44.788030659169465,
+          "time_s": 6300
+        },
+        {
+          "temperature_c": 45.19108428773637,
+          "time_s": 6600
+        },
+        {
+          "temperature_c": 45.56142934001036,
+          "time_s": 6900
+        },
+        {
+          "temperature_c": 45.901742039503915,
+          "time_s": 7200
+        }
+      ],
+      "inside": true,
+      "point_mm": [
+        0,
+        0,
+        2
+      ],
+      "temperature_c": 45.901742039503915,
+      "von_mises_mpa": 1.8719782257685147
+    },
+    {
+      "displacement_mm": {
+        "x": 0.012573689061760233,
+        "y": -1.1640326810865642e-15,
+        "z": 1.2796951394361007e-05
+      },
+      "element": 99,
+      "history": [
+        {
+          "temperature_c": 20,
+          "time_s": 0
+        },
+        {
+          "temperature_c": 22.476467518765958,
+          "time_s": 300
+        },
+        {
+          "temperature_c": 24.73661026618919,
+          "time_s": 600
+        },
+        {
+          "temperature_c": 26.80418826650299,
+          "time_s": 900
+        },
+        {
+          "temperature_c": 28.697889236640663,
+          "time_s": 1200
+        },
+        {
+          "temperature_c": 30.432857551153347,
+          "time_s": 1500
+        },
+        {
+          "temperature_c": 32.02284332423369,
+          "time_s": 1800
+        },
+        {
+          "temperature_c": 33.480366849213624,
+          "time_s": 2100
+        },
+        {
+          "temperature_c": 34.817657215147165,
+          "time_s": 2400
+        },
+        {
+          "temperature_c": 36.04246725095578,
+          "time_s": 2700
+        },
+        {
+          "temperature_c": 37.16527283489427,
+          "time_s": 3000
+        },
+        {
+          "temperature_c": 38.19489947447846,
+          "time_s": 3300
+        },
+        {
+          "temperature_c": 39.140845970014084,
+          "time_s": 3600
+        },
+        {
+          "temperature_c": 40.00900933094954,
+          "time_s": 3900
+        },
+        {
+          "temperature_c": 40.806080964101966,
+          "time_s": 4200
+        },
+        {
+          "temperature_c": 41.5379318224218,
+          "time_s": 4500
+        },
+        {
+          "temperature_c": 42.20998709619937,
+          "time_s": 4800
+        },
+        {
+          "temperature_c": 42.82719563895813,
+          "time_s": 5100
+        },
+        {
+          "temperature_c": 43.39409061957133,
+          "time_s": 5400
+        },
+        {
+          "temperature_c": 43.914821131332246,
+          "time_s": 5700
+        },
+        {
+          "temperature_c": 44.393187429944305,
+          "time_s": 6000
+        },
+        {
+          "temperature_c": 44.832670938406295,
+          "time_s": 6300
+        },
+        {
+          "temperature_c": 45.236461965868955,
+          "time_s": 6600
+        },
+        {
+          "temperature_c": 45.60748478113737,
+          "time_s": 6900
+        },
+        {
+          "temperature_c": 45.948420455397695,
+          "time_s": 7200
+        }
+      ],
+      "inside": true,
+      "point_mm": [
+        19,
+        0,
+        2
+      ],
+      "temperature_c": 45.948420455397695,
+      "von_mises_mpa": 0.016521949766181397
+    },
+    {
+      "displacement_mm": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "element": 1149,
+      "history": [
+        {
+          "temperature_c": 20,
+          "time_s": 0
+        },
+        {
+          "temperature_c": 21.705180761800648,
+          "time_s": 300
+        },
+        {
+          "temperature_c": 23.267177099259698,
+          "time_s": 600
+        },
+        {
+          "temperature_c": 24.69608588203687,
+          "time_s": 900
+        },
+        {
+          "temperature_c": 26.00482226756401,
+          "time_s": 1200
+        },
+        {
+          "temperature_c": 27.20385536625264,
+          "time_s": 1500
+        },
+        {
+          "temperature_c": 28.302687799827254,
+          "time_s": 1800
+        },
+        {
+          "temperature_c": 29.309973414662068,
+          "time_s": 2100
+        },
+        {
+          "temperature_c": 30.234164185850943,
+          "time_s": 2400
+        },
+        {
+          "temperature_c": 31.08061938985668,
+          "time_s": 2700
+        },
+        {
+          "temperature_c": 31.85657792425627,
+          "time_s": 3000
+        },
+        {
+          "temperature_c": 32.5681404523138,
+          "time_s": 3300
+        },
+        {
+          "temperature_c": 33.22187158530653,
+          "time_s": 3600
+        },
+        {
+          "temperature_c": 33.82184680394323,
+          "time_s": 3900
+        },
+        {
+          "temperature_c": 34.372690758005774,
+          "time_s": 4200
+        },
+        {
+          "temperature_c": 34.878460953594754,
+          "time_s": 4500
+        },
+        {
+          "temperature_c": 35.342906822209784,
+          "time_s": 4800
+        },
+        {
+          "temperature_c": 35.76944857182332,
+          "time_s": 5100
+        },
+        {
+          "temperature_c": 36.16121911308994,
+          "time_s": 5400
+        },
+        {
+          "temperature_c": 36.52108590697469,
+          "time_s": 5700
+        },
+        {
+          "temperature_c": 36.85167532154287,
+          "time_s": 6000
+        },
+        {
+          "temperature_c": 37.15539336910325,
+          "time_s": 6300
+        },
+        {
+          "temperature_c": 37.434444867317836,
+          "time_s": 6600
+        },
+        {
+          "temperature_c": 37.69085076749809,
+          "time_s": 6900
+        },
+        {
+          "temperature_c": 37.92646394302926,
+          "time_s": 7200
+        }
+      ],
+      "inside": true,
+      "point_mm": [
+        29,
+        0,
+        9.000000000000002
+      ],
+      "temperature_c": 37.92646394302926,
+      "von_mises_mpa": 0
+    }
+  ],
+  "reference_summary": {
+    "analysis": "conjugate_heat_transfer",
+    "assessment": {
+      "conservation": {
+        "energy_closure_error": 1.5416179826633088e-11,
+        "enthalpy_mismatch": 7.507727437332722e-16,
+        "passed": true
+      },
+      "coupling_convergence": {
+        "converged_every_step": true,
+        "flow": "steady state reached by the lattice (see flow.final_relative_change)",
+        "largest_final_coupling_change": 0.9522824912965523,
+        "scheme": "partitioned"
+      },
+      "discretization_evidence": {
+        "element_size_mm": [
+          2,
+          2,
+          2
+        ],
+        "spatial": "not estimated: one mesh was solved. Establish mesh convergence by repeating the study with a finer element_size; voxel boundaries are staircases, so surface values on curved or inclined faces depend on the element size",
+        "temporal": "estimated per step by step doubling (see time_integration.error_estimate)"
+      },
+      "execution": "COMPLETED",
+      "experimental_validation": "none: no comparison with measurements is part of this run",
+      "material_provenance": [
+        {
+          "material": "steel_plate_demo",
+          "status": "demonstration",
+          "target": "plate"
+        },
+        {
+          "material": "air_demo",
+          "status": "demonstration",
+          "target": "air"
+        }
+      ],
+      "numerical_convergence": {
+        "failed_attempts_recovered": 0,
+        "largest_picard_iterations": 3,
+        "nonlinear": "every accepted step converged its Picard iteration to the nonlinear tolerance"
+      },
+      "reading": "The job completed, which says nothing about accuracy. Demonstration materials were used, so values are indicative only."
+    },
+    "bodies": [
+      {
+        "balance_error": 6.488992059732683e-12,
+        "boundary_and_prescribed_j": 0,
+        "independently_closed": true,
+        "name": "plate",
+        "residual_j": 4.672074283007532e-09,
+        "sources_j": 720.0000000000001,
+        "stored_j": 302.6822734953059,
+        "through_interfaces_j": -417.3177265093663
+      },
+      {
+        "advected_j": -417.1471362837516,
+        "balance_error": 7.90025940547452e-15,
+        "boundary_and_prescribed_j": 0,
+        "independently_closed": true,
+        "name": "air",
+        "residual_j": -3.296918293926865e-12,
+        "sources_j": 0,
+        "stored_j": 0.170590225611496,
+        "through_interfaces_j": 417.31772650936637
+      }
+    ],
+    "conditions": [
+      {
+        "body": "plate",
+        "kind": "heat_source",
+        "name": "heater"
+      }
+    ],
+    "conjugate_interface": {
+      "accounts": "heat_into_fluid_j is the reaction of the interface nodes the fluid holds; heat_into_solids_j is the nodal heat the solids received from it (a conservative transfer, so the two are equal and opposite). The temperature jump is bounded by the coupling tolerance",
+      "area_mm2": 799.9999999999982,
+      "conservation_error": 1.362113690599055e-16,
+      "heat_into_fluid_j": 417.31772650936637,
+      "heat_into_solids_j": -417.3177265093663,
+      "largest_temperature_jump_k": 3.942682269553188e-08,
+      "model": "resolved: temperature continuity and heat through the computed flow; no convection coefficient",
+      "nodes": 231
+    },
+    "coupling": {
+      "character": "contains strongly coupled feedback cycles",
+      "couplings": [
+        {
+          "field_in": "velocity",
+          "field_out": "velocity",
+          "from": "flow",
+          "to": "fluid",
+          "transfer": "intensive (point values)",
+          "values": 6138
+        },
+        {
+          "field_in": "interface_temperature",
+          "field_out": "interface_temperature",
+          "from": "solids",
+          "to": "fluid",
+          "transfer": "intensive (point values)",
+          "values": 693
+        },
+        {
+          "field_in": "interface_heat_in",
+          "field_out": "interface_heat_out",
+          "from": "fluid",
+          "to": "solids",
+          "transfer": "conservative (integrated quantity)",
+          "values": 693
+        },
+        {
+          "field_in": "temperature",
+          "field_out": "temperature",
+          "from": "solids",
+          "to": "structure",
+          "transfer": "intensive (point values)",
+          "values": 693
+        }
+      ],
+      "execution_order": [
+        {
+          "coupling": "sequential (one-way)",
+          "participants": [
+            "flow"
+          ]
+        },
+        {
+          "coupling": "feedback cycle: iterated to convergence each step (strong coupling)",
+          "participants": [
+            "fluid",
+            "solids"
+          ]
+        },
+        {
+          "coupling": "sequential (one-way)",
+          "participants": [
+            "structure"
+          ]
+        }
+      ],
+      "participants": [
+        {
+          "evaluated": "once, at the start: its result does not depend on time",
+          "kind": "quasi-static",
+          "name": "flow"
+        },
+        {
+          "kind": "transient",
+          "name": "fluid",
+          "order": 1
+        },
+        {
+          "kind": "transient",
+          "name": "solids",
+          "order": 1
+        },
+        {
+          "evaluated": "at stored times only, which is exact for a model without history",
+          "kind": "quasi-static",
+          "name": "structure"
+        }
+      ],
+      "statistics": {
+        "attempts": 59,
+        "coupling_iterations": 305,
+        "iterations_per_accepted_step": 5.169491525423729,
+        "largest_final_coupling_change": 0.9522824912965523,
+        "note": "the coupling change is normalised by its tolerance (<= 1 converged); it is reported apart from the temporal error",
+        "rejected_for_coupling": 0
+      },
+      "stored_times_with_structural_results": 25,
+      "structural_synchronisation": "at the initial time and every stored time; exact for this linear elastic structure, which has no history. A model with history (plasticity, creep) would have to be evaluated at every accepted step",
+      "structure": "one-way: the solids' temperature drives their thermal expansion at the stored times; nothing feeds back",
+      "summary": "flow -> fluid energy is one-way (the steady flow is computed once and does not depend on temperature); fluid and solids are strongly coupled: every step iterates the conjugate interface (the fluid holds it at the solids' temperature, the solids receive the fluid's interface heat) until the interface temperature stops changing"
+    },
+    "energy": {
+      "advected_into_fluid_j": -417.1471362837516,
+      "advection_note": "advected_into_fluid_j is the energy the velocity carried into the fluid (volume term plus the weak inflow at the open faces); for a mass-conserving velocity it equals enthalpy_in_j - enthalpy_out_j, and unexplained_advective_j is the difference, a measure of the mapped flow's divergence",
+      "boundary_j": 0,
+      "closure_error": 1.5416179826633088e-11,
+      "enthalpy_change_j": 302.8528637209176,
+      "enthalpy_in_j": 10226.025089279987,
+      "enthalpy_mismatch": 7.507727437332722e-16,
+      "enthalpy_out_j": 10643.342544135461,
+      "note": "accepted steps only: rejected trial steps never enter these sums. The stored energy of every step must equal the heat delivered by sources, boundary faces and prescribed-temperature nodes; enthalpy_change_j is the same energy obtained by integrating the enthalpy function over the elements, which checks the capacity model itself rather than the linear solve",
+      "prescribed_nodes_j": 0,
+      "sources_j": 720.0000000000001,
+      "stored_j": 302.85286372091736,
+      "supplied_j": 302.8528637162485,
+      "unexplained_advective_j": 0.1703185717248349,
+      "worst_step_balance_error": 1.008526823025212e-10,
+      "worst_step_enthalpy_mismatch": 5.785144291103844e-13
+    },
+    "files": [
+      {
+        "bytes": 2779449,
+        "format": "navier-am-thermal-results 2: JSON header and little-endian arrays",
+        "name": "results.nvt",
+        "sha256": "dff3d149a0784ddcd0bf5891f88e351775c0d87e8af3810f3cf830866be6700d"
+      }
+    ],
+    "flow": {
+      "computed": true,
+      "density_max": 1.0139144659042358,
+      "density_min": 0.997003436088562,
+      "final_relative_change": 1.2008479751797032e-06,
+      "inlet_flux_m3_s": 4.044528631707739e-06,
+      "lattice_mach": 0.04298557155106253,
+      "lattice_steps": 5000,
+      "lattice_velocity": 0.024817731306275872,
+      "mapping": "momentum density / reference density at cell centres, averaged to the mesh nodes (zero at walls and solids), then each cross-section scaled to the specified volume flow; section_scale_* is the size of that correction. The mapped field is not exactly divergence-free for the energy equation's elements: see energy.unexplained_advective_j",
+      "model": "steady laminar incompressible flow of a constant-property fluid without buoyancy, from the D3Q19 lattice Boltzmann solver (regularized recursive collision, halfway bounce-back walls, velocity inlet, pressure outlet)",
+      "outlet_flux_m3_s": 4.0445309733612905e-06,
+      "physical_time_to_steady_s": 12.408865653137935,
+      "relaxation_time": 0.5279817859204896,
+      "reynolds_cell": 2.660773480662984,
+      "reynolds_hydraulic": 13.303867403314918,
+      "section_scale_max": 1.1934749054477267,
+      "section_scale_min": 1.0964191211940362,
+      "specified_flux_m3_s": 3.9999999999999964e-06,
+      "time_synchronisation": "the steady flow is used from t = 0: its start-up transient is not resolved. physical_time_to_steady_s is how long the lattice needed to reach it from rest; compare it with the thermal times of the study",
+      "wall_seconds": 0.2216269999917131,
+      "warning": "the lattice density varied by more than 1 %: compressibility errors of the flow are of that order"
+    },
+    "fluid_energy": {
+      "equation": "rho cp (dT/dt + u . grad T) = div(k grad T) + q in the fluid (convective form)",
+      "inlet_temperature_c": 20,
+      "linear_solver": "BiCGSTAB with ILU(0) and residual replacement (the system is nonsymmetric)",
+      "open_boundaries": "x-min and x-max planes of the fluid box: outflow where the velocity leaves, weak inflow at the inlet temperature where it enters (inlet and any backflow)",
+      "overshoot": {
+        "bounds": "at each stored time: the inlet, the initial temperature and the solids' extremes up to that time (the maximum principle of advection-diffusion without fluid sources); a stored-time check, not a check of every step",
+        "largest_k": 0,
+        "node_values_beyond_bounds": 0
+      },
+      "stabilization": "SUPG with tau = [(2|u|/h)^2 + 9 (4 alpha / h^2)^2]^(-1/2), independent of the time step",
+      "unexplained_advective_fraction": 1.600235743785972e-05
+    },
+    "history": [
+      {
+        "max_c": 20,
+        "max_displacement_mm": 2.901227875354554e-17,
+        "min_c": 20,
+        "peak_von_mises_mpa": 2.669234080274539e-13,
+        "time_s": 0
+      },
+      {
+        "max_c": 22.47656450570736,
+        "max_displacement_mm": 0.0012619996935897143,
+        "min_c": 20.000107867327188,
+        "peak_von_mises_mpa": 11.567590528294787,
+        "time_s": 300
+      },
+      {
+        "max_c": 24.736796875414825,
+        "max_displacement_mm": 0.0024146057753489246,
+        "min_c": 20.000206482709643,
+        "peak_von_mises_mpa": 22.115498671672512,
+        "time_s": 600
+      },
+      {
+        "max_c": 26.80445699953094,
+        "max_displacement_mm": 0.0034698225272967198,
+        "min_c": 20.000296695219504,
+        "peak_von_mises_mpa": 31.759046565421887,
+        "time_s": 900
+      },
+      {
+        "max_c": 28.69823330256645,
+        "max_displacement_mm": 0.004436980333398238,
+        "min_c": 20.00037932013248,
+        "peak_von_mises_mpa": 40.58683109656516,
+        "time_s": 1200
+      },
+      {
+        "max_c": 30.433270732489177,
+        "max_displacement_mm": 0.005323641623343804,
+        "min_c": 20.000455018819252,
+        "peak_von_mises_mpa": 48.67064547551255,
+        "time_s": 1500
+      },
+      {
+        "max_c": 32.0233199270113,
+        "max_displacement_mm": 0.006136689428739275,
+        "min_c": 20.000524391112492,
+        "peak_von_mises_mpa": 56.07555943080411,
+        "time_s": 1800
+      },
+      {
+        "max_c": 33.480901658501864,
+        "max_displacement_mm": 0.006882405506495982,
+        "min_c": 20.00058798350193,
+        "peak_von_mises_mpa": 62.86072469426881,
+        "time_s": 2100
+      },
+      {
+        "max_c": 34.81824548736739,
+        "max_displacement_mm": 0.007566945978605176,
+        "min_c": 20.00064632965001,
+        "peak_von_mises_mpa": 69.08377581568521,
+        "time_s": 2400
+      },
+      {
+        "max_c": 36.043104538119394,
+        "max_displacement_mm": 0.008194194413814925,
+        "min_c": 20.000699768038317,
+        "peak_von_mises_mpa": 74.78138671644086,
+        "time_s": 2700
+      },
+      {
+        "max_c": 37.165955095716924,
+        "max_displacement_mm": 0.008769443925971163,
+        "min_c": 20.000748755584937,
+        "peak_von_mises_mpa": 80.00279498676785,
+        "time_s": 3000
+      },
+      {
+        "max_c": 38.19562301124648,
+        "max_displacement_mm": 0.009297156196612482,
+        "min_c": 20.00079367757678,
+        "peak_von_mises_mpa": 84.78946367112162,
+        "time_s": 3300
+      },
+      {
+        "max_c": 39.14160745729066,
+        "max_displacement_mm": 0.009782149841406467,
+        "min_c": 20.000834948472004,
+        "peak_von_mises_mpa": 89.18590353507457,
+        "time_s": 3600
+      },
+      {
+        "max_c": 40.009805672696984,
+        "max_displacement_mm": 0.010227406588954116,
+        "min_c": 20.000872825572515,
+        "peak_von_mises_mpa": 93.21981689728794,
+        "time_s": 3900
+      },
+      {
+        "max_c": 40.806909326907714,
+        "max_displacement_mm": 0.010636322955832462,
+        "min_c": 20.00090760087363,
+        "peak_von_mises_mpa": 96.9225453460665,
+        "time_s": 4200
+      },
+      {
+        "max_c": 41.53878960363676,
+        "max_displacement_mm": 0.011011881193195763,
+        "min_c": 20.000939530549488,
+        "peak_von_mises_mpa": 100.32157237750589,
+        "time_s": 4500
+      },
+      {
+        "max_c": 42.21087190696488,
+        "max_displacement_mm": 0.011356840306200294,
+        "min_c": 20.000968851323364,
+        "peak_von_mises_mpa": 103.44227234524199,
+        "time_s": 4800
+      },
+      {
+        "max_c": 42.82810528583974,
+        "max_displacement_mm": 0.01167371944104289,
+        "min_c": 20.0009957791313,
+        "peak_von_mises_mpa": 106.30777494054833,
+        "time_s": 5100
+      },
+      {
+        "max_c": 43.39502308849774,
+        "max_displacement_mm": 0.011964828225242643,
+        "min_c": 20.001020511768786,
+        "peak_von_mises_mpa": 108.93925238547108,
+        "time_s": 5400
+      },
+      {
+        "max_c": 43.91577457269466,
+        "max_displacement_mm": 0.012232282336069935,
+        "min_c": 20.00104323027068,
+        "peak_von_mises_mpa": 111.3560708245964,
+        "time_s": 5700
+      },
+      {
+        "max_c": 44.39416014502382,
+        "max_displacement_mm": 0.01247802104075789,
+        "min_c": 20.001064100450094,
+        "peak_von_mises_mpa": 113.57595780017753,
+        "time_s": 6000
+      },
+      {
+        "max_c": 44.83366136691683,
+        "max_displacement_mm": 0.012703822142978872,
+        "min_c": 20.001083274206792,
+        "peak_von_mises_mpa": 115.61514481544985,
+        "time_s": 6300
+      },
+      {
+        "max_c": 45.23746867456822,
+        "max_displacement_mm": 0.012911315829471826,
+        "min_c": 20.001100890738257,
+        "peak_von_mises_mpa": 117.48849870146825,
+        "time_s": 6600
+      },
+      {
+        "max_c": 45.608506453382006,
+        "max_displacement_mm": 0.013101997224840572,
+        "min_c": 20.001117077632614,
+        "peak_von_mises_mpa": 119.2096403034632,
+        "time_s": 6900
+      },
+      {
+        "max_c": 45.94945588157299,
+        "max_displacement_mm": 0.013277237852958555,
+        "min_c": 20.001131951866398,
+        "peak_von_mises_mpa": 120.7910524122472,
+        "time_s": 7200
+      }
+    ],
+    "interpretation": [
+      "Conjugate heat transfer: a steady laminar flow of a constant-property fluid, computed once and without buoyancy, carries the energy of the fluid body; the heat exchanged with the solids follows from the resolved temperature field on both sides of their shared nodes, not from a convection coefficient. The flow does not respond to temperature. Accuracy depends on the cells across the flow: repeat with a finer element_size.",
+      "Heat conduction in solids with an enthalpy formulation: latent heat of melting is carried when materials state a solidus, a liquidus and a latent heat and phase_change is on. There is no convection inside the material: convection and radiation act as boundary conditions with coefficients the user supplies.",
+      "Conductivity is integrated at the Gauss points (unless property_evaluation is element_mean), and the voxel mesh has a staircase boundary, so surface temperatures on curved or inclined faces depend on the element size.",
+      "The structural step is sequential (temperatures drive the structure, not the other way round) and linear elastic: it is evaluated at the stored times, which is exact for a material without memory. With no plasticity or element activation it is not a residual-stress prediction, and stresses return to zero once the part is uniformly back at the stress-free temperature."
+    ],
+    "model": {
+      "analysis": "conjugate_heat_transfer",
+      "boundary_faces": 100,
+      "element_size_mm": [
+        2,
+        2,
+        2
+      ],
+      "elements": 1900,
+      "flow": {
+        "cell_size_mm": 2,
+        "conjugate_interface_area_mm2": 799.9999999999982,
+        "conjugate_interface_nodes": 231,
+        "coupling": "partitioned: fluid and solids iterated to convergence every step",
+        "direction": "+x: enters at the fluid body's x-min plane, leaves at its x-max plane",
+        "fluid_body": "air",
+        "inlet_area_mm2": 199.99999999999983,
+        "inlet_temperature_c": 20,
+        "inlet_velocity_m_s": 0.02,
+        "lattice_cells": [
+          30,
+          10,
+          5
+        ],
+        "walls": {
+          "y_max": "periodic",
+          "y_min": "periodic",
+          "z_max": "no_slip",
+          "z_min": "no_slip"
+        }
+      },
+      "initial_temperature_c": 20,
+      "materials": [
+        {
+          "conductivity_at_20c": 45,
+          "density_at_20c": 7850,
+          "material": "steel_plate_demo",
+          "specific_heat_at_20c": 460,
+          "status": "demonstration",
+          "target": "plate"
+        },
+        {
+          "conductivity_at_20c": 0.0257,
+          "density_at_20c": 1.204,
+          "material": "air_demo",
+          "specific_heat_at_20c": 1006,
+          "status": "demonstration",
+          "target": "air"
+        }
+      ],
+      "mesh_hash": "34eede9b61a74c5885e4a6f8df8cf1ace2e6c0f2e61141d1e273b5b6c3ed3dbd",
+      "nodes": 2508,
+      "stress_free_temperature_c": 20,
+      "thermal_conditions": [
+        {
+          "applies_to": "plate",
+          "kind": "heat_source",
+          "name": "heater",
+          "nominal_power_w": 0.10000000000000073
+        }
+      ],
+      "time": {
+        "capacity": "lumped",
+        "end_s": 7200,
+        "integration": "backward Euler",
+        "stepping": "adaptive",
+        "steps": 59,
+        "stored_times": 25
+      }
+    },
+    "restart": {
+      "checkpoints_written": 2,
+      "note": "a resumed run continues the same accepted state, controller history and budget: it is the same physical run",
+      "resumed_from_s": [
+        4102.687473987432
+      ]
+    },
+    "setup_warnings": [
+      {
+        "code": "DEMONSTRATION_MATERIAL",
+        "message": "'plate' uses the demonstration material 'steel_plate_demo': temperatures follow its uncalibrated conductivity and heat capacity"
+      },
+      {
+        "code": "DEMONSTRATION_MATERIAL",
+        "message": "'air' uses the demonstration material 'air_demo': temperatures follow its uncalibrated conductivity and heat capacity"
+      },
+      {
+        "code": "PERIODIC_FLOW_SIDES",
+        "message": "the flow is periodic across the fluid box's y sides, but the energy equation is not: those sides are adiabatic walls for the temperature"
+      },
+      {
+        "code": "ONE_WAY_FLOW",
+        "message": "the flow is computed once, as a steady laminar field with constant properties and without buoyancy, and then carries the energy: temperature does not change the flow"
+      },
+      {
+        "code": "DEMONSTRATION_MATERIAL",
+        "message": "material 'steel_plate_demo' holds demonstration values that are not calibrated: displacement and stress magnitudes are indicative only"
+      },
+      {
+        "code": "THERMAL_CONDITIONS_IGNORED",
+        "message": "1 thermal conditions (temperature, flux, convection, radiation or heat source) are part of the setup but do not act in a static structural analysis; run a thermal or thermomechanical analysis to use them"
+      },
+      {
+        "code": "NO_LOADS",
+        "message": "there are no loads, gravity or nonzero prescribed displacements: every displacement and stress will be zero"
+      },
+      {
+        "code": "STAIRCASE_BOUNDARY",
+        "message": "the voxel mesh approximates inclined and curved surfaces by steps (boundary faces lie up to 1.25e-13 mm from the STL surface); stresses at those surfaces and at re-entrant steps depend on the mesh"
+      }
+    ],
+    "solver": {
+      "largest_picard_iterations": 3,
+      "steps": 59,
+      "total_cg_iterations": 167558
+    },
+    "temperature": {
+      "final_max_c": 45.94945588157299,
+      "final_min_c": 20.001131951866398,
+      "max_at_s": 7200,
+      "max_c": 45.94945588157299,
+      "min_c": 20,
+      "note": "the extremes over the stored times; a peak between stored times is not seen here"
+    },
+    "time_integration": {
+      "accepted_steps": 59,
+      "attempts": 59,
+      "controller": {
+        "initial_step_s": 7.2,
+        "max_consecutive_rejections": 25,
+        "max_growth": 3,
+        "max_shrink": 0.2,
+        "max_step_s": 7200,
+        "max_steps": 1000000,
+        "min_step_s": 7.2e-07,
+        "safety": 0.9
+      },
+      "error_estimate": {
+        "largest_normalised_local_error": 0.19289817870103965,
+        "method": "step doubling: one full and two half steps from the accepted state; the two-half-step solution is accepted",
+        "note": "a normalised local error of 1 is the tolerance of ONE step. Errors of successive steps accumulate, so the global error can be several times the per-step tolerance: on the verification problem it was 3 to 34 times as the tolerance tightened. For a quantitative accuracy statement repeat the run with the tolerances ten times tighter and compare.",
+        "sum_of_normalised_local_errors": 3.7400079161991515
+      },
+      "events": {
+        "condition_changes": 0,
+        "note": "every stored time and every schedule change was landed on exactly",
+        "stored_times": 24
+      },
+      "invalid_states": 0,
+      "largest_step_s": 224.38708127696736,
+      "linear_failures": 0,
+      "method": "backward Euler",
+      "nonlinear_failures": 0,
+      "order": 1,
+      "rejected_steps": 0,
+      "smallest_step_s": 7.2,
+      "stepping": "adaptive",
+      "tolerances": {
+        "measure": "temperature and enthalpy",
+        "nonlinear_temperature_k": 1e-06,
+        "temporal_enthalpy_j_m3": "derived: temporal_temperature_k times rho cp of each material at the initial temperature",
+        "temporal_relative": 0.001,
+        "temporal_temperature_k": 0.05
+      },
+      "work": {
+        "assemblies": 4564,
+        "cg_iterations": 167558,
+        "estimate_seconds": 0.08455400029197335,
+        "picard_iterations": 4564,
+        "solve_seconds": 8.50428999972064,
+        "solves": 1830
+      }
+    },
+    "units": {
+      "energy": "J",
+      "length": "mm",
+      "stress": "MPa",
+      "temperature": "degC",
+      "time": "s"
+    }
+  },
+  "runs": {
+    "fixed15_1mm": {
+      "accepted_steps": 480,
+      "coupling_iterations": 0,
+      "discrete_closure": 3.119691048524427e-11,
+      "enthalpy_flux_closure": 0.00012928352204010518,
+      "enthalpy_out_minus_in_j": 415.73567015842127,
+      "flow": {
+        "density_max": 1.0159507989883423,
+        "density_min": 0.9977450370788574,
+        "lattice_mach": 0.04298557155106253,
+        "lattice_steps": 9800,
+        "physical_time_to_steady_s": 12.160688340075176,
+        "relaxation_time": 0.5559635718409792,
+        "reynolds_cell": 1.330386740331492,
+        "reynolds_hydraulic": 13.303867403314918,
+        "section_scale_max": 1.0802762299017281,
+        "section_scale_min": 1.0166472341931703,
+        "wall_seconds": 1.8705850000260398
+      },
+      "interface_heat_j": 415.8118662723502,
+      "interface_heat_source": "air body balance residual (monolithic)",
+      "job_id": "job-20260916-161945-4c7a-5",
+      "label": "monolithic 1 mm fixed 15 s (hourly fields)",
+      "max_displacement_mm": 0.013306977645858992,
+      "outlet_face_mean_c": 38.00106616240349,
+      "plate_peak_c": 46.07729681512211,
+      "rejected_steps": 0,
+      "solves": 480,
+      "spec_hash": "ead5d6080fccbf0dad9205e053557c54c05aaf07df35ff072053f476e8447618",
+      "stored_j": 304.3574139774658,
+      "unexplained_advective_j": 0.09308414544395033,
+      "wall_s": 91.05258917808533
+    },
+    "fixed15_2mm": {
+      "accepted_steps": 480,
+      "coupling_iterations": 0,
+      "discrete_closure": 1.6347822442413583e-11,
+      "enthalpy_flux_closure": 0.00023609332051614126,
+      "enthalpy_out_minus_in_j": 416.5022469239502,
+      "flow": {
+        "density_max": 1.0139144659042358,
+        "density_min": 0.997003436088562,
+        "lattice_mach": 0.04298557155106253,
+        "lattice_steps": 5000,
+        "physical_time_to_steady_s": 12.408865653137935,
+        "relaxation_time": 0.5279817859204896,
+        "reynolds_cell": 2.660773480662984,
+        "reynolds_hydraulic": 13.303867403314918,
+        "section_scale_max": 1.1934749054477267,
+        "section_scale_min": 1.0964191211940362,
+        "wall_seconds": 0.2672550000133924
+      },
+      "interface_heat_j": 416.5033038070308,
+      "interface_heat_source": "air body balance residual (monolithic)",
+      "job_id": "job-20260916-161844-4c7a-3",
+      "label": "monolithic 2 mm fixed 15 s (hourly fields)",
+      "max_displacement_mm": 0.013312718992570754,
+      "outlet_face_mean_c": 38.024598754665206,
+      "plate_peak_c": 46.01848324008364,
+      "rejected_steps": 0,
+      "solves": 480,
+      "spec_hash": "d9c99841228c5107778731a5aa4e5f169ab23f7de28e96b4bf937d6b8b6a7f82",
+      "stored_j": 303.6677402668205,
+      "unexplained_advective_j": 0.16998718590823714,
+      "wall_s": 8.36372995376587
+    },
+    "fixed30_0.5mm": {
+      "accepted_steps": 240,
+      "coupling_iterations": 0,
+      "discrete_closure": 4.2133494216435407e-10,
+      "enthalpy_flux_closure": 3.465184032243637e-05,
+      "enthalpy_out_minus_in_j": 415.5444738749411,
+      "flow": {
+        "density_max": 1.0193225145339966,
+        "density_min": 0.9982569813728333,
+        "lattice_mach": 0.04298557155106253,
+        "lattice_steps": 18200,
+        "physical_time_to_steady_s": 11.29206774435552,
+        "relaxation_time": 0.6119271436819584,
+        "reynolds_cell": 0.665193370165746,
+        "reynolds_hydraulic": 13.303867403314918,
+        "section_scale_max": 1.0317503465338649,
+        "section_scale_min": 0.9955723982935011,
+        "wall_seconds": 15.987412999995286
+      },
+      "interface_heat_j": 415.688061396272,
+      "interface_heat_source": "air body balance residual (monolithic)",
+      "job_id": "job-20260916-162117-4c7a-6",
+      "label": "monolithic 0.5 mm fixed 30 s (hourly fields)",
+      "max_displacement_mm": 0.013297402647360086,
+      "outlet_face_mean_c": 37.97698361195343,
+      "plate_peak_c": 46.08789988133606,
+      "rejected_steps": 0,
+      "solves": 240,
+      "spec_hash": "9d27191e9bc3d097b86dcd2e4e27930ad8f1b4451398fb002e630dca2b259e8f",
+      "stored_j": 304.48047544966187,
+      "unexplained_advective_j": 0.024949453289812046,
+      "wall_s": 632.8303399085999
+    },
+    "fixed30_1mm": {
+      "accepted_steps": 240,
+      "coupling_iterations": 0,
+      "discrete_closure": 3.2494130580413884e-11,
+      "enthalpy_flux_closure": 0.00012934466499245454,
+      "enthalpy_out_minus_in_j": 415.93290279234316,
+      "flow": {
+        "density_max": 1.0159507989883423,
+        "density_min": 0.9977450370788574,
+        "lattice_mach": 0.04298557155106253,
+        "lattice_steps": 9800,
+        "physical_time_to_steady_s": 12.160688340075176,
+        "relaxation_time": 0.5559635718409792,
+        "reynolds_cell": 1.330386740331492,
+        "reynolds_hydraulic": 13.303867403314918,
+        "section_scale_max": 1.0802762299017281,
+        "section_scale_min": 1.0166472341931703,
+        "wall_seconds": 1.8134110000100918
+      },
+      "interface_heat_j": 416.0089464428022,
+      "interface_heat_source": "air body balance residual (monolithic)",
+      "job_id": "job-20260916-161852-4c7a-4",
+      "label": "monolithic 1 mm fixed 30 s (hourly fields)",
+      "max_displacement_mm": 0.013298415105678212,
+      "outlet_face_mean_c": 37.98953228041399,
+      "plate_peak_c": 46.06059415408464,
+      "rejected_steps": 0,
+      "solves": 240,
+      "spec_hash": "648ce40827f9dd5946793800d7fd9fd370e3c73f101842bb9463c9f46d51798a",
+      "stored_j": 304.1602253664763,
+      "unexplained_advective_j": 0.0931281686832652,
+      "wall_s": 53.4526891708374
+    },
+    "fixed30_2mm": {
+      "accepted_steps": 240,
+      "coupling_iterations": 0,
+      "discrete_closure": 1.6117714362414426e-11,
+      "enthalpy_flux_closure": 0.00023620431929048143,
+      "enthalpy_out_minus_in_j": 416.6988430794536,
+      "flow": {
+        "density_max": 1.0139144659042358,
+        "density_min": 0.997003436088562,
+        "lattice_mach": 0.04298557155106253,
+        "lattice_steps": 5000,
+        "physical_time_to_steady_s": 12.408865653137935,
+        "relaxation_time": 0.5279817859204896,
+        "reynolds_cell": 2.660773480662984,
+        "reynolds_hydraulic": 13.303867403314918,
+        "section_scale_max": 1.1934749054477267,
+        "section_scale_min": 1.0964191211940362,
+        "wall_seconds": 0.4237960000173189
+      },
+      "interface_heat_j": 416.6997105966198,
+      "interface_heat_source": "air body balance residual (monolithic)",
+      "job_id": "job-20260916-161839-4c7a-2",
+      "label": "monolithic 2 mm fixed 30 s (hourly fields)",
+      "max_displacement_mm": 0.01330416245131202,
+      "outlet_face_mean_c": 38.01306275450026,
+      "plate_peak_c": 46.001836932295305,
+      "rejected_steps": 0,
+      "solves": 240,
+      "spec_hash": "1b58902e0cc881f12c64d717cb0a82a8d678c7a225867b04a79087f8a61b2e64",
+      "stored_j": 303.47122403043375,
+      "unexplained_advective_j": 0.1700671050126356,
+      "wall_s": 4.999228000640869
+    },
+    "fixed60_0.5mm": {
+      "accepted_steps": 120,
+      "coupling_iterations": 0,
+      "discrete_closure": 4.214882181375994e-10,
+      "enthalpy_flux_closure": 3.468460536486861e-05,
+      "enthalpy_out_minus_in_j": 415.93870636764404,
+      "flow": {
+        "density_max": 1.0193225145339966,
+        "density_min": 0.9982569813728333,
+        "lattice_mach": 0.04298557155106253,
+        "lattice_steps": 18200,
+        "physical_time_to_steady_s": 11.29206774435552,
+        "relaxation_time": 0.6119271436819584,
+        "reynolds_cell": 0.665193370165746,
+        "reynolds_hydraulic": 13.303867403314918,
+        "section_scale_max": 1.0317503465338649,
+        "section_scale_min": 0.9955723982935011,
+        "wall_seconds": 13.841087999986485
+      },
+      "interface_heat_j": 416.08205454876156,
+      "interface_heat_source": "air body balance residual (monolithic)",
+      "job_id": "job-20260916-160445-46a3-3",
+      "label": "monolithic 0.5 mm fixed 60 s",
+      "max_displacement_mm": 0.013280304077152125,
+      "outlet_face_mean_c": 37.953965766474155,
+      "plate_peak_c": 46.054508648757064,
+      "rejected_steps": 0,
+      "solves": 120,
+      "spec_hash": "11e30633a7007b502134e9e77852561915cd140f00b35be710f352e2f3087f10",
+      "stored_j": 304.0862665477912,
+      "unexplained_advective_j": 0.02497304401252244,
+      "wall_s": 366.1037800312042
+    },
+    "fixed60_1mm": {
+      "accepted_steps": 120,
+      "coupling_iterations": 0,
+      "discrete_closure": 3.3776334180499226e-11,
+      "enthalpy_flux_closure": 0.0001294667068132523,
+      "enthalpy_out_minus_in_j": 416.3265798285065,
+      "flow": {
+        "density_max": 1.0159507989883423,
+        "density_min": 0.9977450370788574,
+        "lattice_mach": 0.04298557155106253,
+        "lattice_steps": 9800,
+        "physical_time_to_steady_s": 12.160688340075176,
+        "relaxation_time": 0.5559635718409792,
+        "reynolds_cell": 1.330386740331492,
+        "reynolds_hydraulic": 13.303867403314918,
+        "section_scale_max": 1.0802762299017281,
+        "section_scale_min": 1.0166472341931703,
+        "wall_seconds": 1.566951999993762
+      },
+      "interface_heat_j": 416.4023191567905,
+      "interface_heat_source": "air body balance residual (monolithic)",
+      "job_id": "job-20260916-160406-46a3-2",
+      "label": "monolithic 1 mm fixed 60 s",
+      "max_displacement_mm": 0.013281324022163244,
+      "outlet_face_mean_c": 37.96651010576721,
+      "plate_peak_c": 46.027254853757654,
+      "rejected_steps": 0,
+      "solves": 120,
+      "spec_hash": "84fd0175552bca3e64dec0ddb0b8b8c1ef368ea3a34ec6de6ae794928a05b29a",
+      "stored_j": 303.76663620042166,
+      "unexplained_advective_j": 0.09321603916139996,
+      "wall_s": 38.69523286819458
+    },
+    "fixed60_2mm": {
+      "accepted_steps": 120,
+      "coupling_iterations": 0,
+      "discrete_closure": 1.545550572629207e-11,
+      "enthalpy_flux_closure": 0.00023642587602981714,
+      "enthalpy_out_minus_in_j": 417.09125544733797,
+      "flow": {
+        "density_max": 1.0139144659042358,
+        "density_min": 0.997003436088562,
+        "lattice_mach": 0.04298557155106253,
+        "lattice_steps": 5000,
+        "physical_time_to_steady_s": 12.408865653137935,
+        "relaxation_time": 0.5279817859204896,
+        "reynolds_cell": 2.660773480662984,
+        "reynolds_hydraulic": 13.303867403314918,
+        "section_scale_max": 1.1934749054477267,
+        "section_scale_min": 1.0964191211940362,
+        "wall_seconds": 0.21035000000847504
+      },
+      "interface_heat_j": 417.09174497941746,
+      "interface_heat_source": "air body balance residual (monolithic)",
+      "job_id": "job-20260916-160403-46a3-1",
+      "label": "monolithic 2 mm fixed 60 s",
+      "max_displacement_mm": 0.013287083092487795,
+      "outlet_face_mean_c": 37.99003601642093,
+      "plate_peak_c": 45.96860963162811,
+      "rejected_steps": 0,
+      "solves": 120,
+      "spec_hash": "3ba792a3c665264cebb1d4fa6bd8be054dc78ea170565b5e4258a35b18f2cab6",
+      "stored_j": 303.07897118339986,
+      "unexplained_advective_j": 0.17022662603872427,
+      "wall_s": 3.1411709785461426
+    },
+    "fixed60_2mm_hourly": {
+      "accepted_steps": 120,
+      "coupling_iterations": 0,
+      "discrete_closure": 1.545550572629207e-11,
+      "enthalpy_flux_closure": 0.00023642587602981714,
+      "enthalpy_out_minus_in_j": 417.09125544733797,
+      "flow": {
+        "density_max": 1.0139144659042358,
+        "density_min": 0.997003436088562,
+        "lattice_mach": 0.04298557155106253,
+        "lattice_steps": 5000,
+        "physical_time_to_steady_s": 12.408865653137935,
+        "relaxation_time": 0.5279817859204896,
+        "reynolds_cell": 2.660773480662984,
+        "reynolds_hydraulic": 13.303867403314918,
+        "section_scale_max": 1.1934749054477267,
+        "section_scale_min": 1.0964191211940362,
+        "wall_seconds": 0.43146900000283495
+      },
+      "interface_heat_j": 417.09174497941746,
+      "interface_heat_source": "air body balance residual (monolithic)",
+      "job_id": "job-20260916-161835-4c7a-1",
+      "label": "monolithic 2 mm fixed 60 s (hourly fields)",
+      "max_displacement_mm": 0.013287083092487795,
+      "outlet_face_mean_c": 37.99003601642093,
+      "plate_peak_c": 45.96860963162811,
+      "rejected_steps": 0,
+      "solves": 120,
+      "spec_hash": "69ed0fd6c33285c2d3e8becb35190d2db1391ba6b602cadb2029e13c86564825",
+      "stored_j": 303.07897118339986,
+      "unexplained_advective_j": 0.17022662603872427,
+      "wall_s": 3.1298041343688965
+    },
+    "monolithic_0.5mm_1e-4": {
+      "accepted_steps": 239,
+      "coupling_iterations": 0,
+      "discrete_closure": 4.2202128475110414e-10,
+      "enthalpy_flux_closure": 3.4639753136330574e-05,
+      "enthalpy_out_minus_in_j": 415.3990474294751,
+      "flow": {
+        "density_max": 1.0193225145339966,
+        "density_min": 0.9982569813728333,
+        "lattice_mach": 0.04298557155106253,
+        "lattice_steps": 18200,
+        "physical_time_to_steady_s": 11.29206774435552,
+        "relaxation_time": 0.6119271436819584,
+        "reynolds_cell": 0.665193370165746,
+        "reynolds_hydraulic": 13.303867403314918,
+        "section_scale_max": 1.0317503465338649,
+        "section_scale_min": 0.9955723982935011,
+        "wall_seconds": 13.483525000017835
+      },
+      "interface_heat_j": 415.54272323845237,
+      "interface_heat_source": "air body balance residual (monolithic)",
+      "job_id": "job-20260916-124437-2045-6",
+      "label": "monolithic 0.5 mm 1e-4",
+      "max_displacement_mm": 0.013303709977941782,
+      "outlet_face_mean_c": 37.98547437649932,
+      "plate_peak_c": 46.10021715944316,
+      "rejected_steps": 0,
+      "solves": 757,
+      "spec_hash": "d18c18cb6e6f018df88d5c59616f6c7e2ffc4a6e1b65197dbef08940c2760574",
+      "stored_j": 304.6258931927528,
+      "unexplained_advective_j": 0.0249407508050702,
+      "wall_s": 1636.2078430652618
+    },
+    "monolithic_1mm_1e-4": {
+      "accepted_steps": 100,
+      "coupling_iterations": 0,
+      "discrete_closure": 3.118544540057862e-11,
+      "enthalpy_flux_closure": 0.0001293929439114554,
+      "enthalpy_out_minus_in_j": 416.0886567857815,
+      "flow": {
+        "density_max": 1.0159507989883423,
+        "density_min": 0.9977450370788574,
+        "lattice_mach": 0.04298557155106253,
+        "lattice_steps": 9800,
+        "physical_time_to_steady_s": 12.160688340075176,
+        "relaxation_time": 0.5559635718409792,
+        "reynolds_cell": 1.330386740331492,
+        "reynolds_hydraulic": 13.303867403314918,
+        "section_scale_max": 1.0802762299017281,
+        "section_scale_min": 1.0166472341931703,
+        "wall_seconds": 1.6217239999969024
+      },
+      "interface_heat_j": 416.16458003988237,
+      "interface_heat_source": "air body balance residual (monolithic)",
+      "job_id": "job-20260916-124321-2045-5",
+      "label": "monolithic 1 mm 1e-4",
+      "max_displacement_mm": 0.013291653241632595,
+      "outlet_face_mean_c": 37.98042389851027,
+      "plate_peak_c": 46.04740394169863,
+      "rejected_steps": 0,
+      "solves": 300,
+      "spec_hash": "43f01c54e539d81904a4e6bfcead80c7c1783175f5d271c1a8b9d395f3c989fe",
+      "stored_j": 304.00450613383214,
+      "unexplained_advective_j": 0.09316292909620327,
+      "wall_s": 76.05054306983948
+    },
+    "monolithic_2mm_1e-3": {
+      "accepted_steps": 59,
+      "coupling_iterations": 0,
+      "discrete_closure": 1.7082332140363202e-11,
+      "enthalpy_flux_closure": 0.00023655357113096581,
+      "enthalpy_out_minus_in_j": 417.31745311640043,
+      "flow": {
+        "density_max": 1.0139144659042358,
+        "density_min": 0.997003436088562,
+        "lattice_mach": 0.04298557155106253,
+        "lattice_steps": 5000,
+        "physical_time_to_steady_s": 12.408865653137935,
+        "relaxation_time": 0.5279817859204896,
+        "reynolds_cell": 2.660773480662984,
+        "reynolds_hydraulic": 13.303867403314918,
+        "section_scale_max": 1.1934749054477267,
+        "section_scale_min": 1.0964191211940362,
+        "wall_seconds": 0.22550700002466328
+      },
+      "interface_heat_j": 417.31772477678044,
+      "interface_heat_source": "air body balance residual (monolithic)",
+      "job_id": "job-20260916-124257-2045-2",
+      "label": "monolithic 2 mm 1e-3",
+      "max_displacement_mm": 0.01327723792846246,
+      "outlet_face_mean_c": 37.97676245946549,
+      "plate_peak_c": 45.94945602789949,
+      "rejected_steps": 0,
+      "solves": 177,
+      "spec_hash": "5b8dfd3f3de0a710623b812cd5cb767d8e23b9b0ea312a23fcf67eb4075a2135",
+      "stored_j": 302.85286545481387,
+      "unexplained_advective_j": 0.1703185660394567,
+      "wall_s": 4.186774015426636
+    },
+    "monolithic_2mm_1e-4": {
+      "accepted_steps": 100,
+      "coupling_iterations": 0,
+      "discrete_closure": 1.6871280721282554e-11,
+      "enthalpy_flux_closure": 0.00023629200349649065,
+      "enthalpy_out_minus_in_j": 416.8541658244212,
+      "flow": {
+        "density_max": 1.0139144659042358,
+        "density_min": 0.997003436088562,
+        "lattice_mach": 0.04298557155106253,
+        "lattice_steps": 5000,
+        "physical_time_to_steady_s": 12.408865653137935,
+        "relaxation_time": 0.5279817859204896,
+        "reynolds_cell": 2.660773480662984,
+        "reynolds_hydraulic": 13.303867403314918,
+        "section_scale_max": 1.1934749054477267,
+        "section_scale_min": 1.0964191211940362,
+        "wall_seconds": 0.2222219999821391
+      },
+      "interface_heat_j": 416.85488373861557,
+      "interface_heat_source": "air body balance residual (monolithic)",
+      "job_id": "job-20260916-124301-2045-3",
+      "label": "monolithic 2 mm 1e-4",
+      "max_displacement_mm": 0.013297402218032803,
+      "outlet_face_mean_c": 38.003948511548415,
+      "plate_peak_c": 45.98868517893703,
+      "rejected_steps": 0,
+      "solves": 300,
+      "spec_hash": "3959af49218a4ba12e4312e3da426b850b8fa2e587ad4e33001c468ed457bd60",
+      "stored_j": 303.3159644180956,
+      "unexplained_advective_j": 0.17013023739685035,
+      "wall_s": 6.479099988937378
+    },
+    "monolithic_2mm_1e-5": {
+      "accepted_steps": 235,
+      "coupling_iterations": 0,
+      "discrete_closure": 1.6331758644296556e-11,
+      "enthalpy_flux_closure": 0.00023611530174479043,
+      "enthalpy_out_minus_in_j": 416.54119023944986,
+      "flow": {
+        "density_max": 1.0139144659042358,
+        "density_min": 0.997003436088562,
+        "lattice_mach": 0.04298557155106253,
+        "lattice_steps": 5000,
+        "physical_time_to_steady_s": 12.408865653137935,
+        "relaxation_time": 0.5279817859204896,
+        "reynolds_cell": 2.660773480662984,
+        "reynolds_hydraulic": 13.303867403314918,
+        "section_scale_max": 1.1934749054477267,
+        "section_scale_min": 1.0964191211940362,
+        "wall_seconds": 0.22816299999249168
+      },
+      "interface_heat_j": 416.5422096161105,
+      "interface_heat_source": "air body balance residual (monolithic)",
+      "job_id": "job-20260916-124307-2045-4",
+      "label": "monolithic 2 mm 1e-5",
+      "max_displacement_mm": 0.013311024051161233,
+      "outlet_face_mean_c": 38.0223136294077,
+      "plate_peak_c": 46.01518582711202,
+      "rejected_steps": 9,
+      "solves": 732,
+      "spec_hash": "345e0ac2661ee3f1b16760101b22345ae007f977fb9559649ba5a5b47b493d41",
+      "stored_j": 303.62881277780684,
+      "unexplained_advective_j": 0.17000301230000042,
+      "wall_s": 13.346552848815918
+    },
+    "reference": {
+      "accepted_steps": 59,
+      "coupling_iterations": 305,
+      "discrete_closure": 1.5416179826633088e-11,
+      "enthalpy_flux_closure": 0.00023655357832165827,
+      "enthalpy_out_minus_in_j": 417.31745485547435,
+      "flow": {
+        "density_max": 1.0139144659042358,
+        "density_min": 0.997003436088562,
+        "lattice_mach": 0.04298557155106253,
+        "lattice_steps": 5000,
+        "physical_time_to_steady_s": 12.408865653137935,
+        "relaxation_time": 0.5279817859204896,
+        "reynolds_cell": 2.660773480662984,
+        "reynolds_hydraulic": 13.303867403314918,
+        "section_scale_max": 1.1934749054477267,
+        "section_scale_min": 1.0964191211940362,
+        "wall_seconds": 0.2216269999917131
+      },
+      "interface_heat_j": 417.31772650936637,
+      "interface_heat_source": "measured (partitioned reactions)",
+      "job_id": "job-20260916-124247-2045-1",
+      "label": "reference (partitioned, paused and resumed)",
+      "max_displacement_mm": 0.013277237852958555,
+      "outlet_face_mean_c": 37.97676237146392,
+      "paused_at_s": 4102.687473987432,
+      "plate_peak_c": 45.94945588157299,
+      "rejected_steps": 0,
+      "resumed_from": [
+        4102.687473987432
+      ],
+      "solves": 1830,
+      "stored_j": 302.85286372091736,
+      "unexplained_advective_j": 0.1703185717248349,
+      "wall_s": 9.778568267822266
+    }
+  },
+  "setup": {
+    "analysis": "conjugate_heat_transfer",
+    "boundary_faces": 100,
+    "element_size_mm": [
+      2,
+      2,
+      2
+    ],
+    "elements": 1900,
+    "flow": {
+      "cell_size_mm": 2,
+      "conjugate_interface_area_mm2": 799.9999999999982,
+      "conjugate_interface_nodes": 231,
+      "coupling": "partitioned: fluid and solids iterated to convergence every step",
+      "direction": "+x: enters at the fluid body's x-min plane, leaves at its x-max plane",
+      "fluid_body": "air",
+      "inlet_area_mm2": 199.99999999999983,
+      "inlet_temperature_c": 20,
+      "inlet_velocity_m_s": 0.02,
+      "lattice_cells": [
+        30,
+        10,
+        5
+      ],
+      "walls": {
+        "y_max": "periodic",
+        "y_min": "periodic",
+        "z_max": "no_slip",
+        "z_min": "no_slip"
+      }
+    },
+    "initial_temperature_c": 20,
+    "materials": [
+      {
+        "conductivity_at_20c": 45,
+        "density_at_20c": 7850,
+        "material": "steel_plate_demo",
+        "specific_heat_at_20c": 460,
+        "status": "demonstration",
+        "target": "plate"
+      },
+      {
+        "conductivity_at_20c": 0.0257,
+        "density_at_20c": 1.204,
+        "material": "air_demo",
+        "specific_heat_at_20c": 1006,
+        "status": "demonstration",
+        "target": "air"
+      }
+    ],
+    "mesh_hash": "34eede9b61a74c5885e4a6f8df8cf1ace2e6c0f2e61141d1e273b5b6c3ed3dbd",
+    "nodes": 2508,
+    "stress_free_temperature_c": 20,
+    "thermal_conditions": [
+      {
+        "applies_to": "plate",
+        "kind": "heat_source",
+        "name": "heater",
+        "nominal_power_w": 0.10000000000000073
+      }
+    ],
+    "time": {
+      "capacity": "lumped",
+      "end_s": 7200,
+      "integration": "backward Euler",
+      "stepping": "adaptive",
+      "steps": "decided by the error control during the run",
+      "stored_times": 25
+    }
+  },
+  "spatial_convergence": {
+    "enthalpy_flux_closure": {
+      "note": "exact limit 0",
+      "orders_from_ratios": [
+        0.8688067949510964,
+        1.900213772337913
+      ],
+      "values_2mm_1mm_05mm": [
+        0.00023642587602981714,
+        0.0001294667068132523,
+        3.468460536486861e-05
+      ]
+    },
+    "interface_heat_j": {
+      "extrapolated": 415.8042100323282,
+      "fine_minus_extrapolated": 0.2778445164333334,
+      "note": "monotone, asymptotic range plausible",
+      "observed_order": 1.1061309594295665,
+      "values_2mm_1mm_05mm": [
+        417.09174497941746,
+        416.4023191567905,
+        416.08205454876156
+      ]
+    },
+    "max_displacement_mm": {
+      "extrapolated": 0.01328008456663976,
+      "fine_minus_extrapolated": 2.1951051236424046e-07,
+      "note": "monotone, asymptotic range plausible",
+      "observed_order": 2.497344565578958,
+      "values_2mm_1mm_05mm": [
+        0.013287083092487795,
+        0.013281324022163244,
+        0.013280304077152125
+      ]
+    },
+    "outlet_face_mean_c": {
+      "extrapolated": 37.93963626451753,
+      "fine_minus_extrapolated": 0.014329501956623858,
+      "note": "monotone, asymptotic range plausible",
+      "observed_order": 0.9072140822649812,
+      "values_2mm_1mm_05mm": [
+        37.99003601642093,
+        37.96651010576721,
+        37.953965766474155
+      ]
+    },
+    "plate_peak_c": {
+      "extrapolated": 46.07817018344266,
+      "fine_minus_extrapolated": -0.023661534685594177,
+      "note": "monotone, asymptotic range plausible",
+      "observed_order": 1.105556441272793,
+      "values_2mm_1mm_05mm": [
+        45.96860963162811,
+        46.027254853757654,
+        46.054508648757064
+      ]
+    }
+  },
+  "spatial_convergence_adaptive": {
+    "enthalpy_flux_closure": {
+      "note": "exact limit 0",
+      "orders_from_ratios": [
+        0.86881186093786,
+        1.9012583923635862
+      ],
+      "values_2mm_1mm_05mm": [
+        0.00023629200349649065,
+        0.0001293929439114554,
+        3.4639753136330574e-05
+      ]
+    },
+    "interface_heat_j": {
+      "extrapolated": null,
+      "fine_minus_extrapolated": null,
+      "note": "observed order 0.15 is outside [0.5, 4]: not in the asymptotic range, no extrapolation",
+      "observed_order": 0.15064881359179189,
+      "values_2mm_1mm_05mm": [
+        416.85488373861557,
+        416.16458003988237,
+        415.54272323845237
+      ]
+    },
+    "max_displacement_mm": {
+      "extrapolated": null,
+      "fine_minus_extrapolated": null,
+      "note": "not monotone: no order can be estimated",
+      "observed_order": null,
+      "values_2mm_1mm_05mm": [
+        0.013297402218032803,
+        0.013291653241632595,
+        0.013303709977941782
+      ]
+    },
+    "outlet_face_mean_c": {
+      "extrapolated": null,
+      "fine_minus_extrapolated": null,
+      "note": "not monotone: no order can be estimated",
+      "observed_order": null,
+      "values_2mm_1mm_05mm": [
+        38.003948511548415,
+        37.98042389851027,
+        37.98547437649932
+      ]
+    },
+    "plate_peak_c": {
+      "extrapolated": null,
+      "fine_minus_extrapolated": null,
+      "note": "observed order 0.15 is outside [0.5, 4]: not in the asymptotic range, no extrapolation",
+      "observed_order": 0.15292252708642928,
+      "values_2mm_1mm_05mm": [
+        45.98868517893703,
+        46.04740394169863,
+        46.10021715944316
+      ]
+    }
+  },
+  "temporal_cancellation": {
+    "contamination_of_mesh_differences": {
+      "interface_heat_j": [
+        0.003882451590086307,
+        0.003874536777961861
+      ],
+      "max_displacement_mm": [
+        0.004071730359884716,
+        0.01468058162227173
+      ],
+      "outlet_face_mean_c": [
+        0.00038794949293783623,
+        0.0006902184964176382
+      ],
+      "plate_peak_c": [
+        0.0038195663935311156,
+        0.003811010687312003
+      ]
+    },
+    "output_interval_invariance": {
+      "interface_heat_j": 0.0,
+      "max_displacement_mm": 0.0,
+      "outlet_face_mean_c": 0.0,
+      "plate_peak_c": 0.0
+    },
+    "spatial_convergence_30s": {
+      "enthalpy_flux_closure": {
+        "note": "exact limit 0",
+        "orders_from_ratios": [
+          0.8688147972449817,
+          1.900216669697737
+        ],
+        "values_2mm_1mm_05mm": [
+          0.00023620431929048143,
+          0.00012934466499245454,
+          3.465184032243637e-05
+        ]
+      },
+      "interface_heat_j": {
+        "extrapolated": 415.4096806738738,
+        "fine_minus_extrapolated": 0.27838072239819667,
+        "note": "monotone, asymptotic range plausible",
+        "observed_order": 1.1061366577092948,
+        "values_2mm_1mm_05mm": [
+          416.6997105966198,
+          416.0089464428022,
+          415.688061396272
+        ]
+      },
+      "max_displacement_mm": {
+        "extrapolated": 0.0132971861539617,
+        "fine_minus_extrapolated": 2.164933983854478e-07,
+        "note": "monotone, asymptotic range plausible",
+        "observed_order": 2.505033297620402,
+        "values_2mm_1mm_05mm": [
+          0.01330416245131202,
+          0.013298415105678212,
+          0.013297402647360086
+        ]
+      },
+      "outlet_face_mean_c": {
+        "extrapolated": 37.962644523692354,
+        "fine_minus_extrapolated": 0.01433908826107455,
+        "note": "monotone, asymptotic range plausible",
+        "observed_order": 0.9069961000237677,
+        "values_2mm_1mm_05mm": [
+          38.01306275450026,
+          37.98953228041399,
+          37.97698361195343
+        ]
+      },
+      "plate_peak_c": {
+        "extrapolated": 46.111606314104456,
+        "fine_minus_extrapolated": -0.023706432768399566,
+        "note": "monotone, asymptotic range plausible",
+        "observed_order": 1.1055626011593875,
+        "values_2mm_1mm_05mm": [
+          46.001836932295305,
+          46.06059415408464,
+          46.08789988133606
+        ]
+      }
+    },
+    "spatial_convergence_time_extrapolated": {
+      "interface_heat_j": {
+        "extrapolated": 415.01515131538923,
+        "fine_minus_extrapolated": 0.2789169283932438,
+        "note": "monotone, asymptotic range plausible",
+        "observed_order": 1.1061423339736647,
+        "values_2mm_1mm_05mm": [
+          416.30767621382216,
+          415.6155737288139,
+          415.2940682437825
+        ]
+      },
+      "max_displacement_mm": {
+        "extrapolated": 0.013314287722992684,
+        "fine_minus_extrapolated": 2.1349457536221084e-07,
+        "note": "monotone, asymptotic range plausible",
+        "observed_order": 2.5127949138412813,
+        "values_2mm_1mm_05mm": [
+          0.013321241810136246,
+          0.01331550618919318,
+          0.013314501217568046
+        ]
+      },
+      "outlet_face_mean_c": {
+        "extrapolated": 37.985652779863,
+        "fine_minus_extrapolated": 0.01434867756969993,
+        "note": "monotone, asymptotic range plausible",
+        "observed_order": 0.9067782352274918,
+        "values_2mm_1mm_05mm": [
+          38.03608949257959,
+          38.012554455060766,
+          38.0000014574327
+        ]
+      },
+      "plate_peak_c": {
+        "extrapolated": 46.14504244476925,
+        "fine_minus_extrapolated": -0.023751330854203445,
+        "note": "monotone, asymptotic range plausible",
+        "observed_order": 1.1055687376335623,
+        "values_2mm_1mm_05mm": [
+          46.0350642329625,
+          46.093933454411626,
+          46.12129111391505
+        ]
+      }
+    },
+    "t30_minus_t60": {
+      "0.5mm": {
+        "interface_heat_j": -0.3939931524895428,
+        "max_displacement_mm": 1.7098570207960823e-05,
+        "outlet_face_mean_c": 0.023017845479273547,
+        "plate_peak_c": 0.03339123257899246
+      },
+      "1mm": {
+        "interface_heat_j": -0.393372713988299,
+        "max_displacement_mm": 1.709108351496784e-05,
+        "outlet_face_mean_c": 0.02302217464677625,
+        "plate_peak_c": 0.033339300326986177
+      },
+      "2mm": {
+        "interface_heat_j": -0.3920343827976467,
+        "max_displacement_mm": 1.7079358824225246e-05,
+        "outlet_face_mean_c": 0.023026738079330755,
+        "plate_peak_c": 0.033227300667192594
+      }
+    },
+    "temporal_order": {
+      "1mm": {
+        "interface_heat_j": 0.9971142650656117,
+        "max_displacement_mm": 0.9971331036230225,
+        "outlet_face_mean_c": 0.9971459486851919,
+        "plate_peak_c": 0.9971458590668915
+      },
+      "2mm": {
+        "interface_heat_j": 0.9971353862720201,
+        "max_displacement_mm": 0.9971541651389425,
+        "outlet_face_mean_c": 0.9971669660533772,
+        "plate_peak_c": 0.9971668777833141
+      }
+    },
+    "time_extrapolated_values": {
+      "0.5mm": {
+        "interface_heat_j": 415.2940682437825,
+        "max_displacement_mm": 0.013314501217568046,
+        "outlet_face_mean_c": 38.0000014574327,
+        "plate_peak_c": 46.12129111391505
+      },
+      "1mm": {
+        "interface_heat_j": 415.6155737288139,
+        "max_displacement_mm": 0.01331550618919318,
+        "outlet_face_mean_c": 38.012554455060766,
+        "plate_peak_c": 46.093933454411626
+      },
+      "2mm": {
+        "interface_heat_j": 416.30767621382216,
+        "max_displacement_mm": 0.013321241810136246,
+        "outlet_face_mean_c": 38.03608949257959,
+        "plate_peak_c": 46.0350642329625
+      }
+    }
+  },
+  "temporal_convergence": {
+    "interface_heat_j": [
+      417.31772477678044,
+      416.85488373861557,
+      416.5422096161105
+    ],
+    "outlet_face_mean_c": [
+      37.97676245946549,
+      38.003948511548415,
+      38.0223136294077
+    ],
+    "plate_peak_c": [
+      45.94945602789949,
+      45.98868517893703,
+      46.01518582711202
+    ]
+  }
+}

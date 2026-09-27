@@ -1,0 +1,117 @@
+/* thermal.h - transient heat conduction on hexahedral (hex8) meshes
+ *
+ * Solves  rho c dT/dt = div(k grad T) + q  on the active elements of a mesh with
+ *   - prescribed nodal temperatures,
+ *   - boundary faces with heat flux, convection h (T - Ta) or radiation eps sigma (T^4 - Ta^4),
+ *   - volumetric sources per element and a moving Gaussian source (power, radius, absorption depth, timed path).
+ * Time integration: theta method (theta = 1 backward Euler, 0.5 Crank-Nicolson; both unconditionally stable), lumped
+ * (row-sum) or consistent capacity; dt <= 0 solves the steady state. Temperature-dependent k, c and rho are evaluated per
+ * element at the element's mean temperature (capacity at the mean of the start and end of the step) and radiation is
+ * linearised per face with Newton's method about the face mean temperature; both are iterated to convergence each step.
+ * The linear systems are solved for the temperature correction of each iteration, so solver tolerances apply to the
+ * change within the step. Every step reports its discrete energy balance: the change of stored energy against the heat delivered by
+ * sources, boundary faces and prescribed-temperature nodes, which must agree to the linear-solver tolerance. Nodes that
+ * belong to no active element keep their temperature (element activation for additive manufacturing).
+ * Temperatures are in K, lengths in m, all other quantities SI. */
+#pragma once
+
+#include <stdbool.h>
+#include <stddef.h>
+
+#include "../threads.h"
+
+#define THERMAL_SIGMA 5.670374419e-8 /* Stefan-Boltzmann constant, W/(m^2 K^4) */
+
+/* piecewise-linear table in K, constant outside its range; n = 1 is a constant */
+typedef struct ThermalTable {
+    int n;
+    const double *t, *v;
+} ThermalTable;
+
+double thermal_table_eval(const ThermalTable *t, double T);
+/* exact integral of the table from a to b (enthalpy from cp, thermal strain from the instantaneous expansion coefficient) */
+double thermal_table_integral(const ThermalTable *t, double a, double b);
+
+typedef struct ThermalMaterial {
+    ThermalTable k;   /* W/(m K) */
+    ThermalTable cp;  /* J/(kg K) */
+    ThermalTable rho; /* kg/m^3 */
+} ThermalMaterial;
+
+typedef enum { THERMAL_FLUX = 0, THERMAL_CONVECTION = 1, THERMAL_RADIATION = 2 } ThermalFaceKind;
+
+typedef struct ThermalFace {
+    int elem;
+    unsigned char face; /* hex8 local face 0..5 */
+    unsigned char kind; /* ThermalFaceKind */
+    double value;       /* flux W/m^2 into the body | h W/(m^2 K) | emissivity */
+    double ambient;     /* K, for convection and radiation */
+} ThermalFace;
+
+/* Gaussian surface source with exponential absorption:
+ *   q = 2 P / (pi r^2 d) exp(-2 rho^2 / r^2) exp(-depth / d)
+ * where rho is the in-plane distance to the path point and depth the distance below it (-z). It integrates to P over a
+ * half-space. The path point moves linearly between timed waypoints and the source is off outside their time range. */
+typedef struct ThermalMovingSource {
+    double power;  /* W absorbed */
+    double radius; /* m, 1/e^2 radius */
+    double depth;  /* m, absorption depth */
+    int npoints;
+    const double *path; /* 4 per point: x, y, z of the surface point (m), time (s), times non-decreasing */
+} ThermalMovingSource;
+
+typedef struct ThermalModel {
+    int nnodes, nelems;
+    const double *xyz;           /* 3*nnodes (m) */
+    const int *conn;             /* 8*nelems */
+    const int *elem_mat;         /* nelems, NULL: material 0 */
+    int nmat;
+    const ThermalMaterial *mat;
+    const unsigned char *active; /* nelems, NULL: all active */
+    const unsigned char *fixed;  /* nnodes, prescribed temperature, NULL: none */
+    const double *fixed_T;       /* nnodes (K) */
+    const double *elem_source;   /* nelems, W/m^3 held over the step, NULL: none */
+    int nfaces;
+    const ThermalFace *faces;
+    const ThermalMovingSource *moving; /* NULL: none */
+} ThermalModel;
+
+typedef struct ThermalOptions {
+    double theta;             /* 0.5..1, default 1 (backward Euler) */
+    bool consistent_capacity; /* default: lumped */
+    int max_picard;           /* default 50 */
+    double picard_tol;        /* K: largest temperature change between iterations, default 1e-6 */
+    double pcg_tol;           /* relative residual, default 1e-12 */
+    int pcg_max_iter;         /* default 20000 */
+    bool raw_source;          /* false (default): scale the moving source so the mesh absorbs exactly its power */
+    ThreadPool *pool;
+} ThermalOptions;
+
+typedef struct ThermalStepStats {
+    int picard_iterations, linear_iterations;
+    double linear_residual;
+    /* energies over the step in J (powers in W for a steady solve) */
+    double stored_energy;     /* sum of C (T1 - T0) with the capacity of the final iteration */
+    double source_energy;
+    double boundary_energy;   /* into the body through flux, convection and radiation faces */
+    double prescribed_energy; /* into the body through prescribed-temperature nodes */
+    double balance_error;     /* |stored - source - boundary - prescribed| / largest term */
+    double enthalpy_change;   /* sum over elements of rho V integral of cp dT at the element mean temperatures */
+    double tmin, tmax;        /* over active nodes */
+    bool source_on, source_fallback, source_missed;
+    double source_position[3];
+    double source_power_mesh; /* power of the source integrated on the mesh before scaling (W) */
+    double source_scale;
+    double seconds;
+    double seconds_assembly, seconds_solve, seconds_energy;
+} ThermalStepStats;
+
+typedef struct ThermalSolver ThermalSolver;
+
+/* builds the sparse pattern, element colouring and geometry caches; the element and node sets must not change later */
+ThermalSolver *thermal_create(const ThermalModel *m, const ThermalOptions *opt, char *err, size_t errlen);
+void thermal_free(ThermalSolver *s);
+/* advances from T0 at time t to T1 at t + dt (T0 and T1 distinct, nnodes each); dt <= 0 solves the steady state
+ * with T0 as the initial guess. Loads, activity and prescribed values may change between calls. */
+bool thermal_step(ThermalSolver *s, const ThermalModel *m, const double *T0, double *T1, double t, double dt, ThermalStepStats *st, char *err,
+                  size_t errlen);

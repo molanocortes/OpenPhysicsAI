@@ -1,0 +1,80 @@
+{
+ "domain": "impact",
+ "method": "sph",
+ "title": "Whipple shield: 3.2 mm aluminium sphere at 6.5 km/s",
+ "provenance": {
+  "geometry": "demonstration, chosen for the picture; not a replica of a measured test",
+  "material": "aluminium_6061_t6 (sources in src/lab/impact/impact_materials.c)"
+ },
+ "particle_spacing_m": 0.0002,
+ "symmetry": "quarter",
+ "bodies": [
+  {
+   "shape": "sphere",
+   "center_m": [
+    0,
+    0,
+    0.0018000000000000002
+   ],
+   "radius_m": 0.0016,
+   "material": "aluminium_6061_t6",
+   "velocity_m_s": [
+    0,
+    0,
+    -6500
+   ]
+  },
+  {
+   "shape": "box",
+   "lo_m": [
+    0,
+    0,
+    -0.001
+   ],
+   "hi_m": [
+    0.012,
+    0.012,
+    0.0
+   ],
+   "material": "aluminium_6061_t6",
+   "velocity_m_s": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "shape": "box",
+   "lo_m": [
+    0,
+    0,
+    -0.024
+   ],
+   "hi_m": [
+    0.012,
+    0.012,
+    -0.021
+   ],
+   "material": "aluminium_6061_t6",
+   "velocity_m_s": [
+    0,
+    0,
+    0
+   ]
+  }
+ ],
+ "run": {
+  "end_time_s": 6e-06,
+  "frames": 60,
+  "mirror": true
+ },
+ "controls": [
+  {
+   "label": "particle speed, m/s (downward)",
+   "path": "bodies.0.velocity_m_s.2",
+   "min": -8000,
+   "max": -2000,
+   "log": false
+  }
+ ]
+}

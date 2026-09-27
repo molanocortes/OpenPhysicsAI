@@ -1,0 +1,109 @@
+{
+ "domain": "heat",
+ "title": "Cross-flow fan: 24 blades at 1000 rpm, air drawn in above and blown out to the side",
+ "provenance": {
+  "geometry": "demonstration, not a product"
+ },
+ "grid": {
+  "nx": 300,
+  "ny": 200,
+  "cell_m": 0.0015
+ },
+ "fluid": {
+  "kinematic_viscosity_m2_s": 1.589e-05,
+  "density_kg_m3": 1.1614,
+  "source": "Incropera, DeWitt, Bergman and Lavine, Fundamentals of Heat and Mass Transfer, 6th ed. (2007), table A.4 (air at 300 K and 1 atm): nu 15.89e-6 m2/s, rho 1.1614 kg/m3, 300 K; typed from the table, not re-checked against a copy in this session"
+ },
+ "gravity_m_s2": [
+  0,
+  0
+ ],
+ "reference_temperature_k": 295.0,
+ "initial_temperature_k": 295.0,
+ "largest_speed_m_s": 8.0,
+ "turbulence": {
+  "smagorinsky": 0.16,
+  "turbulent_prandtl": 0.85
+ },
+ "materials": [
+  {
+   "name": "steel",
+   "kind": "solid",
+   "conductivity_w_mk": 60.5,
+   "volumetric_heat_capacity_j_m3k": 3408636.0,
+   "source": "Incropera, DeWitt, Bergman and Lavine, Fundamentals of Heat and Mass Transfer, 6th ed. (2007), table A.1 (plain carbon steel), 300 K; typed from the table, not re-checked against a copy in this session"
+  }
+ ],
+ "regions": [
+  {
+   "box_m": [
+    0.0,
+    0.0,
+    0.14,
+    0.12
+   ],
+   "material": "steel"
+  },
+  {
+   "box_m": [
+    0.0,
+    0.0,
+    0.45,
+    0.02
+   ],
+   "material": "steel"
+  },
+  {
+   "box_m": [
+    0.255,
+    0.155,
+    0.45,
+    0.17
+   ],
+   "material": "steel"
+  }
+ ],
+ "rotors": [
+  {
+   "centre_m": [
+    0.2,
+    0.15
+   ],
+   "rpm": -1000,
+   "material": "steel",
+   "hub_radius_m": 0.0,
+   "blades": 24,
+   "blade_inner_radius_m": 0.04,
+   "blade_outer_radius_m": 0.05,
+   "blade_thickness_m": 0.003,
+   "blade_angle_deg": 25.0
+  }
+ ],
+ "boundaries": [
+  {
+   "side": "y+",
+   "from_m": 0.05,
+   "to_m": 0.35,
+   "type": "outlet"
+  },
+  {
+   "side": "x+",
+   "from_m": 0.02,
+   "to_m": 0.155,
+   "type": "outlet"
+  }
+ ],
+ "run": {
+  "end_time_s": 0.6,
+  "frames": 60
+ },
+ "controls": [
+  {
+   "label": "rotor speed, rpm (clockwise)",
+   "path": "rotors.0.rpm",
+   "min": -2000,
+   "max": -300,
+   "log": false
+  }
+ ]
+}

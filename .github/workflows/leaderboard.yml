@@ -1,0 +1,25 @@
+name: leaderboards and links
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  score:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Score every challenge from the result files
+        run: python3 tools/leaderboard.py
+      - name: Check the documentation graph
+        run: python3 tools/linkcheck.py
+      - name: Check the flag boards agree with the attempts
+        run: python3 tools/flags.py board --check
+      - name: Keep the generated leaderboard as an artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: leaderboard
+          path: |
+            docs/leaderboard/index.html
+            challenges/*/LEADERBOARD.md

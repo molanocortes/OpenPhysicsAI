@@ -1,0 +1,16 @@
+{
+  "format": "openphysicsai-agent-run",
+  "format_version": 1,
+  "task": "T1",
+  "date": "2026-01-01",
+  "model": {"name": "as the provider names it, e.g. claude-opus-5", "version": ""},
+  "agent": {"tool": "e.g. Claude Code, Codex, a custom harness", "version": ""},
+  "prompt": "the task text from TASKS.md plus anything you added, verbatim",
+  "commit": "the commit on which the work landed",
+  "acceptance": {"passed": null, "rerun_by": "", "rerun_date": "", "final_lines": ""},
+  "human_edits_after_agent": "none, or what was changed and why",
+  "wall_s": null,
+  "cost_usd": null,
+  "turns": null,
+  "notes": "what the agent got wrong on the way, what it read but did not verify"
+}

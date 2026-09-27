@@ -1,0 +1,13 @@
+# The jobs of validation/QUEUE.md in the form tools/run_queue.py reads:
+#   name | expected minutes | timeout minutes | shell command (run from the repository root; $JOB_LOG is the job's log)
+# Ordered by value per hour: what answers an open physics question first, the speculative long one last.
+# Studies pass --no-write: a number for the record is made an entry by a session afterwards, never by the queue.
+
+test_fast | 6 | 20 | make headless && make test-fast
+
+# The launch checklist asks for these on an idle machine.
+full_tests | 20 | 50 | make test
+ui_walkthroughs | 15 | 45 | make test-ui; for w in --simplewalk --stopwalk --walkthrough --walkthrough-tet; do echo "=== uicheck $w"; python3 tools/uicheck.py $w 2>&1 | tail -4; done
+
+# The fire's plume since the room engine: a real shift or an unconverged 30 s average? Two minutes of averaging decide (docs/lab/fire.md).
+fire_plume_long_average | 80 | 150 | make build/firetest && FIRE_T_END=128 ./build/firetest

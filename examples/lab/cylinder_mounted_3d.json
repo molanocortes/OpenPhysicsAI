@@ -1,0 +1,69 @@
+{
+ "domain": "flow",
+ "model": "lbm3d",
+ "title": "A cylinder standing in a stream: horseshoe, tip and wake vortices, Re 1000",
+ "fluid": {
+  "kinematic_viscosity_m2_s": 1.589e-05,
+  "density_kg_m3": 1.1614,
+  "source": "Incropera, DeWitt, Bergman and Lavine, Fundamentals of Heat and Mass Transfer, 6th ed. (2007), table A.4 (air at 300 K and 1 atm): nu 15.89e-6 m2/s, rho 1.1614 kg/m3, 300 K; typed from the table, not re-checked against a copy in this session"
+ },
+ "stream": {
+  "speed_m_s": 0.7945
+ },
+ "box_m": [
+  -0.08,
+  -0.1,
+  0,
+  0.32,
+  0.1,
+  0.16
+ ],
+ "cell_m": 0.0016666666666666668,
+ "lattice_speed": 0.05,
+ "sides_y": "periodic",
+ "sides_z": "slip",
+ "les": {
+  "smagorinsky": 0.1
+ },
+ "collision": "regularized",
+ "sponge_cells": 8,
+ "floor": "wall",
+ "bodies": [
+  {
+   "shape": "cylinder",
+   "centre_m": [
+    0,
+    0,
+    0.03
+   ],
+   "radius_m": 0.01,
+   "axis": "z",
+   "length_m": 0.1
+  }
+ ],
+ "disturbance": {
+  "noise_fraction": 0.05,
+  "inlet_noise_fraction": 0.02,
+  "note": "random disturbances in the start and at the inlet, as in any real stream; seeded, so the run repeats"
+ },
+ "reference": {
+  "area_m2": 0.0016,
+  "length_m": 0.02
+ },
+ "run": {
+  "end_s": 1.5104,
+  "frames": 60,
+  "output_stride": 2,
+  "output_from_s": 0.7552,
+  "average_from_s": 0.6293
+ },
+ "controls": [
+  {
+   "label": "Reynolds number",
+   "path": "reynolds",
+   "min": 0.5,
+   "max": 200,
+   "log": true
+  }
+ ]
+}

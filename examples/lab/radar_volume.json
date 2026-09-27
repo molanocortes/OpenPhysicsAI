@@ -1,0 +1,46 @@
+{
+  "domain": "em",
+  "title": "Radar scattering in a computed 3D volume",
+  "provenance": {
+    "set_up": "Demonstration of the existing 3D Yee solver with a perfectly conducting sphere, 65 mm radius. ez_scattered and ez_total reconstruct consistent fields across the TF/SF injection box using the computed incident line. Legacy ez retains the mixed solver storage convention. Not a measured radar experiment."
+  },
+  "cells": [
+    80,
+    64,
+    64
+  ],
+  "dx_m": 0.006,
+  "pml_cells": 8,
+  "plane_wave": {
+    "tfsf_lo_cells": [
+      12,
+      12,
+      12
+    ],
+    "tfsf_hi_cells": [
+      68,
+      52,
+      52
+    ],
+    "amplitude_v_m": 1.0,
+    "frequency_hz": 3000000000.0,
+    "bandwidth_hz": 1500000000.0
+  },
+  "objects": [
+    {
+      "shape": "sphere",
+      "center_m": [
+        0.27,
+        0.192,
+        0.192
+      ],
+      "radius_m": 0.065,
+      "conductor": true
+    }
+  ],
+  "run": {
+    "end_time_s": 4e-09,
+    "frames": 40,
+    "volume": true
+  }
+}

@@ -1,0 +1,47 @@
+# Two gallery images on a three-body sample built from primitives (T22 items 1 and 4): one body as glass with the
+# result inside the others, and the assembly pulled apart with thin lines back to where each piece belongs.
+# The three boxes come from tools/uicheck.py --presentation (it writes /tmp/navier-presentation-boxes).
+# Run it:  ./navier --headless --size 1600x1000 --workspace /tmp/navier-gallery-three --exec 'exec tools/gallery_three.nav'
+workspace solid
+frames 4
+echo GALLERY start
+am project_create '{"name": "three_bodies", "description": "three boxes from primitives: base, post and cap"}'
+am geometry_import '{"path": "/tmp/navier-presentation-boxes/base.stl", "units": "mm", "name": "base"}'
+am geometry_import '{"path": "/tmp/navier-presentation-boxes/post.stl", "units": "mm", "name": "post"}'
+am geometry_import '{"path": "/tmp/navier-presentation-boxes/cap.stl", "units": "mm", "name": "cap"}'
+# geometry_import drops every body on the plate with its footprint centred: the stack has to be placed
+am geometry_place '{"body": "post", "position": [0, 0], "z_offset": "8 mm"}'
+am geometry_place '{"body": "cap", "position": [0, 0], "z_offset": "40 mm"}'
+am material_assign '{"body": "base", "material": "ss316l_lpbf_demo", "source": "user"}'
+am material_assign '{"body": "post", "material": "ss316l_lpbf_demo", "source": "user"}'
+am material_assign '{"body": "cap", "material": "ss316l_lpbf_demo", "source": "user"}'
+am mesh_generate '{"element_size": "2 mm"}'
+am selection_create '{"name": "foot", "body": "base", "query": {"all": [{"facing": {"direction": "down"}}, {"plane": {"axis": "z", "at": "min"}}]}, "source": "user"}'
+am selection_create '{"name": "top", "body": "cap", "query": {"all": [{"facing": {"direction": "up"}}, {"plane": {"axis": "z", "at": "max"}}]}, "source": "user"}'
+am boundary_apply '{"name": "hold", "kind": "fixed", "selection": "foot", "source": "user"}'
+am boundary_apply '{"name": "push", "kind": "force", "selection": "top", "force": [200, 0, 0], "source": "user"}'
+solid run static
+solid wait 300
+frames 20
+fem surface off
+fem deform 0
+fem edges on
+fem shadows on
+fem fit
+camera zoom 0.45
+camera orbit 20 -6
+frames 8
+fem glass 0 0.22
+fem glass 2 0.35
+frames 6
+fem export docs/images/gallery-three-glass.png 3
+echo GALLERY glass
+fem glass 0 1
+fem glass 2 1
+fem explode 0.4
+fem fit
+camera zoom 0.6
+frames 10
+fem export docs/images/gallery-three-exploded.png 3
+echo GALLERY exploded
+quit

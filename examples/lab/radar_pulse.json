@@ -1,0 +1,12 @@
+{
+ "domain": "em",
+ "title": "A 3 GHz radar pulse meets a metal sphere and a dielectric cylinder",
+ "provenance": {"set_up": "demonstration: a plane-wave pulse (3 GHz centre, 1.5 GHz bandwidth, 10 cm wavelength) along +x, polarised along z; a perfectly conducting sphere of 10 cm radius and a cylinder of relative permittivity 6, 6 cm radius"},
+ "cells": [200, 150, 60], "dx_m": 0.006, "pml_cells": 10,
+ "plane_wave": {"tfsf_lo_cells": [15, 15, 15], "tfsf_hi_cells": [185, 135, 45], "amplitude_v_m": 1.0, "frequency_hz": 3e9, "bandwidth_hz": 1.5e9},
+ "objects": [
+  {"shape": "sphere", "center_m": [0.45, 0.45, 0.18], "radius_m": 0.10, "conductor": true},
+  {"shape": "cylinder_z", "center_m": [0.85, 0.28, 0.0], "radius_m": 0.06, "z0_m": 0.0, "z1_m": 0.36, "relative_permittivity": 6.0}
+ ],
+ "run": {"end_time_s": 6.5e-9, "frames": 65, "slice_z_m": 0.18}
+}

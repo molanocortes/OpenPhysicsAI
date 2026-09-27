@@ -1,0 +1,26 @@
+# The second half of the bracket gallery: the optimised part that tools/gallery_bracket.nav exported, printed
+# layer by layer and shown deformed at the last layer. Needs /tmp/navier-gallery-parts/bracket_optimised.stl.
+#   ./navier --headless --size 1400x900 --workspace /tmp/navier-gallery-bracket-print --exec 'exec tools/gallery_bracket_print.nav'
+workspace solid
+frames 4
+echo PRINT start
+am project_create '{"name": "bracket_printed", "description": "the optimised bracket, printed"}'
+am geometry_import '{"path": "/tmp/navier-gallery-parts/bracket_optimised.stl", "units": "mm", "name": "optimised"}'
+am material_assign '{"body": "optimised", "material": "alsi10mg_lpbf", "source": "user"}'
+am mesh_generate '{"element_size": "1 mm"}'
+am lpbf_build_run '{"body": "optimised", "build_orientation": "Y", "layer_thickness_sim": "2 mm", "inherent_strain": {"exx": -0.0012226242259139248, "eyy": -0.0034058581422344394, "ezz": -0.03, "provenance": "calibrated", "source": "the elastic strain of the P17 preset in src/ctl/print_profiles.json"}, "material": {"youngs_modulus": "71000 MPa", "poissons_ratio": 0.33, "provenance": "user"}, "label": "optimised bracket"}'
+frames 150
+fem follow
+frames 30
+solid wait 900
+frames 20
+fem step last
+fem deform auto
+fem edges on
+fem shadows on
+fem fit
+camera zoom 1.6
+frames 8
+fem export docs/images/gallery-bracket-printed.png 3
+echo PRINT done
+quit

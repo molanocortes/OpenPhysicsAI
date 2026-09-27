@@ -1,0 +1,64 @@
+{
+ "run_directory": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/independent/cantilevers/designs/C10/runs/job-20260916-213933-7e4e-22",
+ "job_id": "job-20260916-213933-7e4e-22",
+ "navier_formulation": "full_integration",
+ "ccx_element": "C3D8",
+ "nodes": 6561,
+ "elements": 5120,
+ "element_size_mm": [
+  1.25,
+  1.25,
+  1.25
+ ],
+ "direction": [
+  0.0,
+  0.0,
+  -1.0
+ ],
+ "load_set": "load",
+ "support_set": "mounting",
+ "load_total_n": [
+  0.0,
+  0.0,
+  -10.0
+ ],
+ "probe_request_mm": [
+  50.3,
+  5.3,
+  9.9
+ ],
+ "probe_centroid_mm": [
+  50.625,
+  5.625,
+  9.375
+ ],
+ "all_nodes": true,
+ "navier": {
+  "load_region_nodal_mean_mm": 0.019823010977348073,
+  "reaction_force_n": [
+   -2.6359447957702287e-10,
+   -3.324880371025074e-10,
+   9.999999999819735
+  ],
+  "reaction_moment_nmm": [
+   -4.0090863961950163e-10,
+   -999.9999999903717,
+   -2.4320764069329925e-08
+  ],
+  "moment_point_mm": [
+   0.0,
+   5.0,
+   5.0
+  ],
+  "strain_energy_nmm": 0.09911467813450602,
+  "probe_element": 4841,
+  "probe_stress_mean_mpa": {
+   "xx": 2.56972242393949,
+   "yy": -0.0024775880643075326,
+   "zz": -7.104664896259369e-05,
+   "xy": 0.0028386791217461906,
+   "yz": -7.38180454460842e-05,
+   "zx": -0.031875829538467584
+  }
+ }
+}

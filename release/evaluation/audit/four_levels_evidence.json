@@ -1,0 +1,1584 @@
+{
+  "accepted_questions": [],
+  "assumptions": [
+    {
+      "effect": "not assessed: no mounting alternative was declared",
+      "source": "user",
+      "subject": "mounting_idealization",
+      "text": "The mounting region is idealised as rigidly fixed (all displacements zero): back face clamped to a rigid wall (the stiffest idealisation of a bolted joint). No contact, slip, fastener or wall flexibility is modelled."
+    },
+    {
+      "effect": "a different g scales every displacement equally and does not change the ranking",
+      "source": "default",
+      "subject": "gravitational_acceleration",
+      "text": "The payload weighs mass x standard gravity 9.80665 m/s^2, applied statically: no dynamic amplification from shocks, vibration or handling."
+    },
+    {
+      "effect": "not assessed",
+      "source": "default",
+      "subject": "load_distribution",
+      "text": "The load acts as a uniform traction over the load region, so its resultant passes through the region's centroid. A payload that bears on part of the region, or whose centre of mass is offset, loads the bracket differently."
+    },
+    {
+      "effect": "not assessed; the weight of each design is reported",
+      "source": "default",
+      "subject": "self_weight",
+      "text": "The bracket's own weight is not applied: only the payload loads it."
+    }
+  ],
+  "comparison": {
+    "better": "lower",
+    "combined_uncertainty": 0.00027043643023979603,
+    "difference": 0.016870555895337966,
+    "element_size_mm": 0.5,
+    "outcome": "resolved",
+    "primary_quantity": "load_region_displacement",
+    "ranking": ["B", "A"],
+    "ranking_robustness": [
+      {
+        "ranking_unchanged": true,
+        "reason": "every design uses the same material and the loads are forces: all displacements scale with 1/E, so the ranking and the ratio between designs do not depend on E; absolute values scale with it",
+        "sensitivity": "youngs_modulus"
+      }
+    ],
+    "relative_difference": 0.6616392209316448,
+    "statement": "Lower predicted load-region displacement under the modeled conditions: design B (0.0086276 mm) against design A (0.025498 mm), a 66.2% difference; numerical uncertainty ±0.00017 mm and ±0.0001 mm at 0.5 mm elements.",
+    "values": [
+      {
+        "design": "A",
+        "load_region_displacement_mm": 0.025498119460909185,
+        "mass_geometry_kg": 0.11404799999999907,
+        "peak_displacement_mm": 0.03015824560833691,
+        "relative_uncertainty": 0.004110510075769015,
+        "stiffness_n_per_mm": 1153.8086189101157,
+        "stiffness_per_mass_n_per_mm_kg": 10116.868501947645,
+        "uncertainty": 0.0001048102769572292,
+        "uncertainty_method": "Richardson extrapolation and grid convergence index over the three finest valid meshes (safety factor 1.25)",
+        "value": 0.025498119460909185
+      },
+      {
+        "design": "B",
+        "load_region_displacement_mm": 0.008627563565571221,
+        "mass_geometry_kg": 0.1451519999999994,
+        "peak_displacement_mm": 0.010895725886977356,
+        "relative_uncertainty": 0.019197326339443887,
+        "stiffness_n_per_mm": 3409.9951598616694,
+        "stiffness_per_mass_n_per_mm_kg": 23492.581293138803,
+        "uncertainty": 0.00016562615328256683,
+        "uncertainty_method": "Richardson extrapolation and grid convergence index over the three finest valid meshes (safety factor 1.25)",
+        "value": 0.008627563565571221
+      }
+    ]
+  },
+  "designs": [
+    {
+      "levels": [
+        {
+          "checks": {
+            "conjugate_vs_region_mean": 1.4022082903567721e-16,
+            "deformation_classification": "within_small_deformation_assumption",
+            "displacement_to_size_ratio": 0.00027216724091411637,
+            "energy_ok": true,
+            "energy_ratio": 1.0000000000129392,
+            "equilibrium_error": 9.782710548062027e-13,
+            "equilibrium_ok": true,
+            "load_region_mapping": {
+              "area_ratio": 0.9999999999999998,
+              "centroid_shift_mm": 3.03543989777123e-14,
+              "criterion_mm": 2,
+              "force_deviation": 4.830346317788441e-16,
+              "geometry_area_mm2": 256.00000000000006,
+              "line_of_action_shift_mm": 7.547416121544438e-15,
+              "mesh_area_mm2": 256,
+              "mesh_faces": 16,
+              "ok": true
+            },
+            "max_rotation_rad": 0.0005589200024122447,
+            "max_strain_indicator": 4.9075254555248035e-05,
+            "mesh_topology_ok": true,
+            "moment_balance_error": 1.0414792217513534e-12,
+            "moment_balance_ok": true,
+            "mounting_region_mapping": {
+              "area_ratio": 0.9999999999999954,
+              "geometry_area_mm2": 2400.0000000000064,
+              "mesh_area_mm2": 2399.9999999999955,
+              "mesh_faces": 150,
+              "ok": true
+            },
+            "solver_converged": true,
+            "solver_method": "sparse Cholesky (nested dissection)",
+            "solver_true_relative_residual": 1.117923501064312e-11
+          },
+          "completed": true,
+          "cost": {
+            "factor_mb": 4.906116485595703,
+            "memory_note": "factor_mb is the direct solver's factor; process_peak_rss_mb is the high-water mark of the whole process so far",
+            "process_peak_rss_mb": 64.953125,
+            "solve_seconds": 0.021657000004779547,
+            "wall_seconds": 0.04128289222717285
+          },
+          "element_size_mm": 4,
+          "invalid_reasons": [],
+          "mesh": {
+            "dofs": 3366,
+            "elements": 660,
+            "face_connected_regions": 1,
+            "nodes": 1122,
+            "seconds": 0.00189200000022538,
+            "volume_error_percent": 6.577339173755037e-13,
+            "volume_geometry_mm3": 42239.99999999966,
+            "volume_mesh_mm3": 42239.999999999935,
+            "warnings": []
+          },
+          "quantities": {
+            "load_n": 29.419949999999986,
+            "load_region_displacement_mm": 0.02474273598161984,
+            "load_region_displacement_range_mm": [0.020285577956889754, 0.029222257159717244],
+            "mass_geometry_kg": 0.11404799999999907,
+            "mass_mesh_kg": 0.11404799999999982,
+            "moment_reference": "centroid of the mounting region (design frame)",
+            "mounting_region_mean_displacement_mm": 0,
+            "peak_displacement_at_design_mm": [80, 20, 60],
+            "peak_displacement_mm": 0.029313308948511953,
+            "reaction_force_n": [6.968292609599303e-11, 1.9812151919040843e-11, 29.419950000500183],
+            "reaction_moment_nm": [-1.248862124825223e-12, -2.118236400028471, 1.1665945987004989e-12],
+            "stiffness_n_per_mm": 1189.0338247902177,
+            "work_conjugate_displacement_mm": 0.024742735981619843
+          },
+          "result_warnings": ["PEAK_AT_REENTRANT_CORNER"],
+          "run": {
+            "job_id": "job-20260916-212836-7d81-2",
+            "project": "A",
+            "results_retained": true,
+            "results_sha256": "94c28fb69ae8ec377255da9d606b7a17dec52a8191ddf31184be397eed35c79d",
+            "run_directory": "designs/A/runs/job-20260916-212836-7d81-2",
+            "spec_hash": "e6d9bf22e0540c1a345fae2c3d5c24e814a2b7fedc0a497bcd688394562ae728"
+          },
+          "stress": {
+            "gauss_point_max_mpa": 3.3812850388565896,
+            "nodal_average_max_mpa": 4.223194399035666,
+            "nodal_p99_mpa": 3.832641182086095,
+            "peak_at_support": false,
+            "peak_near_reentrant_corner": true
+          },
+          "valid": true
+        },
+        {
+          "checks": {
+            "conjugate_vs_region_mean": 4.546106056170066e-15,
+            "deformation_classification": "within_small_deformation_assumption",
+            "displacement_to_size_ratio": 0.00027675338727761175,
+            "energy_ok": true,
+            "energy_ratio": 1.00000000005996,
+            "equilibrium_error": 4.14765231884112e-12,
+            "equilibrium_ok": true,
+            "load_region_mapping": {
+              "area_ratio": 0.9999999999999996,
+              "centroid_shift_mm": 2.040878629308206e-14,
+              "criterion_mm": 1,
+              "force_deviation": 4.588829001899019e-15,
+              "geometry_area_mm2": 256.00000000000006,
+              "line_of_action_shift_mm": 1.8398520048880774e-13,
+              "mesh_area_mm2": 255.99999999999994,
+              "mesh_faces": 64,
+              "ok": true
+            },
+            "max_rotation_rad": 0.0005662517533313971,
+            "max_strain_indicator": 6.607105973369873e-05,
+            "mesh_topology_ok": true,
+            "moment_balance_error": 4.941686451164242e-12,
+            "moment_balance_ok": true,
+            "mounting_region_mapping": {
+              "area_ratio": 1.0000000000000098,
+              "geometry_area_mm2": 2400.0000000000064,
+              "mesh_area_mm2": 2400.0000000000296,
+              "mesh_faces": 600,
+              "ok": true
+            },
+            "solver_converged": true,
+            "solver_method": "sparse Cholesky (nested dissection)",
+            "solver_true_relative_residual": 5.2692239471458034e-11
+          },
+          "completed": true,
+          "cost": {
+            "factor_mb": 76.8391342163086,
+            "memory_note": "factor_mb is the direct solver's factor; process_peak_rss_mb is the high-water mark of the whole process so far",
+            "process_peak_rss_mb": 144.25,
+            "solve_seconds": 0.7709820000163745,
+            "wall_seconds": 0.8898301124572754
+          },
+          "element_size_mm": 2,
+          "invalid_reasons": [],
+          "mesh": {
+            "dofs": 21105,
+            "elements": 5280,
+            "face_connected_regions": 1,
+            "nodes": 7035,
+            "seconds": 0.0018540000019129366,
+            "volume_error_percent": -4.973110106985516e-12,
+            "volume_geometry_mm3": 42239.99999999966,
+            "volume_mesh_mm3": 42239.999999997555,
+            "warnings": []
+          },
+          "quantities": {
+            "load_n": 29.419950000000135,
+            "load_region_displacement_mm": 0.025184575106662718,
+            "load_region_displacement_range_mm": [0.02067192449613906, 0.029716064730197434],
+            "mass_geometry_kg": 0.11404799999999907,
+            "mass_mesh_kg": 0.1140479999999934,
+            "moment_reference": "centroid of the mounting region (design frame)",
+            "mounting_region_mean_displacement_mm": 0,
+            "peak_displacement_at_design_mm": [80, 20, 60],
+            "peak_displacement_mm": 0.02980725202845321,
+            "reaction_force_n": [2.5764457234345173e-10, 1.0330547528525358e-10, 29.419950002350873],
+            "reaction_moment_nm": [-2.09696149333638e-12, -2.1182364001345126, 6.792344464656708e-12],
+            "stiffness_n_per_mm": 1168.1733710177646,
+            "work_conjugate_displacement_mm": 0.025184575106662603
+          },
+          "result_warnings": ["PEAK_AT_REENTRANT_CORNER"],
+          "run": {
+            "job_id": "job-20260916-212836-7d81-4",
+            "project": "A",
+            "results_retained": true,
+            "results_sha256": "3ff7c14bd7f39eb049e7504eaed4c7bf8d3d7bc33437b15af88981f97a1c5f36",
+            "run_directory": "designs/A/runs/job-20260916-212836-7d81-4",
+            "spec_hash": "02e1d82ba39eb909edccbc37c9a9f0d66f839f267beb6638716707ac51cfc049"
+          },
+          "stress": {
+            "gauss_point_max_mpa": 4.552296015651843,
+            "nodal_average_max_mpa": 4.967241233006304,
+            "nodal_p99_mpa": 3.82278407214698,
+            "peak_at_support": false,
+            "peak_near_reentrant_corner": true
+          },
+          "valid": true
+        },
+        {
+          "checks": {
+            "conjugate_vs_region_mean": 1.1200828922652046e-14,
+            "deformation_classification": "within_small_deformation_assumption",
+            "displacement_to_size_ratio": 0.0002789861538165066,
+            "energy_ok": true,
+            "energy_ratio": 1.0000000001500025,
+            "equilibrium_error": 1.4829533067465472e-11,
+            "equilibrium_ok": true,
+            "load_region_mapping": {
+              "area_ratio": 0.9999999999999984,
+              "centroid_shift_mm": 2.0572022225171943e-13,
+              "criterion_mm": 0.7800000000000002,
+              "force_deviation": 1.0989037872968703e-14,
+              "geometry_area_mm2": 256.00000000000006,
+              "line_of_action_shift_mm": 2.379830877260112e-13,
+              "mesh_area_mm2": 255.99999999999966,
+              "mesh_faces": 256,
+              "ok": true
+            },
+            "max_rotation_rad": 0.000569884938842619,
+            "max_strain_indicator": 8.685368259849092e-05,
+            "mesh_topology_ok": true,
+            "moment_balance_error": 1.903544221088107e-11,
+            "moment_balance_ok": true,
+            "mounting_region_mapping": {
+              "area_ratio": 0.9999999999999947,
+              "geometry_area_mm2": 2400.0000000000064,
+              "mesh_area_mm2": 2399.9999999999936,
+              "mesh_faces": 2400,
+              "ok": true
+            },
+            "solver_converged": true,
+            "solver_method": "pcg/block-jacobi",
+            "solver_true_relative_residual": 1.9300994285850283e-10
+          },
+          "completed": true,
+          "cost": {
+            "factor_mb": null,
+            "memory_note": "factor_mb is the direct solver's factor; process_peak_rss_mb is the high-water mark of the whole process so far",
+            "process_peak_rss_mb": 260.28125,
+            "solve_seconds": 2.3820620000187773,
+            "wall_seconds": 3.316840887069702
+          },
+          "element_size_mm": 1,
+          "invalid_reasons": [],
+          "mesh": {
+            "dofs": 147231,
+            "elements": 42240,
+            "face_connected_regions": 1,
+            "nodes": 49077,
+            "seconds": 0.0053659999975934625,
+            "volume_error_percent": 2.483346595359219e-11,
+            "volume_geometry_mm3": 42239.99999999966,
+            "volume_mesh_mm3": 42240.00000001014,
+            "warnings": []
+          },
+          "quantities": {
+            "load_n": 29.419949999999677,
+            "load_region_displacement_mm": 0.025399428205250717,
+            "load_region_displacement_range_mm": [0.020860216208768663, 0.029956449826819494],
+            "mass_geometry_kg": 0.11404799999999907,
+            "mass_mesh_kg": 0.11404800000002739,
+            "moment_reference": "centroid of the mounting region (design frame)",
+            "mounting_region_mean_displacement_mm": 0,
+            "peak_displacement_at_design_mm": [80, 20, 60],
+            "peak_displacement_mm": 0.030047728344209296,
+            "reaction_force_n": [5.128996116710027e-10, 5.973838090866934e-11, 29.419950003814375],
+            "reaction_moment_nm": [-2.5444377507732874e-12, -2.1182364003090353, 3.7446643008642866e-12],
+            "stiffness_n_per_mm": 1158.2918230386574,
+            "work_conjugate_displacement_mm": 0.025399428205251002
+          },
+          "result_warnings": ["PEAK_AT_REENTRANT_CORNER"],
+          "run": {
+            "job_id": "job-20260916-212839-7d81-6",
+            "project": "A",
+            "results_retained": true,
+            "results_sha256": "d1a455d200691cc3209085c9e021a54c69351000734c93545171dec4305d8553",
+            "run_directory": "designs/A/runs/job-20260916-212839-7d81-6",
+            "spec_hash": "6ac4dc08ce2aaa522a4dd020a2b4052c2999e61e475594f36e5dae62916c7de7"
+          },
+          "stress": {
+            "gauss_point_max_mpa": 5.984218731036024,
+            "nodal_average_max_mpa": 6.070857561668996,
+            "nodal_p99_mpa": 3.748711650965791,
+            "peak_at_support": false,
+            "peak_near_reentrant_corner": true
+          },
+          "valid": true
+        },
+        {
+          "checks": {
+            "conjugate_vs_region_mean": 5.333817685068303e-14,
+            "deformation_classification": "within_small_deformation_assumption",
+            "displacement_to_size_ratio": 0.0002800122808533356,
+            "energy_ok": true,
+            "energy_ratio": 1.000000000646245,
+            "equilibrium_error": 5.172256857234627e-11,
+            "equilibrium_ok": true,
+            "load_region_mapping": {
+              "area_ratio": 1.0000000000000104,
+              "centroid_shift_mm": 8.959955167439842e-13,
+              "criterion_mm": 0.7800000000000002,
+              "force_deviation": 5.6394293260180043e-14,
+              "geometry_area_mm2": 256.00000000000006,
+              "line_of_action_shift_mm": 1.1289948164686237e-12,
+              "mesh_area_mm2": 256.00000000000273,
+              "mesh_faces": 1024,
+              "ok": true
+            },
+            "max_rotation_rad": 0.000571586910475031,
+            "max_strain_indicator": 0.00011418655171270961,
+            "mesh_topology_ok": true,
+            "moment_balance_error": 5.681513462881605e-11,
+            "moment_balance_ok": true,
+            "mounting_region_mapping": {
+              "area_ratio": 0.9999999999999348,
+              "geometry_area_mm2": 2400.0000000000064,
+              "mesh_area_mm2": 2399.99999999985,
+              "mesh_faces": 9600,
+              "ok": true
+            },
+            "solver_converged": true,
+            "solver_method": "pcg/block-jacobi",
+            "solver_true_relative_residual": 6.856224644344061e-10
+          },
+          "completed": true,
+          "cost": {
+            "factor_mb": null,
+            "memory_note": "factor_mb is the direct solver's factor; process_peak_rss_mb is the high-water mark of the whole process so far",
+            "process_peak_rss_mb": 1214.234375,
+            "solve_seconds": 38.10689600001206,
+            "wall_seconds": 44.05234718322754
+          },
+          "element_size_mm": 0.5,
+          "invalid_reasons": [],
+          "mesh": {
+            "dofs": 1094715,
+            "elements": 337920,
+            "face_connected_regions": 1,
+            "nodes": 364905,
+            "seconds": 0.028084999998100102,
+            "volume_error_percent": 8.221673967193797e-11,
+            "volume_geometry_mm3": 42239.99999999966,
+            "volume_mesh_mm3": 42240.000000034386,
+            "warnings": []
+          },
+          "quantities": {
+            "load_n": 29.41994999999834,
+            "load_region_displacement_mm": 0.025498119460909185,
+            "load_region_displacement_range_mm": [0.020946847662399688, 0.03006692264838082],
+            "mass_geometry_kg": 0.11404799999999907,
+            "mass_mesh_kg": 0.11404800000009284,
+            "moment_reference": "centroid of the mounting region (design frame)",
+            "mounting_region_mean_displacement_mm": 0,
+            "peak_displacement_at_design_mm": [80, 20, 60],
+            "peak_displacement_mm": 0.03015824560833691,
+            "reaction_force_n": [3.500966933023264e-09, 8.592327960244006e-10, 29.419950023589045],
+            "reaction_moment_nm": [-2.475144329945611e-11, -2.1182364014096136, 5.0742770662387526e-11],
+            "stiffness_n_per_mm": 1153.8086189101157,
+            "work_conjugate_displacement_mm": 0.025498119460910545
+          },
+          "result_warnings": ["PEAK_AT_REENTRANT_CORNER"],
+          "run": {
+            "job_id": "job-20260916-212847-7d81-8",
+            "project": "A",
+            "results_retained": true,
+            "results_sha256": "f8324a4f0e6077a9af58bf50de26628e268ed49b87d0ecea93ea3472eecd25b3",
+            "run_directory": "designs/A/runs/job-20260916-212847-7d81-8",
+            "spec_hash": "17c2e8c703067e601c70d272ffcfed0a2d90d9f8cc03f6feedde3d5a9828202c"
+          },
+          "stress": {
+            "gauss_point_max_mpa": 7.867453413005691,
+            "nodal_average_max_mpa": 7.660368276501369,
+            "nodal_p99_mpa": 3.569999584888171,
+            "peak_at_support": false,
+            "peak_near_reentrant_corner": true
+          },
+          "valid": true
+        }
+      ],
+      "name": "A",
+      "refinement": {
+        "load_region_displacement_mm": {
+          "converged": true,
+          "convergence_criterion": 0.02,
+          "element_sizes_mm": [4, 2, 1, 0.5],
+          "extrapolated": 0.02558196768247497,
+          "finest_value": 0.025498119460909185,
+          "method": "Richardson extrapolation and grid convergence index over the three finest valid meshes (safety factor 1.25)",
+          "observed_order": 1.122356415307543,
+          "reading": "monotone convergence with observed order 1.12: asymptotic range plausible",
+          "relative_changes": [0.01754403729948127, 0.008458973834048129, 0.003870530758543596],
+          "relative_uncertainty": 0.004110510075769015,
+          "uncertainty": 0.0001048102769572292,
+          "values": [0.02474273598161984, 0.025184575106662718, 0.025399428205250717, 0.025498119460909185]
+        },
+        "mass_mesh_kg": {
+          "converged": true,
+          "convergence_criterion": 0.02,
+          "element_sizes_mm": [4, 2, 1, 0.5],
+          "finest_value": 0.11404800000009284,
+          "method": "observed order outside [0.5, 4]: not in the asymptotic range; conservative estimate 3 x the last change",
+          "observed_order": -0.9453709444157845,
+          "reading": "monotone but with observed order -0.95: not asymptotic, no extrapolation",
+          "relative_changes": [-5.6217890425177556e-14, 2.9800349275155583e-13, 5.738605438201433e-13],
+          "relative_uncertainty": 1.7215816314604298e-12,
+          "uncertainty": 1.9634294190495893e-13,
+          "values": [0.11404799999999982, 0.1140479999999934, 0.11404800000002739, 0.11404800000009284]
+        },
+        "stiffness_n_per_mm": {
+          "converged": true,
+          "convergence_criterion": 0.02,
+          "element_sizes_mm": [4, 2, 1, 0.5],
+          "extrapolated": 1150.0854179035573,
+          "finest_value": 1153.8086189101157,
+          "method": "Richardson extrapolation and grid convergence index over the three finest valid meshes (safety factor 1.25)",
+          "observed_order": 1.140206873299322,
+          "reading": "monotone convergence with observed order 1.14: asymptotic range plausible",
+          "relative_changes": [-0.017857326908829147, -0.008531138511522896, -0.003885569976740641],
+          "relative_uncertainty": 0.0040335989712004154,
+          "uncertainty": 4.654001258198015,
+          "values": [1189.0338247902177, 1168.1733710177646, 1158.2918230386574, 1153.8086189101157]
+        }
+      },
+      "sensitivity": []
+    },
+    {
+      "levels": [
+        {
+          "checks": {
+            "conjugate_vs_region_mean": 3.5517398672181966e-16,
+            "deformation_classification": "within_small_deformation_assumption",
+            "displacement_to_size_ratio": 0.00011361139441952832,
+            "energy_ok": true,
+            "energy_ratio": 1.000000000005071,
+            "equilibrium_error": 7.472275477357873e-13,
+            "equilibrium_ok": true,
+            "load_region_mapping": {
+              "area_ratio": 0.9999999999999998,
+              "centroid_shift_mm": 3.03543989777123e-14,
+              "criterion_mm": 2,
+              "force_deviation": 4.830346317788441e-16,
+              "geometry_area_mm2": 256.00000000000006,
+              "line_of_action_shift_mm": 7.547416121544438e-15,
+              "mesh_area_mm2": 256,
+              "mesh_faces": 16,
+              "ok": true
+            },
+            "max_rotation_rad": 0.0002982336497616883,
+            "max_strain_indicator": 3.323608375589724e-05,
+            "mesh_topology_ok": true,
+            "moment_balance_error": 5.226443783813716e-13,
+            "moment_balance_ok": true,
+            "mounting_region_mapping": {
+              "area_ratio": 0.9999999999999954,
+              "geometry_area_mm2": 2400.0000000000064,
+              "mesh_area_mm2": 2399.9999999999955,
+              "mesh_faces": 150,
+              "ok": true
+            },
+            "solver_converged": true,
+            "solver_method": "sparse Cholesky (nested dissection)",
+            "solver_true_relative_residual": 4.277218439664877e-12
+          },
+          "completed": true,
+          "cost": {
+            "factor_mb": 7.269275665283203,
+            "memory_note": "factor_mb is the direct solver's factor; process_peak_rss_mb is the high-water mark of the whole process so far",
+            "process_peak_rss_mb": 65.046875,
+            "solve_seconds": 0.041096000000834465,
+            "wall_seconds": 0.06719708442687988
+          },
+          "element_size_mm": 4,
+          "invalid_reasons": [],
+          "mesh": {
+            "dofs": 3861,
+            "elements": 810,
+            "face_connected_regions": 1,
+            "nodes": 1287,
+            "seconds": 0.0019150000007357448,
+            "volume_error_percent": -3.571428571428842,
+            "volume_geometry_mm3": 53759.999999999774,
+            "volume_mesh_mm3": 51839.999999999636,
+            "warnings": ["the mesh of 'part' differs from the STL volume by -3.6%: refine the mesh for stiffness- or weight-sensitive results"]
+          },
+          "quantities": {
+            "load_n": 29.419949999999986,
+            "load_region_displacement_mm": 0.009768302526814735,
+            "load_region_displacement_range_mm": [0.007397257656933333, 0.012162202380937558],
+            "mass_geometry_kg": 0.1451519999999994,
+            "mass_mesh_kg": 0.13996799999999904,
+            "moment_reference": "centroid of the mounting region (design frame)",
+            "mounting_region_mean_displacement_mm": 0,
+            "peak_displacement_at_design_mm": [80, 20, 60],
+            "peak_displacement_mm": 0.012236321658350424,
+            "reaction_force_n": [1.3436807222433345e-11, 3.163691530971846e-12, 29.419950000182816],
+            "reaction_moment_nm": [8.782558014175379e-14, -2.1182364000116047, 3.1681601786459623e-13],
+            "stiffness_n_per_mm": 3011.777114727965,
+            "work_conjugate_displacement_mm": 0.009768302526814739
+          },
+          "result_warnings": ["PEAK_AT_REENTRANT_CORNER"],
+          "run": {
+            "job_id": "job-20260916-212836-7d81-3",
+            "project": "B",
+            "results_retained": true,
+            "results_sha256": "5f2b70f3aa777e97a2b3e6553bcad105ef8e821c52cc7b085cdf360a53740d94",
+            "run_directory": "designs/B/runs/job-20260916-212836-7d81-3",
+            "spec_hash": "cb2bfd07673f42a56e900a047c52d117020af878c48f03489577eff90a24b318"
+          },
+          "stress": {
+            "gauss_point_max_mpa": 2.28996617078132,
+            "nodal_average_max_mpa": 2.823731952491319,
+            "nodal_p99_mpa": 2.5584322660493353,
+            "peak_at_support": false,
+            "peak_near_reentrant_corner": true
+          },
+          "valid": true
+        },
+        {
+          "checks": {
+            "conjugate_vs_region_mean": 4.5828467029720245e-15,
+            "deformation_classification": "within_small_deformation_assumption",
+            "displacement_to_size_ratio": 0.00010615781645879407,
+            "energy_ok": true,
+            "energy_ratio": 1.0000000000191511,
+            "equilibrium_error": 2.7718244825539474e-12,
+            "equilibrium_ok": true,
+            "load_region_mapping": {
+              "area_ratio": 0.9999999999999996,
+              "centroid_shift_mm": 2.040878629308206e-14,
+              "criterion_mm": 1,
+              "force_deviation": 4.588829001899019e-15,
+              "geometry_area_mm2": 256.00000000000006,
+              "line_of_action_shift_mm": 1.8398520048880774e-13,
+              "mesh_area_mm2": 255.99999999999994,
+              "mesh_faces": 64,
+              "ok": true
+            },
+            "max_rotation_rad": 0.0002842805832858718,
+            "max_strain_indicator": 4.2885083595577726e-05,
+            "mesh_topology_ok": true,
+            "moment_balance_error": 1.902622323607685e-12,
+            "moment_balance_ok": true,
+            "mounting_region_mapping": {
+              "area_ratio": 1.0000000000000098,
+              "geometry_area_mm2": 2400.0000000000064,
+              "mesh_area_mm2": 2400.0000000000296,
+              "mesh_faces": 600,
+              "ok": true
+            },
+            "solver_converged": true,
+            "solver_method": "sparse Cholesky (nested dissection)",
+            "solver_true_relative_residual": 1.524774534808182e-11
+          },
+          "completed": true,
+          "cost": {
+            "factor_mb": 131.6897850036621,
+            "memory_note": "factor_mb is the direct solver's factor; process_peak_rss_mb is the high-water mark of the whole process so far",
+            "process_peak_rss_mb": 239.96875,
+            "solve_seconds": 2.0371049999957904,
+            "wall_seconds": 2.194525957107544
+          },
+          "element_size_mm": 2,
+          "invalid_reasons": [],
+          "mesh": {
+            "dofs": 25263,
+            "elements": 6600,
+            "face_connected_regions": 1,
+            "nodes": 8421,
+            "seconds": 0.0018940000154543668,
+            "volume_error_percent": -1.7857142857252672,
+            "volume_geometry_mm3": 53759.999999999774,
+            "volume_mesh_mm3": 52799.999999993874,
+            "warnings": []
+          },
+          "quantities": {
+            "load_n": 29.419950000000135,
+            "load_region_displacement_mm": 0.009084607476929938,
+            "load_region_displacement_range_mm": [0.0068282817945522255, 0.011360571786970058],
+            "mass_geometry_kg": 0.1451519999999994,
+            "mass_mesh_kg": 0.14255999999998348,
+            "moment_reference": "centroid of the mounting region (design frame)",
+            "mounting_region_mean_displacement_mm": 0,
+            "peak_displacement_at_design_mm": [80, 20, 60],
+            "peak_displacement_mm": 0.011433546743922836,
+            "reaction_force_n": [8.283762564786912e-11, 3.454336816588466e-11, 29.419950000687322],
+            "reaction_moment_nm": [-1.1744051911510844e-12, -2.1182364000430662, 2.201017146319373e-12],
+            "stiffness_n_per_mm": 3238.4393133892977,
+            "work_conjugate_displacement_mm": 0.009084607476929896
+          },
+          "result_warnings": ["PEAK_AT_REENTRANT_CORNER"],
+          "run": {
+            "job_id": "job-20260916-212837-7d81-5",
+            "project": "B",
+            "results_retained": true,
+            "results_sha256": "50ec2cae508ee38f61d7722603ab88395dfbcd4e85fa399f9f832d73d9828679",
+            "run_directory": "designs/B/runs/job-20260916-212837-7d81-5",
+            "spec_hash": "adfcab3e255eb43210bb25fae1e8a0c34b614f5898b7a0dab3b39fab6a6cfc3d"
+          },
+          "stress": {
+            "gauss_point_max_mpa": 2.954782259735305,
+            "nodal_average_max_mpa": 3.1924000570674598,
+            "nodal_p99_mpa": 2.4139120050840526,
+            "peak_at_support": false,
+            "peak_near_reentrant_corner": true
+          },
+          "valid": true
+        },
+        {
+          "checks": {
+            "conjugate_vs_region_mean": 1.0478065059518e-14,
+            "deformation_classification": "within_small_deformation_assumption",
+            "displacement_to_size_ratio": 0.00010277113526696825,
+            "energy_ok": true,
+            "energy_ratio": 1.0000000000442948,
+            "equilibrium_error": 2.0718961323235693e-11,
+            "equilibrium_ok": true,
+            "load_region_mapping": {
+              "area_ratio": 0.9999999999999984,
+              "centroid_shift_mm": 2.0572022225171943e-13,
+              "criterion_mm": 0.7800000000000002,
+              "force_deviation": 1.0989037872968703e-14,
+              "geometry_area_mm2": 256.00000000000006,
+              "line_of_action_shift_mm": 2.379830877260112e-13,
+              "mesh_area_mm2": 255.99999999999966,
+              "mesh_faces": 256,
+              "ok": true
+            },
+            "max_rotation_rad": 0.0002779284861068261,
+            "max_strain_indicator": 5.434496985047741e-05,
+            "mesh_topology_ok": true,
+            "moment_balance_error": 5.4462710070806375e-12,
+            "moment_balance_ok": true,
+            "mounting_region_mapping": {
+              "area_ratio": 0.9999999999999947,
+              "geometry_area_mm2": 2400.0000000000064,
+              "mesh_area_mm2": 2399.9999999999936,
+              "mesh_faces": 2400,
+              "ok": true
+            },
+            "solver_converged": true,
+            "solver_method": "pcg/block-jacobi",
+            "solver_true_relative_residual": 1.1273053387103485e-10
+          },
+          "completed": true,
+          "cost": {
+            "factor_mb": null,
+            "memory_note": "factor_mb is the direct solver's factor; process_peak_rss_mb is the high-water mark of the whole process so far",
+            "process_peak_rss_mb": 396.15625,
+            "solve_seconds": 2.8663219999871217,
+            "wall_seconds": 4.253862142562866
+          },
+          "element_size_mm": 1,
+          "invalid_reasons": [],
+          "mesh": {
+            "dofs": 181179,
+            "elements": 53280,
+            "face_connected_regions": 1,
+            "nodes": 60393,
+            "seconds": 0.005918000009842217,
+            "volume_error_percent": -0.892857142792829,
+            "volume_geometry_mm3": 53759.999999999774,
+            "volume_mesh_mm3": 53280.00000003436,
+            "warnings": []
+          },
+          "quantities": {
+            "load_n": 29.419949999999677,
+            "load_region_displacement_mm": 0.008774553670408315,
+            "load_region_displacement_range_mm": [0.0065714735875580625, 0.010996349994400925],
+            "mass_geometry_kg": 0.1451519999999994,
+            "mass_mesh_kg": 0.14385600000009274,
+            "moment_reference": "centroid of the mounting region (design frame)",
+            "mounting_region_mean_displacement_mm": 0,
+            "peak_displacement_at_design_mm": [80, 20, 60],
+            "peak_displacement_mm": 0.01106879001657874,
+            "reaction_force_n": [3.822229754923967e-10, 1.59908475350079e-11, 29.41995000163376],
+            "reaction_moment_nm": [-7.59621098661567e-13, -2.118236400110113, 1.1009526623695365e-12],
+            "stiffness_n_per_mm": 3352.871394384022,
+            "work_conjugate_displacement_mm": 0.008774553670408407
+          },
+          "result_warnings": ["PEAK_AT_REENTRANT_CORNER"],
+          "run": {
+            "job_id": "job-20260916-212843-7d81-7",
+            "project": "B",
+            "results_retained": true,
+            "results_sha256": "b0957b73f194d06b3041b8b989eb4fd93873d5b61800777fbbdfea3815a043a8",
+            "run_directory": "designs/B/runs/job-20260916-212843-7d81-7",
+            "spec_hash": "1aed71d55328dbf991f7a9946e24aa08ce9b9d6faf6e07afa89c2b041d4e8373"
+          },
+          "stress": {
+            "gauss_point_max_mpa": 3.7443684226978933,
+            "nodal_average_max_mpa": 3.778369807764719,
+            "nodal_p99_mpa": 2.246454230296475,
+            "peak_at_support": false,
+            "peak_near_reentrant_corner": true
+          },
+          "valid": true
+        },
+        {
+          "checks": {
+            "conjugate_vs_region_mean": 5.4087183651699396e-14,
+            "deformation_classification": "within_small_deformation_assumption",
+            "displacement_to_size_ratio": 0.00010116427516333593,
+            "energy_ok": true,
+            "energy_ratio": 1.0000000001825795,
+            "equilibrium_error": 5.072974455048701e-11,
+            "equilibrium_ok": true,
+            "load_region_mapping": {
+              "area_ratio": 1.0000000000000104,
+              "centroid_shift_mm": 8.959955167439842e-13,
+              "criterion_mm": 0.7800000000000002,
+              "force_deviation": 5.6394293260180043e-14,
+              "geometry_area_mm2": 256.00000000000006,
+              "line_of_action_shift_mm": 1.1289948164686237e-12,
+              "mesh_area_mm2": 256.00000000000273,
+              "mesh_faces": 1024,
+              "ok": true
+            },
+            "max_rotation_rad": 0.00027492033121909306,
+            "max_strain_indicator": 6.83566256738957e-05,
+            "mesh_topology_ok": true,
+            "moment_balance_error": 1.8286854300713378e-11,
+            "moment_balance_ok": true,
+            "mounting_region_mapping": {
+              "area_ratio": 0.9999999999999348,
+              "geometry_area_mm2": 2400.0000000000064,
+              "mesh_area_mm2": 2399.99999999985,
+              "mesh_faces": 9600,
+              "ok": true
+            },
+            "solver_converged": true,
+            "solver_method": "pcg/block-jacobi",
+            "solver_true_relative_residual": 2.7571961055253295e-10
+          },
+          "completed": true,
+          "cost": {
+            "factor_mb": null,
+            "memory_note": "factor_mb is the direct solver's factor; process_peak_rss_mb is the high-water mark of the whole process so far",
+            "process_peak_rss_mb": 1417.546875,
+            "solve_seconds": 46.36581099999603,
+            "wall_seconds": 54.05698609352112
+          },
+          "element_size_mm": 0.5,
+          "invalid_reasons": [],
+          "mesh": {
+            "dofs": 1368819,
+            "elements": 428160,
+            "face_connected_regions": 1,
+            "nodes": 456273,
+            "seconds": 0.031952999997884035,
+            "volume_error_percent": -0.446428571033829,
+            "volume_geometry_mm3": 53759.999999999774,
+            "volume_mesh_mm3": 53520.00000021199,
+            "warnings": []
+          },
+          "quantities": {
+            "load_n": 29.41994999999834,
+            "load_region_displacement_mm": 0.008627563565571221,
+            "load_region_displacement_range_mm": [0.006450054885631926, 0.010823548642847692],
+            "mass_geometry_kg": 0.1451519999999994,
+            "mass_mesh_kg": 0.14450400000057237,
+            "moment_reference": "centroid of the mounting region (design frame)",
+            "mounting_region_mean_displacement_mm": 0,
+            "peak_displacement_at_design_mm": [80, 20, 60],
+            "peak_displacement_mm": 0.010895725886977356,
+            "reaction_force_n": [1.1356887999469656e-09, 1.9201451192940588e-10, 29.419950006999173],
+            "reaction_moment_nm": [-5.981254391513452e-12, -2.118236400430053, 1.3278480745504417e-11],
+            "stiffness_n_per_mm": 3409.9951598616694,
+            "work_conjugate_displacement_mm": 0.008627563565571688
+          },
+          "result_warnings": ["PEAK_AT_REENTRANT_CORNER"],
+          "run": {
+            "job_id": "job-20260916-212931-7d81-9",
+            "project": "B",
+            "results_retained": true,
+            "results_sha256": "725f0053bedee09b49ed22b19bd438e9d524f4ba628788690b6dfc027295e31f",
+            "run_directory": "designs/B/runs/job-20260916-212931-7d81-9",
+            "spec_hash": "29c6159bf7cc0a021d620182a7c73dfe66bf80a22677c5fdb3258e3132bba6ce"
+          },
+          "stress": {
+            "gauss_point_max_mpa": 4.709771508931414,
+            "nodal_average_max_mpa": 4.593499899036555,
+            "nodal_p99_mpa": 2.0859644125821855,
+            "peak_at_support": false,
+            "peak_near_reentrant_corner": true
+          },
+          "valid": true
+        }
+      ],
+      "name": "B",
+      "refinement": {
+        "load_region_displacement_mm": {
+          "converged": true,
+          "convergence_criterion": 0.02,
+          "element_sizes_mm": [4, 2, 1, 0.5],
+          "extrapolated": 0.008495062642945169,
+          "finest_value": 0.008627563565571221,
+          "method": "Richardson extrapolation and grid convergence index over the three finest valid meshes (safety factor 1.25)",
+          "observed_order": 1.076799563347768,
+          "reading": "monotone convergence with observed order 1.08: asymptotic range plausible",
+          "relative_changes": [-0.07525862307436161, -0.03533556442503304, -0.017037267093999258],
+          "relative_uncertainty": 0.019197326339443887,
+          "uncertainty": 0.00016562615328256683,
+          "values": [0.009768302526814735, 0.009084607476929938, 0.008774553670408315, 0.008627563565571221]
+        },
+        "mass_mesh_kg": {
+          "converged": true,
+          "convergence_criterion": 0.02,
+          "element_sizes_mm": [4, 2, 1, 0.5],
+          "extrapolated": 0.14515200000190198,
+          "finest_value": 0.14450400000057237,
+          "method": "Richardson extrapolation and grid convergence index over the three finest valid meshes (safety factor 1.25)",
+          "observed_order": 0.9999999990538028,
+          "reading": "monotone convergence with observed order 1.00: asymptotic range plausible",
+          "relative_changes": [0.01818181818171114, 0.009009009009762748, 0.004484304936036783],
+          "relative_uncertainty": 0.0056053811773986014,
+          "uncertainty": 0.0008100000016620159,
+          "values": [0.13996799999999904, 0.14255999999998348, 0.14385600000009274, 0.14450400000057237]
+        },
+        "stiffness_n_per_mm": {
+          "converged": true,
+          "convergence_criterion": 0.02,
+          "element_sizes_mm": [4, 2, 1, 0.5],
+          "extrapolated": 3466.9349696066074,
+          "finest_value": 3409.9951598616694,
+          "method": "Richardson extrapolation and grid convergence index over the three finest valid meshes (safety factor 1.25)",
+          "observed_order": 1.0023285808665887,
+          "reading": "monotone convergence with observed order 1.00: asymptotic range plausible",
+          "relative_changes": [0.06999118301343486, 0.03412957657320091, 0.01675186116098905],
+          "relative_uncertainty": 0.020872393902183713,
+          "uncertainty": 71.17476218117268,
+          "values": [3011.777114727965, 3238.4393133892977, 3352.871394384022, 3409.9951598616694]
+        }
+      },
+      "sensitivity": []
+    }
+  ],
+  "failures": [],
+  "format": "navier-engineering-evidence-record",
+  "format_version": 1,
+  "generated": "2026-09-16T21:30:25Z",
+  "important_uncertainties": ["Discretisation, design A: monotone convergence with observed order 1.12: asymptotic range plausible (Richardson extrapolation and grid convergence index over the three finest valid meshes (safety factor 1.25)).", "Geometry approximation, design A: the finest voxel mesh has 0.00% volume error against the STL.", "Discretisation, design B: monotone convergence with observed order 1.08: asymptotic range plausible (Richardson extrapolation and grid convergence index over the three finest valid meshes (safety factor 1.25)).", "Geometry approximation, design B: the finest voxel mesh has -0.45% volume error against the STL.", "Load distribution and location: a uniform traction over the load region is assumed; a payload bearing on part of it or with an offset centre of mass is not assessed.", "Manufacturing (machined): its effect on stiffness is represented only through the material values given."],
+  "interpretation": ["Lower predicted load-region displacement under the modeled conditions: design B (0.0086276 mm) against design A (0.025498 mm), a 66.2% difference; numerical uncertainty ±0.00017 mm and ±0.0001 mm at 0.5 mm elements.", "These are predictions of a static, small-strain, linear-elastic model for: material 'al6061_t6_nominal' (user_supplied values, source database); mounting region rigidly fixed; a static payload weight spread uniformly over the load region. They are conditional on those inputs and are not measurements.", "Stress values are supporting information only. No strength margin or safety statement is made (see not evaluated)."],
+  "modeled_conditions": {
+    "analysis": {
+      "elements": "8-node hexahedra on voxel meshes (staircase boundary)",
+      "formulation": "incompatible_modes",
+      "physics": "static, small-strain linear elasticity, isotropic material",
+      "reference_temperature_c": 20,
+      "solver": "auto"
+    },
+    "design_materials": [],
+    "designs": [
+      {
+        "geometry": {
+          "bounds_design_mm": {
+            "max": [80, 40, 60],
+            "min": [0, 0, 0]
+          },
+          "bytes": 83284,
+          "closed_solid": true,
+          "components": 1,
+          "design_to_build_translation_mm": [0, 0, 0],
+          "file": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/navier-0.3.0-rc1-macos-arm64/share/navier/examples/bracket_comparison/geometry/bracket_a_plain.stl",
+          "repairs": {
+            "degenerate_faces_found": 0,
+            "degenerate_faces_removed": 0,
+            "duplicate_faces_found": 0,
+            "duplicate_faces_removed": 0,
+            "faces_flipped_for_consistency": 0,
+            "holes_filled": "none (no automatic hole filling)",
+            "inconsistent_edges_found": 0,
+            "non_orientable_components": 0,
+            "opposite_duplicate_faces": 0,
+            "shells_reoriented": 0
+          },
+          "self_intersecting_face_pairs": 0,
+          "sha256": "7cf8844569be4b9bd80fab7c8f2033eadd160e29b012760e2bb35ddab8ebef19",
+          "size_mm": [80, 40, 60],
+          "stored_copy": "inputs/part-7cf8844569be.stl",
+          "surface_area_mm2": 13312,
+          "surface_patches": 8,
+          "topology": {
+            "analysis_triangles": 1664,
+            "boundary_loops": 0,
+            "closed_components": 1,
+            "closed_solid": true,
+            "components": 1,
+            "consistently_oriented": true,
+            "merged_duplicate_vertices": 4158,
+            "nested_shells": 0,
+            "nonmanifold_edges": 0,
+            "open_edges": 0,
+            "source_triangles": 1664,
+            "surface_patches": 8,
+            "unique_vertices": 834,
+            "watertight": true,
+            "weld_tolerance_mm": 0.00010770329614269008
+          },
+          "triangles": 1664,
+          "units": "mm",
+          "units_check": {
+            "assessment": "plausible: with mm the part is 80 mm across its largest extent",
+            "criterion": "largest extent between 1 mm and 1000 mm (typical additive manufacturing parts)",
+            "declared_unit": "mm",
+            "header_note": "the file header mentions units; headers are free text and not authoritative",
+            "header_text": "bracket A: L, 8 mm plates",
+            "if_unit_were": [
+              {
+                "largest_extent_mm": 80,
+                "plausible": true,
+                "unit": "mm"
+              },
+              {
+                "largest_extent_mm": 800,
+                "plausible": true,
+                "unit": "cm"
+              },
+              {
+                "largest_extent_mm": 80000,
+                "plausible": false,
+                "unit": "m"
+              },
+              {
+                "largest_extent_mm": 2032,
+                "plausible": false,
+                "unit": "in"
+              },
+              {
+                "largest_extent_mm": 24384,
+                "plausible": false,
+                "unit": "ft"
+              },
+              {
+                "largest_extent_mm": 0.07999999999999999,
+                "plausible": false,
+                "unit": "um"
+              }
+            ],
+            "largest_extent_in_file_units": 80,
+            "largest_extent_mm": 80,
+            "plausible": true
+          },
+          "volume_mm3": 42239.999999999876,
+          "wall_thickness": {
+            "median_mm": 8,
+            "method": "inward rays from area-stratified surface points to the opposite surface",
+            "min_location_design_mm": [76.25894627189112, 14.365997229371875, 59.999999999999986],
+            "min_mm": 7.999999999999986,
+            "p05_mm": 8
+          }
+        },
+        "name": "A",
+        "regions": {
+          "lever_arm_design_mm": [72, 4.973799150320701e-14, 30.000000000000057],
+          "lever_arm_length_mm": 78.00000000000003,
+          "load": {
+            "area_mm2": 256.00000000000006,
+            "bounds_design_mm": {
+              "max": [80, 28, 60],
+              "min": [64, 12, 60]
+            },
+            "centroid_design_mm": [72, 19.999999999999993, 60.000000000000014],
+            "description": "16 x 16 mm pad on top of the arm tip where the 3 kg item sits",
+            "mean_normal": [0, 0, 1],
+            "patches": [6],
+            "plane_spread_mm": 0,
+            "query_design_frame": {
+              "box": {
+                "max": [81, 29, 61],
+                "min": [63, 11, 59]
+              }
+            },
+            "selection": "load",
+            "set_hash": "75b1238222b0ab6e77894f69e00fd244220e4746de62bb92b6bdb89a163df246",
+            "source": "user",
+            "triangles": 32
+          },
+          "mounting": {
+            "area_mm2": 2400.0000000000064,
+            "bounds_design_mm": {
+              "max": [0, 40, 60],
+              "min": [0, 0, 0]
+            },
+            "centroid_design_mm": [0, 19.999999999999943, 29.999999999999957],
+            "description": "back face bolted against the wall",
+            "mean_normal": [-1, 0, 0],
+            "patches": [7],
+            "plane_spread_mm": 0,
+            "query_design_frame": {
+              "plane": {
+                "at": "min",
+                "axis": "x",
+                "tolerance": 0.01
+              }
+            },
+            "selection": "mounting",
+            "set_hash": "24adf489688279548e78759f073d6b6ee0823353d8953b2f6c874b7ee8432cae",
+            "source": "user",
+            "triangles": 300
+          }
+        }
+      },
+      {
+        "geometry": {
+          "bounds_design_mm": {
+            "max": [80, 40, 60],
+            "min": [0, 0, 0]
+          },
+          "bytes": 80884,
+          "closed_solid": true,
+          "components": 1,
+          "design_to_build_translation_mm": [0, 0, 0],
+          "file": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/navier-0.3.0-rc1-macos-arm64/share/navier/examples/bracket_comparison/geometry/bracket_b_chamfer.stl",
+          "repairs": {
+            "degenerate_faces_found": 0,
+            "degenerate_faces_removed": 0,
+            "duplicate_faces_found": 0,
+            "duplicate_faces_removed": 0,
+            "faces_flipped_for_consistency": 0,
+            "holes_filled": "none (no automatic hole filling)",
+            "inconsistent_edges_found": 0,
+            "non_orientable_components": 0,
+            "opposite_duplicate_faces": 0,
+            "shells_reoriented": 0
+          },
+          "self_intersecting_face_pairs": 0,
+          "sha256": "806efa160faedf8b5b3fb6bef1e4e9a8e764bc0caa4445cca76f9069deb0c528",
+          "size_mm": [80, 40, 60],
+          "stored_copy": "inputs/part-806efa160fae.stl",
+          "surface_area_mm2": 13325.64501987818,
+          "surface_patches": 9,
+          "topology": {
+            "analysis_triangles": 1616,
+            "boundary_loops": 0,
+            "closed_components": 1,
+            "closed_solid": true,
+            "components": 1,
+            "consistently_oriented": true,
+            "merged_duplicate_vertices": 4038,
+            "nested_shells": 0,
+            "nonmanifold_edges": 0,
+            "open_edges": 0,
+            "source_triangles": 1616,
+            "surface_patches": 9,
+            "unique_vertices": 810,
+            "watertight": true,
+            "weld_tolerance_mm": 0.00010770329614269008
+          },
+          "triangles": 1616,
+          "units": "mm",
+          "units_check": {
+            "assessment": "plausible: with mm the part is 80 mm across its largest extent",
+            "criterion": "largest extent between 1 mm and 1000 mm (typical additive manufacturing parts)",
+            "declared_unit": "mm",
+            "header_note": "the file header mentions units; headers are free text and not authoritative",
+            "header_text": "bracket B: L, 8 mm plates, 24 mm inner chamfer",
+            "if_unit_were": [
+              {
+                "largest_extent_mm": 80,
+                "plausible": true,
+                "unit": "mm"
+              },
+              {
+                "largest_extent_mm": 800,
+                "plausible": true,
+                "unit": "cm"
+              },
+              {
+                "largest_extent_mm": 80000,
+                "plausible": false,
+                "unit": "m"
+              },
+              {
+                "largest_extent_mm": 2032,
+                "plausible": false,
+                "unit": "in"
+              },
+              {
+                "largest_extent_mm": 24384,
+                "plausible": false,
+                "unit": "ft"
+              },
+              {
+                "largest_extent_mm": 0.07999999999999999,
+                "plausible": false,
+                "unit": "um"
+              }
+            ],
+            "largest_extent_in_file_units": 80,
+            "largest_extent_mm": 80,
+            "plausible": true
+          },
+          "volume_mm3": 53759.99999999974,
+          "wall_thickness": {
+            "median_mm": 13.24528587182902,
+            "method": "inward rays from area-stratified surface points to the opposite surface",
+            "min_location_design_mm": [78.624943501263, 11.74105372810887, 59.999999999999986],
+            "min_mm": 7.999999999999986,
+            "p05_mm": 8
+          }
+        },
+        "name": "B",
+        "regions": {
+          "lever_arm_design_mm": [72, 4.973799150320701e-14, 30.000000000000057],
+          "lever_arm_length_mm": 78.00000000000003,
+          "load": {
+            "area_mm2": 256.00000000000006,
+            "bounds_design_mm": {
+              "max": [80, 28, 60],
+              "min": [64, 12, 60]
+            },
+            "centroid_design_mm": [72, 19.999999999999993, 60.000000000000014],
+            "description": "16 x 16 mm pad on top of the arm tip where the 3 kg item sits",
+            "mean_normal": [0, 0, 1],
+            "patches": [7],
+            "plane_spread_mm": 0,
+            "query_design_frame": {
+              "box": {
+                "max": [81, 29, 61],
+                "min": [63, 11, 59]
+              }
+            },
+            "selection": "load",
+            "set_hash": "fb696c07ad9f9a9805bbfd78ec28abad385d172391a80ae69ab10d8191821c06",
+            "source": "user",
+            "triangles": 32
+          },
+          "mounting": {
+            "area_mm2": 2400.0000000000064,
+            "bounds_design_mm": {
+              "max": [0, 40, 60],
+              "min": [0, 0, 0]
+            },
+            "centroid_design_mm": [0, 19.999999999999943, 29.999999999999957],
+            "description": "back face bolted against the wall",
+            "mean_normal": [-1, 0, 0],
+            "patches": [8],
+            "plane_spread_mm": 0,
+            "query_design_frame": {
+              "plane": {
+                "at": "min",
+                "axis": "x",
+                "tolerance": 0.01
+              }
+            },
+            "selection": "mounting",
+            "set_hash": "df97a5ba66e20b7df9a28c70482c259107fe0aff170a549b067ecd5826daf70c",
+            "source": "user",
+            "triangles": 300
+          }
+        }
+      }
+    ],
+    "equivalence": {
+      "checks": [
+        {
+          "design": "B",
+          "difference": 0,
+          "difference_vector_mm": [0, 0, 0],
+          "ok": true,
+          "quantity": "lever_arm",
+          "reference": 78.00000000000003,
+          "tolerance": 1.5600000000000005,
+          "unit": "mm",
+          "value": 78.00000000000003
+        },
+        {
+          "design": "B",
+          "difference": 0,
+          "ok": true,
+          "quantity": "load_region_area",
+          "reference": 256.00000000000006,
+          "tolerance": 5.120000000000001,
+          "unit": "mm2",
+          "value": 256.00000000000006
+        },
+        {
+          "design": "B",
+          "difference": 0,
+          "ok": true,
+          "quantity": "mounting_region_area",
+          "reference": 2400.0000000000064,
+          "tolerance": 48.00000000000013,
+          "unit": "mm2",
+          "value": 2400.0000000000064
+        },
+        {
+          "design": "B",
+          "difference": 0,
+          "ok": true,
+          "quantity": "mounting_normal_angle",
+          "reference": 0,
+          "tolerance": 5,
+          "unit": "deg",
+          "value": 0
+        },
+        {
+          "design": "B",
+          "difference": 0,
+          "ok": true,
+          "quantity": "load_normal_angle",
+          "reference": 0,
+          "tolerance": 5,
+          "unit": "deg",
+          "value": 0
+        }
+      ],
+      "definition": "every design against the first: the lever arm from the mounting-region centroid to the load-region centroid (design frame), the areas of both regions and their mean normals. Equal face ids are not evidence of equivalence; these physical quantities are",
+      "reference_design": "A",
+      "status": "equivalent",
+      "tolerances": {
+        "angle_deg": 5,
+        "position_mm": 1,
+        "relative": 0.02
+      }
+    },
+    "frames": "design frame: the STL file's axes and origin, lengths in mm; each design's build frame differs by the translation recorded with it",
+    "load": {
+      "description": "3 kg item resting on the pad; z points up in both files",
+      "direction": [0, 0, -1],
+      "direction_source": "user",
+      "distribution": "uniform_over_region",
+      "force_n": 29.41995,
+      "force_vector_n": [0, 0, -29.41995],
+      "gravity_m_s2": 9.80665,
+      "gravity_source": "default",
+      "kind": "payload_mass",
+      "mass_kg": 3,
+      "self_weight": false,
+      "source": "user"
+    },
+    "manufacturing": {
+      "effective_properties": "not_available",
+      "notes": "machined from plate; the material is treated as homogeneous and isotropic",
+      "process": "machined",
+      "source": "user"
+    },
+    "material": {
+      "density_kg_m3": 2700,
+      "id": "al6061_t6_nominal",
+      "library": false,
+      "name": "Aluminium 6061-T6, nominal handbook values",
+      "poisson_ratio": 0.33,
+      "record": {
+        "density_kg_m3": {
+          "value": 2700
+        },
+        "family": "metal",
+        "id": "al6061_t6_nominal",
+        "name": "Aluminium 6061-T6, nominal handbook values",
+        "poisson_ratio": {
+          "value": 0.33
+        },
+        "provenance": "nominal handbook values for 6061-T6 (E 68.9 GPa, nu 0.33, density 2700 kg/m3); not measured for this batch; confirm against the supplier's certificate",
+        "status": "user_supplied",
+        "youngs_modulus_pa": {
+          "value": 68900000000
+        }
+      },
+      "reference": "nominal handbook values for 6061-T6 aluminium",
+      "source": "database",
+      "status": "user_supplied",
+      "youngs_modulus_pa": 68900000000
+    },
+    "mounting": {
+      "boundary_kind": "fixed",
+      "description": "back face clamped to a rigid wall (the stiffest idealisation of a bolted joint)",
+      "idealization": "fixed",
+      "source": "user"
+    },
+    "refinement": {
+      "constant_ratio": true,
+      "convergence_criterion": 0.02,
+      "element_sizes_mm": [4, 2, 1, 0.5]
+    }
+  },
+  "nature": "a record of what a linear-elastic model predicts under stated conditions, with its numerical checks; not a certificate, not a measurement, and not a statement that a part is safe",
+  "not_evaluated": [
+    {
+      "item": "dynamic loads, impact and vibration",
+      "reason": "the load is static"
+    },
+    {
+      "item": "strength margin or safety",
+      "reason": "no failure criterion and no validated strength data for the modelled condition; stress peaks at ideal supports and sharp corners are singular"
+    },
+    {
+      "item": "fatigue",
+      "reason": "cyclic loading is not modelled"
+    },
+    {
+      "item": "fastener loads, pull-out and joint slip",
+      "reason": "the mounting is an ideal support; fasteners and contact are not modelled"
+    },
+    {
+      "item": "buckling and geometric nonlinearity",
+      "reason": "linear static analysis; large-deformation indicators are checked after solving"
+    },
+    {
+      "item": "creep and temperature effects",
+      "reason": "properties at the reference temperature, time-independent"
+    }
+  ],
+  "numerical_evidence": [
+    {
+      "applies_to": "design A, 4 completed levels (4 valid)",
+      "check": "force equilibrium",
+      "criterion": "|sum of forces| / force scale <= 1e-6",
+      "observed": "largest 5.17e-11",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design A, 4 completed levels (4 valid)",
+      "check": "moment balance",
+      "criterion": "|sum of moments| / moment scale <= 1e-6",
+      "observed": "largest 5.68e-11",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design A, 4 completed levels (4 valid)",
+      "check": "energy (Clapeyron)",
+      "criterion": "|2 U / W - 1| <= 1e-6",
+      "observed": "largest |2U/W - 1| 6.46e-10",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design A, 4 completed levels (4 valid)",
+      "check": "linear solver",
+      "criterion": "converged, true residual recomputed",
+      "observed": "converged at every level",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design A, 4 completed levels (4 valid)",
+      "check": "rigid-body modes",
+      "criterion": "setup_validate finds none before each solve",
+      "observed": "none (every solve passed validation)",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design A, 4 completed levels (4 valid)",
+      "check": "load line of action on the mesh",
+      "criterion": "shift <= max(0.5 h, 1% of the lever arm) and force preserved to 1e-6",
+      "observed": "largest shift / criterion 1.45e-12",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design A, 4 completed levels (4 valid)",
+      "check": "work-conjugate displacement = region mean",
+      "criterion": "relative difference <= 1e-9 (a uniform traction does work with the area mean)",
+      "observed": "largest 5.33e-14",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design A, 4 completed levels (4 valid)",
+      "check": "mounting region on the mesh",
+      "criterion": "faces present, mesh/geometry area ratio in (0.5, 2)",
+      "observed": "represented at every level",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design A, 4 completed levels (4 valid)",
+      "check": "mesh topology",
+      "criterion": "one face-connected region",
+      "observed": "one region at every level",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design A, 4 completed levels (4 valid)",
+      "check": "small deformation",
+      "criterion": "displacement <= 1% of size and rotation error <= 1e-3 (questionable up to 5% / 1e-2)",
+      "observed": "within_small_deformation_assumption",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design A, 4 completed levels (4 valid)",
+      "check": "geometry approximation (volume)",
+      "criterion": "reported; > 3% changes stiffness and mass noticeably",
+      "observed": "8.22e-11% at the finest completed level",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design A, 4 completed levels (4 valid)",
+      "check": "discretisation (load-region displacement)",
+      "criterion": "last relative change <= 0.02",
+      "observed": "monotone convergence with observed order 1.12: asymptotic range plausible; relative uncertainty 0.00411",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design B, 4 completed levels (4 valid)",
+      "check": "force equilibrium",
+      "criterion": "|sum of forces| / force scale <= 1e-6",
+      "observed": "largest 5.07e-11",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design B, 4 completed levels (4 valid)",
+      "check": "moment balance",
+      "criterion": "|sum of moments| / moment scale <= 1e-6",
+      "observed": "largest 1.83e-11",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design B, 4 completed levels (4 valid)",
+      "check": "energy (Clapeyron)",
+      "criterion": "|2 U / W - 1| <= 1e-6",
+      "observed": "largest |2U/W - 1| 1.83e-10",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design B, 4 completed levels (4 valid)",
+      "check": "linear solver",
+      "criterion": "converged, true residual recomputed",
+      "observed": "converged at every level",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design B, 4 completed levels (4 valid)",
+      "check": "rigid-body modes",
+      "criterion": "setup_validate finds none before each solve",
+      "observed": "none (every solve passed validation)",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design B, 4 completed levels (4 valid)",
+      "check": "load line of action on the mesh",
+      "criterion": "shift <= max(0.5 h, 1% of the lever arm) and force preserved to 1e-6",
+      "observed": "largest shift / criterion 1.45e-12",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design B, 4 completed levels (4 valid)",
+      "check": "work-conjugate displacement = region mean",
+      "criterion": "relative difference <= 1e-9 (a uniform traction does work with the area mean)",
+      "observed": "largest 5.41e-14",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design B, 4 completed levels (4 valid)",
+      "check": "mounting region on the mesh",
+      "criterion": "faces present, mesh/geometry area ratio in (0.5, 2)",
+      "observed": "represented at every level",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design B, 4 completed levels (4 valid)",
+      "check": "mesh topology",
+      "criterion": "one face-connected region",
+      "observed": "one region at every level",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design B, 4 completed levels (4 valid)",
+      "check": "small deformation",
+      "criterion": "displacement <= 1% of size and rotation error <= 1e-3 (questionable up to 5% / 1e-2)",
+      "observed": "within_small_deformation_assumption",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design B, 4 completed levels (4 valid)",
+      "check": "geometry approximation (volume)",
+      "criterion": "reported; > 3% changes stiffness and mass noticeably",
+      "observed": "-0.446% at the finest completed level",
+      "outcome": "pass"
+    },
+    {
+      "applies_to": "design B, 4 completed levels (4 valid)",
+      "check": "discretisation (load-region displacement)",
+      "criterion": "last relative change <= 0.02",
+      "observed": "monotone convergence with observed order 1.08: asymptotic range plausible; relative uncertainty 0.0192",
+      "outcome": "pass"
+    }
+  ],
+  "question": {
+    "decision": "choose between version A (plain L, 8 mm plates) and version B (the same with a 24 mm inner chamfer)",
+    "text": "Here are two versions of my bracket. They attach through the back face and carry approximately 3 kg on the pad at the end of the arm. Compare their stiffness and mass, explain the assumptions, and tell me what information could change the comparison."
+  },
+  "reproduction": {
+    "commands": ["MCP: study_replay {\"directory\": \"/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/audit/four_levels\"} reruns the study from study.json and the stored geometry copies and compares every quantity", "CLI: navier-ctl --embedded study replay \"/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/audit/four_levels\"", "Inspect a design: project_open {\"path\": \"/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/audit/four_levels/designs/<design>\"}, then results_query / results_quantities with a run's job_id"],
+    "geometry": [
+      {
+        "design": "A",
+        "original_file": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/navier-0.3.0-rc1-macos-arm64/share/navier/examples/bracket_comparison/geometry/bracket_a_plain.stl",
+        "sha256": "7cf8844569be4b9bd80fab7c8f2033eadd160e29b012760e2bb35ddab8ebef19",
+        "stored_copy": "designs/A/inputs/part-7cf8844569be.stl"
+      },
+      {
+        "design": "B",
+        "original_file": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/navier-0.3.0-rc1-macos-arm64/share/navier/examples/bracket_comparison/geometry/bracket_b_chamfer.stl",
+        "sha256": "806efa160faedf8b5b3fb6bef1e4e9a8e764bc0caa4445cca76f9069deb0c528",
+        "stored_copy": "designs/B/inputs/part-806efa160fae.stl"
+      }
+    ],
+    "operations_log": "operations.jsonl",
+    "platform": {
+      "machine": "arm64",
+      "online_cpus": 8,
+      "release": "24.6.0",
+      "system": "Darwin"
+    },
+    "reproducibility": "replays on the same build and platform are expected to agree bitwise; the replay record compares quantities with a relative tolerance of 1e-9. Other compilers, CPUs or thread counts may differ in the last digits.",
+    "request_file": "request.json",
+    "retain_results": "refinement",
+    "retained_results_note": "each run keeps spec.json and summary.json; results.nvr (the full field) is kept for the refinement levels by default and removed for sensitivity runs after their quantities and SHA-256 were recorded; study_replay regenerates any of them",
+    "software": {
+      "compiler": "Apple LLVM 17.0.0 (clang-1700.0.13.5)",
+      "contract_version": "0.5.0",
+      "floating_point": "IEEE 754 double precision; no -ffast-math; no floating-point contraction",
+      "name": "NAVIER",
+      "version": "0.3.0-rc1"
+    },
+    "study_file": "study.json",
+    "study_hash": "6e3532240acab5e24f6202763ab38331542ba2013db27a8164fc834b44f46b1e"
+  },
+  "status": "complete",
+  "study": {
+    "directory": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/audit/four_levels",
+    "name": "bracket_ab_4levels",
+    "request_file": "request.json",
+    "study_file": "study.json",
+    "study_hash": "6e3532240acab5e24f6202763ab38331542ba2013db27a8164fc834b44f46b1e"
+  },
+  "unresolved_inputs": [],
+  "unsupported_requests": [],
+  "wall_seconds": 109.05146622657776,
+  "warnings_at_submission": []
+}

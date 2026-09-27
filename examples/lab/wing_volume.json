@@ -1,0 +1,36 @@
+{
+  "domain": "flow",
+  "model": "periodic3d",
+  "title": "Finite wing: computed 3D starting flow at 20 degrees",
+  "boundary": "periodic",
+  "initial_field": "uniform",
+  "grid": {
+    "cells_per_axis": 64,
+    "cell_m": 0.001
+  },
+  "time_step_s": 0.001,
+  "fluid": {
+    "kinematic_viscosity_m2_s": 1e-05,
+    "source": "Demonstration viscous fluid; periodic array of wings, not free-flight validation"
+  },
+  "velocity_amplitude_m_s": 0.05,
+  "body": {
+    "shape": "finite_naca00",
+    "center_m": [
+      0.02,
+      0.032,
+      0.032
+    ],
+    "chord_m": 0.024,
+    "span_m": 0.036,
+    "angle_deg": 20,
+    "thickness_ratio": 0.18
+  },
+  "run": {
+    "end_time_s": 0.6,
+    "frames": 40
+  },
+  "provenance": {
+    "limits": "Stationary voxel wing in periodic cube; initially uniform flow. Coarse geometry and transient low-Re flow. No lift/drag accuracy claim."
+  }
+}

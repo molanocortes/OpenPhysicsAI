@@ -1,0 +1,54 @@
+{
+ "A@1": {
+  "tol_1e-10_mm": 0.025399428205250717,
+  "tol_1e-13_mm": 0.025399428205261577,
+  "relative_difference": 4.275438357059258e-13,
+  "solver": "pcg/block-jacobi",
+  "iterations": 1819,
+  "true_relative_residual": 2.190963920106613e-10,
+  "seconds": 5.7518630027771,
+  "run_directory": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/audit/four_levels/designs/A/runs/job-20260916-213201-7df0-1",
+  "results_sha256_before_removal": "884c10eabef06ec65ce2873fcb44e113015d25ec5f21b55536e12bd7f58a0b01",
+  "results_bytes_before_removal": 27201416,
+  "results_removed": "evaluation-owned tolerance-check field removed to free disk; spec.json and summary.json kept; regenerate with the recorded settings"
+ },
+ "A@0.5": {
+  "tol_1e-10_mm": 0.025498119460909185,
+  "tol_1e-13_mm": 0.025498119460931185,
+  "relative_difference": 8.627994372701257e-13,
+  "solver": "pcg/block-jacobi",
+  "iterations": 3615,
+  "true_relative_residual": 8.295458492409584e-10,
+  "seconds": 81.95108580589294,
+  "run_directory": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/audit/four_levels/designs/A/runs/job-20260916-213207-7df0-2",
+  "results_sha256_before_removal": "d2a1d65fe31ec1d9f2b57ce99e58dbca5e646a2f4db6141c63253d6f75c194de",
+  "results_bytes_before_removal": 212108650,
+  "results_removed": "evaluation-owned tolerance-check field removed to free disk; spec.json and summary.json kept; regenerate with the recorded settings"
+ },
+ "B@1": {
+  "tol_1e-10_mm": 0.008774553670408315,
+  "tol_1e-13_mm": 0.008774553670407184,
+  "relative_difference": -1.2889997016616256e-13,
+  "solver": "pcg/block-jacobi",
+  "iterations": 1331,
+  "true_relative_residual": 7.396465818307463e-11,
+  "seconds": 5.983011722564697,
+  "run_directory": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/audit/four_levels/designs/B/runs/job-20260916-213329-7df0-3",
+  "results_sha256_before_removal": "80975dd201e7b9d176552bc2f550b601f9eedd7e266b9616e8b1c485eca556af",
+  "results_bytes_before_removal": 34011596,
+  "results_removed": "evaluation-owned tolerance-check field removed to free disk; spec.json and summary.json kept; regenerate with the recorded settings"
+ },
+ "B@0.5": {
+  "tol_1e-10_mm": 0.008627563565571221,
+  "tol_1e-13_mm": 0.008627563565582076,
+  "relative_difference": 1.2580799557927783e-12,
+  "solver": "pcg/block-jacobi",
+  "iterations": 3080,
+  "true_relative_residual": 3.1335724938926706e-10,
+  "seconds": 89.95463109016418,
+  "run_directory": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/audit/four_levels/designs/B/runs/job-20260916-213335-7df0-4",
+  "results_sha256_before_removal": "742a3f95a04bba357e6aa52f872d2f4c00fe80fc2ff02133b9054684c6564230",
+  "results_bytes_before_removal": 267553677,
+  "results_removed": "evaluation-owned tolerance-check field removed to free disk; spec.json and summary.json kept; regenerate with the recorded settings"
+ }
+}

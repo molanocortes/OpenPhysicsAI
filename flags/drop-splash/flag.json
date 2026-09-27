@@ -1,0 +1,22 @@
+{
+ "id": "drop-splash",
+ "number": 4,
+ "tier": "flag",
+ "stone": "interfaces",
+ "stone_short": "interfaces",
+ "difficulty": 4,
+ "title": "A drop that splashes, or doesn't",
+ "subtitle": "Xu, Zhang and Nagel, 2005: the air decides whether a drop splashes",
+ "short": "Splash",
+ "status": "preparing",
+ "hook": "A drop hits a dry, smooth plate and splashes into a crown. Lower the air pressure around it and the splash disappears. Predict where.",
+ "trials": [
+  "gas-shock-bubble"
+ ],
+ "media": {
+  "src": "docs/media/lab/breaking-wave.gif",
+  "alt": "A solitary wave runs up a sloping beach around a pier, steepens and breaks, in 3D",
+  "caption": "The lab today: a solitary wave breaking on a beach around a pier, free-surface water in 3D (SPH on the GPU). A splash needs a sharp surface, the air around it and surface tension."
+ },
+ "note": "In preparation: the cases, the outputs and their units are written here when the flag opens, and the measured values are sealed at the same moment (tools/flags.py seal)."
+}

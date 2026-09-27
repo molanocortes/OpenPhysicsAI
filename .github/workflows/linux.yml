@@ -1,0 +1,29 @@
+name: linux headless build and tests
+
+# The engine, the servers and every test are written to build without the macOS frameworks. This workflow is the
+# proof: it builds the headless targets on Ubuntu and runs the full suite. Until task T1 (TASKS.md) lands it is
+# expected to be red; the failing step is the work list.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  headless:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang make python3 python3-numpy
+          clang --version
+      - name: Build the headless targets
+        run: make headless
+      - name: Run the suites
+        run: make test
+      - name: Doctor
+        if: always()
+        run: ./navier-ctl doctor || true

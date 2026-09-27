@@ -1,0 +1,2888 @@
+{
+  "$comment": "Mechanics operations of NAVIER (robotics and mechanical testing). Merged into the navier-am contract at registry start; every name starts with mech_. 0.6.0 adds mech_print_run (job kind fff_print), whose results are the time-indexed thermal result file with elem_birth (docs/contracts/print-results.md). 0.7.0 adds lpbf_build_run (job kind lpbf_build), the inherent-strain powder-bed build (docs/contracts/lpbf-build.md).",
+  "contract": "navier-mech",
+  "contract_version": "0.13.0",
+  "$defs": {
+    "mech_quantity": {
+      "type": [
+        "number",
+        "string"
+      ],
+      "description": "A number in the unit declared for its quantity under 'units' (SI when undeclared), or a string with its own unit such as \"30 deg\", \"1.2 mm\", \"0.2 N*m/rad\", \"12 V\"."
+    },
+    "mech_vec3": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "$ref": "#/$defs/mech_quantity"
+      }
+    },
+    "mech_pose": {
+      "type": "object",
+      "description": "Frame pose: position (length) and orientation as rpy = [roll, pitch, yaw] with R = Rz(yaw) Ry(pitch) Rx(roll), or a unit quaternion [w, x, y, z].",
+      "properties": {
+        "position": {
+          "$ref": "#/$defs/mech_vec3"
+        },
+        "rpy": {
+          "$ref": "#/$defs/mech_vec3"
+        },
+        "quaternion": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "mech_units": {
+      "type": "object",
+      "description": "Default units for plain numbers by quantity name: length, angle, mass, time, force, torque, inertia, density, velocity, angular_velocity, acceleration, angular_acceleration, linear_stiffness, rotational_stiffness, linear_damping, rotational_damping, voltage, current, resistance. Undeclared quantities are SI.",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 31
+      }
+    },
+    "mech_fill": {
+      "type": "object",
+      "description": "What is inside a closed part surface. solid: density. shell_infill (homogenised print): density, shell_thickness (walls x extrusion width, or the top/bottom thickness if larger), infill_fraction 0..1. measured_mass: the weighed mass spread uniformly (centre of mass and inertia then assume a uniform distribution). source: user, measured, inferred or default.",
+      "properties": {
+        "model": {
+          "type": "string",
+          "enum": [
+            "solid",
+            "shell_infill",
+            "measured_mass"
+          ]
+        },
+        "density": {
+          "$ref": "#/$defs/mech_quantity"
+        },
+        "shell_thickness": {
+          "$ref": "#/$defs/mech_quantity"
+        },
+        "infill_fraction": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "measured_mass": {
+          "$ref": "#/$defs/mech_quantity"
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "user",
+            "measured",
+            "inferred",
+            "default"
+          ]
+        }
+      },
+      "required": [
+        "model",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "mech_contact_shape": {
+      "type": "object",
+      "description": "Contact shape: box (size = full extents), sphere (radius), capsule (radius; length of the segment along the shape z axis), or plane (environment only: the half-space below the xy plane of its pose). friction needs friction_source; restitution defaults to 0 (inelastic).",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 63
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "box",
+            "sphere",
+            "capsule",
+            "plane",
+            "cylinder",
+            "mesh"
+          ]
+        },
+        "size": {
+          "$ref": "#/$defs/mech_vec3"
+        },
+        "radius": {
+          "$ref": "#/$defs/mech_quantity"
+        },
+        "length": {
+          "$ref": "#/$defs/mech_quantity"
+        },
+        "file": {
+          "type": "string",
+          "maxLength": 4096
+        },
+        "units": {
+          "type": "string",
+          "maxLength": 15
+        },
+        "pose": {
+          "$ref": "#/$defs/mech_pose"
+        },
+        "friction": {
+          "$ref": "#/$defs/mech_quantity"
+        },
+        "friction_source": {
+          "type": "string",
+          "enum": [
+            "measured",
+            "calibrated",
+            "user",
+            "cad",
+            "computed",
+            "inferred",
+            "default"
+          ]
+        },
+        "restitution": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "group": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "support_value": {
+      "description": "A support parameter: a quantity (\"0.2 mm\", or a number in mm), which then takes the supports object's provenance and source, or an object {value, provenance, source} with its own. Absent: the assumed default, listed in the result with the reason.",
+      "anyOf": [
+        {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "string"
+              ]
+            },
+            "provenance": {
+              "type": "string"
+            },
+            "source": {
+              "type": "string",
+              "maxLength": 199
+            }
+          },
+          "required": [
+            "value",
+            "provenance",
+            "source"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "operations": [
+    {
+      "name": "mech_assembly_import",
+      "title": "Import or create the mechanical assembly",
+      "kind": "mutation",
+      "description": "Replaces the project's mechanical assembly. Sources: a navier-assembly JSON file or inline document, a URDF file (subset: links with inertial/visual/collision, fixed, revolute, continuous, prismatic and floating joints, limits, dynamics, mimic; everything else is listed as not imported), or project bodies (STL parts already imported with geometry_import) whose mass properties are computed from the closed surface with a declared fill model. URDF says nothing about how its root link is attached: pass root_joint fixed or free. Parts exported from CAD in one common frame keep that frame as their body frame, so joints between them use the same hinge pose on both sides. Returns the assembly summary, assumptions, unsupported content and diagnostics; missing inputs that change results are errors with hints, never silent defaults.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096,
+            "description": "Path of a .json (navier-assembly) or .urdf file."
+          },
+          "document": {
+            "type": "object",
+            "description": "Inline navier-assembly document (format, version, name, units, gravity, bodies, joints, couplings)."
+          },
+          "name": {
+            "$ref": "#/$defs/name",
+            "description": "Assembly name when importing project bodies."
+          },
+          "parts": {
+            "type": "array",
+            "maxItems": 64,
+            "description": "Project bodies to turn into rigid bodies; the body frame is the STL file frame in metres.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "$ref": "#/$defs/name"
+                },
+                "name": {
+                  "$ref": "#/$defs/name",
+                  "description": "Name in the assembly (default: the project body name)."
+                },
+                "fill": {
+                  "$ref": "#/$defs/mech_fill"
+                }
+              },
+              "required": [
+                "body",
+                "fill"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "root_joint": {
+            "type": "string",
+            "enum": [
+              "fixed",
+              "free"
+            ],
+            "description": "URDF only: connection of the root link to the world."
+          },
+          "gravity": {
+            "$ref": "#/$defs/mech_vec3",
+            "description": "Gravity for project-part assemblies (default 9.80665 m/s^2 along -Z of the build frame, recorded as an assumption)."
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mech_body_define",
+      "title": "Define or update a rigid body",
+      "kind": "mutation",
+      "description": "Adds a body or replaces its mass properties, named frames and collision shapes. mass_properties: {mass, com, inertia: {ixx, iyy, izz, ixy, ixz, iyz} about the centre of mass (tensor components), provenance: user, measured, cad, calibrated, inferred or default} or {source: mesh, part: <project body>, fill} to compute them from a closed surface. Inertia must be physically admissible. Frames are named poses on the body that joints can reference as body.frame. collision: the shapes that represent the body in contact, in body coordinates: {name, type: box (size = full extents), sphere (radius), capsule (radius, length of the segment along the shape z axis), pose, friction with friction_source (measured, calibrated, user, inferred or default), restitution (0 to 1, default 0), group (shapes with the same non-zero group never touch)}. Mesh and cylinder shapes are refused for contact: a part is represented by the primitive pieces you declare, never by a silent hull. Contact runs only when mech_study_settings enables it.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/$defs/name"
+          },
+          "units": {
+            "$ref": "#/$defs/mech_units"
+          },
+          "mass_properties": {
+            "type": "object"
+          },
+          "part": {
+            "$ref": "#/$defs/name",
+            "description": "Project body whose surface gives the mass properties (with fill)."
+          },
+          "fill": {
+            "$ref": "#/$defs/mech_fill"
+          },
+          "frames": {
+            "type": "array",
+            "maxItems": 64,
+            "items": {
+              "type": "object"
+            }
+          },
+          "collision": {
+            "type": "array",
+            "maxItems": 64,
+            "items": {
+              "$ref": "#/$defs/mech_contact_shape"
+            },
+            "description": "Replaces the body's collision shapes."
+          },
+          "material": {
+            "type": "string",
+            "maxLength": 63
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mech_joint_define",
+      "title": "Define or replace a joint",
+      "kind": "mutation",
+      "description": "Adds or replaces a joint: type fixed, revolute, prismatic, spherical or free; parent (a body or world) and child; parent_frame and child_frame as poses or body.frame references (both required: nothing is placed by guesswork); axis for revolute and prismatic joints; motion passive, actuated or prescribed; initial position and velocity; limits {lower, upper, restitution}; spring {stiffness, reference}; damping; friction {coulomb, regularization_velocity}. A joint between bodies that are already connected closes a kinematic loop and becomes a constraint; redundant and inconsistent loops are reported by mech_assembly_inspect.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "joint": {
+            "type": "object",
+            "description": "The joint object of the navier-assembly format."
+          },
+          "units": {
+            "$ref": "#/$defs/mech_units"
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "joint"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mech_environment_define",
+      "title": "Define the static contact environment",
+      "kind": "mutation",
+      "description": "Replaces the static world shapes that bodies can touch: plane (half-space below the xy plane of its pose; its +z is the outward normal), box, sphere or capsule, each with a pose in world coordinates, friction with friction_source and optional restitution. The pair coefficients are friction = min of the two shapes and restitution = max. They are model parameters with their provenance, not measured material properties. An empty list removes the environment.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "shapes": {
+            "type": "array",
+            "maxItems": 64,
+            "items": {
+              "$ref": "#/$defs/mech_contact_shape"
+            }
+          },
+          "units": {
+            "$ref": "#/$defs/mech_units"
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "shapes"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mech_component_define",
+      "title": "Define an actuator, sensor or controller",
+      "kind": "mutation",
+      "description": "Adds or replaces (by name) a study component. actuator types: effort {joint, effort_limit, velocity_limit?, rated_effort?}; position_servo {kp, kd, effort_limit}; velocity_servo {kv, effort_limit}; dc_motor {gear_ratio (or lead for screw-driven prismatic joints), efficiency, rotor_inertia, resistance, torque_constant, back_emf_constant, voltage_limit, current_limit?, motor_viscous?, motor_coulomb?, motor_coulomb_vreg?, rated_effort?}. sensor types: joint_position, joint_velocity (joint), joint_effort, motor_current (actuator), force_torque (joint), imu_accelerometer, imu_gyroscope (body, site pose) with period, latency or latency_samples, noise_std, bias, resolution, filter_tau and an integer seed when noisy. controller types: pid {actuator, feedback: sensor name or ideal, loop: position or velocity, period, delay or delay_samples, kp, ki, kd (plain SI numbers: command units per error unit), derivative_filter, feedforward {velocity, acceleration}, output_limits [min, max], antiwindup none/clamp/back_calculation, tracking_time, reference}; open_loop {actuator, period, delay, reference = the command}. reference types: constant, step, ramp, sine, trapezoid, min_jerk, waypoints. Controllers are declared implementations that run at their own period inside the simulation; the AI configures them and never runs in the loop.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "actuator",
+              "sensor",
+              "controller"
+            ]
+          },
+          "definition": {
+            "type": "object"
+          },
+          "units": {
+            "$ref": "#/$defs/mech_units"
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "kind",
+          "definition"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mech_component_remove",
+      "title": "Remove an actuator, sensor or controller",
+      "kind": "mutation",
+      "destructive": true,
+      "description": "Removes a study component by name.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "actuator",
+              "sensor",
+              "controller"
+            ]
+          },
+          "name": {
+            "$ref": "#/$defs/name"
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "kind",
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mech_study_settings",
+      "title": "Set the run settings of the mechanical study",
+      "kind": "mutation",
+      "description": "end_time and max_step (the step also lands exactly on every controller, sensor, record and snapshot instant), record_period, max_records, snapshots (instants whose complete state is kept for load assessment; the peak force and peak moment of every joint and the peak normal force of every contact pair are kept automatically), contact {enabled, margin, max_iterations, tolerance, restitution_speed} and default units for the study components. With contact enabled the study integrates with first-order time stepping (impulses per step, Coulomb friction, Newton restitution above restitution_speed): run with time_step_check to see the step sensitivity. Impact steps are reported as impulses and excluded from force peaks.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "settings": {
+            "type": "object",
+            "properties": {
+              "end_time": {
+                "$ref": "#/$defs/mech_quantity"
+              },
+              "max_step": {
+                "$ref": "#/$defs/mech_quantity"
+              },
+              "record_period": {
+                "$ref": "#/$defs/mech_quantity"
+              },
+              "max_records": {
+                "type": "integer",
+                "minimum": 10,
+                "maximum": 2000000
+              },
+              "flexible_initial_state": {
+                "type": "string",
+                "enum": [
+                  "static_equilibrium",
+                  "undeformed"
+                ],
+                "default": "static_equilibrium",
+                "description": "Flexible bodies start in static equilibrium under gravity and the initial motion with the joints held, or undeformed (the loads then act suddenly at t = 0 and excite vibration)."
+              },
+              "contact": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean"
+                  },
+                  "margin": {
+                    "$ref": "#/$defs/mech_quantity",
+                    "description": "Speculative contact distance (default 1 mm), widened by the distance bodies travel in a step."
+                  },
+                  "max_iterations": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100000
+                  },
+                  "tolerance": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 0.1
+                  },
+                  "restitution_speed": {
+                    "$ref": "#/$defs/mech_quantity",
+                    "description": "Approach speed below which impacts are inelastic (default 1 mm/s)."
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          },
+          "snapshots": {
+            "type": "array",
+            "maxItems": 64,
+            "items": {
+              "$ref": "#/$defs/mech_quantity"
+            }
+          },
+          "units": {
+            "$ref": "#/$defs/mech_units"
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mech_assembly_inspect",
+      "title": "Inspect the mechanical model",
+      "kind": "query",
+      "description": "Assembly summary (bodies with mass, centre of mass, principal inertia and provenance; joints; frames; assumptions; unsupported content) and, with analyze, the compiled model: coordinates, closed loops, constraint rank, redundant constraint rows, mobility, singular or near-singular configuration, loop-closure adjustment of the initial configuration, mass-matrix check. Nothing is changed.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "analyze": {
+            "type": "boolean",
+            "default": true
+          },
+          "include_document": {
+            "type": "boolean",
+            "default": false,
+            "description": "Also return the canonical assembly and study documents."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mech_study_validate",
+      "title": "Validate the mechanical study",
+      "kind": "query",
+      "description": "Builds the complete study without running it: resolves every component against the assembly, parses quantities with the dimension their joint implies, compiles and assembles the model, and returns errors, missing inputs (each with a hint), warnings, assumptions, the fidelity level (rigid dynamics) with its assumptions, and the specification hash that a run would record.",
+      "input": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mech_dynamics_run",
+      "title": "Run the mechanical dynamics study",
+      "kind": "mutation",
+      "idempotent": true,
+      "description": "Validates the study and starts it as a background job (fidelity level 2: rigid multibody dynamics with actuators, sampled controllers and sensors). The run directory receives the canonical specification (assembly + study, SI, hashed), histories (CSV), summary, joint load envelope, diagnostics and state snapshots. An identical run already queued or running is returned instead of a duplicate. Poll job_status, then use mech_results_query.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "time_step_check": {
+            "type": "boolean",
+            "default": false,
+            "description": "Also run with half the maximum step and report the change of the key results (time-step sensitivity)."
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mech_results_query",
+      "title": "Query mechanical results",
+      "kind": "query",
+      "engine_lock": false,
+      "description": "Results of a mech_dynamics_run job. what: summary (tracking error, efforts, saturation, motor current and losses, energy balance, constraint drift, time-step sensitivity), channels (names and units), history (selected channels, optional time window and decimation), envelope (peak joint force and moment with time and full wrench), snapshots (available load snapshots) or specification (the canonical hashed specification).",
+      "input": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 63
+          },
+          "what": {
+            "type": "string",
+            "enum": [
+              "summary",
+              "channels",
+              "history",
+              "envelope",
+              "snapshots",
+              "specification"
+            ],
+            "default": "summary"
+          },
+          "channels": {
+            "type": "array",
+            "maxItems": 64,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 79
+            }
+          },
+          "time_from": {
+            "type": "number",
+            "minimum": 0
+          },
+          "time_to": {
+            "type": "number",
+            "minimum": 0
+          },
+          "max_points": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 20000,
+            "default": 500
+          }
+        },
+        "required": [
+          "job_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mech_material_define",
+      "title": "Define an orthotropic printed-part material",
+      "kind": "mutation",
+      "description": "Adds or replaces (by id) a mechanics material record in <project>/mechanics/materials.json for orthotropic structural assessment of printed parts. elastic: E1, E2, E3 (axis 3 = build direction, normal to the layers), major Poisson ratios nu12, nu13, nu23 (nu_ij = -eps_j/eps_i under stress along i), shear moduli G12, G23, G13, and source (measured, datasheet, literature, calibrated, user or assumed) with an optional reference. A +/-45 degree raster is usually transversely isotropic: E1 = E2, G12 = E1/(2(1+nu12)). density is optional (else the part's project material). strength (optional): Xt, Xc, Yt, Yc, Zt (interlayer tension), Zc, S12, S23, S31, optional Tsai-Wu interaction f12, f13, f23 (default -1/2, recorded as an assumption), and source. Constants must be physically admissible (positive-definite compliance). No printed-material values are built in: every number comes from the user with its source.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "material": {
+            "type": "object"
+          },
+          "units": {
+            "$ref": "#/$defs/mech_units"
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "material"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mech_structure_query",
+      "title": "Query an orthotropic structural assessment",
+      "kind": "query",
+      "engine_lock": false,
+      "description": "Results of a mech_fem_assess job with an orthotropic material model. quantity: summary (solver checks, support reactions, largest displacement and material-axes stresses, strength criterion with the largest failure index, smallest strength ratio, governing mode and location), displacement (component x, y, z or magnitude; nodes; mm), stress (global components xx, yy, zz, xy, yz, zx or von_mises; Gauss points; MPa), material_stress (11, 22, 33, 12, 23, 31 with axis 3 along the build direction; MPa), strain (global components, engineering shear) or failure_index (with the governing mode and strength ratio per point). Returns the largest values (by magnitude) with their locations in mm in the build frame.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 63
+          },
+          "quantity": {
+            "type": "string",
+            "enum": [
+              "summary",
+              "displacement",
+              "stress",
+              "material_stress",
+              "strain",
+              "failure_index"
+            ],
+            "default": "summary"
+          },
+          "component": {
+            "type": "string",
+            "maxLength": 15
+          },
+          "largest": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 5
+          }
+        },
+        "required": [
+          "job_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mech_modal_run",
+      "title": "Natural modes of a part",
+      "kind": "mutation",
+      "idempotent": true,
+      "description": "Computes the lowest natural frequencies and mode shapes of a meshed project part as a background job: consistent mass, hex8 stiffness with the part's project material (isotropic) or an orthotropic mech_material_define record with print axes, shift-invert subspace iteration. supports: {type: free} (free-free: the six rigid-body modes are found and reported, not assumed) or {type: fixed, selections: [...]} (every node of the selections clamped). Reports frequencies, effective mass and inertia fractions, residuals, mass orthogonality and convergence. Linear vibration about the undeformed configuration: no prestress, rotation or contact. Query with mech_vibration_query.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "part": {
+            "$ref": "#/$defs/name"
+          },
+          "modes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 60,
+            "default": 10,
+            "description": "Elastic modes wanted (rigid-body modes of a free part come in addition)."
+          },
+          "supports": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "free",
+                  "fixed"
+                ]
+              },
+              "selections": {
+                "type": "array",
+                "maxItems": 16,
+                "items": {
+                  "$ref": "#/$defs/name"
+                }
+              },
+              "rule": {
+                "type": "string",
+                "enum": [
+                  "overhang",
+                  "every_column",
+                  "overhang_all"
+                ],
+                "default": "overhang",
+                "description": "overhang: a downward face gets support where the STL is flatter than critical_angle_deg over it and the column below reaches the plate through empty space (none inside a closed channel, none standing on the part). every_column: every voxel column under the part, the rule of wave 4. overhang_all: a sensitivity, the overhang faces supported down to the plate or to the part below, channels included."
+              },
+              "critical_angle_deg": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 90,
+                "description": "A downward face flatter than this, measured from the horizontal, needs support. The Simufact Additive tutorial names this parameter (p. 55) but not its default; 45 is assumed when absent."
+              },
+              "critical_angle_source": {
+                "type": "string",
+                "maxLength": 159
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          "material_model": {
+            "type": "object",
+            "description": "As in mech_fem_assess: {type: project_material} or {type: orthotropic, material, build_direction, raster_reference, raster_angle}."
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "part"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mech_transient_assess",
+      "title": "Transient elastic response of a moving part",
+      "kind": "mutation",
+      "idempotent": true,
+      "description": "Fidelity level 3 in time: the elastic response of a part over a window of a mech_dynamics_run job, one-way from the rigid dynamics. The loads on the part (joint wrenches, persistent contact forces, d'Alembert body forces of its rigid motion) are sampled at output_step along a replay of the study and applied over the attachment selections as fixed patterns times histories. The response uses the free-free elastic modes of the part with the mode-acceleration method: the exact quasi-static solution of each load pattern plus the modal dynamic correction, integrated exactly for piecewise-linear loads with the stated modal damping. Reports the peak von Mises stress (and failure index for orthotropic records with strengths) dynamic and quasi-static with times and locations, the dynamic amplification, the rigid-body load share (a self-equilibrium check) and a history. Windows with impact steps are refused. The deformation does not act back on the motion (no flexible multibody coupling). Query with mech_vibration_query.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 63,
+            "description": "Completed mech_dynamics_run job."
+          },
+          "body": {
+            "$ref": "#/$defs/name"
+          },
+          "part": {
+            "$ref": "#/$defs/name"
+          },
+          "attachments": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 32,
+            "items": {
+              "type": "object",
+              "properties": {
+                "joint": {
+                  "$ref": "#/$defs/name"
+                },
+                "contact_shape": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 63
+                },
+                "selection": {
+                  "$ref": "#/$defs/name"
+                }
+              },
+              "required": [
+                "selection"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "time_from": {
+            "$ref": "#/$defs/mech_quantity"
+          },
+          "time_to": {
+            "$ref": "#/$defs/mech_quantity"
+          },
+          "output_step": {
+            "$ref": "#/$defs/mech_quantity",
+            "description": "Load sampling interval (default: the study record period)."
+          },
+          "modes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 60,
+            "default": 20,
+            "description": "Free-free elastic modes for the dynamic correction."
+          },
+          "damping": {
+            "type": "object",
+            "properties": {
+              "ratio": {
+                "type": "number",
+                "minimum": 0,
+                "exclusiveMaximum": 1
+              },
+              "source": {
+                "type": "string",
+                "enum": [
+                  "measured",
+                  "literature",
+                  "calibrated",
+                  "user",
+                  "assumed"
+                ]
+              }
+            },
+            "required": [
+              "ratio",
+              "source"
+            ],
+            "additionalProperties": false
+          },
+          "material_model": {
+            "type": "object"
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "job_id",
+          "body",
+          "attachments",
+          "time_from",
+          "time_to"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mech_vibration_query",
+      "title": "Query modal and transient results",
+      "kind": "query",
+      "engine_lock": false,
+      "description": "Results of mech_modal_run, mech_transient_assess and mech_flexible_reduce jobs. what: summary (frequencies, effective masses, checks; peaks, amplification, checks and assumptions; or the reduction: coordinates, interface compliance, mass properties, stability step), mode_shape (modal jobs: the nodes with the largest amplitude of a mode; reductions: of an elastic coordinate; normalised to 1) or history (transient jobs: time, peak von Mises dynamic and quasi-static, failure indices, decimated to max_points).",
+      "input": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 63
+          },
+          "what": {
+            "type": "string",
+            "enum": [
+              "summary",
+              "mode_shape",
+              "history"
+            ],
+            "default": "summary"
+          },
+          "mode": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000
+          },
+          "max_points": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 20000,
+            "default": 500
+          }
+        },
+        "required": [
+          "job_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mech_flexible_reduce",
+      "title": "Reduce a body's part to a flexible body",
+      "kind": "mutation",
+      "idempotent": true,
+      "description": "Fidelity level 4 (coupled): builds the elastic model of an assembly body from its meshed project part as a background job. The part is clamped at root_selection (where the body's own joint holds it, the reference frame); each interface is a child joint of the body with the selection it holds, moving rigidly with the joint origin. Craig-Bampton reduction: 6 static constraint modes per interface plus fixed_interface_modes normal modes, diagonalised to mass-normalised coordinates, with the first-order multibody invariants computed from the consistent mass matrix. Static loads through the interfaces are reproduced exactly; distributed inertia converges with the modes kept. The summary lists frequencies, the static compliance of each interface, the mesh's mass properties against the body's and the stability step of the explicit integrators (0.5 / w_max); max_frequency_hz drops higher coordinates and reports the interface flexibility lost. Damping has no default. Attach the result with mech_flexible_attach.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "$ref": "#/$defs/name"
+          },
+          "root_selection": {
+            "$ref": "#/$defs/name",
+            "description": "Selection on the part clamped to the body's reference frame."
+          },
+          "interfaces": {
+            "type": "array",
+            "maxItems": 16,
+            "items": {
+              "type": "object",
+              "properties": {
+                "joint": {
+                  "$ref": "#/$defs/name",
+                  "description": "A joint whose parent is the body."
+                },
+                "selection": {
+                  "$ref": "#/$defs/name"
+                }
+              },
+              "required": [
+                "joint",
+                "selection"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "fixed_interface_modes": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 200,
+            "default": 8
+          },
+          "max_frequency_hz": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Drop coordinates above this frequency (0 or absent: keep all)."
+          },
+          "damping": {
+            "type": "object",
+            "properties": {
+              "ratio": {
+                "type": "number",
+                "minimum": 0,
+                "exclusiveMaximum": 1
+              },
+              "source": {
+                "type": "string",
+                "enum": [
+                  "measured",
+                  "literature",
+                  "calibrated",
+                  "user",
+                  "assumed"
+                ]
+              }
+            },
+            "required": [
+              "ratio",
+              "source"
+            ],
+            "additionalProperties": false
+          },
+          "material_model": {
+            "type": "object",
+            "description": "As in mech_fem_assess: {type: project_material} or {type: orthotropic, material, build_direction, raster_reference, raster_angle}."
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "body",
+          "root_selection"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mech_flexible_attach",
+      "title": "Make a body flexible",
+      "kind": "mutation",
+      "idempotent": true,
+      "description": "Copies the reduced model of a succeeded mech_flexible_reduce job into the assembly: the body becomes a flexible body of the multibody model (first-order floating frame) and its mass properties become those of the reduced mesh, so rigid and elastic inertia are consistent. Refused when the reduction is stale (interface joints moved, removed or re-parented, or the body linked to another part). Dynamics runs then record <body>.elastic[k], <body>.strain_energy and <body>.<joint>.dx/dy/dz/deflection/rx/ry/rz/rotation, and report peak interface deflection and strain energy. Contact shapes on a flexible body are refused (mount them on a body attached to an interface).",
+      "input": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 63
+          },
+          "body": {
+            "$ref": "#/$defs/name",
+            "description": "Optional check: the body the job reduced."
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "job_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mech_flexible_detach",
+      "title": "Make a flexible body rigid",
+      "kind": "mutation",
+      "idempotent": true,
+      "description": "Removes the elastic model of a body. The body keeps the mass properties of the reduced mesh until they are redefined with mech_body_define.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "$ref": "#/$defs/name"
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "body"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mech_flexible_stress",
+      "title": "Stresses of a flexible body from a coupled run",
+      "kind": "mutation",
+      "idempotent": true,
+      "description": "Fidelity level 4 stresses: from the elastic coordinates a mech_dynamics_run recorded for a flexible body, sigma(t) = sum of eta_k(t) times the Gauss-point stress of coordinate shape k of its reduction (mech_flex_shapes.bin of the mech_flexible_reduce job), evaluated at every recorded instant of the window (default: the whole run). Reports the largest von Mises stress with its time, element and location, and a history of the largest stress per instant. Peaks between records are not seen; stresses next to the clamped root and the rigid interfaces depend on that idealisation; coordinates dropped by the reduction's frequency cutoff carry no stress. Query with mech_vibration_query.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 63,
+            "description": "Completed mech_dynamics_run job in which the body was flexible."
+          },
+          "body": {
+            "$ref": "#/$defs/name"
+          },
+          "time_from": {
+            "$ref": "#/$defs/mech_quantity"
+          },
+          "time_to": {
+            "$ref": "#/$defs/mech_quantity"
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "job_id",
+          "body"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mech_fem_assess",
+      "title": "Structural assessment of a part at a load snapshot",
+      "kind": "mutation",
+      "idempotent": true,
+      "description": "Fidelity level 3 (rigid motion plus FEM load assessment): takes a load snapshot of a mech_dynamics_run job (a requested instant or the peak force or moment of a joint), computes the wrenches every joint exerts on the chosen body and the d'Alembert body force of its motion (gravity, linear, angular and centripetal acceleration), distributes each joint wrench over the named selection where it enters the part (reproducing force and moment exactly), removes rigid-body motion with an isostatic 3-2-1 support whose reactions are reported (they must vanish when the rigid and FEM models agree) and solves static linear elasticity on the project mesh as a background job. Contact forces on the body's collision shapes at the snapshot (persistent contact, average force over the step) are transferred the same way over a selection per shape, with exact resultants; snapshots that end an impact step are refused. Needs the part as a project body with a current mesh, a material with density, and a selection for every joint and contact shape that loads the body. The result is a quasi-static assessment at one instant, not flexible dynamics: vibration, impact stress and the local (Hertzian) contact pressure are not included. Results are queried with results_query, results_probe, results_render and results_export.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 63,
+            "description": "Completed mech_dynamics_run job."
+          },
+          "snapshot": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 127,
+            "description": "Snapshot label from mech_results_query what=snapshots, e.g. \"peak_moment:shoulder\" or \"t=0.5\"."
+          },
+          "body": {
+            "$ref": "#/$defs/name",
+            "description": "Assembly body to assess."
+          },
+          "part": {
+            "$ref": "#/$defs/name",
+            "description": "Project body carrying its mesh (default: the part the body was created from)."
+          },
+          "attachments": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 32,
+            "items": {
+              "type": "object",
+              "description": "Exactly one of joint or contact_shape, with the selection where that load enters the part.",
+              "properties": {
+                "joint": {
+                  "$ref": "#/$defs/name"
+                },
+                "contact_shape": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 63
+                },
+                "selection": {
+                  "$ref": "#/$defs/name"
+                }
+              },
+              "required": [
+                "selection"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "material_model": {
+            "type": "object",
+            "description": "project_material (default): the isotropic material assigned to the part, solved by the shared static solver. orthotropic: a mech_material_define record solved by the mechanics orthotropic solver, with material axis 3 along build_direction and axis 1 along raster_reference rotated by raster_angle in the layer plane (directions in the build frame of the placed part); strengths, when the record has them, are evaluated with the named criterion.",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "project_material",
+                  "orthotropic"
+                ]
+              },
+              "material": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 63
+              },
+              "build_direction": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "x",
+                      "y",
+                      "z",
+                      "-x",
+                      "-y",
+                      "-z"
+                    ]
+                  },
+                  {
+                    "type": "array",
+                    "minItems": 3,
+                    "maxItems": 3,
+                    "items": {
+                      "type": "number"
+                    }
+                  }
+                ]
+              },
+              "raster_reference": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "x",
+                      "y",
+                      "z",
+                      "-x",
+                      "-y",
+                      "-z"
+                    ]
+                  },
+                  {
+                    "type": "array",
+                    "minItems": 3,
+                    "maxItems": 3,
+                    "items": {
+                      "type": "number"
+                    }
+                  }
+                ]
+              },
+              "raster_angle": {
+                "$ref": "#/$defs/mech_quantity"
+              },
+              "criterion": {
+                "type": "string",
+                "enum": [
+                  "tsai_wu",
+                  "max_stress",
+                  "tsai_hill"
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "expected_revision": {
+            "$ref": "#/$defs/expected_revision"
+          },
+          "idempotency_key": {
+            "$ref": "#/$defs/idempotency_key"
+          }
+        },
+        "required": [
+          "job_id",
+          "snapshot",
+          "body",
+          "attachments"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "mech_print_run",
+      "title": "Print a part layer by layer (fused filament) and store the build",
+      "kind": "mutation",
+      "idempotent": true,
+      "description": "Prints the meshed part layer by layer as a background job of kind fff_print: material is deposited where it rests on the bed or on printed material (an overhang waits for the layer that carries it; a fragment that never connects is counted and not printed), each simulation layer cools for the time the printer needs to lay down its volume with convection and radiation on every exposed face and the heated bed as a fixed temperature, and the residual stress is accumulated incrementally with the temperature-dependent modulus, relaxing above the relaxation temperature. After the cool-down the bed reactions are removed on an isostatic support and the part takes its warped shape, which is the last stored time. Results go into the ordinary time-indexed result file, so results_query, results_probe, results_render and results_export read a print with time_index or time_s (temperature, displacement, von_mises). SCOPE: a process simulation on the library's material data, not a forecast for a particular printer or filament: layers are lumped, creep below the relaxation temperature is not modelled (stresses on the bed are an upper bound) and nothing has been compared with a measured print. The summary states this in summary.scope. Refuses a stale mesh, a material without provenance, a part that does not rest on the build plate, more than one body or material, and a material record without density, specific heat, conductivity, modulus or expansion.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "string",
+            "maxLength": 63,
+            "description": "the printed body; the only meshed body by default"
+          },
+          "process": {
+            "type": "object",
+            "description": "the process, with units; every value is recorded in the summary with its provenance",
+            "properties": {
+              "layer_height": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "simulation layer, which lumps several printed layers (\"3 mm\"); required"
+              },
+              "printed_layer_height": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "the printer's own layer, used for the lumping factor in the summary (default 0.2 mm)"
+              },
+              "nozzle_temperature": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "deposition temperature (\"210 degC\"); required"
+              },
+              "bed_temperature": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "build plate (\"60 degC\"); required"
+              },
+              "ambient_temperature": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "chamber air (\"30 degC\"); required"
+              },
+              "deposition_rate": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "volume per time (\"15 mm3/s\"); required"
+              },
+              "convection": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "film coefficient on exposed faces (default 15 W/(m^2 K))"
+              },
+              "radiation": {
+                "type": "boolean",
+                "default": true,
+                "description": "grey radiation with the material's emissivity"
+              },
+              "min_layer_time": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "lower bound on a layer's cooling time (default 10 s)"
+              },
+              "cooldown_bed_on": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "cool-down with the bed heated after the last layer (default 20 min)"
+              },
+              "cooldown_bed_off": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "cool-down with the bed switched off (default 60 min)"
+              },
+              "relaxation_offset": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "above the glass transition, where stress relaxes (default 10 K)"
+              },
+              "thermal_substeps": {
+                "type": "integer",
+                "minimum": 2,
+                "maximum": 64,
+                "default": 8,
+                "description": "thermal steps per simulation layer"
+              },
+              "provenance": {
+                "type": "string",
+                "enum": [
+                  "user",
+                  "inferred",
+                  "calibrated"
+                ],
+                "description": "where these settings come from; required, never guessed"
+              }
+            },
+            "required": [
+              "layer_height",
+              "nozzle_temperature",
+              "bed_temperature",
+              "ambient_temperature",
+              "deposition_rate",
+              "provenance"
+            ]
+          },
+          "store": {
+            "type": "string",
+            "enum": [
+              "key_times",
+              "substeps"
+            ],
+            "default": "key_times",
+            "description": "key_times: every layer deposited and cooled, the two cool-down phases and the release. substeps: every thermal substep, with its own stress solve (much slower and larger)"
+          },
+          "probes": {
+            "type": "array",
+            "maxItems": 16,
+            "description": "points whose temperature history is recorded at every thermal substep in the summary",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "maxLength": 63
+                },
+                "at": {
+                  "type": "array",
+                  "minItems": 3,
+                  "maxItems": 3,
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "description": "point in the build frame, with units"
+                }
+              },
+              "required": [
+                "at"
+              ]
+            }
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "allow_duplicate": {
+            "type": "boolean",
+            "default": false,
+            "description": "start a second job even when an identical print is queued or running"
+          },
+          "numerics": {
+            "type": "object",
+            "description": "the structural solver of the increments; the defaults are the exact ones. Measured on the truss bridge at 4 mm elements (55 increments, 51k equations): auto 220 s, iterative at 1e-10 144 s, at 1e-8 98 s (peak stress within 2.6e-8, warp within 3.7e-6 relative to the direct solve), at 1e-6 79 s (warp within 7.5e-4)",
+            "properties": {
+              "solver": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "direct",
+                  "iterative"
+                ],
+                "default": "auto",
+                "description": "auto factorises directly while the factor fits in the solver's memory guard and falls back to the iterative solver when it does not"
+              },
+              "tolerance": {
+                "type": "number",
+                "minimum": 1e-12,
+                "maximum": 0.0001,
+                "default": 1e-10,
+                "description": "relative residual of the iterative solver"
+              },
+              "skip_increment_below": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "temperature difference (\"1 K\") below which an increment that deposits nothing is skipped; its thermal strain is not lost, the next increment that runs integrates it. Default 0: never skip. Measured: 1 K skipped 1 of 72 increments on the bridge at 3 mm"
+              }
+            }
+          },
+          "supports": {
+            "type": "object",
+            "description": "Supports (docs/contracts/supports.md), the same object as lpbf_build_run's: generated under the overhangs, homogenised from the type's unit cell, deposited and heated like the part, conducting and storing heat as their band (orthotropic conductivity, capacity by solid fraction), stiff by their vertical fraction, and removed after the bed release. With supports the part may stand above the plate.",
+            "properties": {
+              "stiffness_fraction": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1,
+                "description": "Type homogeneous only: the lattice's stiffness as a fraction of the solid. Simufact's default is not known to this project."
+              },
+              "source": {
+                "type": "string",
+                "maxLength": 191
+              },
+              "provenance": {
+                "type": "string",
+                "description": "assumed, user, published, measured, inferred or calibrated."
+              },
+              "remove": {
+                "type": "boolean",
+                "description": "Remove the supports at the end. Default: true when a cut is given."
+              },
+              "rule": {
+                "type": "string",
+                "enum": [
+                  "overhang",
+                  "every_column",
+                  "overhang_all"
+                ],
+                "default": "overhang",
+                "description": "overhang: a downward face gets support where the STL is flatter than critical_angle_deg over it and the column below reaches the plate through empty space (none inside a closed channel, none standing on the part). every_column: every voxel column under the part, the rule of wave 4. overhang_all: a sensitivity, the overhang faces supported down to the plate or to the part below, channels included."
+              },
+              "critical_angle_deg": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 90,
+                "description": "A downward face flatter than this, measured from the horizontal, needs support. The Simufact Additive tutorial names this parameter (p. 55) but not its default; 45 is assumed when absent."
+              },
+              "critical_angle_source": {
+                "type": "string",
+                "maxLength": 159
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "block",
+                  "thin_wall",
+                  "cone",
+                  "tree",
+                  "lattice",
+                  "homogeneous",
+                  "explicit"
+                ],
+                "description": "block: a square grid of thin walls; thin_wall: parallel walls; cone: a cone per grid point; tree: trunks branching to tips; lattice: body-centred cubic struts; homogeneous: a given stiffness fraction (needs stiffness_fraction). explicit: supports meshed with the part, the elements of the body inside region_mm (for support geometry exported with the part as one file; solid, scaled by relative_density)."
+              },
+              "wall_thickness": {
+                "$ref": "#/$defs/support_value",
+                "description": "block, thin_wall (default 0.2 mm, assumed)"
+              },
+              "spacing": {
+                "$ref": "#/$defs/support_value",
+                "description": "block, thin_wall: wall pitch (1 mm); cone: cone pitch (3 mm); tree: tip pitch (2 mm)"
+              },
+              "base_radius": {
+                "$ref": "#/$defs/support_value",
+                "description": "cone, at the plate (1 mm)"
+              },
+              "top_radius": {
+                "$ref": "#/$defs/support_value",
+                "description": "cone, at the part (0.45 mm)"
+              },
+              "trunk_radius": {
+                "$ref": "#/$defs/support_value",
+                "description": "tree (1 mm)"
+              },
+              "branch_radius": {
+                "$ref": "#/$defs/support_value",
+                "description": "tree (0.45 mm)"
+              },
+              "trunk_spacing": {
+                "$ref": "#/$defs/support_value",
+                "description": "tree (6 mm)"
+              },
+              "branch_height": {
+                "$ref": "#/$defs/support_value",
+                "description": "tree: height of the branching zone below the part (5 mm)"
+              },
+              "cell_size": {
+                "$ref": "#/$defs/support_value",
+                "description": "lattice (2 mm)"
+              },
+              "strut_diameter": {
+                "$ref": "#/$defs/support_value",
+                "description": "lattice (0.5 mm)"
+              },
+              "relative_density": {
+                "$ref": "#/$defs/support_value",
+                "description": "of the printed support material against the part, 0 to 1 (1, tutorial p. 60)"
+              },
+              "offset_from_part": {
+                "$ref": "#/$defs/support_value",
+                "description": "no support column within this horizontal distance of a part wall (0)"
+              },
+              "direction": {
+                "type": "string",
+                "enum": [
+                  "x",
+                  "y"
+                ],
+                "description": "thin_wall: the walls run along the model's x (default) or y."
+              },
+              "interface": {
+                "type": "object",
+                "description": "The tooth interface of wall types: in the top tooth_height the walls touch the part only on teeth of tooth_pitch covering contact_fraction of it. Absent: no teeth.",
+                "properties": {
+                  "tooth_height": {
+                    "$ref": "#/$defs/support_value"
+                  },
+                  "tooth_pitch": {
+                    "$ref": "#/$defs/support_value"
+                  },
+                  "contact_fraction": {
+                    "$ref": "#/$defs/support_value"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "height_above_plate": {
+                "$ref": "#/$defs/mech_quantity",
+                "description": "Checked against the placed part: the build is refused when they differ (place the part with geometry_place and mesh again)."
+              },
+              "channels": {
+                "type": "string",
+                "enum": [
+                  "excluded",
+                  "supported"
+                ],
+                "description": "excluded (default, the rule): no support whose column would stand on the part, as inside a channel; supported: the sensitivity overhang_all."
+              },
+              "region_mm": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "minItems": 6,
+                "maxItems": 6,
+                "description": "explicit: [x0, y0, z0, x1, y1, z1] in mm, build frame; elements whose centre lies inside are supports."
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "process"
+        ]
+      }
+    },
+    {
+      "name": "lpbf_build_run",
+      "title": "Build a laser powder-bed part layer by layer with an inherent strain",
+      "kind": "mutation",
+      "idempotent": true,
+      "description": "Builds the meshed part the way a powder-bed part actually distorts, as a background job of kind lpbf_build: the part sits on the plate (every node at z = 0 held), simulation layers are activated bottom to top, each layer is activated STRESS-FREE on the already deformed part below it and only then receives the orthotropic inherent strain as an eigenstrain, and the whole active part re-equilibrates. After the last layer the cut removes the elements the wire crosses and the part springs back. Reported: the tip deflection before and after the cut and the springback (largest u_z over the free end, +z up). Results go into the ordinary time-indexed result file with one stored time per layer and one after the cut, with elem_birth, elem_death and elem_group, so results_query and the application's slider show the build growing and the cut; there is no temperature field. SCOPE: the inherent strain is a CALIBRATED INPUT, not a material property; there is no plasticity, no thermal history and no support model, and no measurement it has been compared with is part of this repository. mode whole_part strains everything at once and exists only as a cross-check. Refuses a stale mesh, a strain, cut or material without provenance, a part that does not rest on the plate, more than one body, and a cut that crosses no element.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "string",
+            "maxLength": 63,
+            "description": "the built body; the only meshed body by default"
+          },
+          "build_orientation": {
+            "type": "string",
+            "enum": [
+              "X",
+              "Y"
+            ],
+            "default": "X",
+            "description": "the machine axis the part's long axis lay along. Y swaps exx and eyy, because the strain is given in the machine frame and the mesh has the part's long axis along model x"
+          },
+          "layer_thickness_sim": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "description": "the simulation layer, which lumps many printed layers (\"1 mm\"); required for a layer-by-layer build"
+          },
+          "adaptive_mesh": {
+            "type": "object",
+            "description": "An adaptive voxel mesh: fine at the surface (the mesh's element size), coarse inside up to max_element_size in x and y, with neighbours differing by at most a factor of two and hanging-node constraints between them. Elements stay one layer tall, so coarsening is in x and y only. Absent keeps the uniform mesh. docs/contracts/adaptive-mesh.md.",
+            "properties": {
+              "max_element_size": {
+                "type": [
+                  "number",
+                  "string"
+                ],
+                "description": "Largest element width inside the part, e.g. \"8 mm\"; a power-of-two multiple of the mesh size is used."
+              },
+              "fine_band_voxels": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 8,
+                "default": 2,
+                "description": "Width, in voxels, of the fine band kept along every free surface. 2 by default: with 1, a 0.5 mm cantilever coarsened to 2 mm came out 3.3 per cent stiff; with 2, within 0.6 per cent."
+              }
+            },
+            "required": [
+              "max_element_size"
+            ]
+          },
+          "inherent_strain": {
+            "type": "object",
+            "description": "the calibrated eigenstrain, in the machine frame: three numbers with a provenance and a source",
+            "properties": {
+              "exx": {
+                "type": "number"
+              },
+              "eyy": {
+                "type": "number"
+              },
+              "ezz": {
+                "type": "number"
+              },
+              "provenance": {
+                "type": "string",
+                "enum": [
+                  "user",
+                  "inferred",
+                  "calibrated",
+                  "assumed"
+                ],
+                "description": "where the tensor comes from; required"
+              },
+              "source": {
+                "type": "string",
+                "maxLength": 159,
+                "description": "free text naming the fit or the document"
+              }
+            }
+          },
+          "material": {
+            "type": "object",
+            "description": "elastic constants. A body loaded only by an eigenstrain has a displacement field independent of the modulus; it sets the stresses",
+            "properties": {
+              "youngs_modulus": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "for example \"70000 MPa\""
+              },
+              "poissons_ratio": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 0.49
+              },
+              "provenance": {
+                "type": "string",
+                "enum": [
+                  "user",
+                  "inferred",
+                  "calibrated",
+                  "default"
+                ],
+                "description": "required"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "plasticity": {
+            "type": "object",
+            "description": "Plasticity. Absent means the build is elastic, which is the same single solve it has always been. Given, the build uses J2 (von Mises) yield with isotropic linear hardening and a radial return at the Gauss points, and each layer is solved with a modified Newton loop on the elastic operator. A yield strength is a material property, not a knob: source and provenance are required. See docs/contracts/lpbf-build.md section 9.",
+            "properties": {
+              "yield_strength": {
+                "type": [
+                  "number",
+                  "string"
+                ],
+                "description": "Initial yield stress, e.g. \"292 MPa\"."
+              },
+              "hardening_modulus": {
+                "type": [
+                  "number",
+                  "string"
+                ],
+                "default": 0,
+                "description": "Linear isotropic hardening modulus H, e.g. \"1.95 GPa\". 0 is elastic-perfectly-plastic."
+              },
+              "source": {
+                "type": "string",
+                "maxLength": 191,
+                "description": "Where the yield strength comes from."
+              },
+              "provenance": {
+                "type": "string",
+                "description": "measured, published, user, assumed, inferred or calibrated."
+              },
+              "max_iterations": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 200,
+                "default": 80,
+                "description": "Newton iterations allowed per layer. A step that does not converge fails the job."
+              },
+              "tolerance": {
+                "type": "number",
+                "minimum": 1e-14,
+                "maximum": 0.1,
+                "default": 1e-06,
+                "description": "Relative residual over the free equations at which a step is accepted. The default was measured, not chosen: on the cantilever 1e-6 moves the tip deflection by 0.009 per cent against 1e-8 and costs 38 per cent less, and 1e-5 moves it by 0.05 per cent."
+              }
+            },
+            "required": [
+              "yield_strength",
+              "source",
+              "provenance"
+            ]
+          },
+          "cut": {
+            "type": "object",
+            "description": "separation from the plate: every element whose z extent crosses the kerf band is removed and the part re-equilibrates. Omit for no cut",
+            "properties": {
+              "height": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "height of the cut above the plate (\"2.5 mm\")"
+              },
+              "kerf": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "material the cut removes (\"0.3 mm\")"
+              },
+              "provenance": {
+                "type": "string",
+                "enum": [
+                  "user",
+                  "inferred",
+                  "calibrated",
+                  "assumed"
+                ],
+                "description": "required; for the validation cantilever these two are assumed, not published"
+              },
+              "from_x": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "the cut acts only beyond this distance from the part's own minimum x (its fixed end), so what lies before it keeps the part on the plate (the wire enters from the free end and stops at the solid block). Measured from the part, not from the build frame, because the mesher centres the geometry. Default 0: the whole section is cut, which detaches the part"
+              }
+            },
+            "required": [
+              "height",
+              "kerf",
+              "provenance"
+            ]
+          },
+          "supports": {
+            "type": "object",
+            "description": "Supports (docs/contracts/supports.md). Absent means none, which is the build as it has always been. Given, supports are generated under the downward faces flatter than critical_angle_deg, as the chosen type, whose stiffness is derived by solving its unit cell explicitly (and, with plasticity, scales its yield stress). With supports the part may stand above the plate (place it with geometry_place). Supports are activated with their layer and strained like the part; they are removed after the cut, or after the build when remove is true, and the interface tear-off is reported. The wave-4 input, stiffness_fraction with provenance and source, is the type homogeneous.",
+            "properties": {
+              "stiffness_fraction": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1,
+                "description": "Type homogeneous only: the lattice's stiffness as a fraction of the solid. Simufact's default is not known to this project."
+              },
+              "source": {
+                "type": "string",
+                "maxLength": 191
+              },
+              "provenance": {
+                "type": "string",
+                "description": "assumed, user, published, measured, inferred or calibrated."
+              },
+              "remove": {
+                "type": "boolean",
+                "description": "Remove the supports at the end. Default: true when a cut is given."
+              },
+              "rule": {
+                "type": "string",
+                "enum": [
+                  "overhang",
+                  "every_column",
+                  "overhang_all"
+                ],
+                "default": "overhang",
+                "description": "overhang: a downward face gets support where the STL is flatter than critical_angle_deg over it and the column below reaches the plate through empty space (none inside a closed channel, none standing on the part). every_column: every voxel column under the part, the rule of wave 4. overhang_all: a sensitivity, the overhang faces supported down to the plate or to the part below, channels included."
+              },
+              "critical_angle_deg": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 90,
+                "description": "A downward face flatter than this, measured from the horizontal, needs support. The Simufact Additive tutorial names this parameter (p. 55) but not its default; 45 is assumed when absent."
+              },
+              "critical_angle_source": {
+                "type": "string",
+                "maxLength": 159
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "block",
+                  "thin_wall",
+                  "cone",
+                  "tree",
+                  "lattice",
+                  "homogeneous",
+                  "explicit"
+                ],
+                "description": "block: a square grid of thin walls; thin_wall: parallel walls; cone: a cone per grid point; tree: trunks branching to tips; lattice: body-centred cubic struts; homogeneous: a given stiffness fraction (needs stiffness_fraction). explicit: supports meshed with the part, the elements of the body inside region_mm (for support geometry exported with the part as one file; solid, scaled by relative_density)."
+              },
+              "wall_thickness": {
+                "$ref": "#/$defs/support_value",
+                "description": "block, thin_wall (default 0.2 mm, assumed)"
+              },
+              "spacing": {
+                "$ref": "#/$defs/support_value",
+                "description": "block, thin_wall: wall pitch (1 mm); cone: cone pitch (3 mm); tree: tip pitch (2 mm)"
+              },
+              "base_radius": {
+                "$ref": "#/$defs/support_value",
+                "description": "cone, at the plate (1 mm)"
+              },
+              "top_radius": {
+                "$ref": "#/$defs/support_value",
+                "description": "cone, at the part (0.45 mm)"
+              },
+              "trunk_radius": {
+                "$ref": "#/$defs/support_value",
+                "description": "tree (1 mm)"
+              },
+              "branch_radius": {
+                "$ref": "#/$defs/support_value",
+                "description": "tree (0.45 mm)"
+              },
+              "trunk_spacing": {
+                "$ref": "#/$defs/support_value",
+                "description": "tree (6 mm)"
+              },
+              "branch_height": {
+                "$ref": "#/$defs/support_value",
+                "description": "tree: height of the branching zone below the part (5 mm)"
+              },
+              "cell_size": {
+                "$ref": "#/$defs/support_value",
+                "description": "lattice (2 mm)"
+              },
+              "strut_diameter": {
+                "$ref": "#/$defs/support_value",
+                "description": "lattice (0.5 mm)"
+              },
+              "relative_density": {
+                "$ref": "#/$defs/support_value",
+                "description": "of the printed support material against the part, 0 to 1 (1, tutorial p. 60)"
+              },
+              "offset_from_part": {
+                "$ref": "#/$defs/support_value",
+                "description": "no support column within this horizontal distance of a part wall (0)"
+              },
+              "direction": {
+                "type": "string",
+                "enum": [
+                  "x",
+                  "y"
+                ],
+                "description": "thin_wall: the walls run along the model's x (default) or y."
+              },
+              "interface": {
+                "type": "object",
+                "description": "The tooth interface of wall types: in the top tooth_height the walls touch the part only on teeth of tooth_pitch covering contact_fraction of it. Absent: no teeth.",
+                "properties": {
+                  "tooth_height": {
+                    "$ref": "#/$defs/support_value"
+                  },
+                  "tooth_pitch": {
+                    "$ref": "#/$defs/support_value"
+                  },
+                  "contact_fraction": {
+                    "$ref": "#/$defs/support_value"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "height_above_plate": {
+                "$ref": "#/$defs/mech_quantity",
+                "description": "Checked against the placed part: the build is refused when they differ (place the part with geometry_place and mesh again)."
+              },
+              "channels": {
+                "type": "string",
+                "enum": [
+                  "excluded",
+                  "supported"
+                ],
+                "description": "excluded (default, the rule): no support whose column would stand on the part, as inside a channel; supported: the sensitivity overhang_all."
+              },
+              "region_mm": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "minItems": 6,
+                "maxItems": 6,
+                "description": "explicit: [x0, y0, z0, x1, y1, z1] in mm, build frame; elements whose centre lies inside are supports."
+              }
+            },
+            "additionalProperties": false
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "layer_by_layer",
+              "whole_part"
+            ],
+            "default": "layer_by_layer",
+            "description": "whole_part activates and strains everything at once: the cross-check against an independent model, never a production answer"
+          },
+          "numerics": {
+            "type": "object",
+            "properties": {
+              "solver": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "direct",
+                  "iterative"
+                ],
+                "default": "auto"
+              },
+              "tolerance": {
+                "type": "number",
+                "minimum": 1e-12,
+                "maximum": 0.0001,
+                "default": 1e-10
+              }
+            }
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "allow_duplicate": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": [
+          "inherent_strain",
+          "material"
+        ]
+      }
+    },
+    {
+      "name": "lpbf_supports_generate",
+      "title": "Generate the supports of an LPBF build",
+      "kind": "query",
+      "idempotent": true,
+      "description": "The supports lpbf_build_run would get, without building: the type and every parameter with its source (defaults listed as assumed), the overhang faces served and those left (steeper than the angle, or standing on the part), the support volume, the contact area on the part, and the homogenised properties derived by solving the type's unit cell (stiffness and conduction, vertical and lateral, by depth band). Takes the same input as lpbf_build_run; the inherent strain may be left out. docs/contracts/supports.md.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "string",
+            "maxLength": 63,
+            "description": "the built body; the only meshed body by default"
+          },
+          "build_orientation": {
+            "type": "string",
+            "enum": [
+              "X",
+              "Y"
+            ],
+            "default": "X",
+            "description": "the machine axis the part's long axis lay along. Y swaps exx and eyy, because the strain is given in the machine frame and the mesh has the part's long axis along model x"
+          },
+          "layer_thickness_sim": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "description": "the simulation layer, which lumps many printed layers (\"1 mm\"); required for a layer-by-layer build"
+          },
+          "adaptive_mesh": {
+            "type": "object",
+            "description": "An adaptive voxel mesh: fine at the surface (the mesh's element size), coarse inside up to max_element_size in x and y, with neighbours differing by at most a factor of two and hanging-node constraints between them. Elements stay one layer tall, so coarsening is in x and y only. Absent keeps the uniform mesh. docs/contracts/adaptive-mesh.md.",
+            "properties": {
+              "max_element_size": {
+                "type": [
+                  "number",
+                  "string"
+                ],
+                "description": "Largest element width inside the part, e.g. \"8 mm\"; a power-of-two multiple of the mesh size is used."
+              },
+              "fine_band_voxels": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 8,
+                "default": 2,
+                "description": "Width, in voxels, of the fine band kept along every free surface. 2 by default: with 1, a 0.5 mm cantilever coarsened to 2 mm came out 3.3 per cent stiff; with 2, within 0.6 per cent."
+              }
+            },
+            "required": [
+              "max_element_size"
+            ]
+          },
+          "inherent_strain": {
+            "type": "object",
+            "description": "the calibrated eigenstrain, in the machine frame: three numbers with a provenance and a source",
+            "properties": {
+              "exx": {
+                "type": "number"
+              },
+              "eyy": {
+                "type": "number"
+              },
+              "ezz": {
+                "type": "number"
+              },
+              "provenance": {
+                "type": "string",
+                "enum": [
+                  "user",
+                  "inferred",
+                  "calibrated",
+                  "assumed"
+                ],
+                "description": "where the tensor comes from; required"
+              },
+              "source": {
+                "type": "string",
+                "maxLength": 159,
+                "description": "free text naming the fit or the document"
+              }
+            }
+          },
+          "material": {
+            "type": "object",
+            "description": "elastic constants. A body loaded only by an eigenstrain has a displacement field independent of the modulus; it sets the stresses",
+            "properties": {
+              "youngs_modulus": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "for example \"70000 MPa\""
+              },
+              "poissons_ratio": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 0.49
+              },
+              "provenance": {
+                "type": "string",
+                "enum": [
+                  "user",
+                  "inferred",
+                  "calibrated",
+                  "default"
+                ],
+                "description": "required"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "plasticity": {
+            "type": "object",
+            "description": "Plasticity. Absent means the build is elastic, which is the same single solve it has always been. Given, the build uses J2 (von Mises) yield with isotropic linear hardening and a radial return at the Gauss points, and each layer is solved with a modified Newton loop on the elastic operator. A yield strength is a material property, not a knob: source and provenance are required. See docs/contracts/lpbf-build.md section 9.",
+            "properties": {
+              "yield_strength": {
+                "type": [
+                  "number",
+                  "string"
+                ],
+                "description": "Initial yield stress, e.g. \"292 MPa\"."
+              },
+              "hardening_modulus": {
+                "type": [
+                  "number",
+                  "string"
+                ],
+                "default": 0,
+                "description": "Linear isotropic hardening modulus H, e.g. \"1.95 GPa\". 0 is elastic-perfectly-plastic."
+              },
+              "source": {
+                "type": "string",
+                "maxLength": 191,
+                "description": "Where the yield strength comes from."
+              },
+              "provenance": {
+                "type": "string",
+                "description": "measured, published, user, assumed, inferred or calibrated."
+              },
+              "max_iterations": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 200,
+                "default": 80,
+                "description": "Newton iterations allowed per layer. A step that does not converge fails the job."
+              },
+              "tolerance": {
+                "type": "number",
+                "minimum": 1e-14,
+                "maximum": 0.1,
+                "default": 1e-06,
+                "description": "Relative residual over the free equations at which a step is accepted. The default was measured, not chosen: on the cantilever 1e-6 moves the tip deflection by 0.009 per cent against 1e-8 and costs 38 per cent less, and 1e-5 moves it by 0.05 per cent."
+              }
+            },
+            "required": [
+              "yield_strength",
+              "source",
+              "provenance"
+            ]
+          },
+          "cut": {
+            "type": "object",
+            "description": "separation from the plate: every element whose z extent crosses the kerf band is removed and the part re-equilibrates. Omit for no cut",
+            "properties": {
+              "height": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "height of the cut above the plate (\"2.5 mm\")"
+              },
+              "kerf": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "material the cut removes (\"0.3 mm\")"
+              },
+              "provenance": {
+                "type": "string",
+                "enum": [
+                  "user",
+                  "inferred",
+                  "calibrated",
+                  "assumed"
+                ],
+                "description": "required; for the validation cantilever these two are assumed, not published"
+              },
+              "from_x": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "the cut acts only beyond this distance from the part's own minimum x (its fixed end), so what lies before it keeps the part on the plate (the wire enters from the free end and stops at the solid block). Measured from the part, not from the build frame, because the mesher centres the geometry. Default 0: the whole section is cut, which detaches the part"
+              }
+            },
+            "required": [
+              "height",
+              "kerf",
+              "provenance"
+            ]
+          },
+          "supports": {
+            "type": "object",
+            "description": "Supports (docs/contracts/supports.md). Absent means none, which is the build as it has always been. Given, supports are generated under the downward faces flatter than critical_angle_deg, as the chosen type, whose stiffness is derived by solving its unit cell explicitly (and, with plasticity, scales its yield stress). With supports the part may stand above the plate (place it with geometry_place). Supports are activated with their layer and strained like the part; they are removed after the cut, or after the build when remove is true, and the interface tear-off is reported. The wave-4 input, stiffness_fraction with provenance and source, is the type homogeneous.",
+            "properties": {
+              "stiffness_fraction": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1,
+                "description": "Type homogeneous only: the lattice's stiffness as a fraction of the solid. Simufact's default is not known to this project."
+              },
+              "source": {
+                "type": "string",
+                "maxLength": 191
+              },
+              "provenance": {
+                "type": "string",
+                "description": "assumed, user, published, measured, inferred or calibrated."
+              },
+              "remove": {
+                "type": "boolean",
+                "description": "Remove the supports at the end. Default: true when a cut is given."
+              },
+              "rule": {
+                "type": "string",
+                "enum": [
+                  "overhang",
+                  "every_column",
+                  "overhang_all"
+                ],
+                "default": "overhang",
+                "description": "overhang: a downward face gets support where the STL is flatter than critical_angle_deg over it and the column below reaches the plate through empty space (none inside a closed channel, none standing on the part). every_column: every voxel column under the part, the rule of wave 4. overhang_all: a sensitivity, the overhang faces supported down to the plate or to the part below, channels included."
+              },
+              "critical_angle_deg": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 90,
+                "description": "A downward face flatter than this, measured from the horizontal, needs support. The Simufact Additive tutorial names this parameter (p. 55) but not its default; 45 is assumed when absent."
+              },
+              "critical_angle_source": {
+                "type": "string",
+                "maxLength": 159
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "block",
+                  "thin_wall",
+                  "cone",
+                  "tree",
+                  "lattice",
+                  "homogeneous",
+                  "explicit"
+                ],
+                "description": "block: a square grid of thin walls; thin_wall: parallel walls; cone: a cone per grid point; tree: trunks branching to tips; lattice: body-centred cubic struts; homogeneous: a given stiffness fraction (needs stiffness_fraction). explicit: supports meshed with the part, the elements of the body inside region_mm (for support geometry exported with the part as one file; solid, scaled by relative_density)."
+              },
+              "wall_thickness": {
+                "$ref": "#/$defs/support_value",
+                "description": "block, thin_wall (default 0.2 mm, assumed)"
+              },
+              "spacing": {
+                "$ref": "#/$defs/support_value",
+                "description": "block, thin_wall: wall pitch (1 mm); cone: cone pitch (3 mm); tree: tip pitch (2 mm)"
+              },
+              "base_radius": {
+                "$ref": "#/$defs/support_value",
+                "description": "cone, at the plate (1 mm)"
+              },
+              "top_radius": {
+                "$ref": "#/$defs/support_value",
+                "description": "cone, at the part (0.45 mm)"
+              },
+              "trunk_radius": {
+                "$ref": "#/$defs/support_value",
+                "description": "tree (1 mm)"
+              },
+              "branch_radius": {
+                "$ref": "#/$defs/support_value",
+                "description": "tree (0.45 mm)"
+              },
+              "trunk_spacing": {
+                "$ref": "#/$defs/support_value",
+                "description": "tree (6 mm)"
+              },
+              "branch_height": {
+                "$ref": "#/$defs/support_value",
+                "description": "tree: height of the branching zone below the part (5 mm)"
+              },
+              "cell_size": {
+                "$ref": "#/$defs/support_value",
+                "description": "lattice (2 mm)"
+              },
+              "strut_diameter": {
+                "$ref": "#/$defs/support_value",
+                "description": "lattice (0.5 mm)"
+              },
+              "relative_density": {
+                "$ref": "#/$defs/support_value",
+                "description": "of the printed support material against the part, 0 to 1 (1, tutorial p. 60)"
+              },
+              "offset_from_part": {
+                "$ref": "#/$defs/support_value",
+                "description": "no support column within this horizontal distance of a part wall (0)"
+              },
+              "direction": {
+                "type": "string",
+                "enum": [
+                  "x",
+                  "y"
+                ],
+                "description": "thin_wall: the walls run along the model's x (default) or y."
+              },
+              "interface": {
+                "type": "object",
+                "description": "The tooth interface of wall types: in the top tooth_height the walls touch the part only on teeth of tooth_pitch covering contact_fraction of it. Absent: no teeth.",
+                "properties": {
+                  "tooth_height": {
+                    "$ref": "#/$defs/support_value"
+                  },
+                  "tooth_pitch": {
+                    "$ref": "#/$defs/support_value"
+                  },
+                  "contact_fraction": {
+                    "$ref": "#/$defs/support_value"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "height_above_plate": {
+                "$ref": "#/$defs/mech_quantity",
+                "description": "Checked against the placed part: the build is refused when they differ (place the part with geometry_place and mesh again)."
+              },
+              "channels": {
+                "type": "string",
+                "enum": [
+                  "excluded",
+                  "supported"
+                ],
+                "description": "excluded (default, the rule): no support whose column would stand on the part, as inside a channel; supported: the sensitivity overhang_all."
+              },
+              "region_mm": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "minItems": 6,
+                "maxItems": 6,
+                "description": "explicit: [x0, y0, z0, x1, y1, z1] in mm, build frame; elements whose centre lies inside are supports."
+              }
+            },
+            "additionalProperties": false
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "layer_by_layer",
+              "whole_part"
+            ],
+            "default": "layer_by_layer",
+            "description": "whole_part activates and strains everything at once: the cross-check against an independent model, never a production answer"
+          },
+          "numerics": {
+            "type": "object",
+            "properties": {
+              "solver": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "direct",
+                  "iterative"
+                ],
+                "default": "auto"
+              },
+              "tolerance": {
+                "type": "number",
+                "minimum": 1e-12,
+                "maximum": 0.0001,
+                "default": 1e-10
+              }
+            }
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "allow_duplicate": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": [
+          "material",
+          "supports"
+        ]
+      }
+    },
+    {
+      "name": "lpbf_calibrate",
+      "title": "Fit our own inherent strain to a measured cantilever deflection",
+      "kind": "mutation",
+      "idempotent": true,
+      "description": "Fits the in-plane inherent strain of one scan strategy to the measured tip deflection of a calibration cantilever, as a background job of kind lpbf_calibrate. An inherent strain is not a material property: it belongs to the model that produced it, to its element size, its simulation layer thickness and its material law, so a tensor calibrated in another tool is a cross-check and never a prediction. Given the measured deflection after the cut in BOTH build orientations, this adjusts exx and eyy until both simulated deflections match, on the same layer-by-layer build that lpbf_build_run performs. ezz is held, not fitted: two deflections cannot separate three components. The model is linear in the inherent strain, so a bounded secant (one finite-difference Jacobian, then Broyden updates) usually converges in one step; each trial costs two builds and the total is capped. The summary carries the fitted tensor with a source that names this fit and the cases it was fitted on, the achieved deflections and their errors, and the whole iteration history. Scope: the fit matches deflection only, so it is not evidence about stress, and it absorbs every error of the model it was fitted with.",
+      "input": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "string",
+            "maxLength": 63,
+            "description": "the built body; the only meshed body by default"
+          },
+          "strategy": {
+            "type": "string",
+            "maxLength": 63,
+            "description": "Name of the scan strategy being calibrated, used in the fitted tensor's source, e.g. \"Calibrated-P17\"."
+          },
+          "layer_thickness_sim": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "description": "the simulation layer, which lumps many printed layers (\"1 mm\"); required for a layer-by-layer build"
+          },
+          "adaptive_mesh": {
+            "type": "object",
+            "description": "An adaptive voxel mesh: fine at the surface (the mesh's element size), coarse inside up to max_element_size in x and y, with neighbours differing by at most a factor of two and hanging-node constraints between them. Elements stay one layer tall, so coarsening is in x and y only. Absent keeps the uniform mesh. docs/contracts/adaptive-mesh.md.",
+            "properties": {
+              "max_element_size": {
+                "type": [
+                  "number",
+                  "string"
+                ],
+                "description": "Largest element width inside the part, e.g. \"8 mm\"; a power-of-two multiple of the mesh size is used."
+              },
+              "fine_band_voxels": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 8,
+                "default": 2,
+                "description": "Width, in voxels, of the fine band kept along every free surface. 2 by default: with 1, a 0.5 mm cantilever coarsened to 2 mm came out 3.3 per cent stiff; with 2, within 0.6 per cent."
+              }
+            },
+            "required": [
+              "max_element_size"
+            ]
+          },
+          "measured": {
+            "type": "object",
+            "description": "The measurement the fit is made to match: the tip deflection after the cut in each build orientation, with a source and a provenance. Required, because a fit is only as good as the numbers behind it.",
+            "properties": {
+              "tip_uz_after_cut_x": {
+                "type": [
+                  "number",
+                  "string"
+                ],
+                "description": "Measured deflection with the part's long axis along machine X, e.g. \"1.49 mm\"."
+              },
+              "tip_uz_after_cut_y": {
+                "type": [
+                  "number",
+                  "string"
+                ],
+                "description": "Measured deflection with the part's long axis along machine Y, e.g. \"2.55 mm\"."
+              },
+              "source": {
+                "type": "string",
+                "maxLength": 191,
+                "description": "Where the two numbers come from, e.g. a file and its rows."
+              },
+              "provenance": {
+                "type": "string",
+                "description": "measured, published, user, assumed or inferred."
+              }
+            },
+            "required": [
+              "tip_uz_after_cut_x",
+              "tip_uz_after_cut_y",
+              "source",
+              "provenance"
+            ]
+          },
+          "inherent_strain": {
+            "type": "object",
+            "description": "Optional starting point for the fit. It changes the path, not the answer; give the tensor of a neighbouring strategy to save a step. exx and eyy are used; ezz comes from fit.ezz.",
+            "properties": {
+              "exx": {
+                "type": "number"
+              },
+              "eyy": {
+                "type": "number"
+              },
+              "ezz": {
+                "type": "number"
+              },
+              "provenance": {
+                "type": "string",
+                "enum": [
+                  "user",
+                  "inferred",
+                  "calibrated",
+                  "assumed"
+                ],
+                "description": "where the tensor comes from; required"
+              },
+              "source": {
+                "type": "string",
+                "maxLength": 159,
+                "description": "free text naming the fit or the document"
+              }
+            }
+          },
+          "fit": {
+            "type": "object",
+            "description": "How hard to try. Every field has a default.",
+            "properties": {
+              "ezz": {
+                "type": "number",
+                "default": -0.03,
+                "description": "The out-of-plane component, held and not fitted. The default is the value the reference calibration held."
+              },
+              "tolerance_pct": {
+                "type": "number",
+                "minimum": 0.01,
+                "maximum": 25,
+                "default": 1.0,
+                "description": "Each simulated deflection must come within this percentage of its measurement."
+              },
+              "max_builds": {
+                "type": "integer",
+                "minimum": 4,
+                "maximum": 60,
+                "default": 12,
+                "description": "Cap on the number of builds. Each trial strain costs two, one per orientation."
+              },
+              "lower_bound": {
+                "type": "number",
+                "default": -0.05,
+                "description": "Lower bound on exx and eyy."
+              },
+              "upper_bound": {
+                "type": "number",
+                "default": 0.02,
+                "description": "Upper bound on exx and eyy."
+              }
+            }
+          },
+          "material": {
+            "type": "object",
+            "description": "elastic constants. A body loaded only by an eigenstrain has a displacement field independent of the modulus; it sets the stresses",
+            "properties": {
+              "youngs_modulus": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "for example \"70000 MPa\""
+              },
+              "poissons_ratio": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 0.49
+              },
+              "provenance": {
+                "type": "string",
+                "enum": [
+                  "user",
+                  "inferred",
+                  "calibrated",
+                  "default"
+                ],
+                "description": "required"
+              }
+            },
+            "required": [
+              "provenance"
+            ]
+          },
+          "plasticity": {
+            "type": "object",
+            "description": "Plasticity. Absent means the build is elastic, which is the same single solve it has always been. Given, the build uses J2 (von Mises) yield with isotropic linear hardening and a radial return at the Gauss points, and each layer is solved with a modified Newton loop on the elastic operator. A yield strength is a material property, not a knob: source and provenance are required. See docs/contracts/lpbf-build.md section 9.",
+            "properties": {
+              "yield_strength": {
+                "type": [
+                  "number",
+                  "string"
+                ],
+                "description": "Initial yield stress, e.g. \"292 MPa\"."
+              },
+              "hardening_modulus": {
+                "type": [
+                  "number",
+                  "string"
+                ],
+                "default": 0,
+                "description": "Linear isotropic hardening modulus H, e.g. \"1.95 GPa\". 0 is elastic-perfectly-plastic."
+              },
+              "source": {
+                "type": "string",
+                "maxLength": 191,
+                "description": "Where the yield strength comes from."
+              },
+              "provenance": {
+                "type": "string",
+                "description": "measured, published, user, assumed, inferred or calibrated."
+              },
+              "max_iterations": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 200,
+                "default": 80,
+                "description": "Newton iterations allowed per layer. A step that does not converge fails the job."
+              },
+              "tolerance": {
+                "type": "number",
+                "minimum": 1e-14,
+                "maximum": 0.1,
+                "default": 1e-06,
+                "description": "Relative residual over the free equations at which a step is accepted. The default was measured, not chosen: on the cantilever 1e-6 moves the tip deflection by 0.009 per cent against 1e-8 and costs 38 per cent less, and 1e-5 moves it by 0.05 per cent."
+              }
+            },
+            "required": [
+              "yield_strength",
+              "source",
+              "provenance"
+            ]
+          },
+          "cut": {
+            "type": "object",
+            "description": "separation from the plate: every element whose z extent crosses the kerf band is removed and the part re-equilibrates. Omit for no cut",
+            "properties": {
+              "height": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "height of the cut above the plate (\"2.5 mm\")"
+              },
+              "kerf": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "material the cut removes (\"0.3 mm\")"
+              },
+              "provenance": {
+                "type": "string",
+                "enum": [
+                  "user",
+                  "inferred",
+                  "calibrated",
+                  "assumed"
+                ],
+                "description": "required; for the validation cantilever these two are assumed, not published"
+              },
+              "from_x": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "the cut acts only beyond this distance from the part's own minimum x (its fixed end), so what lies before it keeps the part on the plate (the wire enters from the free end and stops at the solid block). Measured from the part, not from the build frame, because the mesher centres the geometry. Default 0: the whole section is cut, which detaches the part"
+              }
+            },
+            "required": [
+              "height",
+              "kerf",
+              "provenance"
+            ]
+          },
+          "numerics": {
+            "type": "object",
+            "properties": {
+              "solver": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "direct",
+                  "iterative"
+                ],
+                "default": "auto"
+              },
+              "tolerance": {
+                "type": "number",
+                "minimum": 1e-12,
+                "maximum": 0.0001,
+                "default": 1e-10
+              }
+            }
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "allow_duplicate": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": [
+          "measured",
+          "material"
+        ],
+        "additionalProperties": false
+      },
+      "output": {
+        "type": "object"
+      }
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "domain": "heat",
+  "model": "conduction3d",
+  "title": "Three heat sources inside an insulated solid",
+  "boundary": "insulated",
+  "grid": {
+    "nx": 48,
+    "ny": 32,
+    "nz": 24,
+    "cell_m": 0.002
+  },
+  "material": {
+    "source": "Demonstration homogeneous solid, not a measured material",
+    "conductivity_w_mk": 20,
+    "volumetric_heat_capacity_j_m3k": 2000000
+  },
+  "initial_temperature_k": 293.15,
+  "regions": [
+    {
+      "box_m": [
+        0.016,
+        0.012,
+        0.008,
+        0.028,
+        0.024,
+        0.02
+      ],
+      "heat_w_m3": 10000000,
+      "source": "Demonstration volumetric heater, constant power"
+    },
+    {
+      "box_m": [
+        0.054,
+        0.034,
+        0.024,
+        0.066,
+        0.046,
+        0.036
+      ],
+      "heat_w_m3": 10000000,
+      "source": "Demonstration volumetric heater, constant power"
+    },
+    {
+      "box_m": [
+        0.03,
+        0.04,
+        0.004,
+        0.042,
+        0.052,
+        0.016
+      ],
+      "heat_w_m3": 10000000,
+      "source": "Demonstration volumetric heater, constant power"
+    }
+  ],
+  "run": {
+    "end_time_s": 20,
+    "frames": 40
+  }
+}

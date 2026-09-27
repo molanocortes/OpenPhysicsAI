@@ -1,0 +1,47 @@
+{
+ "domain": "sheet",
+ "title": "A rubber sheet falls onto a ball and drapes",
+ "material": {
+  "shear_modulus_pa": 420000.0,
+  "density_kg_m3": 930.0,
+  "viscosity_pa_s": 20.0,
+  "source": "vulcanised natural rubber: shear modulus 0.42 MPa, the small-strain value of Ogden's (1972) fit to Treloar's (1944) tests; density 930 kg/m3, a typical natural rubber; a Kelvin-Voigt viscosity of 20 Pa s, which gives a loss factor of 0.1 at about 330 Hz (natural rubber's is 0.1 to 0.2 at audio frequencies): a demonstration value, not fitted to a test"
+ },
+ "sheet": {
+  "size_m": [
+   0.8,
+   0.8
+  ],
+  "centre_m": [
+   0.0,
+   0.0,
+   0.5
+  ],
+  "thickness_m": 0.0005,
+  "cell_m": 0.005,
+  "contact_distance_m": 0.002
+ },
+ "bodies": [
+  {
+   "shape": "sphere",
+   "centre_m": [
+    0.0,
+    0.0,
+    0.15
+   ],
+   "radius_m": 0.15
+  }
+ ],
+ "floor": {
+  "z_m": 0.0,
+  "source": "a rigid steel floor"
+ },
+ "friction": 0.8,
+ "damping_1_s": 1.0,
+ "note": "Friction 0.8 is a typical dry value for rubber on a smooth hard surface; the damping of 1/s stands for the air and the rubber's own losses, not measured (demonstration values).",
+ "body_look": "aluminium",
+ "run": {
+  "end_s": 1.2,
+  "frames": 72
+ }
+}

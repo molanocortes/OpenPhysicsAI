@@ -1,0 +1,67 @@
+{
+ "domain": "battery",
+ "title": "Twelve cells in parallel on a cold plate, 2C",
+ "cell": {
+  "parameters": "lgm50_chen2020",
+  "volumes_per_region": 8,
+  "shells": 8,
+  "source": "LG M50 (21700, NMC 811 and graphite-SiOx): Chen et al., J. Electrochem. Soc. 167 (2020) 080534, the Chen2020 parameter set as tabulated by PyBaMM (BSD-3-Clause)"
+ },
+ "module": {
+  "rows": 3,
+  "cols": 4,
+  "pitch_m": 0.023,
+  "radius_m": 0.0105,
+  "height_m": 0.07,
+  "plate_m": 0.003,
+  "margin_m": 0.003,
+  "grid_m": 0.0015,
+  "layers": 14
+ },
+ "thermal": {
+  "jelly_roll": {
+   "radial_w_mk": 1.1591,
+   "axial_w_mk": 24.666,
+   "heat_capacity_j_m3k": 1686000.0,
+   "source": "computed from the Chen2020 set's layer thicknesses, conductivities, densities and heat capacities (tools/lab_scenarios.py jelly_roll_lgm50): layers in series across, in parallel along; the electrolyte's heat capacity is not in the set"
+  },
+  "plate": {
+   "conductivity_w_mk": 237.0,
+   "heat_capacity_j_m3k": 2421900.0,
+   "source": "aluminium, the values of the Chen2020 set's positive current collector"
+  },
+  "gap": {
+   "conductivity_w_mk": 0.0263,
+   "heat_capacity_j_m3k": 1169.5298,
+   "source": "air at 300 K, Incropera, DeWitt, Bergman and Lavine, Fundamentals of Heat and Mass Transfer, 6th ed. (2007), table A.4"
+  }
+ },
+ "cooling": {
+  "coolant_inlet_k": 298.15,
+  "coolant_capacity_rate_w_k": 18.0,
+  "plate_coefficient_w_m2k": 1000.0,
+  "air_coefficient_w_m2k": 5.0,
+  "air_k": 298.15,
+  "source": "demonstration: 5 g/s of water-glycol (18 W/K) under the plate, 1000 W/(m^2 K) into it, still air around"
+ },
+ "electrical": {
+  "interconnect_ohm": 0.001,
+  "weak_cells": [
+   {
+    "cell": 5,
+    "interconnect_ohm": 0.004
+   }
+  ],
+  "source": "demonstration: 1 milliohm per cell for its weld and strip, one poor weld at 4"
+ },
+ "load": {
+  "current_a": 120.0,
+  "cutoff_v": 2.5
+ },
+ "initial_temperature_k": 298.15,
+ "run": {
+  "dt_s": 10.0,
+  "end_s": 2000.0,
+  "frames": 60
+ }
+}

@@ -1,0 +1,20 @@
+# Agent mode, proved without a model: a question typed into the one text field reaches a result in the window with no
+# button pressed after the text. The agent is tools/agent_standin.py, a scripted MCP client standing in for the
+# user's AI tool (a real `claude -p` run is recorded in the wave report). Run by python3 tools/uicheck.py --agentwalk
+mode agent
+frames 20
+agent command python3 tools/agent_standin.py
+echo AGENT start
+uiclick text:agent
+frames 4
+uikeys How far does the calibration cantilever bend when it is printed and cut off the plate?\\n
+frames 30
+echo AGENT asked
+agent wait 300
+frames 60
+screenshot docs/app/agent-2-result.png
+uitext
+agent status
+fem status
+echo AGENT done
+quit

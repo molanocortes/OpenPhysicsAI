@@ -1,0 +1,50 @@
+# Simple mode, as a first-time user: the sample bracket to a print simulation and a report, by clicking only.
+# Run it:  ./navier --first-run --workspace /tmp/navier-simple --exec 'exec tools/simplewalk.nav'
+# Timed and checked by:  python3 tools/uicheck.py --simplewalk (under two minutes, and never the words voxel, strain,
+# tensor, mesh or provenance on screen: every screen's text is read back with uitext)
+frames 20
+elapsed reset
+echo SIMPLE start
+screenshot docs/app/simple-1-part.png
+uitext
+uiclick "Small bracket"
+frames 30
+uitext
+screenshot docs/app/simple-1b-part-chosen.png
+echo SIMPLE part
+uiclick Next
+frames 12
+uitext
+screenshot docs/app/simple-2-print.png
+# the library's other metals, with their status and source line, on a screen that now scrolls
+uiclick "OTHER MATERIALS"
+frames 8
+uiscroll 1200 600 5000
+frames 8
+uitext
+screenshot docs/app/simple-2b-library.png
+uiclick "OTHER MATERIALS"
+frames 6
+echo SIMPLE print
+uiclick Next
+frames 20
+uitext
+screenshot docs/app/simple-3-simulate.png
+uiclick Simulate
+frames 90
+uitext
+screenshot docs/app/simple-3b-running.png
+echo SIMPLE running
+solid wait 600
+frames 40
+elapsed simulated
+uitext
+screenshot docs/app/simple-4-results.png
+echo SIMPLE results
+uiclick "Write the report"
+frames 30
+uitext
+screenshot docs/app/simple-5-report.png
+elapsed report written
+echo SIMPLE done
+quit

@@ -1,0 +1,67 @@
+# Stopping and starting again, as a person does it: clicks only, plus the one word they type ('stop').
+# It replays the sequence that failed for the owner on 2026-09-20: simulate, stop, simulate again, change mode while it
+# runs, stop by typing, then start over with another part while something is still going.
+# Run it:  ./navier --first-run --workspace /tmp/navier-stop --exec 'exec tools/stopwalk.nav'
+# Checked by:  python3 tools/uicheck.py --stopwalk
+frames 20
+echo STOPWALK start
+uiclick "Test specimen"
+frames 30
+uiclick Next
+frames 12
+uiclick Next
+frames 20
+uiclick Simulate
+frames 300
+echo STOPWALK running-1
+uitext
+uiclick STOP
+frames 6
+echo STOPWALK stopping-1
+uitext
+solid wait 120
+frames 40
+echo STOPWALK stopped-1
+uitext
+screenshot docs/app/stop-1-stopped.png
+uiclick Simulate
+frames 300
+echo STOPWALK running-2
+uitext
+mode advanced
+frames 40
+echo STOPWALK advanced-strip
+uitext
+screenshot docs/app/stop-2-advanced-strip.png
+mode simple
+frames 40
+echo STOPWALK simple-still-running
+uitext
+stop
+solid wait 120
+frames 40
+echo STOPWALK stopped-2
+uitext
+uiclick Simulate
+frames 300
+echo STOPWALK running-3
+uiclick "start over"
+frames 60
+echo STOPWALK started-over
+uitext
+screenshot docs/app/stop-3-started-over.png
+uiclick "Small bracket"
+frames 30
+uiclick Next
+frames 12
+uiclick Next
+frames 20
+uiclick Simulate
+frames 30
+solid wait 300
+frames 40
+echo STOPWALK results
+uitext
+screenshot docs/app/stop-4-results.png
+echo STOPWALK done
+quit

@@ -1,0 +1,38 @@
+# Reproduce: ./navier --headless --size 1800x1100 --workspace /tmp/openphysicsai-repo-demo --exec 'exec tools/repo_showcase.nav'
+# Real LPBF inherent-strain solve; the P17 preset's fitted strain, assumed cut geometry.
+workspace solid
+frames 6
+am project_create name=repo_lpbf overwrite=true description='Repository showcase: calibrated inherent strain, assumed cut'
+am geometry_import path=samples/cantilever.stl units=mm name=cantilever
+am material_assign body=cantilever material=alsi10mg_lpbf source=user
+am mesh_generate element_size=1mm
+am lpbf_build_run '{"body":"cantilever","build_orientation":"Y","layer_thickness_sim":"1 mm","inherent_strain":{"exx":-0.0012226242259139248,"eyy":-0.0034058581422344394,"ezz":-0.03,"provenance":"calibrated","source":"the elastic strain of the P17 preset in src/ctl/print_profiles.json"},"material":{"youngs_modulus":"71000 MPa","poissons_ratio":0.33,"provenance":"user"},"cut":{"height":"2.5 mm","kerf":"0.3 mm","from_x":"10 mm","provenance":"assumed"},"label":"Repository LPBF showcase"}'
+frames 120
+fem follow
+frames 20
+solid wait 300
+frames 20
+fem field von_mises
+fem step last
+fem deform true
+fem fit
+fem edges on
+fem shadows on
+floorgrid off
+box off
+fem range step
+hud off
+frames 20
+fem status
+screenshot docs/images/showcase-lpbf-stress.png
+fem field displacement
+fem deform auto
+frames 20
+screenshot docs/images/showcase-lpbf-release.png
+fem field von_mises
+fem deform true
+fem section y 0.5
+frames 20
+screenshot docs/images/showcase-lpbf-section.png
+echo SHOWCASE complete
+quit

@@ -1,0 +1,44 @@
+== A1 event schedule
+== A2 step-size controller
+== A3 estimator order on a smooth problem
+  backward Euler: estimate 5.907e-02 1.585e-02 4.110e-03 1.046e-03 K for dt 20..2.5 s; halving ratios 3.726 3.858 3.928; true error 1.053e-03 K at 2.5 s (estimate/true 0.994)
+  Crank-Nicolson: estimate 3.904e-04 5.060e-05 6.441e-06 8.126e-07 K for dt 20..2.5 s; halving ratios 7.716 7.855 7.927; true error 8.121e-07 K at 2.5 s (estimate/true 1.001)
+  reference: 50000, 100000 and 200000 backward Euler steps, Richardson extrapolated; estimated reference error 6.19e-05 K
+== A4 tolerance convergence on sudden surface heating
+  tolerance 1e-02 (abs 1e+00 K):   49 accepted,   0 rejected,   147 solves, error 1.230e+00 K, closure 2.9e-13, 0.002 s
+      error at t = 1 s: 1.61e-01 K, 10 s: 7.13e-01 K, 100 s: 6.31e-01 K, 1000 s: 9.19e-01 K, 2000 s: 1.23e+00 K; largest accepted local estimate 0.17, sum 4.8
+  tolerance 1e-03 (abs 1e-01 K):  103 accepted,   0 rejected,   309 solves, error 5.471e-01 K, closure 2.6e-13, 0.004 s
+      error at t = 1 s: 9.09e-02 K, 10 s: 2.98e-01 K, 100 s: 2.79e-01 K, 1000 s: 4.30e-01 K, 2000 s: 5.47e-01 K; largest accepted local estimate 0.36, sum 24.7
+  tolerance 1e-04 (abs 1e-02 K):  261 accepted,   0 rejected,   783 solves, error 2.102e-01 K, closure 2.9e-13, 0.009 s
+      error at t = 1 s: 4.51e-02 K, 10 s: 1.11e-01 K, 100 s: 1.02e-01 K, 1000 s: 1.61e-01 K, 2000 s: 2.10e-01 K; largest accepted local estimate 0.50, sum 101.2
+  tolerance 1e-05 (abs 1e-03 K):  768 accepted,   0 rejected,  2304 solves, error 6.841e-02 K, closure 2.5e-13, 0.023 s
+      error at t = 1 s: 1.69e-02 K, 10 s: 3.69e-02 K, 100 s: 3.43e-02 K, 1000 s: 5.29e-02 K, 2000 s: 6.84e-02 K; largest accepted local estimate 0.54, sum 350.3
+== A11 work at equal accuracy: adaptive against fixed steps
+  run                          error K  solves   assemb   picard  cg iters  seconds
+  adaptive tol 1e-02          1.23e+00     147      147      147      1977    0.002
+  fixed dt 0.5                7.10e-01    4000     4000     4000     14203    0.032   (cheapest fixed step at least as accurate: 27x the solves)
+  adaptive tol 1e-03          5.47e-01     309      309      309      3372    0.004
+  fixed dt 0.2                3.00e-01   10000    10000    10000     30924    0.078   (cheapest fixed step at least as accurate: 32x the solves)
+  adaptive tol 1e-04          2.10e-01     783      783      783      6369    0.009
+  fixed dt 0.1                1.53e-01   20000    20000    20000     54353    0.152   (cheapest fixed step at least as accurate: 26x the solves)
+  adaptive tol 1e-05          6.84e-02    2304     2304     2304     14098    0.023
+  fixed dt 0.04               6.18e-02   50000    50000    50000    129040    0.376   (cheapest fixed step at least as accurate: 22x the solves)
+  fixed-step errors: 50 s 8.72e+00, 20 s 8.72e+00, 10 s 8.72e+00, 5 s 4.97e+00, 2 s 2.25e+00, 1 s 1.31e+00, 0.5 s 7.10e-01, 0.2 s 3.00e-01, 0.1 s 1.53e-01, 0.05 s 7.71e-02, 0.04 s 6.18e-02
+== A8 recovery from an oversized initial step
+  first step 2000 s: 2 rejected, 90 accepted, error 5.684e-01 K (from a 1e-3 s start: 5.471e-01 K)
+== A9 minimum step too large for the tolerance
+  MIN_STEP: minimum_step at t = 0 s: a step of 1 s has a normalised error of 532 (temperature 532 at node 64, enthalpy 393 at element 1; estimated 0.598 K / 1.89e+06 J/m^3) and the controller cannot reduce it further (minimum step 100 s, 1 consecutive rejections)
+== A6 discontinuous heating lands on the switch times
+  fixed 1 s: 12 steps, deposited 22.72 J (exact 22.72 J), final 300.710000000000 K (exact 300.710000000000 K)
+  adaptive: 4 steps, deposited 22.72 J (exact 22.72 J), final 300.710000000000 K (exact 300.710000000000 K)
+== A7 rejections do not enter the accepted budget
+  219 accepted, 4 rejected: source 1500 J (exact 1500 J), closure 3.18e-14, enthalpy mismatch 1.55e-16
+== A10 accepted state is untouched by a rejected trial
+  1198 accepted steps, 86 after rejections; 141 rejected trials compared, 0 differed; 8 replays, 8 bit-identical
+== A5 phase change against a refined reference
+  reference (backward Euler 1 / 0.5 / 0.25 s, extrapolated): front 39.18345 mm (error ~1.2e-04 mm, 3.0e-04 %), molten 1.572979e-07 m^3 (error ~4.1e-13, 2.6e-04 %)
+  temperature + enthalpy control: front 39.18201 mm (-0.004 %), molten +0.003 %, latent error 0.0004776 J, 2073 accepted / 245 rejected, 6954 solves
+  temperature-only control:       front 39.17962 mm (-0.010 %), molten +0.012 %, latent error 0.001857 J, 1179 accepted / 277 rejected, 4368 solves
+  resolution: the temperature + enthalpy molten-volume error is 11.7x the reference error, temperature-only 45.4x
+
+ALL TIME INTEGRATION TESTS PASSED: 54 passed, 0 failed

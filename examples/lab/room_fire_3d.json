@@ -1,0 +1,92 @@
+{
+ "domain": "fire",
+ "title": "A fire in a room: the hot layer and the doorway",
+ "fuel": {
+  "molar_mass_kg_mol": 0.016043,
+  "heat_of_combustion_j_kg": 50000000.0,
+  "air_per_fuel_kg": 17.2,
+  "radiative_fraction": 0.2,
+  "source": "methane: molar mass 16.043 g/mol; heat of combustion 50.0 MJ/kg (lower heating value, Drysdale, An Introduction to Fire Dynamics, 3rd ed., 2011); 17.2 kg of air per kg from CH4 + 2 (O2 + 3.76 N2); radiative fraction 0.2, the value fire models take for methane flames of this size (a demonstration value: it is not radiated here, only removed)"
+ },
+ "burner": {
+  "box_m": [
+   1.35,
+   1.35,
+   1.85,
+   1.85
+  ],
+  "heat_release_rate_w": 250000.0,
+  "ramp_s": 5.0,
+  "source": "a square gas burner 0.5 m across (demonstration)"
+ },
+ "box_m": [
+  0,
+  0,
+  0,
+  4.8,
+  3.2,
+  3.2
+ ],
+ "cell_m": 0.1,
+ "ambient_temperature_k": 293.15,
+ "sides": {
+  "x-": "wall",
+  "y-": "wall",
+  "y+": "wall",
+  "z-": "wall",
+  "x+": "open",
+  "z+": "open"
+ },
+ "obstacles": [
+  {
+   "name": "front wall",
+   "box_m": [
+    3.2,
+    0.0,
+    0.0,
+    3.4,
+    1.2,
+    2.6
+   ]
+  },
+  {
+   "name": "front wall",
+   "box_m": [
+    3.2,
+    2.0,
+    0.0,
+    3.4,
+    3.2,
+    2.6
+   ]
+  },
+  {
+   "name": "lintel",
+   "box_m": [
+    3.2,
+    1.2,
+    2.0,
+    3.4,
+    2.0,
+    2.6
+   ]
+  },
+  {
+   "name": "ceiling",
+   "box_m": [
+    0.0,
+    0.0,
+    2.4,
+    3.4,
+    3.2,
+    2.6
+   ]
+  }
+ ],
+ "source": "demonstration: the room and the fire are chosen; 10 cm cells give D* / dx = 5.4, coarse by FDS's guidance for a fire (4 to 16), fine enough for the layer and the door flows, not for the flame.",
+ "run": {
+  "end_s": 60.0,
+  "frames": 120,
+  "average_from_s": 30.0
+ }
+}

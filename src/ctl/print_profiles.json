@@ -1,0 +1,101 @@
+{
+  "comment": "Print settings presets for Simple mode. A preset is what a person recognises (a material on a machine, calibrated somewhere) and carries every number the simulation needs, each with the line that says where it came from. The panel shows that line when the pointer rests on the value. Nothing here is a default the software invents: a value with no source does not belong in this file. A metal preset names a material of the library (material.library_id) rather than defining its own, and carries two fitted strains: 'strain', fitted with the metal allowed to yield, used when the material has a yield value with a source; 'strain_elastic', fitted without plasticity, used otherwise. Each strain carries the layer and detail it was fitted at.",
+  "profiles": [
+    {
+      "id": "alsi10mg_slm280_p17",
+      "technology": "metal",
+      "name": "AlSi10Mg on an SLM 280",
+      "subtitle": "strain fitted on measured test cantilevers, scan strategy P17",
+      "material": {
+        "library_id": "alsi10mg_lpbf",
+        "source": "the library record alsi10mg_lpbf in src/ctl/materials.json: AlSi10Mg as built from the Renishaw data sheet; each value there names its own source"
+      },
+      "strain": {
+        "exx": -0.0015342129255818929,
+        "eyy": -0.003710087674144264,
+        "ezz": -0.03,
+        "provenance": "calibrated",
+        "source": "our own fit with the metal allowed to yield: navier lpbf_calibrate on strategy P17 against measured cantilever deflections of AlSi10Mg printed on an SLM 280; the measurements and the fit records are not part of the public repository",
+        "layer_mm": 1.0,
+        "detail_mm": 1.0,
+        "scope": "fitted with J2 plasticity (yield 292 MPa, hardening 1.95 GPa, the values of the material record used at the time) at 1 mm layers and 1 mm detail; it holds with plasticity on and at that layer and detail only. The library record now named carries 273 MPa and 2.16 GPa from a data sheet, so this strain and that record were not fitted together"
+      },
+      "strain_elastic": {
+        "exx": -0.0012226242259139248,
+        "eyy": -0.0034058581422344394,
+        "ezz": -0.03,
+        "provenance": "calibrated",
+        "source": "our own elastic fit: navier lpbf_calibrate on strategy P17 against measured cantilever deflections of AlSi10Mg printed on an SLM 280; the measurements and the fit records are not part of the public repository",
+        "layer_mm": 0.5,
+        "detail_mm": 0.5,
+        "scope": "fitted without plasticity at 0.5 mm layers and 0.5 mm detail; used only when the material has no yield value with a source"
+      },
+      "layer_source": "the layer the fit was made at; the fit holds at this layer and this detail only",
+      "detail_source": "the element size the fit was made at",
+      "orientation": "Y",
+      "orientation_source": "the calibration bars were printed with their long side along the machine's Y axis",
+      "cut_source": "a general part stays on the plate: cutting it off is simulated only where part of it stays attached"
+    },
+    {
+      "id": "alsi10mg_slm280_p05",
+      "technology": "metal",
+      "name": "AlSi10Mg on an SLM 280",
+      "subtitle": "strain fitted on measured test cantilevers, scan strategy P05",
+      "material": {
+        "library_id": "alsi10mg_lpbf",
+        "source": "the library record alsi10mg_lpbf in src/ctl/materials.json: AlSi10Mg as built from the Renishaw data sheet; each value there names its own source"
+      },
+      "strain": {
+        "exx": -0.0008809807086178043,
+        "eyy": -0.004255695784706169,
+        "ezz": -0.03,
+        "provenance": "calibrated",
+        "source": "our own fit with the metal allowed to yield: navier lpbf_calibrate on strategy P05 against measured cantilever deflections of AlSi10Mg printed on an SLM 280; the measurements and the fit records are not part of the public repository",
+        "layer_mm": 1.0,
+        "detail_mm": 1.0,
+        "scope": "fitted with J2 plasticity (yield 292 MPa, hardening 1.95 GPa, the values of the material record used at the time) at 1 mm layers and 1 mm detail; it holds with plasticity on and at that layer and detail only. The library record now named carries 273 MPa and 2.16 GPa from a data sheet, so this strain and that record were not fitted together"
+      },
+      "strain_elastic": {
+        "exx": -0.0005605703861363909,
+        "eyy": -0.003972087915580361,
+        "ezz": -0.03,
+        "provenance": "calibrated",
+        "source": "our own elastic fit: navier lpbf_calibrate on strategy P05 against measured cantilever deflections of AlSi10Mg printed on an SLM 280; the measurements and the fit records are not part of the public repository",
+        "layer_mm": 0.5,
+        "detail_mm": 0.5,
+        "scope": "fitted without plasticity at 0.5 mm layers and 0.5 mm detail; used only when the material has no yield value with a source"
+      },
+      "layer_source": "the layer the fit was made at; the fit holds at this layer and this detail only",
+      "detail_source": "the element size the fit was made at",
+      "orientation": "Y",
+      "orientation_source": "the calibration bars were printed with their long side along the machine's Y axis",
+      "cut_source": "a general part stays on the plate: cutting it off is simulated only where part of it stays attached"
+    },
+    {
+      "id": "pla_generic",
+      "technology": "plastic",
+      "name": "PLA on a desktop filament printer",
+      "subtitle": "printed-PLA values with sources; print settings typical, not calibrated",
+      "material": {
+        "library_id": "pla_fff",
+        "source": "the library record pla_fff in src/ctl/materials.json: PLA measured as printed (Prusament data sheet and open-access papers); each value there names its own source"
+      },
+      "process": {
+        "layer_mm": 1.0,
+        "layer_source": "one simulation layer for five printed layers of 0.2 mm, the value the print tests use",
+        "printed_layer_mm": 0.2,
+        "printed_layer_source": "a common layer height for a 0.4 mm nozzle",
+        "nozzle_c": 210,
+        "nozzle_source": "the middle of the usual PLA nozzle range, 190 to 220 degC",
+        "bed_c": 60,
+        "bed_source": "a common heated-bed setting for PLA",
+        "ambient_c": 30,
+        "ambient_source": "an enclosed printer's air temperature, assumed",
+        "rate_mm3_s": 8,
+        "rate_source": "a typical volumetric flow for a 0.4 mm nozzle"
+      },
+      "detail_mm": 2.0,
+      "detail_source": "coarse enough to run in seconds on a laptop"
+    }
+  ]
+}

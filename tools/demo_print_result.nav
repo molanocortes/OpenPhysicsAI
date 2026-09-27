@@ -1,0 +1,31 @@
+# A finished print simulation put on screen: the warp after release, then the stress on the bed, as image files.
+# Run it from the repository, with the workspace that holds the project (made by demo/run_gcode_print.py --keep):
+#   ./navier --workspace ~/NAVIER-Projects --exec 'exec tools/demo_print_result.nav'
+# The project name is drone_print; the pictures go to build/ (they are not repository images until someone says so).
+mode advanced
+workspace solid
+solid open drone_print
+frames 30
+fem follow last
+frames 90
+fem field von_mises
+fem step last
+fem step prev
+fem deform auto
+fem fit
+fem edges off
+fem shadows on
+fem range p99
+frames 30
+fem status
+fem export build/drone-print-with-supports.png 2
+fem show support off
+fem field displacement
+fem step last
+fem range step
+fem fit
+frames 30
+fem status
+fem export build/drone-warp-released.png 2
+echo DRONE pictures written
+quit

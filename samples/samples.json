@@ -1,0 +1,23 @@
+{
+  "comment": "The sample parts shipped with the application, shown on the first screen of Simple mode. Each carries its unit (so the unit question is already answered), which face sits on the plate, and, for the calibration cantilever only, the cut its calibration used.",
+  "samples": [
+    {
+      "id": "cantilever",
+      "name": "Calibration cantilever",
+      "file": "cantilever.stl",
+      "unit": "mm",
+      "about": "The 70 mm test bar the metal print settings were calibrated on.",
+      "source": "the calibration cantilever of Gersch, Schulz and Bagdahn, Impact of Hatching Strategy on Mechanical Properties and Residual Stresses in Additively Manufactured AlSi10Mg Components, TMS 2025 Supplemental Proceedings, pp. 170-181, doi:10.1007/978-3-031-80748-0_15, open access under CC BY 4.0: 70 x 10 x 9 mm, comb webs and gaps 1 mm, a 3 mm top web, a 10 mm solid block at the fixed end; the comb length was read off the paper's figure, and the chamfer at the free end is left out",
+      "orientation": "Y",
+      "cut": {"height_mm": 2.5, "kerf_mm": 0.3, "from_x_mm": 10, "source": "assumed: the paper states a wire-erosion cut through the comb but not its height or kerf"}
+    },
+    {
+      "id": "bracket",
+      "name": "Small bracket",
+      "file": "bracket.stl",
+      "unit": "mm",
+      "about": "An L-bracket 16 x 8 x 12 mm with 3 mm walls: a part nobody calibrated, which is what most parts are.",
+      "source": "drawn for this sample set by tools in this repository"
+    }
+  ]
+}

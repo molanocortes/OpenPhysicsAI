@@ -1,0 +1,793 @@
+{
+  "check_at_submission": {
+    "accepted": [
+      {
+        "details": [
+          {
+            "design": "C10W",
+            "difference": 100.00000000000001,
+            "difference_vector_mm": [-100.00000000000001, 0, 0],
+            "ok": false,
+            "quantity": "lever_arm",
+            "reference": 200.00000000000003,
+            "tolerance": 4.000000000000001,
+            "unit": "mm",
+            "value": 100.00000000000001
+          },
+          {
+            "design": "C10W",
+            "difference": 100,
+            "ok": false,
+            "quantity": "load_region_area",
+            "reference": 100,
+            "tolerance": 2,
+            "unit": "mm2",
+            "value": 200
+          },
+          {
+            "design": "C10W",
+            "difference": 100,
+            "ok": false,
+            "quantity": "mounting_region_area",
+            "reference": 100,
+            "tolerance": 2,
+            "unit": "mm2",
+            "value": 200
+          },
+          {
+            "design": "C10W",
+            "difference": 0,
+            "ok": true,
+            "quantity": "mounting_normal_angle",
+            "reference": 0,
+            "tolerance": 5,
+            "unit": "deg",
+            "value": 0
+          },
+          {
+            "design": "C10W",
+            "difference": 0,
+            "ok": true,
+            "quantity": "load_normal_angle",
+            "reference": 0,
+            "tolerance": 5,
+            "unit": "deg",
+            "value": 0
+          }
+        ],
+        "id": "equivalence",
+        "question": "The designs are not mounted and loaded equivalently: lever_arm of 'C10W' differs by 100 mm (tolerance 4); load_region_area of 'C10W' differs by 100 mm2 (tolerance 2); mounting_region_area of 'C10W' differs by 100 mm2 (tolerance 2). Is this difference part of the design change (accept it with the reason), or should the regions be redefined?",
+        "reason": "the cross-section or length is the difference being studied"
+      }
+    ],
+    "assumptions": [
+      {
+        "effect": "not assessed",
+        "source": "default",
+        "subject": "manufacturing",
+        "text": "The manufacturing process is not specified: the material values are used as given, as for a homogeneous, isotropic, defect-free part."
+      },
+      {
+        "effect": "not assessed: no mounting alternative was declared",
+        "source": "user",
+        "subject": "mounting_idealization",
+        "text": "The mounting region is idealised as rigidly fixed (all displacements zero): fixed root. No contact, slip, fastener or wall flexibility is modelled."
+      },
+      {
+        "effect": "not assessed",
+        "source": "default",
+        "subject": "load_distribution",
+        "text": "The load acts as a uniform traction over the load region, so its resultant passes through the region's centroid. A payload that bears on part of the region, or whose centre of mass is offset, loads the bracket differently."
+      },
+      {
+        "effect": "not assessed; the weight of each design is reported",
+        "source": "default",
+        "subject": "self_weight",
+        "text": "The bracket's own weight is not applied: only the payload loads it."
+      },
+      {
+        "effect": "accepted by the user; not assessed further",
+        "source": "user",
+        "subject": "equivalence",
+        "text": "The designs are not mounted and loaded equivalently: lever_arm of 'C10W' differs by 100 mm (tolerance 4); load_region_area of 'C10W' differs by 100 mm2 (tolerance 2); mounting_region_area of 'C10W' differs by 100 mm2 (tolerance 2). Is this difference part of the design change (accept it with the reason), or should the regions be redefined? Accepted: the cross-section or length is the difference being studied"
+      }
+    ],
+    "designs": [
+      {
+        "geometry": {
+          "bounds_design_mm": {
+            "max": [200, 10, 10],
+            "min": [0, 0, 0]
+          },
+          "bytes": 684,
+          "closed_solid": true,
+          "components": 1,
+          "design_to_build_translation_mm": [0, 0, 0],
+          "file": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/independent/C10L.stl",
+          "repairs": {
+            "degenerate_faces_found": 0,
+            "degenerate_faces_removed": 0,
+            "duplicate_faces_found": 0,
+            "duplicate_faces_removed": 0,
+            "faces_flipped_for_consistency": 0,
+            "holes_filled": "none (no automatic hole filling)",
+            "inconsistent_edges_found": 0,
+            "non_orientable_components": 0,
+            "opposite_duplicate_faces": 0,
+            "shells_reoriented": 0
+          },
+          "self_intersecting_face_pairs": 0,
+          "sha256": "7c44e8eebb5ec9051d1b9213165771f3da5011e38ad3bf0c6eb335b415fa30b2",
+          "size_mm": [200, 10, 10],
+          "stored_copy": "inputs/part-7c44e8eebb5e.stl",
+          "surface_area_mm2": 8199.999999999998,
+          "surface_patches": 6,
+          "topology": {
+            "analysis_triangles": 12,
+            "boundary_loops": 0,
+            "closed_components": 1,
+            "closed_solid": true,
+            "components": 1,
+            "consistently_oriented": true,
+            "merged_duplicate_vertices": 28,
+            "nested_shells": 0,
+            "nonmanifold_edges": 0,
+            "open_edges": 0,
+            "source_triangles": 12,
+            "surface_patches": 6,
+            "unique_vertices": 8,
+            "watertight": true,
+            "weld_tolerance_mm": 0.0002004993765576342
+          },
+          "triangles": 12,
+          "units": "mm",
+          "units_check": {
+            "assessment": "plausible: with mm the part is 200 mm across its largest extent",
+            "criterion": "largest extent between 1 mm and 1000 mm (typical additive manufacturing parts)",
+            "declared_unit": "mm",
+            "if_unit_were": [
+              {
+                "largest_extent_mm": 200,
+                "plausible": true,
+                "unit": "mm"
+              },
+              {
+                "largest_extent_mm": 2000,
+                "plausible": false,
+                "unit": "cm"
+              },
+              {
+                "largest_extent_mm": 200000,
+                "plausible": false,
+                "unit": "m"
+              },
+              {
+                "largest_extent_mm": 5080,
+                "plausible": false,
+                "unit": "in"
+              },
+              {
+                "largest_extent_mm": 60960,
+                "plausible": false,
+                "unit": "ft"
+              },
+              {
+                "largest_extent_mm": 0.19999999999999998,
+                "plausible": false,
+                "unit": "um"
+              }
+            ],
+            "largest_extent_in_file_units": 200,
+            "largest_extent_mm": 200,
+            "plausible": true
+          },
+          "volume_mm3": 20000,
+          "wall_thickness": {
+            "median_mm": 10,
+            "method": "inward rays from area-stratified surface points to the opposite surface",
+            "min_location_design_mm": [184.2172900910819, 8.48550203569117, 9.999999999999998],
+            "min_mm": 9.999999999999998,
+            "p05_mm": 10
+          }
+        },
+        "name": "C10L",
+        "own_weight_to_load_ratio": 0.153964405,
+        "regions": {
+          "lever_arm_design_mm": [200.00000000000003, 0, 0],
+          "lever_arm_length_mm": 200.00000000000003,
+          "load": {
+            "area_mm2": 100,
+            "bounds_design_mm": {
+              "max": [200, 10, 10],
+              "min": [200, 0, 0]
+            },
+            "centroid_design_mm": [200.00000000000003, 5.000000000000001, 5.000000000000001],
+            "description": "tip face, loaded",
+            "mean_normal": [1, 0, 0],
+            "patches": [4],
+            "plane_spread_mm": 0,
+            "query_design_frame": {
+              "plane": {
+                "at": "max",
+                "axis": "x",
+                "tolerance": 0.01
+              }
+            },
+            "selection": "load",
+            "set_hash": "815436dea015f3f05046f03dc787c5dd81dbb546be2160bdd5159dba8a2d2a5d",
+            "source": "user",
+            "triangles": 2
+          },
+          "mounting": {
+            "area_mm2": 100,
+            "bounds_design_mm": {
+              "max": [0, 10, 10],
+              "min": [0, 0, 0]
+            },
+            "centroid_design_mm": [0, 5.000000000000001, 5.000000000000001],
+            "description": "root face, fixed",
+            "mean_normal": [-1, 0, 0],
+            "patches": [5],
+            "plane_spread_mm": 0,
+            "query_design_frame": {
+              "plane": {
+                "at": "min",
+                "axis": "x",
+                "tolerance": 0.01
+              }
+            },
+            "selection": "mounting",
+            "set_hash": "6dbe08cb39d8c1c74054e879acc59ae3513107bbd831986c10e0d45b0de254ca",
+            "source": "user",
+            "triangles": 2
+          }
+        },
+        "resolution_plan": {
+          "coarsest_mesh": {
+            "bodies": [
+              {
+                "area_mesh_mm2": 8200.000000000116,
+                "area_ratio_mesh_to_stl": 1.0000000000000144,
+                "area_stl_mm2": 8199.999999999998,
+                "name": "part",
+                "volume_error_percent": -6.606856988583542e-13,
+                "volume_mesh_mm3": 19999.99999999987,
+                "volume_stl_mm3": 20000
+              }
+            ],
+            "element_size_mm": 2.5,
+            "elements": 1280,
+            "nodes": 2025,
+            "selections": [
+              {
+                "area_ratio": 1.0000000000000002,
+                "mesh_area_mm2": 100.00000000000003,
+                "mesh_faces": 16,
+                "name": "mounting",
+                "stl_area_mm2": 100
+              },
+              {
+                "area_ratio": 1.0000000000000002,
+                "mesh_area_mm2": 100.00000000000003,
+                "mesh_faces": 16,
+                "name": "load",
+                "stl_area_mm2": 100
+              }
+            ],
+            "setup_errors": [],
+            "setup_ready": true,
+            "warnings": []
+          },
+          "levels": [
+            {
+              "element_size_mm": 2.5,
+              "elements_across_thin_walls": 4,
+              "estimated_elements": 1280,
+              "within_element_limit": true
+            },
+            {
+              "element_size_mm": 1.25,
+              "elements_across_thin_walls": 8,
+              "estimated_elements": 10240,
+              "within_element_limit": true
+            },
+            {
+              "element_size_mm": 0.625,
+              "elements_across_thin_walls": 16,
+              "estimated_elements": 81920,
+              "within_element_limit": true
+            }
+          ]
+        },
+        "setup_complete": true
+      },
+      {
+        "geometry": {
+          "bounds_design_mm": {
+            "max": [100, 20, 10],
+            "min": [0, 0, 0]
+          },
+          "bytes": 684,
+          "closed_solid": true,
+          "components": 1,
+          "design_to_build_translation_mm": [0, 0, 0],
+          "file": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/independent/C10W.stl",
+          "repairs": {
+            "degenerate_faces_found": 0,
+            "degenerate_faces_removed": 0,
+            "duplicate_faces_found": 0,
+            "duplicate_faces_removed": 0,
+            "faces_flipped_for_consistency": 0,
+            "holes_filled": "none (no automatic hole filling)",
+            "inconsistent_edges_found": 0,
+            "non_orientable_components": 0,
+            "opposite_duplicate_faces": 0,
+            "shells_reoriented": 0
+          },
+          "self_intersecting_face_pairs": 0,
+          "sha256": "cff6b24aaabb007fb2b82713a902199a60275453eeefab32cd1c5cdab82dce3b",
+          "size_mm": [100, 20, 10],
+          "stored_copy": "inputs/part-cff6b24aaabb.stl",
+          "surface_area_mm2": 6399.999999999999,
+          "surface_patches": 6,
+          "topology": {
+            "analysis_triangles": 12,
+            "boundary_loops": 0,
+            "closed_components": 1,
+            "closed_solid": true,
+            "components": 1,
+            "consistently_oriented": true,
+            "merged_duplicate_vertices": 28,
+            "nested_shells": 0,
+            "nonmanifold_edges": 0,
+            "open_edges": 0,
+            "source_triangles": 12,
+            "surface_patches": 6,
+            "unique_vertices": 8,
+            "watertight": true,
+            "weld_tolerance_mm": 0.00010246950765959599
+          },
+          "triangles": 12,
+          "units": "mm",
+          "units_check": {
+            "assessment": "plausible: with mm the part is 100 mm across its largest extent",
+            "criterion": "largest extent between 1 mm and 1000 mm (typical additive manufacturing parts)",
+            "declared_unit": "mm",
+            "if_unit_were": [
+              {
+                "largest_extent_mm": 100,
+                "plausible": true,
+                "unit": "mm"
+              },
+              {
+                "largest_extent_mm": 1000,
+                "plausible": true,
+                "unit": "cm"
+              },
+              {
+                "largest_extent_mm": 100000,
+                "plausible": false,
+                "unit": "m"
+              },
+              {
+                "largest_extent_mm": 2540,
+                "plausible": false,
+                "unit": "in"
+              },
+              {
+                "largest_extent_mm": 30480,
+                "plausible": false,
+                "unit": "ft"
+              },
+              {
+                "largest_extent_mm": 0.09999999999999999,
+                "plausible": false,
+                "unit": "um"
+              }
+            ],
+            "largest_extent_in_file_units": 100,
+            "largest_extent_mm": 100,
+            "plausible": true
+          },
+          "volume_mm3": 20000,
+          "wall_thickness": {
+            "median_mm": 10,
+            "method": "inward rays from area-stratified surface points to the opposite surface",
+            "min_location_design_mm": [21.694958972155206, 0.7107948847528803, 9.999999999999998],
+            "min_mm": 9.999999999999998,
+            "p05_mm": 10
+          }
+        },
+        "name": "C10W",
+        "own_weight_to_load_ratio": 0.153964405,
+        "regions": {
+          "lever_arm_design_mm": [100.00000000000001, 0, 0],
+          "lever_arm_length_mm": 100.00000000000001,
+          "load": {
+            "area_mm2": 200,
+            "bounds_design_mm": {
+              "max": [100, 20, 10],
+              "min": [100, 0, 0]
+            },
+            "centroid_design_mm": [100.00000000000001, 10.000000000000002, 5.000000000000001],
+            "description": "tip face, loaded",
+            "mean_normal": [1, 0, 0],
+            "patches": [4],
+            "plane_spread_mm": 0,
+            "query_design_frame": {
+              "plane": {
+                "at": "max",
+                "axis": "x",
+                "tolerance": 0.01
+              }
+            },
+            "selection": "load",
+            "set_hash": "5bd8cdc3721ba26d42e96f75c1a58f43bf7db810d18d948302fa86a44edc38b4",
+            "source": "user",
+            "triangles": 2
+          },
+          "mounting": {
+            "area_mm2": 200,
+            "bounds_design_mm": {
+              "max": [0, 20, 10],
+              "min": [0, 0, 0]
+            },
+            "centroid_design_mm": [0, 10.000000000000002, 5.000000000000001],
+            "description": "root face, fixed",
+            "mean_normal": [-1, 0, 0],
+            "patches": [5],
+            "plane_spread_mm": 0,
+            "query_design_frame": {
+              "plane": {
+                "at": "min",
+                "axis": "x",
+                "tolerance": 0.01
+              }
+            },
+            "selection": "mounting",
+            "set_hash": "fae05335eeb308fd81dcdedc5bee46f90fea32351605726eb269c3864e3126de",
+            "source": "user",
+            "triangles": 2
+          }
+        },
+        "resolution_plan": {
+          "coarsest_mesh": {
+            "bodies": [
+              {
+                "area_mesh_mm2": 6400.000000000119,
+                "area_ratio_mesh_to_stl": 1.0000000000000182,
+                "area_stl_mm2": 6400.000000000003,
+                "name": "part",
+                "volume_error_percent": -6.606856988583542e-13,
+                "volume_mesh_mm3": 19999.99999999987,
+                "volume_stl_mm3": 20000
+              }
+            ],
+            "element_size_mm": 2.5,
+            "elements": 1280,
+            "nodes": 1845,
+            "selections": [
+              {
+                "area_ratio": 0.9999999999999994,
+                "mesh_area_mm2": 199.99999999999991,
+                "mesh_faces": 32,
+                "name": "mounting",
+                "stl_area_mm2": 200
+              },
+              {
+                "area_ratio": 0.9999999999999994,
+                "mesh_area_mm2": 199.99999999999991,
+                "mesh_faces": 32,
+                "name": "load",
+                "stl_area_mm2": 200
+              }
+            ],
+            "setup_errors": [],
+            "setup_ready": true,
+            "warnings": []
+          },
+          "levels": [
+            {
+              "element_size_mm": 2.5,
+              "elements_across_thin_walls": 4,
+              "estimated_elements": 1280,
+              "within_element_limit": true
+            },
+            {
+              "element_size_mm": 1.25,
+              "elements_across_thin_walls": 8,
+              "estimated_elements": 10240,
+              "within_element_limit": true
+            },
+            {
+              "element_size_mm": 0.625,
+              "elements_across_thin_walls": 16,
+              "estimated_elements": 81920,
+              "within_element_limit": true
+            }
+          ]
+        },
+        "setup_complete": true
+      }
+    ],
+    "equivalence": {
+      "checks": [
+        {
+          "design": "C10W",
+          "difference": 100.00000000000001,
+          "difference_vector_mm": [-100.00000000000001, 0, 0],
+          "ok": false,
+          "quantity": "lever_arm",
+          "reference": 200.00000000000003,
+          "tolerance": 4.000000000000001,
+          "unit": "mm",
+          "value": 100.00000000000001
+        },
+        {
+          "design": "C10W",
+          "difference": 100,
+          "ok": false,
+          "quantity": "load_region_area",
+          "reference": 100,
+          "tolerance": 2,
+          "unit": "mm2",
+          "value": 200
+        },
+        {
+          "design": "C10W",
+          "difference": 100,
+          "ok": false,
+          "quantity": "mounting_region_area",
+          "reference": 100,
+          "tolerance": 2,
+          "unit": "mm2",
+          "value": 200
+        },
+        {
+          "design": "C10W",
+          "difference": 0,
+          "ok": true,
+          "quantity": "mounting_normal_angle",
+          "reference": 0,
+          "tolerance": 5,
+          "unit": "deg",
+          "value": 0
+        },
+        {
+          "design": "C10W",
+          "difference": 0,
+          "ok": true,
+          "quantity": "load_normal_angle",
+          "reference": 0,
+          "tolerance": 5,
+          "unit": "deg",
+          "value": 0
+        }
+      ],
+      "definition": "every design against the first: the lever arm from the mounting-region centroid to the load-region centroid (design frame), the areas of both regions and their mean normals. Equal face ids are not evidence of equivalence; these physical quantities are",
+      "reference_design": "C10L",
+      "status": "differs",
+      "tolerances": {
+        "angle_deg": 5,
+        "position_mm": 1,
+        "relative": 0.02
+      }
+    },
+    "not_evaluated": [
+      {
+        "item": "dynamic loads, impact and vibration",
+        "reason": "the load is static"
+      },
+      {
+        "item": "strength margin or safety",
+        "reason": "no failure criterion and no validated strength data for the modelled condition; stress peaks at ideal supports and sharp corners are singular"
+      },
+      {
+        "item": "fatigue",
+        "reason": "cyclic loading is not modelled"
+      },
+      {
+        "item": "fastener loads, pull-out and joint slip",
+        "reason": "the mounting is an ideal support; fasteners and contact are not modelled"
+      },
+      {
+        "item": "buckling and geometric nonlinearity",
+        "reason": "linear static analysis; large-deformation indicators are checked after solving"
+      },
+      {
+        "item": "creep and temperature effects",
+        "reason": "properties at the reference temperature, time-independent"
+      }
+    ],
+    "plan": {
+      "analyses": 6,
+      "element_sizes_mm": [2.5, 1.25, 0.625],
+      "limits": {
+        "max_elements": 400000,
+        "max_wall_seconds": 1800
+      },
+      "order": "every design at each element size from coarse to fine, then the sensitivities at the chosen size"
+    },
+    "questions": [],
+    "unsupported": [],
+    "warnings": []
+  },
+  "created": "2026-09-16T21:38:58Z",
+  "format": "navier-comparison-study-file",
+  "format_version": 1,
+  "resolved": {
+    "accept": [
+      {
+        "id": "equivalence",
+        "reason": "the cross-section or length is the difference being studied"
+      }
+    ],
+    "analysis": {
+      "formulation": "incompatible_modes",
+      "physics": "static, small-strain linear elasticity, isotropic material",
+      "reference_temperature_c": 20,
+      "solver": "auto"
+    },
+    "designs": [
+      {
+        "description": "",
+        "geometry": {
+          "bytes": 684,
+          "path": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/independent/C10L.stl",
+          "sha256": "7c44e8eebb5ec9051d1b9213165771f3da5011e38ad3bf0c6eb335b415fa30b2",
+          "units": "mm",
+          "units_source": "user"
+        },
+        "load_region": {
+          "coverage": 0.5,
+          "description": "tip face, loaded",
+          "mode": "patch",
+          "query": {
+            "plane": {
+              "at": "max",
+              "axis": "x",
+              "tolerance": 0.01
+            }
+          },
+          "source": "user"
+        },
+        "mounting_region": {
+          "coverage": 0.5,
+          "description": "root face, fixed",
+          "mode": "patch",
+          "query": {
+            "plane": {
+              "at": "min",
+              "axis": "x",
+              "tolerance": 0.01
+            }
+          },
+          "source": "user"
+        },
+        "name": "C10L"
+      },
+      {
+        "description": "",
+        "geometry": {
+          "bytes": 684,
+          "path": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/independent/C10W.stl",
+          "sha256": "cff6b24aaabb007fb2b82713a902199a60275453eeefab32cd1c5cdab82dce3b",
+          "units": "mm",
+          "units_source": "user"
+        },
+        "load_region": {
+          "coverage": 0.5,
+          "description": "tip face, loaded",
+          "mode": "patch",
+          "query": {
+            "plane": {
+              "at": "max",
+              "axis": "x",
+              "tolerance": 0.01
+            }
+          },
+          "source": "user"
+        },
+        "mounting_region": {
+          "coverage": 0.5,
+          "description": "root face, fixed",
+          "mode": "patch",
+          "query": {
+            "plane": {
+              "at": "min",
+              "axis": "x",
+              "tolerance": 0.01
+            }
+          },
+          "source": "user"
+        },
+        "name": "C10W"
+      }
+    ],
+    "equivalence": {
+      "angle_tolerance_deg": 5,
+      "position_tolerance_mm": 1,
+      "relative_tolerance": 0.02
+    },
+    "format": "navier-comparison-study",
+    "format_version": 1,
+    "limits": {
+      "max_elements": 400000,
+      "max_wall_seconds": 1800
+    },
+    "load": {
+      "description": "",
+      "direction": [0, 0, -1],
+      "direction_source": "user",
+      "distribution": "uniform_over_region",
+      "force_n": 10,
+      "force_vector_n": [0, 0, -10],
+      "kind": "force",
+      "self_weight": false,
+      "source": "user"
+    },
+    "manufacturing": {
+      "process": "unspecified",
+      "source": "default"
+    },
+    "material": {
+      "density_kg_m3": 7850,
+      "id": "steel_nu03",
+      "library": false,
+      "name": "steel test values, nu 0.3",
+      "poisson_ratio": 0.3,
+      "record": {
+        "density_kg_m3": {
+          "value": 7850
+        },
+        "family": "metal",
+        "id": "steel_nu03",
+        "name": "steel test values, nu 0.3",
+        "poisson_ratio": {
+          "value": 0.3
+        },
+        "provenance": "evaluation test values",
+        "status": "user_supplied",
+        "youngs_modulus_pa": {
+          "value": 200000000000
+        }
+      },
+      "reference": "evaluation test values",
+      "source": "user",
+      "status": "user_supplied",
+      "youngs_modulus_pa": 200000000000
+    },
+    "mounting": {
+      "boundary_kind": "fixed",
+      "description": "fixed root",
+      "idealization": "fixed",
+      "source": "user"
+    },
+    "name": "t2_t3",
+    "quantities": {
+      "load_region_displacement": "area-weighted mean displacement of the load region along the load direction (mm); lower is stiffer",
+      "mass": "density x closed STL volume (kg), with the mesh volume reported beside it",
+      "primary": "load_region_displacement",
+      "stiffness": "load / work-conjugate displacement = |F|^2 / (load work) (N/mm); higher is stiffer"
+    },
+    "question": "evaluation: cantilever tip deflection",
+    "refinement": {
+      "constant_ratio": true,
+      "convergence_criterion": 0.02,
+      "element_sizes_mm": [2.5, 1.25, 0.625]
+    },
+    "retain_results": "refinement",
+    "sensitivity": {
+      "level": "finest",
+      "self_weight": false
+    }
+  },
+  "software": {
+    "compiler": "Apple LLVM 17.0.0 (clang-1700.0.13.5)",
+    "contract_version": "0.5.0",
+    "name": "NAVIER",
+    "version": "0.3.0-rc1"
+  },
+  "study_hash": "d9e287ce7a2802d2bf031f30780f404d4f5a122d14cdc2a8213bb8f57f74f0c7",
+  "study_hash_covers": "the resolved study without file locations (geometry is identified by SHA-256)"
+}

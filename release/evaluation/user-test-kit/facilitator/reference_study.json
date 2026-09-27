@@ -1,0 +1,196 @@
+{
+  "name": "plate_task_reference",
+  "question": "Two versions of a mounting plate carry a 2 kg instrument hanging under the free end. Which plate deflects less where the instrument hangs, how do their masses compare, and how reliable is the comparison?",
+  "decision": "choose between the uniform 6 mm plate (U) and the stepped 8 mm / 4 mm plate (S) of equal mass",
+  "designs": [
+    {
+      "name": "U",
+      "description": "uniform plate, 120 x 30 x 6 mm",
+      "geometry": {
+        "path": "../task_geometry/plate_uniform.stl",
+        "units": "mm",
+        "units_source": "user"
+      },
+      "mounting_region": {
+        "query": {
+          "all": [
+            {
+              "box": {
+                "min": [
+                  -0.5,
+                  -0.5,
+                  -0.5
+                ],
+                "max": [
+                  20.5,
+                  30.5,
+                  0.5
+                ]
+              }
+            },
+            {
+              "facing": {
+                "direction": "-z",
+                "max_angle_deg": 5
+              }
+            }
+          ]
+        },
+        "mode": "triangle",
+        "description": "underside over the first 20 mm, bolted to a rigid base",
+        "source": "user"
+      },
+      "load_region": {
+        "query": {
+          "all": [
+            {
+              "box": {
+                "min": [
+                  99.5,
+                  -0.5,
+                  -0.5
+                ],
+                "max": [
+                  120.5,
+                  30.5,
+                  0.5
+                ]
+              }
+            },
+            {
+              "facing": {
+                "direction": "-z",
+                "max_angle_deg": 5
+              }
+            }
+          ]
+        },
+        "mode": "triangle",
+        "description": "underside over the last 20 mm, where the instrument is attached",
+        "source": "user"
+      }
+    },
+    {
+      "name": "S",
+      "description": "stepped plate, 8 mm thick for the first 60 mm, 4 mm for the rest",
+      "geometry": {
+        "path": "../task_geometry/plate_stepped.stl",
+        "units": "mm",
+        "units_source": "user"
+      },
+      "mounting_region": {
+        "query": {
+          "all": [
+            {
+              "box": {
+                "min": [
+                  -0.5,
+                  -0.5,
+                  -0.5
+                ],
+                "max": [
+                  20.5,
+                  30.5,
+                  0.5
+                ]
+              }
+            },
+            {
+              "facing": {
+                "direction": "-z",
+                "max_angle_deg": 5
+              }
+            }
+          ]
+        },
+        "mode": "triangle",
+        "description": "underside over the first 20 mm, bolted to a rigid base",
+        "source": "user"
+      },
+      "load_region": {
+        "query": {
+          "all": [
+            {
+              "box": {
+                "min": [
+                  99.5,
+                  -0.5,
+                  -0.5
+                ],
+                "max": [
+                  120.5,
+                  30.5,
+                  0.5
+                ]
+              }
+            },
+            {
+              "facing": {
+                "direction": "-z",
+                "max_angle_deg": 5
+              }
+            }
+          ]
+        },
+        "mode": "triangle",
+        "description": "underside over the last 20 mm, where the instrument is attached",
+        "source": "user"
+      }
+    }
+  ],
+  "material": {
+    "record": {
+      "id": "al6082_t6_task",
+      "name": "Aluminium 6082-T6, supplier datasheet values from the task sheet",
+      "family": "metal",
+      "status": "user_supplied",
+      "provenance": "task sheet: E 70 GPa, Poisson's ratio 0.33, density 2700 kg/m3 (supplier datasheet)",
+      "youngs_modulus_pa": {
+        "value": 70000000000.0
+      },
+      "poisson_ratio": {
+        "value": 0.33
+      },
+      "density_kg_m3": {
+        "value": 2700
+      }
+    },
+    "source": "user",
+    "reference": "supplier datasheet values quoted in the task sheet"
+  },
+  "manufacturing": {
+    "process": "machined",
+    "source": "user"
+  },
+  "mounting": {
+    "idealization": "fixed",
+    "description": "underside patch bolted to a rigid base (stiffest idealisation)",
+    "source": "user"
+  },
+  "load": {
+    "kind": "payload_mass",
+    "mass": "2 kg",
+    "direction": "-z",
+    "source": "user",
+    "description": "2 kg instrument hanging under the free end; z up"
+  },
+  "refinement": {
+    "element_sizes": [
+      "2 mm",
+      "1 mm",
+      "0.5 mm"
+    ],
+    "convergence_criterion": 0.02
+  },
+  "sensitivity": {
+    "youngs_modulus_relative": [
+      0.9,
+      1.1
+    ],
+    "self_weight": true
+  },
+  "limits": {
+    "max_elements": 400000,
+    "max_wall_time": "30 min"
+  }
+}

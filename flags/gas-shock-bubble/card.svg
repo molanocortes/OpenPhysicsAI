@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="240" viewBox="0 0 1280 240" font-family="-apple-system, 'Segoe UI', Inter, Helvetica, Arial, sans-serif" role="img">
+<title>Trial: A weak shock passes a cylinder of light or heavy gas</title>
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#081a10"/><stop offset="1" stop-color="#12301f"/></linearGradient>
+<linearGradient id="shine" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff" stop-opacity="0"/><stop offset="0.5" stop-color="#ffffff" stop-opacity="0.10"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+<clipPath id="card"><rect x="1" y="1" width="1278" height="238" rx="22"/></clipPath>
+<radialGradient id="core-flag" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#1a4470"/><stop offset="1" stop-color="#040a14"/></radialGradient>
+<radialGradient id="core-semi-holy-grail" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#444d5e"/><stop offset="1" stop-color="#05070c"/></radialGradient>
+<radialGradient id="core-holy-grail" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#6b4e12"/><stop offset="1" stop-color="#0b0702"/></radialGradient>
+<radialGradient id="core-trial" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#1c4d2e"/><stop offset="1" stop-color="#030a05"/></radialGradient>
+<filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
+</defs>
+<g clip-path="url(#card)"><rect width="1280" height="240" fill="url(#bg)"/>
+</g>
+<rect x="1" y="1" width="1278" height="238" rx="22" fill="none" stroke="#8fd694" stroke-opacity="0.4" stroke-width="1.5"/>
+<circle cx="128" cy="120" r="80" fill="url(#core-trial)"/>
+<circle cx="128" cy="120" r="79.2" fill="none" stroke="#8fd694" stroke-width="3.0" stroke-opacity="1.00"/>
+<g transform="translate(128.0 120.0) scale(1.250)">
+<ellipse cx="6" cy="0" rx="15" ry="15" fill="#4fb3ff" fill-opacity="0.25" stroke="#4fb3ff" stroke-width="2.4"><animate attributeName="rx" values="15;15;9;15" keyTimes="0;0.4;0.85;1" dur="3.2s" repeatCount="indefinite"/><animate attributeName="ry" values="15;15;19;15" keyTimes="0;0.4;0.85;1" dur="3.2s" repeatCount="indefinite"/></ellipse>
+<line x1="-44" y1="-40" x2="-44" y2="40" stroke="#f3f6fb" stroke-width="3.2" stroke-linecap="round"><animate attributeName="x1" values="-44;46" dur="3.2s" repeatCount="indefinite"/><animate attributeName="x2" values="-44;46" dur="3.2s" repeatCount="indefinite"/></line>
+</g>
+<rect x="262" y="30" width="100" height="28" rx="14" fill="#8fd694" fill-opacity="0.12" stroke="#8fd694" stroke-opacity="0.55"/>
+<text x="312" y="49" text-anchor="middle" fill="#8fd694" font-size="12" font-weight="700" letter-spacing="2.2">TRIAL T3</text>
+<text x="262" y="112" fill="#f4f7fb" font-size="20.6" font-weight="700">A weak shock passes a cylinder of light or heavy gas</text>
+<text x="262" y="146" fill="#a9b5c8" font-size="18.2">Leads to flag 04 · a Mach 1.22 shock through helium and R22</text>
+<rect x="262" y="176" width="184" height="30" rx="15" fill="#8fa3c0" fill-opacity="0.14" stroke="#8fa3c0" stroke-opacity="0.7"/>
+<text x="354" y="196" text-anchor="middle" fill="#8fa3c0" font-size="13" font-weight="700" letter-spacing="1.8">BEING REBUILT IN 3D</text>
+<rect x="910" y="22" width="346" height="196" rx="16" fill="#000000" fill-opacity="0.26" stroke="#ffffff" stroke-opacity="0.06"/>
+<text x="934" y="62" fill="#7e8aa0" font-size="11.5" font-weight="700" letter-spacing="2.4">ATTEMPTS</text>
+<text x="1232" y="64" text-anchor="end" fill="#e9eef6" font-size="19" font-weight="700">2</text>
+<text x="934" y="106" fill="#7e8aa0" font-size="11.5" font-weight="700" letter-spacing="2.4">CHALLENGERS</text>
+<text x="1232" y="108" text-anchor="end" fill="#e9eef6" font-size="19" font-weight="700">1</text>
+<text x="934" y="150" fill="#7e8aa0" font-size="11.5" font-weight="700" letter-spacing="2.4">RECORD</text>
+<text x="1232" y="152" text-anchor="end" fill="#8fd694" font-size="18" font-weight="700">90 · @molanocortes</text>
+</svg>

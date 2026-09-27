@@ -1,0 +1,709 @@
+{
+ "gcode": {
+  "file": "drone_cleaned_polished_PLA_3h59m.gcode",
+  "header": {
+   "model printing time": "3h 53m 33s",
+   "total layer number": "252",
+   "max_z_height": "50.40",
+   "filament used [mm]": "14712.69",
+   "filament used [cm3]": "35.39",
+   "filament used [g]": "44.24"
+  },
+  "settings": {
+   "filament_density": "1.25",
+   "filament_diameter": "1.75",
+   "enable_support": "1",
+   "filament_settings_id": "\"eSUN PLA+ @BBL A1M\"",
+   "filament_type": "PLA",
+   "hot_plate_temp": "60",
+   "initial_layer_print_height": "0.2",
+   "layer_height": "0.2",
+   "line_width": "0.42",
+   "nozzle_diameter": "0.4",
+   "nozzle_temperature": "220",
+   "printer_model": "Bambu Lab A1 mini",
+   "sparse_infill_density": "25%",
+   "sparse_infill_pattern": "crosshatch",
+   "support_object_xy_distance": "0.35",
+   "support_threshold_angle": "30",
+   "support_top_z_distance": "0.2",
+   "support_type": "tree(auto)",
+   "textured_plate_temp": "65",
+   "tree_support_branch_angle": "45",
+   "tree_support_branch_diameter": "2",
+   "tree_support_branch_distance": "5",
+   "tree_support_tip_diameter": "0.8",
+   "wall_loops": "6"
+  },
+  "layers": 252,
+  "volume_cm3": {
+   "part": 12.64,
+   "support": 22.691,
+   "by_feature": {
+    "support": 21.7,
+    "inner wall": 5.382,
+    "outer wall": 2.623,
+    "internal solid infill": 2.013,
+    "gap infill": 0.445,
+    "overhang wall": 0.461,
+    "support interface": 0.991,
+    "bridge": 0.386,
+    "sparse infill": 0.257,
+    "internal bridge": 0.382,
+    "top surface": 0.691
+   }
+  },
+  "box_mm": {
+   "part": {
+    "min": [
+     40.5,
+     40.49,
+     0.2
+    ],
+    "max": [
+     139.5,
+     139.51,
+     50.4
+    ],
+    "size": [
+     98.99,
+     99.03,
+     50.2
+    ]
+   },
+   "support": {
+    "min": [
+     40.38,
+     40.55,
+     0.2
+    ],
+    "max": [
+     142.18,
+     143.32,
+     48.8
+    ],
+    "size": [
+     101.8,
+     102.78,
+     48.6
+    ]
+   }
+  },
+  "support_top_z_mm": 48.8,
+  "model_printing_time_s": 14013,
+  "mean_deposition_rate_mm3_s": 2.521
+ },
+ "process": {
+  "layer_height": "1 mm",
+  "printed_layer_height": "0.2 mm",
+  "nozzle_temperature": "220 degC",
+  "bed_temperature": "60 degC",
+  "ambient_temperature": "25 degC",
+  "deposition_rate": "2.521 mm^3/s",
+  "provenance": "user"
+ },
+ "supports": {
+  "type": "tree",
+  "rule": "overhang",
+  "critical_angle_deg": 30.0,
+  "critical_angle_source": "support_threshold_angle of drone_cleaned_polished_PLA_3h59m.gcode",
+  "trunk_radius": "1 mm",
+  "branch_radius": "0.4 mm",
+  "remove": true,
+  "source": "slicer settings embedded in drone_cleaned_polished_PLA_3h59m.gcode",
+  "provenance": "user"
+ },
+ "mesh_mm": 1.0,
+ "sim_layer_mm": 1.0,
+ "wall_s": 3349.9,
+ "summary": {
+  "analysis": "fff_print",
+  "model": {
+   "analysis": "fff_print",
+   "nodes": 183658,
+   "elements": 137018,
+   "mesh_hash": "07632186c6fa80becb079d4d89289303bfd0e2acd784c7084d53e6384357a23c",
+   "element_size_mm": [
+    1,
+    1,
+    1
+   ],
+   "body": "part",
+   "material": {
+    "id": "pla_fff",
+    "name": "PLA, material extrusion (Prusament and others; printed values)",
+    "status": "published",
+    "glass_transition_c": 62.80000000000001,
+    "relaxation_c": 72.80000000000001
+   },
+   "process": {
+    "simulation_layer_mm": 1,
+    "nozzle_c": 220,
+    "bed_c": 60,
+    "ambient_c": 25,
+    "convection_w_m2k": 15,
+    "radiation": true,
+    "deposition_rate_mm3_s": 2.521,
+    "min_layer_time_s": 10,
+    "cooldown_bed_on_s": 1200,
+    "cooldown_bed_off_s": 3600,
+    "thermal_substeps_per_layer": 8,
+    "provenance": "user",
+    "store": "key_times"
+   },
+   "numerics": {
+    "solver": "auto",
+    "tolerance": 1e-10,
+    "skip_increment_below_k": 0,
+    "note": "auto factorises directly while the factor fits and falls back to the iterative solver when it does not; the iterative solver is faster on smaller models (measured on the truss bridge at 4 mm elements: 220 s automatic against 98 s iterative at a tolerance of 1e-8, peak stress within 2.6e-8 and warp within 3.7e-6 relative)"
+   }
+  },
+  "deposition": {
+   "simulation_layers": 51,
+   "layers_deposited": 51,
+   "elements_printed": 137018,
+   "elements_deposited_late": 7,
+   "elements_never_deposited": 0,
+   "rule": "material is deposited where it has a whole face on the bed or shares a face with printed material; an overhang waits for the layer that carries it, and a fragment that never connects is not printed",
+   "printed_volume_cm3": 24.065222248265066
+  },
+  "timing": {
+   "print_time_h": 2.651639808747087,
+   "total_machine_time_h": 3.984973142080419,
+   "compute_seconds": 3305.4153000000006,
+   "compute_seconds_heat": 434.2054079999434,
+   "compute_seconds_stress": 2867.022773000019,
+   "thermal_steps": 424,
+   "stress_increments": 106,
+   "increments_skipped": 0
+  },
+  "results": {
+   "peak_von_mises_on_bed_mpa": 14.95959784990723,
+   "peak_von_mises_released_mpa": 8.992701923479016,
+   "warp_z_min_mm": -0.6601807945530154,
+   "warp_z_max_mm": 0.09460100450080354,
+   "worst_heat_balance_relative": 6.079953794179713e-07,
+   "largest_bed_reaction_n": 7.60446279945981e-07,
+   "support_reaction_after_release_n": 7.564107290525257e-07,
+   "release_check": "the support reaction after release is zero when the released part is self-equilibrated",
+   "heat_into_bed_j": -13575.430771903768,
+   "heat_into_bed_during_print_j": -12050.76595329546,
+   "supports": {
+    "elements": 124048,
+    "part_elements": 0,
+    "type": "tree",
+    "parameters": [
+     {
+      "name": "trunk_radius",
+      "value": 1,
+      "unit": "mm",
+      "provenance": "user",
+      "source": "slicer settings embedded in drone_cleaned_polished_PLA_3h59m.gcode"
+     },
+     {
+      "name": "branch_radius",
+      "value": 0.4,
+      "unit": "mm",
+      "provenance": "user",
+      "source": "slicer settings embedded in drone_cleaned_polished_PLA_3h59m.gcode"
+     },
+     {
+      "name": "spacing",
+      "value": 2,
+      "unit": "mm",
+      "provenance": "assumed",
+      "source": "assumed: CADS Additive's support parameters are documented in its infosheets, not in the Simufact Additive tutorial (p. 54), and the owner's files do not hold them"
+     },
+     {
+      "name": "trunk_spacing",
+      "value": 6,
+      "unit": "mm",
+      "provenance": "assumed",
+      "source": "assumed: CADS Additive's support parameters are documented in its infosheets, not in the Simufact Additive tutorial (p. 54), and the owner's files do not hold them"
+     },
+     {
+      "name": "branch_height",
+      "value": 5,
+      "unit": "mm",
+      "provenance": "assumed",
+      "source": "assumed: CADS Additive's support parameters are documented in its infosheets, not in the Simufact Additive tutorial (p. 54), and the owner's files do not hold them"
+     },
+     {
+      "name": "tooth_height",
+      "value": 0,
+      "unit": "mm",
+      "provenance": "assumed",
+      "source": "assumed: no tooth interface unless one is given"
+     },
+     {
+      "name": "relative_density",
+      "value": 1,
+      "unit": "-",
+      "provenance": "assumed",
+      "source": "assumed: supports printed like the part are 100 % dense (tutorial p. 60)"
+     },
+     {
+      "name": "offset_from_part",
+      "value": 0,
+      "unit": "mm",
+      "provenance": "assumed",
+      "source": "assumed: no offset from the part's walls"
+     }
+    ],
+    "assumed": [
+     "spacing",
+     "trunk_spacing",
+     "branch_height",
+     "tooth_height",
+     "relative_density",
+     "offset_from_part"
+    ],
+    "volume_mm3": 11095.222248263992,
+    "contact_area_mm2": 438.5815429687675,
+    "contact_fraction": 0.12548828125,
+    "columns_dropped_for_offset": 0,
+    "homogenised": {
+     "unit_cells_solved": 49,
+     "applied": "each support element takes the full orthotropic stiffness matrix of its band, from the periodic unit cell, times the relative density; supports stay elastic (no yield). The conduction fractions are for the heat model",
+     "bands": [
+      {
+       "depth_below_part_mm": [
+        20.999999999999996,
+        22
+       ],
+       "elements": 3495,
+       "solid_fraction": 0.08722222222222223,
+       "stiffness_vertical": 0.06949839128443326,
+       "stiffness_lateral": 0.034515834458802755,
+       "conduction_vertical": 0.08722222222222255,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.22222222222222018,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        19.999999999999996,
+        20.999999999999996
+       ],
+       "elements": 3495,
+       "solid_fraction": 0.08722222222222223,
+       "stiffness_vertical": 0.06949839128443326,
+       "stiffness_lateral": 0.034515834458802755,
+       "conduction_vertical": 0.08722222222222255,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.22222222222222018,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        19,
+        19.999999999999996
+       ],
+       "elements": 3495,
+       "solid_fraction": 0.08722222222222223,
+       "stiffness_vertical": 0.06949839128443341,
+       "stiffness_lateral": 0.03451583445880297,
+       "conduction_vertical": 0.08722222222222284,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.22222222222222093,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        18,
+        19
+       ],
+       "elements": 3495,
+       "solid_fraction": 0.08722222222222223,
+       "stiffness_vertical": 0.06949839128443326,
+       "stiffness_lateral": 0.034515834458802755,
+       "conduction_vertical": 0.08722222222222255,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.22222222222222018,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        16.999999999999996,
+        18
+       ],
+       "elements": 3495,
+       "solid_fraction": 0.08722222222222223,
+       "stiffness_vertical": 0.06949839128443326,
+       "stiffness_lateral": 0.034515834458802755,
+       "conduction_vertical": 0.08722222222222255,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.22222222222222018,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        16,
+        16.999999999999996
+       ],
+       "elements": 3495,
+       "solid_fraction": 0.08722222222222223,
+       "stiffness_vertical": 0.06949839128443341,
+       "stiffness_lateral": 0.03451583445880297,
+       "conduction_vertical": 0.08722222222222284,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.22222222222222093,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        15,
+        16
+       ],
+       "elements": 3495,
+       "solid_fraction": 0.08722222222222223,
+       "stiffness_vertical": 0.06949839128443326,
+       "stiffness_lateral": 0.034515834458802755,
+       "conduction_vertical": 0.08722222222222255,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.22222222222222018,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        13.999999999999998,
+        15
+       ],
+       "elements": 3495,
+       "solid_fraction": 0.08722222222222223,
+       "stiffness_vertical": 0.06949839128443326,
+       "stiffness_lateral": 0.034515834458802755,
+       "conduction_vertical": 0.08722222222222255,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.22222222222222018,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        12.999999999999998,
+        13.999999999999998
+       ],
+       "elements": 3495,
+       "solid_fraction": 0.08722222222222223,
+       "stiffness_vertical": 0.06949839128443326,
+       "stiffness_lateral": 0.034515834458802755,
+       "conduction_vertical": 0.08722222222222255,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.22222222222222018,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        11.999999999999998,
+        12.999999999999998
+       ],
+       "elements": 3495,
+       "solid_fraction": 0.08722222222222223,
+       "stiffness_vertical": 0.06949839128443341,
+       "stiffness_lateral": 0.03451583445880302,
+       "conduction_vertical": 0.08722222222222026,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.22222222222222054,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        11,
+        11.999999999999998
+       ],
+       "elements": 3495,
+       "solid_fraction": 0.08722222222222223,
+       "stiffness_vertical": 0.06949839128443341,
+       "stiffness_lateral": 0.03451583445880302,
+       "conduction_vertical": 0.08722222222222026,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.22222222222222054,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        9.999999999999998,
+        11
+       ],
+       "elements": 3495,
+       "solid_fraction": 0.08722222222222223,
+       "stiffness_vertical": 0.06949839128443326,
+       "stiffness_lateral": 0.034515834458802755,
+       "conduction_vertical": 0.08722222222222255,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.22222222222222018,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        8.999999999999998,
+        9.999999999999998
+       ],
+       "elements": 3495,
+       "solid_fraction": 0.08722222222222223,
+       "stiffness_vertical": 0.06949839128443326,
+       "stiffness_lateral": 0.034515834458802755,
+       "conduction_vertical": 0.08722222222222255,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.22222222222222018,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        7.999999999999998,
+        8.999999999999998
+       ],
+       "elements": 3495,
+       "solid_fraction": 0.08722222222222223,
+       "stiffness_vertical": 0.06949839128443341,
+       "stiffness_lateral": 0.03451583445880302,
+       "conduction_vertical": 0.08722222222222026,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.22222222222222054,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        6.999999999999999,
+        7.999999999999998
+       ],
+       "elements": 3495,
+       "solid_fraction": 0.08722222222222223,
+       "stiffness_vertical": 0.06949839128443341,
+       "stiffness_lateral": 0.03451583445880302,
+       "conduction_vertical": 0.08722222222222026,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.22222222222222054,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        5.999999999999998,
+        6.999999999999999
+       ],
+       "elements": 3495,
+       "solid_fraction": 0.08722222222222223,
+       "stiffness_vertical": 0.06949839128443326,
+       "stiffness_lateral": 0.034515834458802755,
+       "conduction_vertical": 0.08722222222222255,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.22222222222222018,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        4.999999999999997,
+        5.999999999999998
+       ],
+       "elements": 3495,
+       "solid_fraction": 0.08722222222222223,
+       "stiffness_vertical": 0.06949839128443326,
+       "stiffness_lateral": 0.034515834458802755,
+       "conduction_vertical": 0.08722222222222255,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.22222222222222018,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        3.9999999999999964,
+        4.999999999999997
+       ],
+       "elements": 3495,
+       "solid_fraction": 0.03731597222222222,
+       "stiffness_vertical": 0.02077801368742082,
+       "stiffness_lateral": 0.011209350770114025,
+       "conduction_vertical": 0.02757933867574517,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.18888888888888722,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        2.999999999999999,
+        3.9999999999999964
+       ],
+       "elements": 3495,
+       "solid_fraction": 0.09965798611111111,
+       "stiffness_vertical": 0.07007137654309144,
+       "stiffness_lateral": 0.04231396415214284,
+       "conduction_vertical": 0.08823327331317576,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.41111111111110854,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        1.9999999999999982,
+        2.999999999999999
+       ],
+       "elements": 3495,
+       "solid_fraction": 0.1259861111111111,
+       "stiffness_vertical": 0.07590875919316455,
+       "stiffness_lateral": 0.028639268332689666,
+       "conduction_vertical": 0.10772124950176937,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.9422222222223006,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        0.9999999999999974,
+        1.9999999999999982
+       ],
+       "elements": 3495,
+       "solid_fraction": 0.1259861111111111,
+       "stiffness_vertical": 0.07457047314854698,
+       "stiffness_lateral": 0.022823820403880337,
+       "conduction_vertical": 0.10746285120435063,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.9644444444445263,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        0,
+        0.9999999999999974
+       ],
+       "elements": 3495,
+       "solid_fraction": 0.1259861111111111,
+       "stiffness_vertical": 0.07457047314854727,
+       "stiffness_lateral": 0.02282382040388043,
+       "conduction_vertical": 0.10746285120435073,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.9644444444445296,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        26,
+        27
+       ],
+       "elements": 3483,
+       "solid_fraction": 0.08722222222222223,
+       "stiffness_vertical": 0.06949839128443326,
+       "stiffness_lateral": 0.034515834458802755,
+       "conduction_vertical": 0.08722222222222255,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.22222222222222018,
+       "voxels_per_pitch": 60
+      },
+      {
+       "depth_below_part_mm": [
+        25,
+        26
+       ],
+       "elements": 3483,
+       "solid_fraction": 0.08722222222222223,
+       "stiffness_vertical": 0.06949839128443341,
+       "stiffness_lateral": 0.03451583445880297,
+       "conduction_vertical": 0.08722222222222284,
+       "conduction_lateral_x": 0,
+       "conduction_lateral_y": 0,
+       "surface_per_volume_per_mm": 0.22222222222222093,
+       "voxels_per_pitch": 60
+      }
+     ]
+    },
+    "source": "slicer settings embedded in drone_cleaned_polished_PLA_3h59m.gcode",
+    "provenance": "user",
+    "removed": true,
+    "rule": "overhang",
+    "critical_angle_deg": 29.999999999999996,
+    "critical_angle_source": "support_threshold_angle of drone_cleaned_polished_PLA_3h59m.gcode",
+    "supported_faces": 3495,
+    "faces_that_would_stand_on_the_part": 1412,
+    "downward_faces_steeper_than_the_angle": 887,
+    "model": "a downward voxel face gets support where a face of the STL flatter than the critical angle lies over it and the column below reaches the plate through empty space; a column that would stand on the part, as inside a closed channel, gets none. The support is of the given type, homogenised from its explicitly solved unit cell (homogenised.bands), activated with its layer and strained like the part",
+    "removed_after_release": 124048,
+    "tear_off": {
+     "largest_nodal_force_n": 2.097603189005035,
+     "sum_of_nodal_force_magnitudes_n": 2250.0591193426076,
+     "definition": "the forces the supports exerted on the part at the nodes they share with it, just before their removal after the bed release"
+    },
+    "heat_model": "each support band conducts with its unit cell's conductivity fractions along x, y and z and stores heat with its solid fraction; the heat its internal surfaces exchange with the air is not modelled, only its outer faces'"
+   },
+   "stored_times": 106,
+   "last_stored_time": "the state after release from the bed",
+   "material_strength_mpa": 55,
+   "peak_on_bed_over_strength": 0.27199268818013145
+  },
+  "scope": {
+   "statement": "process simulation on demonstration material data; not a forecast for a particular printer or filament",
+   "is_forecast": false,
+   "layer_lumping": {
+    "simulation_layer_mm": 1,
+    "printed_layer_mm": 0.2,
+    "printed_layers_per_simulation_layer": 5,
+    "toolpath_within_a_layer": "not modelled: a simulation layer is deposited at once at the nozzle temperature"
+   },
+   "creep_below_relaxation_temperature": "not modelled",
+   "bed_stresses_are_upper_bound": true,
+   "bed_stresses_note": "the part is held on the bed near the glass transition for the whole print; without creep the stress that builds up there is an upper bound",
+   "material": {
+    "id": "pla_fff",
+    "status": "published",
+    "measured": false
+   },
+   "compared_with_measurement": false,
+   "not_modelled": [
+    "toolpath within a layer",
+    "creep below the relaxation temperature",
+    "plasticity",
+    "raster anisotropy and interlayer strength",
+    "crystallisation shrinkage",
+    "supports",
+    "gravity",
+    "adhesion failure during the print"
+   ],
+   "use": "compare designs, process settings and trends; do not certify a part with these numbers"
+  }
+ },
+ "what_this_is": "A print simulation driven by a slicer's job file (demo/run_gcode_print.py): the process and the support settings read from the gcode, the part from the owner's STL, the library's published PLA, tree supports generated by this simulator's rule. No measurement of this part exists; warp and stress are predictions. The slicer printed 22.69 cm3 of supports, this rule places 11.10 cm3 because it does not build supports that stand on the part (1412 faces would need them).",
+ "compared_with_the_slicer": {
+  "filament_total_cm3": {
+   "slicer_header": 35.39,
+   "read_from_toolpath": 35.33
+  },
+  "part_volume_cm3": {
+   "slicer_deposited": 12.64,
+   "solid_mesh_1mm": 12.97
+  },
+  "support_volume_cm3": {
+   "slicer": 22.691,
+   "this_simulator": 11.1
+  },
+  "layers": {
+   "slicer": 252,
+   "simulated_lumped": 51
+  },
+  "pieces_of_the_voxel_mesh": {
+   "2 mm": 35,
+   "1.5 mm": 9,
+   "1 mm": 1
+  }
+ }
+}

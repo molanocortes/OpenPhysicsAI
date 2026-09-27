@@ -1,0 +1,19 @@
+{
+ "id": "metal-fracture",
+ "number": 6,
+ "tier": "flag",
+ "stone": "solids",
+ "stone_short": "solids",
+ "difficulty": 4,
+ "title": "A metal part tearing apart",
+ "subtitle": "The Sandia Fracture Challenge: where it cracks, and at what load",
+ "short": "Fracture",
+ "status": "preparing",
+ "hook": "A machined metal part is pulled until it tears. Predict where the crack starts, where it runs, and at what load.",
+ "media": {
+  "src": "docs/media/lab/glass-bottle-view.gif",
+  "alt": "A glass bottle falls onto concrete: cracks run up from the edge of its base and branch, and it shatters",
+  "caption": "The lab today: a glass bottle dropped on concrete shatters, brittle fracture by peridynamics in 3D. Metal tears differently: it flows first, and voids grow inside it."
+ },
+ "note": "In preparation: the cases, the outputs and their units are written here when the flag opens, and the measured values are sealed at the same moment (tools/flags.py seal)."
+}

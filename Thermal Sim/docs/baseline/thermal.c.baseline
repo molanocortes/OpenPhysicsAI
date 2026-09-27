@@ -1,0 +1,789 @@
+/* thermal.c - transient heat conduction on hex8 meshes: theta method, Picard iterations, discrete energy balance */
+#include "thermal.h"
+#include "hex8.h"
+#include "sparse.h"
+
+#include <math.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
+static const double GPT = 0.57735026918962576451;
+
+double thermal_table_eval(const ThermalTable *t, double T) {
+    if (!t || t->n <= 0) return NAN;
+    if (t->n == 1 || T <= t->t[0]) return t->v[0];
+    if (T >= t->t[t->n - 1]) return t->v[t->n - 1];
+    int lo = 0, hi = t->n - 1;
+    while (hi - lo > 1) {
+        int mid = (lo + hi) / 2;
+        if (t->t[mid] <= T) lo = mid;
+        else hi = mid;
+    }
+    double w = (T - t->t[lo]) / (t->t[hi] - t->t[lo]);
+    return t->v[lo] + w * (t->v[hi] - t->v[lo]);
+}
+
+double thermal_table_integral(const ThermalTable *t, double a, double b) {
+    if (!t || t->n <= 0) return NAN;
+    double sign = 1;
+    if (b < a) {
+        double x = a;
+        a = b, b = x, sign = -1;
+    }
+    if (t->n == 1) return sign * t->v[0] * (b - a);
+    double s = 0, x = a;
+    if (x < t->t[0]) {
+        double x1 = fmin(b, t->t[0]);
+        s += t->v[0] * (x1 - x);
+        x = x1;
+    }
+    for (int i = 0; i + 1 < t->n && x < b; i++) {
+        if (x >= t->t[i + 1]) continue;
+        double x1 = fmin(b, t->t[i + 1]);
+        s += 0.5 * (thermal_table_eval(t, x) + thermal_table_eval(t, x1)) * (x1 - x); /* exact for a linear piece */
+        x = x1;
+    }
+    if (x < b) s += t->v[t->n - 1] * (b - x);
+    return sign * s;
+}
+
+/* ---- element geometry ----------------------------------------------------------------------------- */
+
+typedef struct {
+    double K[64];     /* integral of grad Na . grad Nb dV */
+    double M[64];     /* integral of Na Nb dV */
+    double ML[8];     /* row sums of M = integral of Na dV */
+    double F[6][16];  /* per face: integral of Nq Nr dA (face-local node order) */
+    double Fv[6][4];  /* per face: integral of Nq dA */
+    double area[6];
+    double vol;
+} Geom;
+
+enum { GEOM_CACHE_MAX = 4096, GEOM_HASH = 8192 };
+
+static void element_coords(const ThermalModel *m, int e, double X[8][3]) {
+    for (int a = 0; a < 8; a++) {
+        int nd = m->conn[8 * (size_t)e + a];
+        for (int k = 0; k < 3; k++) X[a][k] = m->xyz[3 * (size_t)nd + k];
+    }
+}
+
+static bool element_geometry(const double X[8][3], Geom *g) {
+    memset(g, 0, sizeof *g);
+    for (int gp = 0; gp < 8; gp++) {
+        double N[8], dN[8][3], J[3][3], dNdx[8][3];
+        hex8_shape(HEX8_XI[gp][0] * GPT, HEX8_XI[gp][1] * GPT, HEX8_XI[gp][2] * GPT, N, dN);
+        double det = hex8_jacobian(X, dN, J, dNdx);
+        if (!(det > 0)) return false;
+        g->vol += det;
+        for (int a = 0; a < 8; a++)
+            for (int b = 0; b < 8; b++) {
+                g->K[8 * a + b] += det * (dNdx[a][0] * dNdx[b][0] + dNdx[a][1] * dNdx[b][1] + dNdx[a][2] * dNdx[b][2]);
+                g->M[8 * a + b] += det * N[a] * N[b];
+            }
+    }
+    for (int a = 0; a < 8; a++)
+        for (int b = 0; b < 8; b++) g->ML[a] += g->M[8 * a + b];
+    static const double S[4][2] = {{-1, -1}, {1, -1}, {1, 1}, {-1, 1}};
+    for (int f = 0; f < 6; f++) {
+        const int *fn = HEX8_FACE_NODES[f];
+        for (int gs = 0; gs < 2; gs++)
+            for (int gt = 0; gt < 2; gt++) {
+                double sv = (gs ? 1 : -1) * GPT, tv = (gt ? 1 : -1) * GPT, Nq[4], ds[3] = {0, 0, 0}, dt[3] = {0, 0, 0};
+                for (int q = 0; q < 4; q++) {
+                    Nq[q] = 0.25 * (1 + S[q][0] * sv) * (1 + S[q][1] * tv);
+                    double dNs = 0.25 * S[q][0] * (1 + S[q][1] * tv), dNt = 0.25 * S[q][1] * (1 + S[q][0] * sv);
+                    for (int k = 0; k < 3; k++) ds[k] += dNs * X[fn[q]][k], dt[k] += dNt * X[fn[q]][k];
+                }
+                double n0 = ds[1] * dt[2] - ds[2] * dt[1], n1 = ds[2] * dt[0] - ds[0] * dt[2], n2 = ds[0] * dt[1] - ds[1] * dt[0];
+                double jac = sqrt(n0 * n0 + n1 * n1 + n2 * n2);
+                g->area[f] += jac;
+                for (int q = 0; q < 4; q++) {
+                    g->Fv[f][q] += Nq[q] * jac;
+                    for (int r = 0; r < 4; r++) g->F[f][4 * q + r] += Nq[q] * Nq[r] * jac;
+                }
+            }
+    }
+    return true;
+}
+
+static uint64_t key_hash(const int64_t key[24]) {
+    uint64_t h = 1469598103934665603ull;
+    for (int i = 0; i < 24; i++) {
+        h ^= (uint64_t)key[i];
+        h *= 1099511628211ull;
+        h ^= h >> 29;
+    }
+    return h;
+}
+
+/* ---- solver state ------------------------------------------------------------------------------- */
+
+struct ThermalSolver {
+    int nn, ne, neq;
+    ThermalOptions opt;
+    int *eq;                    /* node -> equation, -1 for nodes of no element */
+    CsrMatrix A;
+    int64_t *diag;
+    int *emap;                  /* 64 per element: CSR entry of (a, b); NULL: looked up */
+    int ncolors, *order, *cstart;
+    int *geom;                  /* per element: cache entry or -1 */
+    Geom *cache;
+    int ncache;
+    double *coef;               /* 3 per element: k at the iterate, rho c at mid-step, k at the start of the step */
+    unsigned char *node_active;
+    int *face_start, *face_list, *face_cursor, face_cap;
+    double *face_h;             /* 4 per face: h and effective ambient temperature at the iterate, then at the start of the step */
+    int *src_slot, nsrc, src_cap, *src_elem;
+    double *src_vec, src_scale, src_power;
+    double *rhs, *x, *res, *ax;
+};
+
+static double elapsed(struct timespec a, struct timespec b) { return (double)(b.tv_sec - a.tv_sec) + 1e-9 * (double)(b.tv_nsec - a.tv_nsec); }
+
+void thermal_free(ThermalSolver *s) {
+    if (!s) return;
+    free(s->eq), csr_free(&s->A), free(s->diag), free(s->emap), free(s->order), free(s->cstart), free(s->geom), free(s->cache);
+    free(s->coef), free(s->node_active), free(s->face_start), free(s->face_list), free(s->face_cursor), free(s->face_h);
+    free(s->src_slot), free(s->src_elem), free(s->src_vec), free(s->rhs), free(s->x), free(s->res), free(s->ax);
+    free(s);
+}
+
+static bool table_ok(const ThermalTable *t) {
+    if (t->n <= 0 || !t->t || !t->v) return false;
+    for (int i = 0; i < t->n; i++) {
+        if (!(t->v[i] > 0) || !isfinite(t->v[i])) return false;
+        if (i && !(t->t[i] > t->t[i - 1])) return false;
+    }
+    return true;
+}
+
+ThermalSolver *thermal_create(const ThermalModel *m, const ThermalOptions *o, char *err, size_t errlen) {
+    ThermalSolver *s = calloc(1, sizeof *s);
+    if (!s) {
+        snprintf(err, errlen, "out of memory");
+        return NULL;
+    }
+    s->opt = o ? *o : (ThermalOptions){0};
+    if (s->opt.theta == 0) s->opt.theta = 1;
+    if (s->opt.max_picard <= 0) s->opt.max_picard = 50;
+    if (s->opt.picard_tol <= 0) s->opt.picard_tol = 1e-6;
+    if (s->opt.pcg_tol <= 0) s->opt.pcg_tol = 1e-12;
+    if (s->opt.pcg_max_iter <= 0) s->opt.pcg_max_iter = 20000;
+    int nn = m->nnodes, ne = m->nelems, *edofs = NULL, *color = NULL, *hslot = NULL;
+    uint64_t *nodecol = NULL;
+    int64_t (*keys)[24] = NULL;
+    s->nn = nn, s->ne = ne;
+    if (!(s->opt.theta >= 0.5 && s->opt.theta <= 1)) {
+        snprintf(err, errlen, "theta must lie within 0.5 and 1 (the unconditionally stable range)");
+        goto fail;
+    }
+    if (nn <= 0 || ne <= 0 || !m->xyz || !m->conn || m->nmat <= 0 || !m->mat) {
+        snprintf(err, errlen, "empty thermal model");
+        goto fail;
+    }
+    for (int i = 0; i < m->nmat; i++)
+        if (!table_ok(&m->mat[i].k) || !table_ok(&m->mat[i].cp) || !table_ok(&m->mat[i].rho)) {
+            snprintf(err, errlen, "material %d needs positive conductivity, specific heat and density tables with increasing temperatures", i);
+            goto fail;
+        }
+    s->eq = malloc((size_t)nn * sizeof(int));
+    edofs = malloc(8 * (size_t)ne * sizeof(int));
+    color = malloc((size_t)ne * sizeof(int));
+    nodecol = calloc((size_t)nn, sizeof(uint64_t));
+    if (!s->eq || !edofs || !color || !nodecol) goto oom;
+    for (int i = 0; i < nn; i++) s->eq[i] = -1;
+    for (int e = 0; e < ne; e++) {
+        int mi = m->elem_mat ? m->elem_mat[e] : 0;
+        if (mi < 0 || mi >= m->nmat) {
+            snprintf(err, errlen, "element %d refers to material %d (valid 0..%d)", e, mi, m->nmat - 1);
+            goto fail;
+        }
+        for (int a = 0; a < 8; a++) {
+            int nd = m->conn[8 * (size_t)e + a];
+            if (nd < 0 || nd >= nn) {
+                snprintf(err, errlen, "element %d refers to node %d outside 0..%d", e, nd, nn - 1);
+                goto fail;
+            }
+            s->eq[nd] = 0;
+        }
+    }
+    for (int i = 0; i < nn; i++)
+        if (s->eq[i] == 0) s->eq[i] = s->neq++;
+        else s->eq[i] = -1;
+    for (int e = 0; e < ne; e++)
+        for (int a = 0; a < 8; a++) edofs[8 * (size_t)e + a] = s->eq[m->conn[8 * (size_t)e + a]];
+    if (!csr_from_elements(&s->A, s->neq, ne, 8, edofs, err, errlen)) goto fail;
+    s->diag = malloc((size_t)s->neq * sizeof(int64_t));
+    if (!s->diag) goto oom;
+    for (int q = 0; q < s->neq; q++) s->diag[q] = csr_find(&s->A, q, q);
+    if (s->A.nnz < INT32_MAX && (uint64_t)ne * 64 * sizeof(int) <= (uint64_t)256 << 20) {
+        s->emap = malloc(64 * (size_t)ne * sizeof(int));
+        for (int e = 0; s->emap && e < ne; e++)
+            for (int a = 0; a < 8; a++)
+                for (int b = 0; b < 8; b++) s->emap[64 * (size_t)e + 8 * a + b] = (int)csr_find(&s->A, edofs[8 * (size_t)e + a], edofs[8 * (size_t)e + b]);
+    }
+
+    /* colours: elements of one colour share no node and assemble in parallel */
+    for (int e = 0; e < ne; e++) {
+        uint64_t mask = 0;
+        for (int a = 0; a < 8; a++) mask |= nodecol[m->conn[8 * (size_t)e + a]];
+        int c = 0;
+        while (c < 63 && (mask >> c) & 1) c++;
+        color[e] = c;
+        if (c + 1 > s->ncolors) s->ncolors = c + 1;
+        for (int a = 0; a < 8; a++) nodecol[m->conn[8 * (size_t)e + a]] |= (uint64_t)1 << c;
+    }
+    s->cstart = calloc((size_t)s->ncolors + 1, sizeof(int));
+    s->order = malloc((size_t)ne * sizeof(int));
+    if (!s->cstart || !s->order) goto oom;
+    for (int e = 0; e < ne; e++) s->cstart[color[e] + 1]++;
+    for (int c = 0; c < s->ncolors; c++) s->cstart[c + 1] += s->cstart[c];
+    {
+        int fill[64];
+        memcpy(fill, s->cstart, (size_t)s->ncolors * sizeof(int));
+        for (int e = 0; e < ne; e++) s->order[fill[color[e]]++] = e;
+    }
+
+    /* geometry cache for elements that are translated copies (voxel meshes) */
+    s->geom = malloc((size_t)ne * sizeof(int));
+    s->cache = malloc(64 * sizeof(Geom));
+    keys = malloc(64 * sizeof *keys);
+    hslot = malloc(GEOM_HASH * sizeof(int));
+    if (!s->geom || !s->cache || !keys || !hslot) goto oom;
+    int cache_cap = 64;
+    for (int i = 0; i < GEOM_HASH; i++) hslot[i] = -1;
+    for (int e = 0; e < ne; e++) {
+        double X[8][3];
+        element_coords(m, e, X);
+        double size = 0;
+        for (int k = 0; k < 3; k++) size = fmax(size, fabs(X[6][k] - X[0][k]));
+        int64_t key[24];
+        bool keyed = size > 0;
+        for (int a = 0; keyed && a < 8; a++)
+            for (int k = 0; k < 3; k++) {
+                double r = (X[a][k] - X[0][k]) / (size * 1e-9);
+                if (!(fabs(r) < 9e15)) keyed = false;
+                else key[3 * a + k] = llround(r);
+            }
+        s->geom[e] = -1;
+        if (keyed) {
+            uint64_t h = key_hash(key) & (GEOM_HASH - 1);
+            while (hslot[h] >= 0 && memcmp(keys[hslot[h]], key, sizeof key)) h = (h + 1) & (GEOM_HASH - 1);
+            if (hslot[h] >= 0) {
+                s->geom[e] = hslot[h];
+                continue;
+            }
+            if (s->ncache < GEOM_CACHE_MAX) {
+                if (s->ncache == cache_cap) {
+                    cache_cap *= 2;
+                    Geom *nc = realloc(s->cache, (size_t)cache_cap * sizeof(Geom));
+                    int64_t (*nk)[24] = realloc(keys, (size_t)cache_cap * sizeof *keys);
+                    if (nc) s->cache = nc;
+                    if (nk) keys = nk;
+                    if (!nc || !nk) goto oom;
+                }
+                if (!element_geometry(X, &s->cache[s->ncache])) {
+                    snprintf(err, errlen, "element %d is inverted or degenerate", e);
+                    goto fail;
+                }
+                memcpy(keys[s->ncache], key, sizeof key);
+                hslot[h] = s->ncache;
+                s->geom[e] = s->ncache++;
+                continue;
+            }
+        }
+        Geom tmp;
+        if (!element_geometry(X, &tmp)) {
+            snprintf(err, errlen, "element %d is inverted or degenerate", e);
+            goto fail;
+        }
+    }
+    s->coef = calloc(3 * (size_t)ne, sizeof(double));
+    s->node_active = calloc((size_t)nn, 1);
+    s->face_start = calloc((size_t)ne + 1, sizeof(int));
+    s->face_cursor = malloc((size_t)ne * sizeof(int));
+    s->src_slot = malloc((size_t)ne * sizeof(int));
+    s->rhs = malloc((size_t)(s->neq ? s->neq : 1) * sizeof(double));
+    s->x = malloc((size_t)(s->neq ? s->neq : 1) * sizeof(double));
+    s->res = malloc((size_t)nn * sizeof(double));
+    s->ax = malloc((size_t)(s->neq ? s->neq : 1) * sizeof(double));
+    if (!s->coef || !s->node_active || !s->face_start || !s->face_cursor || !s->src_slot || !s->rhs || !s->x || !s->res || !s->ax) goto oom;
+    for (int e = 0; e < ne; e++) s->src_slot[e] = -1;
+    free(edofs), free(color), free(nodecol), free(keys), free(hslot);
+    return s;
+oom:
+    snprintf(err, errlen, "out of memory in the thermal solver (%d nodes, %d elements)", nn, ne);
+fail:
+    free(edofs), free(color), free(nodecol), free(keys), free(hslot);
+    thermal_free(s);
+    return NULL;
+}
+
+/* ---- per-step preparation ------------------------------------------------------------------------ */
+
+typedef struct {
+    ThermalSolver *s;
+    const ThermalModel *m;
+    const double *T0, *T1;
+    double dt, theta;
+    bool steady;
+    const int *order; /* elements of the colour being assembled */
+} StepCtx;
+
+static const Geom *geom_of(const ThermalSolver *s, const ThermalModel *m, int e, Geom *local) {
+    if (s->geom[e] >= 0) return &s->cache[s->geom[e]];
+    double X[8][3];
+    element_coords(m, e, X);
+    element_geometry(X, local);
+    return local;
+}
+
+static bool group_faces(ThermalSolver *s, const ThermalModel *m, char *err, size_t errlen) {
+    int ne = s->ne;
+    memset(s->face_start, 0, ((size_t)ne + 1) * sizeof(int));
+    for (int i = 0; i < m->nfaces; i++) {
+        const ThermalFace *f = &m->faces[i];
+        if (f->elem < 0 || f->elem >= ne || f->face > 5 || f->kind > THERMAL_RADIATION) {
+            snprintf(err, errlen, "boundary face %d is invalid (element %d, face %d, kind %d)", i, f->elem, f->face, f->kind);
+            return false;
+        }
+        if ((f->kind == THERMAL_CONVECTION && !(f->value >= 0)) || (f->kind == THERMAL_RADIATION && !(f->value >= 0 && f->value <= 1)) ||
+            (f->kind != THERMAL_FLUX && !(f->ambient > 0)) || !isfinite(f->value)) {
+            snprintf(err, errlen, "boundary face %d has an invalid value (%g) or ambient temperature (%g K)", i, f->value, f->ambient);
+            return false;
+        }
+        s->face_start[f->elem + 1]++;
+    }
+    for (int e = 0; e < ne; e++) s->face_start[e + 1] += s->face_start[e];
+    if (m->nfaces > s->face_cap) {
+        int *nl = realloc(s->face_list, (size_t)m->nfaces * sizeof(int));
+        double *nh = realloc(s->face_h, 4 * (size_t)m->nfaces * sizeof(double));
+        if (nl) s->face_list = nl;
+        if (nh) s->face_h = nh;
+        if (!nl || !nh) {
+            snprintf(err, errlen, "out of memory");
+            return false;
+        }
+        s->face_cap = m->nfaces;
+    }
+    memcpy(s->face_cursor, s->face_start, (size_t)ne * sizeof(int));
+    for (int i = 0; i < m->nfaces; i++) s->face_list[s->face_cursor[m->faces[i].elem]++] = i;
+    return true;
+}
+
+static bool source_position(const ThermalMovingSource *ms, double t, double p[3]) {
+    if (!ms || ms->npoints < 1 || !ms->path || !(ms->power > 0)) return false;
+    const double *P = ms->path;
+    int n = ms->npoints, i = 0;
+    if (t < P[3] || t > P[4 * (n - 1) + 3]) return false;
+    while (i + 1 < n && P[4 * (i + 1) + 3] < t) i++;
+    if (i + 1 >= n) {
+        memcpy(p, P + 4 * i, 3 * sizeof(double));
+        return true;
+    }
+    double t0 = P[4 * i + 3], t1 = P[4 * (i + 1) + 3], w = t1 > t0 ? (t - t0) / (t1 - t0) : 0;
+    for (int k = 0; k < 3; k++) p[k] = P[4 * i + k] + w * (P[4 * (i + 1) + k] - P[4 * i + k]);
+    return true;
+}
+
+static bool add_source(ThermalSolver *s, int e, const double vec[8]) {
+    if (s->nsrc == s->src_cap) {
+        int cap = s->src_cap ? 2 * s->src_cap : 64;
+        int *ne = realloc(s->src_elem, (size_t)cap * sizeof(int));
+        double *nv = realloc(s->src_vec, 8 * (size_t)cap * sizeof(double));
+        if (ne) s->src_elem = ne;
+        if (nv) s->src_vec = nv;
+        if (!ne || !nv) return false;
+        s->src_cap = cap;
+    }
+    s->src_elem[s->nsrc] = e;
+    memcpy(s->src_vec + 8 * (size_t)s->nsrc, vec, 8 * sizeof(double));
+    s->src_slot[e] = s->nsrc++;
+    return true;
+}
+
+static bool prepare_source(ThermalSolver *s, const ThermalModel *m, double tsrc, ThermalStepStats *st, char *err, size_t errlen) {
+    for (int i = 0; i < s->nsrc; i++) s->src_slot[s->src_elem[i]] = -1;
+    s->nsrc = 0, s->src_scale = 0, s->src_power = 0;
+    const ThermalMovingSource *ms = m->moving;
+    double p[3];
+    if (!source_position(ms, tsrc, p)) return true;
+    if (!(ms->radius > 0) || !(ms->depth > 0)) {
+        snprintf(err, errlen, "the moving source needs a positive radius and absorption depth");
+        return false;
+    }
+    st->source_on = true;
+    memcpy(st->source_position, p, sizeof p);
+    double R = ms->radius, D = ms->depth, rcut = 3 * R, dcut = 10 * D, amp = 2 * ms->power / (M_PI * R * R * D), total = 0;
+    for (int e = 0; e < m->nelems; e++) {
+        if (m->active && !m->active[e]) continue;
+        double X[8][3], lo[3] = {INFINITY, INFINITY, INFINITY}, hi[3] = {-INFINITY, -INFINITY, -INFINITY};
+        element_coords(m, e, X);
+        for (int a = 0; a < 8; a++)
+            for (int k = 0; k < 3; k++) lo[k] = fmin(lo[k], X[a][k]), hi[k] = fmax(hi[k], X[a][k]);
+        if (lo[0] > p[0] + rcut || hi[0] < p[0] - rcut || lo[1] > p[1] + rcut || hi[1] < p[1] - rcut || lo[2] > p[2] || hi[2] < p[2] - dcut) continue;
+        double vec[8] = {0}, pe = 0;
+        for (int gp = 0; gp < 8; gp++) {
+            double N[8], dN[8][3], J[3][3], x[3] = {0, 0, 0};
+            hex8_shape(HEX8_XI[gp][0] * GPT, HEX8_XI[gp][1] * GPT, HEX8_XI[gp][2] * GPT, N, dN);
+            double det = hex8_jacobian(X, dN, J, NULL);
+            for (int a = 0; a < 8; a++)
+                for (int k = 0; k < 3; k++) x[k] += N[a] * X[a][k];
+            double dx = x[0] - p[0], dy = x[1] - p[1], d = p[2] - x[2], r2 = dx * dx + dy * dy;
+            if (d < 0 || r2 > rcut * rcut || d > dcut) continue;
+            double q = amp * exp(-2 * r2 / (R * R)) * exp(-d / D);
+            for (int a = 0; a < 8; a++) vec[a] += q * N[a] * det;
+            pe += q * det;
+        }
+        if (pe > 0) {
+            if (!add_source(s, e, vec)) {
+                snprintf(err, errlen, "out of memory");
+                return false;
+            }
+            total += pe;
+        }
+    }
+    if (total > 0) {
+        s->src_power = total;
+        s->src_scale = s->opt.raw_source ? 1 : ms->power / total;
+    } else {
+        /* the Gaussian falls between integration points: deposit its power in the element under the source point */
+        int best = -1;
+        double zp = p[2] - 1e-9 * fmax(1.0, fabs(p[2]));
+        for (int e = 0; e < m->nelems && best < 0; e++) {
+            if (m->active && !m->active[e]) continue;
+            double X[8][3], lo[3] = {INFINITY, INFINITY, INFINITY}, hi[3] = {-INFINITY, -INFINITY, -INFINITY};
+            element_coords(m, e, X);
+            for (int a = 0; a < 8; a++)
+                for (int k = 0; k < 3; k++) lo[k] = fmin(lo[k], X[a][k]), hi[k] = fmax(hi[k], X[a][k]);
+            if (p[0] >= lo[0] && p[0] <= hi[0] && p[1] >= lo[1] && p[1] <= hi[1] && zp >= lo[2] && zp <= hi[2]) best = e;
+        }
+        if (best >= 0) {
+            Geom local;
+            const Geom *g = geom_of(s, m, best, &local);
+            double vec[8];
+            for (int a = 0; a < 8; a++) vec[a] = ms->power * g->ML[a] / g->vol;
+            if (!add_source(s, best, vec)) {
+                snprintf(err, errlen, "out of memory");
+                return false;
+            }
+            s->src_power = ms->power, s->src_scale = 1;
+            st->source_fallback = true;
+        } else {
+            st->source_missed = true;
+        }
+    }
+    st->source_power_mesh = s->src_power;
+    st->source_scale = s->src_scale;
+    return true;
+}
+
+/* ---- element system ------------------------------------------------------------------------------ */
+
+static void eval_coefficients(ThermalSolver *s, const StepCtx *c, int e) {
+    const ThermalModel *m = c->m;
+    const int *cn = m->conn + 8 * (size_t)e;
+    double t0 = 0, t1 = 0;
+    for (int a = 0; a < 8; a++) t0 += c->T0[cn[a]], t1 += c->T1[cn[a]];
+    t0 /= 8, t1 /= 8;
+    const ThermalMaterial *mt = &m->mat[m->elem_mat ? m->elem_mat[e] : 0];
+    double tm = 0.5 * (t0 + t1);
+    s->coef[3 * (size_t)e] = thermal_table_eval(&mt->k, t1);
+    s->coef[3 * (size_t)e + 1] = thermal_table_eval(&mt->rho, tm) * thermal_table_eval(&mt->cp, tm);
+    s->coef[3 * (size_t)e + 2] = thermal_table_eval(&mt->k, t0);
+    for (int k = s->face_start[e]; k < s->face_start[e + 1]; k++) {
+        int fi = s->face_list[k];
+        const ThermalFace *f = &m->faces[fi];
+        double h1 = 0, h0 = 0, a1 = f->ambient, a0 = f->ambient;
+        if (f->kind == THERMAL_CONVECTION) {
+            h1 = h0 = f->value;
+        } else if (f->kind == THERMAL_RADIATION) {
+            /* Newton linearisation about the face mean temperature T*: eps sigma (T^4 - Ta^4) ~ h (T - Ta*) with
+             * h = 4 eps sigma T*^3 and Ta* = T* - (T*^4 - Ta^4) / (4 T*^3); exact at convergence, robust from cold starts */
+            const int *fn = HEX8_FACE_NODES[f->face];
+            double f1 = 0, f0 = 0, Ta4 = pow(f->ambient, 4);
+            for (int q = 0; q < 4; q++) f1 += 0.25 * c->T1[cn[fn[q]]], f0 += 0.25 * c->T0[cn[fn[q]]];
+            f1 = fmax(f1, 1.0), f0 = fmax(f0, 1.0);
+            h1 = 4 * f->value * THERMAL_SIGMA * f1 * f1 * f1;
+            h0 = 4 * f->value * THERMAL_SIGMA * f0 * f0 * f0;
+            a1 = f1 - (f1 * f1 * f1 * f1 - Ta4) / (4 * f1 * f1 * f1);
+            a0 = f0 - (f0 * f0 * f0 * f0 - Ta4) / (4 * f0 * f0 * f0);
+        }
+        double *fh = s->face_h + 4 * (size_t)fi;
+        fh[0] = h1, fh[1] = a1, fh[2] = h0, fh[3] = a0;
+    }
+}
+
+static void element_system(const ThermalSolver *s, const StepCtx *c, int e, const Geom *g, const double T0e[8], double Ae[64], double be[8]) {
+    const ThermalModel *m = c->m;
+    double k = s->coef[3 * (size_t)e], rc = s->coef[3 * (size_t)e + 1], k0 = s->coef[3 * (size_t)e + 2], th = c->theta;
+    for (int i = 0; i < 64; i++) Ae[i] = th * k * g->K[i];
+    for (int a = 0; a < 8; a++) be[a] = 0;
+    if (!c->steady) {
+        double cdt = rc / c->dt;
+        if (s->opt.consistent_capacity) {
+            for (int a = 0; a < 8; a++)
+                for (int b = 0; b < 8; b++) {
+                    Ae[8 * a + b] += cdt * g->M[8 * a + b];
+                    be[a] += cdt * g->M[8 * a + b] * T0e[b];
+                }
+        } else {
+            for (int a = 0; a < 8; a++) {
+                Ae[9 * a] += cdt * g->ML[a];
+                be[a] += cdt * g->ML[a] * T0e[a];
+            }
+        }
+        if (th < 1)
+            for (int a = 0; a < 8; a++) {
+                double s0 = 0;
+                for (int b = 0; b < 8; b++) s0 += g->K[8 * a + b] * T0e[b];
+                be[a] -= (1 - th) * k0 * s0;
+            }
+    }
+    if (m->elem_source && m->elem_source[e] != 0)
+        for (int a = 0; a < 8; a++) be[a] += m->elem_source[e] * g->ML[a];
+    if (s->src_slot[e] >= 0)
+        for (int a = 0; a < 8; a++) be[a] += s->src_scale * s->src_vec[8 * (size_t)s->src_slot[e] + a];
+    for (int kf = s->face_start[e]; kf < s->face_start[e + 1]; kf++) {
+        int fi = s->face_list[kf];
+        const ThermalFace *f = &m->faces[fi];
+        const int *fn = HEX8_FACE_NODES[f->face];
+        if (f->kind == THERMAL_FLUX) {
+            for (int q = 0; q < 4; q++) be[fn[q]] += f->value * g->Fv[f->face][q];
+            continue;
+        }
+        const double *fh = s->face_h + 4 * (size_t)fi;
+        for (int q = 0; q < 4; q++) {
+            for (int r = 0; r < 4; r++) Ae[8 * fn[q] + fn[r]] += th * fh[0] * g->F[f->face][4 * q + r];
+            be[fn[q]] += th * fh[0] * fh[1] * g->Fv[f->face][q];
+            if (!c->steady && th < 1) {
+                double s0 = 0;
+                for (int r = 0; r < 4; r++) s0 += g->F[f->face][4 * q + r] * T0e[fn[r]];
+                be[fn[q]] += (1 - th) * fh[2] * (fh[3] * g->Fv[f->face][q] - s0);
+            }
+        }
+    }
+}
+
+static void assemble_range(void *vctx, int begin, int end, int tid) {
+    (void)tid;
+    StepCtx *c = vctx;
+    ThermalSolver *s = c->s;
+    const ThermalModel *m = c->m;
+    for (int idx = begin; idx < end; idx++) {
+        int e = c->order[idx];
+        if (m->active && !m->active[e]) continue;
+        eval_coefficients(s, c, e);
+        Geom local;
+        const Geom *g = geom_of(s, m, e, &local);
+        const int *cn = m->conn + 8 * (size_t)e;
+        double T0e[8], Ae[64], be[8];
+        bool freev[8];
+        for (int a = 0; a < 8; a++) T0e[a] = c->T0[cn[a]], freev[a] = !(m->fixed && m->fixed[cn[a]]);
+        element_system(s, c, e, g, T0e, Ae, be);
+        for (int a = 0; a < 8; a++) {
+            if (!freev[a]) continue;
+            int qa = s->eq[cn[a]];
+            for (int b = 0; b < 8; b++) {
+                if (freev[b]) {
+                    int64_t kk = s->emap ? s->emap[64 * (size_t)e + 8 * a + b] : csr_find(&s->A, qa, s->eq[cn[b]]);
+                    s->A.val[kk] += Ae[8 * a + b];
+                } else {
+                    be[a] -= Ae[8 * a + b] * m->fixed_T[cn[b]];
+                }
+            }
+            s->rhs[qa] += be[a];
+        }
+    }
+}
+
+/* residuals with the coefficients of the last assembly: heat through prescribed nodes, and the energy terms */
+static void energy_pass(ThermalSolver *s, const StepCtx *c, ThermalStepStats *st) {
+    const ThermalModel *m = c->m;
+    memset(s->res, 0, (size_t)s->nn * sizeof(double));
+    double stored = 0, source = 0, boundary = 0, enthalpy = 0, w = c->steady ? 1 : c->dt, th = c->theta;
+    for (int e = 0; e < m->nelems; e++) {
+        if (m->active && !m->active[e]) continue;
+        Geom local;
+        const Geom *g = geom_of(s, m, e, &local);
+        const int *cn = m->conn + 8 * (size_t)e;
+        double T0e[8], T1e[8], Ae[64], be[8];
+        for (int a = 0; a < 8; a++) T0e[a] = c->T0[cn[a]], T1e[a] = c->T1[cn[a]];
+        element_system(s, c, e, g, T0e, Ae, be);
+        for (int a = 0; a < 8; a++) {
+            double r = -be[a];
+            for (int b = 0; b < 8; b++) r += Ae[8 * a + b] * T1e[b];
+            s->res[cn[a]] += r;
+        }
+        double rc = s->coef[3 * (size_t)e + 1];
+        if (!c->steady) {
+            if (s->opt.consistent_capacity) {
+                for (int a = 0; a < 8; a++)
+                    for (int b = 0; b < 8; b++) stored += rc * g->M[8 * a + b] * (T1e[b] - T0e[b]);
+            } else {
+                for (int a = 0; a < 8; a++) stored += rc * g->ML[a] * (T1e[a] - T0e[a]);
+            }
+            const ThermalMaterial *mt = &m->mat[m->elem_mat ? m->elem_mat[e] : 0];
+            double t0 = 0, t1 = 0;
+            for (int a = 0; a < 8; a++) t0 += 0.125 * T0e[a], t1 += 0.125 * T1e[a];
+            enthalpy += thermal_table_eval(&mt->rho, 0.5 * (t0 + t1)) * g->vol * thermal_table_integral(&mt->cp, t0, t1);
+        }
+        if (m->elem_source) source += w * m->elem_source[e] * g->vol;
+        if (s->src_slot[e] >= 0)
+            for (int a = 0; a < 8; a++) source += w * s->src_scale * s->src_vec[8 * (size_t)s->src_slot[e] + a];
+        for (int kf = s->face_start[e]; kf < s->face_start[e + 1]; kf++) {
+            int fi = s->face_list[kf];
+            const ThermalFace *f = &m->faces[fi];
+            const int *fn = HEX8_FACE_NODES[f->face];
+            if (f->kind == THERMAL_FLUX) {
+                boundary += w * f->value * g->area[f->face];
+                continue;
+            }
+            const double *fh = s->face_h + 4 * (size_t)fi;
+            double a1 = 0, a0 = 0;
+            for (int q = 0; q < 4; q++) {
+                a1 += fh[1] * g->Fv[f->face][q];
+                a0 += fh[3] * g->Fv[f->face][q];
+                for (int r = 0; r < 4; r++) {
+                    a1 -= g->F[f->face][4 * q + r] * T1e[fn[r]];
+                    a0 -= g->F[f->face][4 * q + r] * T0e[fn[r]];
+                }
+            }
+            boundary += w * th * fh[0] * a1;
+            if (!c->steady && th < 1) boundary += w * (1 - th) * fh[2] * a0;
+        }
+    }
+    double prescribed = 0;
+    for (int n = 0; n < s->nn; n++)
+        if (s->node_active[n] && m->fixed && m->fixed[n]) prescribed += w * s->res[n];
+    st->stored_energy = stored;
+    st->source_energy = source;
+    st->boundary_energy = boundary;
+    st->prescribed_energy = prescribed;
+    st->enthalpy_change = enthalpy;
+    double big = fmax(fabs(stored), fmax(fabs(source), fmax(fabs(boundary), fabs(prescribed))));
+    st->balance_error = big > 0 ? fabs(stored - source - boundary - prescribed) / big : 0;
+}
+
+bool thermal_step(ThermalSolver *s, const ThermalModel *m, const double *T0, double *T1, double t, double dt, ThermalStepStats *st, char *err,
+                  size_t errlen) {
+    struct timespec ts0, ts1;
+    clock_gettime(CLOCK_MONOTONIC, &ts0);
+    memset(st, 0, sizeof *st);
+    if (m->nnodes != s->nn || m->nelems != s->ne) {
+        snprintf(err, errlen, "the mesh changed after the thermal solver was created");
+        return false;
+    }
+    if (T0 == T1) {
+        snprintf(err, errlen, "thermal_step needs distinct start and end temperature arrays");
+        return false;
+    }
+    bool steady = !(dt > 0);
+    StepCtx c = {s, m, T0, T1, dt, steady ? 1.0 : s->opt.theta, steady, NULL};
+    if (!group_faces(s, m, err, errlen)) return false;
+    memset(s->node_active, 0, (size_t)s->nn);
+    for (int e = 0; e < m->nelems; e++)
+        if (!m->active || m->active[e])
+            for (int a = 0; a < 8; a++) s->node_active[m->conn[8 * (size_t)e + a]] = 1;
+    bool sink = false, nonlinear = false;
+    for (int n = 0; n < s->nn && !sink; n++) sink = s->node_active[n] && m->fixed && m->fixed[n];
+    for (int i = 0; i < m->nfaces; i++) {
+        const ThermalFace *f = &m->faces[i];
+        if (m->active && !m->active[f->elem]) continue;
+        if (f->kind != THERMAL_FLUX && f->value > 0) sink = true;
+        if (f->kind == THERMAL_RADIATION) nonlinear = true;
+    }
+    for (int i = 0; i < m->nmat; i++) nonlinear |= m->mat[i].k.n > 1 || m->mat[i].cp.n > 1 || m->mat[i].rho.n > 1;
+    if (steady && !sink) {
+        snprintf(err, errlen, "the steady state is undefined without a prescribed temperature, convection or radiation");
+        return false;
+    }
+    if (!prepare_source(s, m, steady ? t : t + 0.5 * dt, st, err, errlen)) return false;
+    memcpy(T1, T0, (size_t)s->nn * sizeof(double));
+    for (int n = 0; n < s->nn; n++)
+        if (s->node_active[n] && m->fixed && m->fixed[n]) T1[n] = m->fixed_T[n];
+    bool converged = false;
+    double change = 0;
+    struct timespec ta, tb;
+    for (int it = 1; it <= s->opt.max_picard; it++) {
+        clock_gettime(CLOCK_MONOTONIC, &ta);
+        csr_zero(&s->A);
+        memset(s->rhs, 0, (size_t)s->neq * sizeof(double));
+        for (int col = 0; col < s->ncolors; col++) {
+            StepCtx sub = c;
+            sub.order = s->order + s->cstart[col];
+            int cnt = s->cstart[col + 1] - s->cstart[col];
+            if (s->opt.pool && cnt > 512) pool_for(s->opt.pool, cnt, 256, assemble_range, &sub);
+            else assemble_range(&sub, 0, cnt, 0);
+        }
+        for (int n = 0; n < s->nn; n++) {
+            int q = s->eq[n];
+            if (q < 0) continue;
+            bool fixed = s->node_active[n] && m->fixed && m->fixed[n];
+            if (!s->node_active[n] || fixed) {
+                s->A.val[s->diag[q]] = 1;
+                s->rhs[q] = fixed ? m->fixed_T[n] : T0[n];
+            }
+            s->x[q] = T1[n];
+        }
+        clock_gettime(CLOCK_MONOTONIC, &tb);
+        st->seconds_assembly += elapsed(ta, tb);
+        /* solve for the correction of the current iterate: the tolerance then applies to the temperature change within the
+         * step instead of absolute temperatures, which keeps the discrete energy balance closed to round-off */
+        csr_spmv(&s->A, s->x, s->ax, s->opt.pool);
+        double rn = 0;
+        for (int q = 0; q < s->neq; q++) {
+            s->rhs[q] -= s->ax[q];
+            rn += s->rhs[q] * s->rhs[q];
+            s->ax[q] = 0;
+        }
+        change = 0;
+        if (rn > 0) {
+            PcgOptions po = {PRECOND_JACOBI, NULL, s->opt.pcg_tol, s->opt.pcg_max_iter, s->opt.pool, NULL, NULL};
+            SolveStats ss;
+            if (!pcg_solve(&s->A, s->rhs, s->ax, &po, &ss, err, errlen)) return false;
+            st->linear_iterations += ss.iterations;
+            st->linear_residual = ss.rel_residual;
+            if (!ss.converged) {
+                snprintf(err, errlen, "the linear solver did not converge (relative residual %.3g after %d iterations)", ss.rel_residual, ss.iterations);
+                return false;
+            }
+            for (int n = 0; n < s->nn; n++) {
+                int q = s->eq[n];
+                if (q < 0) continue;
+                change = fmax(change, fabs(s->ax[q]));
+                T1[n] += s->ax[q];
+            }
+        }
+        clock_gettime(CLOCK_MONOTONIC, &ta);
+        st->seconds_solve += elapsed(tb, ta);
+        st->picard_iterations = it;
+        if (!nonlinear || change <= s->opt.picard_tol) {
+            converged = true;
+            break;
+        }
+    }
+    if (!converged) {
+        snprintf(err, errlen, "temperature iterations did not converge: largest change %.3g K after %d iterations (reduce the time step)", change,
+                 s->opt.max_picard);
+        return false;
+    }
+    clock_gettime(CLOCK_MONOTONIC, &ta);
+    energy_pass(s, &c, st);
+    clock_gettime(CLOCK_MONOTONIC, &tb);
+    st->seconds_energy = elapsed(ta, tb);
+    st->tmin = INFINITY, st->tmax = -INFINITY;
+    for (int n = 0; n < s->nn; n++)
+        if (s->node_active[n]) st->tmin = fmin(st->tmin, T1[n]), st->tmax = fmax(st->tmax, T1[n]);
+    clock_gettime(CLOCK_MONOTONIC, &ts1);
+    st->seconds = (double)(ts1.tv_sec - ts0.tv_sec) + 1e-9 * (double)(ts1.tv_nsec - ts0.tv_nsec);
+    return true;
+}

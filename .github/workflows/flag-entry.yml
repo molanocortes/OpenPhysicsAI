@@ -1,0 +1,67 @@
+name: flag entry rerun
+
+# The first half of scoring a pull request that enters a flag or a trial, with no human in the loop. It runs the pull
+# request's code with no secret and a read-only token: builds the lab's tools, reruns the entry the pull request adds
+# or changes from its commit (with the flags' files and their runner as they are on main, so the questions cannot be
+# changed), and keeps the predictions as an artifact. The second half, flag-score.yml, scores them against the sealed
+# answers and answers on the pull request. Nothing here can see an answer. flags/README.md has the rules.
+
+on:
+  pull_request:
+    paths: ['flags/entries/**']
+
+permissions:
+  contents: read
+
+jobs:
+  rerun:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: The flags and their runner as they are on main
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: git checkout "$BASE" -- tools/flags.py 'flags/*/flag.json'
+      - name: The entry this pull request adds or changes
+        id: entry
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          names=$(git diff --name-only "$BASE" HEAD -- flags/entries/ | cut -d/ -f3 | sort -u)
+          names=$(for n in $names; do test -f "flags/entries/$n/entry.json" && echo "$n"; done)
+          count=$(echo "$names" | grep -c . || true)
+          if [ "$count" != 1 ]; then
+            echo "::error::a pull request enters exactly one entry, flags/entries/<your GitHub name>/; this one changes: $names"
+            exit 1
+          fi
+          if ! echo "$names" | grep -Eq '^[a-z0-9][a-z0-9-]{0,38}$'; then
+            echo "::error::an entry's directory name is lowercase letters, digits and dashes"
+            exit 1
+          fi
+          echo "name=$names" >> "$GITHUB_OUTPUT"
+      - name: Toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang make python3 python3-numpy
+      - name: Build the lab's tools
+        run: make build/labrun build/labprobe
+      - name: Rerun the entry from its commit
+        env:
+          ENTRY: ${{ steps.entry.outputs.name }}
+        run: python3 tools/flags.py run --entry "$ENTRY"
+      - name: Keep the predictions for scoring
+        env:
+          ENTRY: ${{ steps.entry.outputs.name }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          mkdir judge
+          cp "flags/entries/$ENTRY/predictions.json" "flags/entries/$ENTRY/entry.json" judge/
+          echo "$PR" > judge/pr.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: flag-entry
+          path: judge/
+          retention-days: 7

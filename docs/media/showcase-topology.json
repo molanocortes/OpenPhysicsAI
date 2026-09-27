@@ -1,0 +1,31 @@
+{
+ "job_id": "job-20260921-015158-86d4-1",
+ "design_space_mm": [
+  80,
+  12,
+  40
+ ],
+ "elements": 38400,
+ "volume_fraction": 0.300000000026072,
+ "kept_cells": 10760,
+ "compliance_initial_j": 0.6908309403456256,
+ "compliance_j": 0.048371578940286826,
+ "iterations": 80,
+ "stop_reason": "iteration limit",
+ "settings": {
+  "change_tolerance": 0.01,
+  "filter_radius_m": 0.0015,
+  "max_iterations": 80,
+  "method": "modified SIMP, compliance objective, sensitivity filter, optimality criteria",
+  "move_limit": 0.2,
+  "passive_layers": 1,
+  "penalty": 3,
+  "volume_fraction": 0.3
+ },
+ "symmetry_check_max_difference": 0.0,
+ "prescribed": {
+  "load_n": 1000.0,
+  "fixed": "face x = 0"
+ },
+ "material": "ss316l_lpbf (published record)"
+}

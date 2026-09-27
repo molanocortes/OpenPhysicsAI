@@ -1,0 +1,64 @@
+{
+ "run_directory": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/audit/four_levels/designs/B/runs/job-20260916-212843-7d81-7",
+ "job_id": "job-20260916-212843-7d81-7",
+ "navier_formulation": "incompatible_modes",
+ "ccx_element": "C3D8I",
+ "nodes": 60393,
+ "elements": 53280,
+ "element_size_mm": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "direction": [
+  0.0,
+  0.0,
+  -1.0
+ ],
+ "load_set": "load",
+ "support_set": "mounting",
+ "load_total_n": [
+  0.0,
+  0.0,
+  -29.419949999999677
+ ],
+ "probe_request_mm": [
+  40.3,
+  20.3,
+  59.9
+ ],
+ "probe_centroid_mm": [
+  40.5,
+  20.5,
+  59.5
+ ],
+ "all_nodes": true,
+ "navier": {
+  "load_region_nodal_mean_mm": 0.008772911001168286,
+  "reaction_force_n": [
+   3.822229754923967e-10,
+   1.59908475350079e-11,
+   29.41995000163376
+  ],
+  "reaction_moment_nmm": [
+   -7.612388497335587e-10,
+   -2118.236400110112,
+   1.1009109179838106e-09
+  ],
+  "moment_point_mm": [
+   0.0,
+   20.0,
+   30.0
+  ],
+  "strain_energy_nmm": 0.12907346513358178,
+  "probe_element": 51721,
+  "probe_stress_mean_mpa": {
+   "xx": 1.8740393584873054,
+   "yy": 0.34572490675462714,
+   "zz": 0.0002816554596965144,
+   "xy": -0.004234350390681631,
+   "yz": -0.00046152492265172715,
+   "zx": -0.03886293520722779
+  }
+ }
+}

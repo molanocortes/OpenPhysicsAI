@@ -1,0 +1,8 @@
+{
+  "title": "OpenPhysicsAI: challenge data and reference results",
+  "upload_type": "dataset",
+  "description": "Reference solver results, flag attempts and leaderboards of OpenPhysicsAI. See README.md and challenges/README.md.",
+  "creators": [{"name": "Molano Cortes, Juan Sebastian"}],
+  "license": "CC-BY-4.0",
+  "keywords": ["additive manufacturing", "laser powder bed fusion", "distortion", "residual stress", "inherent strain", "benchmark", "validation", "finite element"]
+}

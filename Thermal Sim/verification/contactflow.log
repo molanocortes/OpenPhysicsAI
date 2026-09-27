@@ -1,0 +1,12 @@
+== setup through MCP
+== C5 refused topologies
+== C1/C2 conductance interface, series resistance
+  side A 82.499941 degC (series 82.5), side B 79.999942 degC (80.0), jump 2.499999 K (2.5), rate B->A -0.49999974 W (-0.5), far faces 84.499941 / 69.999950 degC (84.5 / 70.0)
+== C8 preview
+== C4 model variants
+== C6 exterior condition reaching the interface
+== C7 mechanical bonding kept across a split thermal interface
+== C5 gaps and overlaps
+== C3 save, reopen in a new server process, reproduce
+
+ALL CONTACT FLOW TESTS PASSED: 104 passed, 0 failed

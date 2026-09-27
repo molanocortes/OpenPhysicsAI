@@ -1,0 +1,20 @@
+{
+ "id": "apophis-2029",
+ "number": 9,
+ "tier": "semi-holy-grail",
+ "stone": "gravity",
+ "stone_short": "gravity",
+ "difficulty": 5,
+ "title": "Apophis passes the Earth",
+ "subtitle": "13 April 2029: how the Earth's tides shake an asteroid 340 m across",
+ "short": "Apophis 2029",
+ "status": "preparing",
+ "hook": "On 13 April 2029 an asteroid 340 metres across will pass the Earth closer than our geostationary satellites, and the Earth's tides will twist it. Predict how, before it happens.",
+ "deadline": "00:00 UTC, 13 April 2029",
+ "event": "13 April 2029",
+ "event_words": "nature scores it after the flyby",
+ "trials": [
+  "orbit-planets-2020"
+ ],
+ "note": "In preparation: the cases, the outputs and their units are written here when the flag opens, and the measured values are sealed at the same moment (tools/flags.py seal)."
+}

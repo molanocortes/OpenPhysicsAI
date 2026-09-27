@@ -1,0 +1,88 @@
+{
+ "domain": "flow",
+ "model": "lbm3d",
+ "title": "A flag flutters in a 6 m/s wind",
+ "fluid": {
+  "kinematic_viscosity_m2_s": 1.589e-05,
+  "density_kg_m3": 1.1614,
+  "source": "Incropera, DeWitt, Bergman and Lavine, Fundamentals of Heat and Mass Transfer, 6th ed. (2007), table A.4 (air at 300 K and 1 atm): nu 15.89e-6 m2/s, rho 1.1614 kg/m3, 300 K; typed from the table, not re-checked against a copy in this session"
+ },
+ "stream": {
+  "speed_m_s": 6.0
+ },
+ "box_m": [
+  -0.6,
+  -0.6,
+  -0.45,
+  2.4,
+  0.6,
+  0.75
+ ],
+ "cell_m": 0.015,
+ "lattice_speed": 0.05,
+ "sides": "slip",
+ "les": {
+  "smagorinsky": 0.15
+ },
+ "collision": "regularized",
+ "sponge_cells": 10,
+ "disturbance": {
+  "noise_fraction": 0.02,
+  "inlet_noise_fraction": 0.005
+ },
+ "bodies": [
+  {
+   "shape": "cylinder",
+   "centre_m": [
+    0.0,
+    0.0,
+    0.15
+   ],
+   "radius_m": 0.02,
+   "length_m": 1.4,
+   "axis": "z"
+  }
+ ],
+ "sheet": {
+  "material": {
+   "shear_modulus_pa": 2000000.0,
+   "density_kg_m3": 600.0,
+   "source": "flag cloth of about 60 g/m2 at 0.1 mm, as ripstop nylon; stretch stiffness E h = 600 N/m, the soft small-strain range of a woven cloth (crimp), which keeps it within 0.2 % of its length under this wind; bending as a plate of that modulus (demonstration values, not measured on a cloth; taken as isotropic). A stiffer cloth needs a finer flow step: the flow must follow its stretch waves (docs/lab/fsi.md)"
+  },
+  "thickness_m": 0.0001,
+  "cell_m": 0.02,
+  "size_m": [
+   0.6,
+   0.4
+  ],
+  "corner_m": [
+   0.025,
+   0.0,
+   0.0
+  ],
+  "along": [
+   1,
+   0,
+   0
+  ],
+  "across": [
+   0,
+   0,
+   1
+  ],
+  "pinned": "first_edge",
+  "look": "fabric"
+ },
+ "reference": {
+  "area_m2": 0.24,
+  "length_m": 0.6
+ },
+ "run": {
+  "end_s": 3.0,
+  "frames": 60,
+  "output_stride": 2,
+  "output_from_s": 0.6,
+  "average_from_s": 1.0,
+  "iso_level_q_per_s2": 3000.0
+ }
+}

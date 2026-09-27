@@ -1,0 +1,379 @@
+{
+  "name": "printed_link_ab",
+  "question": "Two versions of the printed upper-arm link of the robot: A with a solid web, B with a lightened I-section web, three lightening holes and two ribs. Both mount on the shoulder bearing bores and carry the forearm and payload at the elbow bore. Compare their stiffness and mass, state the assumptions, and say what could change the comparison.",
+  "decision": "choose the web of the printed upper-arm link: solid (A) or lightened I-section with ribs (B)",
+  "designs": [
+    {
+      "name": "A",
+      "description": "solid 28 x 26 mm web between the shoulder yoke and the elbow boss",
+      "geometry": {
+        "path": "geometry/link_a_solid.stl",
+        "units": "mm",
+        "units_source": "user"
+      },
+      "mounting_region": {
+        "query": {
+          "all": [
+            {
+              "box": {
+                "min": [
+                  -11.0,
+                  -22,
+                  -11.0
+                ],
+                "max": [
+                  11.0,
+                  22,
+                  11.0
+                ]
+              }
+            },
+            {
+              "not": {
+                "facing": {
+                  "direction": [
+                    0,
+                    1,
+                    0
+                  ],
+                  "max_angle_deg": 50
+                }
+              }
+            },
+            {
+              "not": {
+                "facing": {
+                  "direction": [
+                    0,
+                    -1,
+                    0
+                  ],
+                  "max_angle_deg": 50
+                }
+              }
+            }
+          ]
+        },
+        "mode": "triangle",
+        "description": "both 20 mm shoulder bearing bores, held as a rigid bearing seat",
+        "source": "user"
+      },
+      "load_region": {
+        "query": {
+          "all": [
+            {
+              "box": {
+                "min": [
+                  161.0,
+                  -15,
+                  -9.0
+                ],
+                "max": [
+                  179.0,
+                  15,
+                  9.0
+                ]
+              }
+            },
+            {
+              "not": {
+                "facing": {
+                  "direction": [
+                    0,
+                    1,
+                    0
+                  ],
+                  "max_angle_deg": 50
+                }
+              }
+            },
+            {
+              "not": {
+                "facing": {
+                  "direction": [
+                    0,
+                    -1,
+                    0
+                  ],
+                  "max_angle_deg": 50
+                }
+              }
+            }
+          ]
+        },
+        "mode": "triangle",
+        "description": "the 16 mm elbow bearing bore, where the forearm and payload hang",
+        "source": "user"
+      }
+    },
+    {
+      "name": "B",
+      "description": "I-section web (7 mm flanges, 8 mm central plate) with three 16 mm lightening holes and two transverse ribs",
+      "geometry": {
+        "path": "geometry/link_b_lightened.stl",
+        "units": "mm",
+        "units_source": "user"
+      },
+      "mounting_region": {
+        "query": {
+          "all": [
+            {
+              "box": {
+                "min": [
+                  -11.0,
+                  -22,
+                  -11.0
+                ],
+                "max": [
+                  11.0,
+                  22,
+                  11.0
+                ]
+              }
+            },
+            {
+              "not": {
+                "facing": {
+                  "direction": [
+                    0,
+                    1,
+                    0
+                  ],
+                  "max_angle_deg": 50
+                }
+              }
+            },
+            {
+              "not": {
+                "facing": {
+                  "direction": [
+                    0,
+                    -1,
+                    0
+                  ],
+                  "max_angle_deg": 50
+                }
+              }
+            }
+          ]
+        },
+        "mode": "triangle",
+        "description": "both 20 mm shoulder bearing bores, held as a rigid bearing seat",
+        "source": "user"
+      },
+      "load_region": {
+        "query": {
+          "all": [
+            {
+              "box": {
+                "min": [
+                  161.0,
+                  -15,
+                  -9.0
+                ],
+                "max": [
+                  179.0,
+                  15,
+                  9.0
+                ]
+              }
+            },
+            {
+              "not": {
+                "facing": {
+                  "direction": [
+                    0,
+                    1,
+                    0
+                  ],
+                  "max_angle_deg": 50
+                }
+              }
+            },
+            {
+              "not": {
+                "facing": {
+                  "direction": [
+                    0,
+                    -1,
+                    0
+                  ],
+                  "max_angle_deg": 50
+                }
+              }
+            }
+          ]
+        },
+        "mode": "triangle",
+        "description": "the 16 mm elbow bearing bore, where the forearm and payload hang",
+        "source": "user"
+      }
+    }
+  ],
+  "material": {
+    "record": {
+      "id": "pla_demo_isotropic",
+      "name": "PLA, generic FFF filament (demonstration values)",
+      "family": "polymer",
+      "status": "user_supplied",
+      "provenance": "typical magnitudes for printed PLA (E 3.0 GPa, nu 0.36, density 1240 kg/m3); not measured, and a printed part is not isotropic: the orthotropic assessment of the same link shows the interlayer direction governs",
+      "youngs_modulus_pa": {
+        "value": 3000000000.0
+      },
+      "poisson_ratio": {
+        "value": 0.36
+      },
+      "density_kg_m3": {
+        "value": 1240
+      }
+    },
+    "source": "user",
+    "reference": "demonstration values for printed PLA"
+  },
+  "manufacturing": {
+    "process": "fff",
+    "source": "user",
+    "notes": "fused filament fabrication in PLA; this comparison treats the material as homogeneous and isotropic, which the printed part is not"
+  },
+  "mounting": {
+    "idealization": "fixed",
+    "description": "both shoulder bores held rigidly (the stiffest idealisation of a bearing seat)",
+    "source": "user"
+  },
+  "load": {
+    "kind": "payload_mass",
+    "mass": "1.42 kg",
+    "direction": "-z",
+    "source": "user",
+    "description": "forearm (0.42 kg) and payload (1 kg) hanging at the elbow bore with the arm horizontal"
+  },
+  "primary_quantity": "load_region_displacement",
+  "refinement": {
+    "element_sizes": [
+      "4 mm",
+      "2 mm"
+    ],
+    "convergence_criterion": 0.03
+  },
+  "sensitivity": {
+    "youngs_modulus_relative": [
+      0.9,
+      1.1
+    ],
+    "mounting_alternatives": [
+      {
+        "name": "one_bearing_only",
+        "idealization": "fixed",
+        "description": "only the outer ear's bore is held, as if one bearing carried the whole load",
+        "regions": {
+          "A": {
+            "query": {
+              "all": [
+                {
+                  "box": {
+                    "min": [
+                      -11.0,
+                      12,
+                      -11.0
+                    ],
+                    "max": [
+                      11.0,
+                      22,
+                      11.0
+                    ]
+                  }
+                },
+                {
+                  "not": {
+                    "facing": {
+                      "direction": [
+                        0,
+                        1,
+                        0
+                      ],
+                      "max_angle_deg": 50
+                    }
+                  }
+                },
+                {
+                  "not": {
+                    "facing": {
+                      "direction": [
+                        0,
+                        -1,
+                        0
+                      ],
+                      "max_angle_deg": 50
+                    }
+                  }
+                }
+              ]
+            },
+            "mode": "triangle",
+            "description": "only the outer ear's bore is held: a softer bound if one bearing carries the load",
+            "source": "user"
+          },
+          "B": {
+            "query": {
+              "all": [
+                {
+                  "box": {
+                    "min": [
+                      -11.0,
+                      12,
+                      -11.0
+                    ],
+                    "max": [
+                      11.0,
+                      22,
+                      11.0
+                    ]
+                  }
+                },
+                {
+                  "not": {
+                    "facing": {
+                      "direction": [
+                        0,
+                        1,
+                        0
+                      ],
+                      "max_angle_deg": 50
+                    }
+                  }
+                },
+                {
+                  "not": {
+                    "facing": {
+                      "direction": [
+                        0,
+                        -1,
+                        0
+                      ],
+                      "max_angle_deg": 50
+                    }
+                  }
+                }
+              ]
+            },
+            "mode": "triangle",
+            "description": "only the outer ear's bore is held: a softer bound if one bearing carries the load",
+            "source": "user"
+          }
+        }
+      }
+    ],
+    "self_weight": true,
+    "level": "finest"
+  },
+  "limits": {
+    "max_elements": 250000,
+    "max_wall_time": "15 min"
+  },
+  "accept": [
+    {
+      "id": "manufacturing.printed_properties",
+      "reason": "no measured printed-PLA stiffness is available for this demonstration; the comparison assumes isotropic bulk values, and the orthotropic assessment of the same link reports how much the print direction matters"
+    }
+  ]
+}

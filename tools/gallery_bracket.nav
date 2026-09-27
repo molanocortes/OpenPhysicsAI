@@ -1,0 +1,36 @@
+# The gallery's real part (40 000 voxels, 40 iterations: at 0.65 mm and 60 iterations one run passed ten minutes): the filleted L-bracket of tools/tetcompare.py, optimised for stiffness at 30 percent of
+# its volume on the voxel mesh, and then printed. Written by the app; every image is exported at three times the
+# window. Run it detached, it takes several minutes (AGENTS.md rule 8):
+#   nohup ./navier --headless --size 1400x900 --workspace /tmp/navier-gallery-bracket \
+#     --exec 'exec tools/gallery_bracket.nav' > /tmp/gallery-bracket.log &
+workspace solid
+frames 4
+echo BRACKET start
+am project_create '{"name": "bracket_optimised", "description": "the filleted L-bracket, optimised for stiffness"}'
+am geometry_import '{"path": "/tmp/navier-gallery-parts/bracket_fillet.stl", "units": "mm", "name": "bracket"}'
+am material_assign '{"body": "bracket", "material": "ss316l_lpbf_demo", "source": "user"}'
+am mesh_generate '{"element_size": "0.75 mm"}'
+am selection_create '{"name": "base_bottom", "query": {"all": [{"facing": {"direction": "down"}}, {"plane": {"axis": "z", "at": "min"}}]}, "source": "user"}'
+am selection_create '{"name": "upright_top", "query": {"extreme": {"direction": "+z"}}, "source": "user"}'
+am boundary_apply '{"name": "bolted", "kind": "fixed", "selection": "base_bottom", "source": "user"}'
+am boundary_apply '{"name": "push", "kind": "force", "selection": "upright_top", "force": ["0.5 kN", 0, 0], "source": "user"}'
+solid run static
+solid wait 900
+frames 20
+fem optimise 0.3 2 40
+fem optimwait 3000
+frames 12
+fem surface off
+fem deform 0
+fem edges on
+fem shadows on
+fem glass 0 0.45
+fem fit
+camera zoom 1.7
+camera orbit 25 0
+frames 8
+fem export docs/images/gallery-bracket-optimised.png 3
+echo BRACKET optimised
+fem optipart /tmp/navier-gallery-parts/bracket_optimised.stl
+echo BRACKET exported
+quit

@@ -1,0 +1,143 @@
+{
+ "case": {
+  "run_directory": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/audit/four_levels/designs/A/runs/job-20260916-212839-7d81-6",
+  "job_id": "job-20260916-212839-7d81-6",
+  "navier_formulation": "incompatible_modes",
+  "ccx_element": "C3D8I",
+  "nodes": 49077,
+  "elements": 42240,
+  "element_size_mm": [
+   1.0,
+   1.0,
+   1.0
+  ],
+  "direction": [
+   0.0,
+   0.0,
+   -1.0
+  ],
+  "load_set": "load",
+  "support_set": "mounting",
+  "load_total_n": [
+   0.0,
+   0.0,
+   -29.419949999999677
+  ],
+  "probe_request_mm": [
+   40.3,
+   20.3,
+   59.9
+  ],
+  "probe_centroid_mm": [
+   40.5,
+   20.5,
+   59.5
+  ],
+  "all_nodes": true,
+  "navier": {
+   "load_region_nodal_mean_mm": 0.02539766908992852,
+   "reaction_force_n": [
+    5.128996116710027e-10,
+    5.973838090866934e-11,
+    29.419950003814375
+   ],
+   "reaction_moment_nmm": [
+    -2.5460185071324304e-09,
+    -2118.2364003090343,
+    3.744426990692773e-09
+   ],
+   "moment_point_mm": [
+    0.0,
+    20.0,
+    30.0
+   ],
+   "strain_energy_nmm": 0.37362495396957723,
+   "probe_element": 40681,
+   "probe_stress_mean_mpa": {
+    "xx": 1.8878970945503761,
+    "yy": 0.0839811982905213,
+    "zz": 3.0380070333412695e-05,
+    "xy": 0.0017294590879736382,
+    "yz": -7.800278470560399e-05,
+    "zx": -0.028699838843291494
+   }
+  }
+ },
+ "ccx_sections": [
+  "displacements (vx,vy,vz) for set LOAD and time  0.1000000E+01",
+  "forces (fx,fy,fz) for set MOUNTING and time  0.1000000E+01",
+  "total internal energy for set EALL and time  0.1000000E+01",
+  "stresses (elem, integ.pnt.,sxx,syy,szz,sxy,sxz,syz) for set PROBE and time  0.1000000E+01"
+ ],
+ "load_region_nodal_mean_mm": {
+  "navier": 0.02539766908992852,
+  "ccx": 0.025397669100346024,
+  "relative_difference": 4.1017558061625533e-10
+ },
+ "reaction_force_n": {
+  "navier": [
+   5.128996116710027e-10,
+   5.973838090866934e-11,
+   29.419950003814375
+  ],
+  "ccx": [
+   -6.490008541693015e-08,
+   1.2421730311018564e-12,
+   29.41994845969987
+  ],
+  "relative_difference": 5.25323605799867e-08,
+  "navier_balance": 1.3084616346343487e-10,
+  "ccx_balance": 5.240207657578805e-08
+ },
+ "reaction_moment_nmm": {
+  "navier": [
+   -2.5460185071324304e-09,
+   -2118.2364003090343,
+   3.744426990692773e-09
+  ],
+  "ccx": [
+   1.3804957177399046e-11,
+   -2118.236430555895,
+   -5.329070518200751e-15
+  ],
+  "relative_difference": 1.1980680603006718e-08,
+  "scale_note": "difference divided by |load| x largest distance from the moment point to a load node"
+ },
+ "strain_energy_nmm": {
+  "navier": 0.37362495396957723,
+  "ccx": 0.373625,
+  "relative_difference": 1.2319954077517447e-07,
+  "work_check_ccx": 1.0000693858127632
+ },
+ "probe_stress_mean_mpa": {
+  "xx": {
+   "navier": 1.8878970945503761,
+   "ccx": 1.8878972500000002,
+   "relative_difference": 8.234009391222116e-08
+  },
+  "yy": {
+   "navier": 0.0839811982905213,
+   "ccx": 0.08398119875,
+   "relative_difference": 5.471209204401675e-09
+  },
+  "zz": {
+   "navier": 3.0380070333412695e-05,
+   "ccx": 3.0380124999999925e-05,
+   "relative_difference": 1.7994226685205252e-06
+  },
+  "xy": {
+   "navier": 0.0017294590879736382,
+   "ccx": 0.0017294589999999998,
+   "relative_difference": -5.086771868065636e-08
+  },
+  "integration_points_ccx": 8
+ },
+ "all_nodes": {
+  "max_displacement_difference_mm": 5.005952338721788e-09,
+  "max_displacement_navier_mm": 0.030047728344209296
+ },
+ "ccx_messages": [],
+ "ccx_seconds": 18.864946126937866,
+ "ccx_return_code": 0,
+ "ccx_version": "This is Version 2.23"
+}

@@ -1,0 +1,42 @@
+{
+ "domain": "water",
+ "title": "Water sloshes in a tank",
+ "note": "The free surface starts as 0.05 m cos(pi x / L) and swings at the first mode; linear theory gives a period of 1.18 s (wtest W2 checks it to 0.21 % on a slab).",
+ "particle_spacing_m": 0.02,
+ "gravity_m_s2": 9.80665,
+ "water": {
+  "density_kg_m3": 997.0,
+  "source": "Incropera, DeWitt, Bergman and Lavine, Fundamentals of Heat and Mass Transfer, 6th ed. (2007), table A.6 (saturated water), 300 K; typed from the table, not re-checked against a copy in this session"
+ },
+ "tank": {
+  "size_m": [
+   1.0,
+   0.4,
+   0.8
+  ]
+ },
+ "sloshing": {
+  "depth_m": 0.5,
+  "amplitude_m": 0.05
+ },
+ "run": {
+  "end_s": 3.0,
+  "frames": 91
+ },
+ "controls": [
+  {
+   "label": "starting wave amplitude, m",
+   "path": "sloshing.amplitude_m",
+   "min": 0.0,
+   "max": 0.2,
+   "log": false
+  },
+  {
+   "label": "water depth, m",
+   "path": "sloshing.depth_m",
+   "min": 0.1,
+   "max": 0.7,
+   "log": false
+  }
+ ]
+}

@@ -1,0 +1,26 @@
+# build products and binaries
+build/
+/navier
+/navier-ctl
+/navier-mcp
+/navier-server
+NAVIER.app/Contents/MacOS/
+NAVIER.app/Contents/Resources/
+*.o
+# packages and recovery tarballs (kept on disk, not in history)
+dist/*.tar.gz
+.recovery/
+# generated run data
+Thermal Sim/examples/**/workspace/
+**/runs/job-*/
+demo/workspace/
+demo/geometry/*.stl
+# AI-client session transcripts written by release/evaluation/ai-client/run_sessions.sh (internal, never versioned)
+release/evaluation/ai-client/raw/
+release/evaluation/ai-client/transcripts/
+# noise
+.DS_Store
+__pycache__/
+*.pyc
+
+.claude/

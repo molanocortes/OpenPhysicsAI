@@ -1,0 +1,53 @@
+{
+  "name": "bracket_ab",
+  "question": "Here are two versions of my bracket. They attach through the back face and carry approximately 3 kg on the pad at the end of the arm. Compare their stiffness and mass, explain the assumptions, and tell me what information could change the comparison.",
+  "decision": "choose between version A (plain L, 8 mm plates) and version B (the same with a 24 mm inner chamfer)",
+  "designs": [
+    {
+      "name": "A",
+      "description": "plain L bracket, 8 mm wall plate and arm, sharp inner corner",
+      "geometry": {"path": "geometry/bracket_a_plain.stl", "units": "mm", "units_source": "user"},
+      "mounting_region": {"query": {"plane": {"axis": "x", "at": "min"}}, "description": "back face bolted against the wall", "source": "user"},
+      "load_region": {"query": {"box": {"min": [63, 11, 59], "max": [81, 29, 61]}}, "mode": "triangle", "description": "16 x 16 mm pad on top of the arm tip where the 3 kg item sits", "source": "user"}
+    },
+    {
+      "name": "B",
+      "description": "the same bracket with a 24 mm inner chamfer",
+      "geometry": {"path": "geometry/bracket_b_chamfer.stl", "units": "mm", "units_source": "user"},
+      "mounting_region": {"query": {"plane": {"axis": "x", "at": "min"}}, "description": "back face bolted against the wall", "source": "user"},
+      "load_region": {"query": {"box": {"min": [63, 11, 59], "max": [81, 29, 61]}}, "mode": "triangle", "description": "16 x 16 mm pad on top of the arm tip where the 3 kg item sits", "source": "user"}
+    }
+  ],
+  "material": {
+    "record": {
+      "id": "al6061_t6_nominal", "name": "Aluminium 6061-T6, nominal handbook values", "family": "metal", "status": "user_supplied",
+      "provenance": "nominal handbook values for 6061-T6 (E 68.9 GPa, nu 0.33, density 2700 kg/m3); not measured for this batch; confirm against the supplier's certificate",
+      "youngs_modulus_pa": {"value": 68.9e9}, "poisson_ratio": {"value": 0.33}, "density_kg_m3": {"value": 2700}
+    },
+    "source": "database",
+    "reference": "nominal handbook values for 6061-T6 aluminium"
+  },
+  "manufacturing": {"process": "machined", "source": "user", "notes": "machined from plate; the material is treated as homogeneous and isotropic"},
+  "mounting": {"idealization": "fixed", "description": "back face clamped to a rigid wall (the stiffest idealisation of a bolted joint)", "source": "user"},
+  "load": {"kind": "payload_mass", "mass": "3 kg", "direction": "-z", "source": "user", "description": "3 kg item resting on the pad; z points up in both files"},
+  "primary_quantity": "load_region_displacement",
+  "refinement": {"element_sizes": ["4 mm", "2 mm", "1 mm"], "convergence_criterion": 0.02},
+  "sensitivity": {
+    "youngs_modulus_relative": [0.9, 1.1],
+    "poisson_ratio": [0.30, 0.36],
+    "mounting_alternatives": [
+      {
+        "name": "two_bolt_pads",
+        "idealization": "fixed",
+        "description": "only two 12 x 12 mm pads around the upper bolts are held and the rest of the back face is free: a softer bound than a clamped face",
+        "regions": {
+          "A": {"query": {"any": [{"box": {"min": [-1, 3, 39], "max": [1, 17, 53]}}, {"box": {"min": [-1, 23, 39], "max": [1, 37, 53]}}]}, "mode": "triangle", "description": "two bolt pads on the back face", "source": "user"},
+          "B": {"query": {"any": [{"box": {"min": [-1, 3, 39], "max": [1, 17, 53]}}, {"box": {"min": [-1, 23, 39], "max": [1, 37, 53]}}]}, "mode": "triangle", "description": "two bolt pads on the back face", "source": "user"}
+        }
+      }
+    ],
+    "self_weight": true,
+    "level": "finest"
+  },
+  "limits": {"max_elements": 400000, "max_wall_time": "30 min"}
+}

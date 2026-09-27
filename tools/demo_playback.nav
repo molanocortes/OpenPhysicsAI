@@ -1,0 +1,26 @@
+# Run from the repository: ./navier --workspace /tmp/navier-playback --exec 'exec tools/demo_playback.nav'
+# Demonstration inputs, not an LPBF experiment or a residual-stress prediction.
+# The sample bracket (samples/bracket.stl, mm). Demo SS316L, fixed lowest face, 8 MW/m3 heater on 0..20 s,
+# 60 W/(m2 K) convection to 20 C. Real transient thermal + elastic mechanical solves at stored times,
+# then it plays the stored times with a section through the middle.
+workspace solid
+am project_create name=playback_demo overwrite=true description='Demonstration inputs: scheduled heating of the sample bracket, not LPBF validation'
+am geometry_import path=samples/bracket.stl units=mm name=specimen
+am mesh_generate element_size=0.6
+am material_assign body=specimen material=ss316l_lpbf_demo source=user
+solid fixbase
+am selection_create name=outside query='{"type":"planar"}' source=user replace=true
+am boundary_apply '{"name":"demo_cooling","kind":"convection","selection":"outside","convection":{"coefficient":60,"ambient":20},"source":"user"}'
+am boundary_apply '{"name":"demo_switched_heater","kind":"heat_source","body":"specimen","power_density":8e6,"schedule":[{"time":0,"factor":1},{"time":20,"factor":0}],"source":"user"}'
+solid run thermomechanical 40 10
+solid wait 300
+fem field von_mises
+fem deform auto
+fem step last
+fem fit
+fem section y 0.5
+frames 8
+fem status
+screenshot /tmp/navier-demo-playback.png
+fem speed 2
+fem play

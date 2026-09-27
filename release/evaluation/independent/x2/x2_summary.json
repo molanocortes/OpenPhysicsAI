@@ -1,0 +1,162 @@
+{
+ "specification": {
+  "L_mm": 100.0,
+  "b_mm": 10.0,
+  "h_mm": 10.0,
+  "E_mpa": 200000.0,
+  "force_n": 10.0
+ },
+ "navier": {
+  "study": "/private/tmp/claude-501/-Users-sebas-Downloads-Fluid-Sim/22500e7f-fd6d-4763-a5f1-db09bf6ffe3d/scratchpad/eval/independent/cantilevers",
+  "levels": {
+   "0.625": 0.020011462915574724,
+   "1.25": 0.019997251134530117,
+   "2.5": 0.019962175087268913
+  }
+ },
+ "timoshenko": {
+  "nu_0.3_kappa_5_6": 0.020156,
+  "nu_0.3_cowper": 0.020153,
+  "nu_0": 0.02012
+ },
+ "ccx_version": "This is Version 2.23",
+ "cases": [
+  {
+   "case": "clamped_C3D20R_20x2x2",
+   "tip_mean_mm": 0.019963445833333336,
+   "vs_timoshenko_5_6": -0.009553193424621161,
+   "vs_navier_finest": -0.0023994788608891248,
+   "nodal_mean_mm": 0.019963669523809527,
+   "energy_vs_work": 0.9999999081654865,
+   "reaction_balance_printed": 0.0,
+   "ccx_seconds": 0.0290372371673584,
+   "ccx_messages": []
+  },
+  {
+   "case": "clamped_C3D20R_40x4x4",
+   "tip_mean_mm": 0.019998907499999996,
+   "vs_timoshenko_5_6": -0.007793833101806124,
+   "vs_navier_finest": -0.0006274111806666843,
+   "nodal_mean_mm": 0.019999065692307687,
+   "energy_vs_work": 1.0000000250013659,
+   "reaction_balance_printed": 0.0,
+   "ccx_seconds": 0.2586331367492676,
+   "ccx_messages": []
+  },
+  {
+   "case": "clamped_C3D20R_80x8x8",
+   "tip_mean_mm": 0.02001176140624999,
+   "vs_timoshenko_5_6": -0.00715611201379286,
+   "vs_navier_finest": 1.491598472966895e-05,
+   "nodal_mean_mm": 0.02001185128888889,
+   "energy_vs_work": 0.9999999297288248,
+   "reaction_balance_printed": 0.0,
+   "ccx_seconds": 5.0457868576049805,
+   "ccx_messages": []
+  },
+  {
+   "case": "clamped_C3D8I_160x16x16",
+   "tip_mean_mm": 0.02001146273437502,
+   "vs_timoshenko_5_6": -0.007170930027038127,
+   "vs_navier_finest": -9.05479550949851e-09,
+   "nodal_mean_mm": 0.02001152093425607,
+   "energy_vs_work": 0.9999998633595627,
+   "reaction_balance_printed": 0.0,
+   "ccx_seconds": 16.306112051010132,
+   "ccx_messages": []
+  },
+  {
+   "case": "sliding_C3D20R_20x2x2",
+   "tip_mean_mm": 0.020157780833333333,
+   "vs_timoshenko_5_6": 8.835251703377316e-05,
+   "vs_navier_finest": null,
+   "nodal_mean_mm": 0.020158005238095238,
+   "energy_vs_work": 0.9999999586594706,
+   "reaction_balance_printed": 0.0,
+   "ccx_seconds": 0.032620906829833984,
+   "ccx_messages": []
+  },
+  {
+   "case": "sliding_C3D20R_40x4x4",
+   "tip_mean_mm": 0.020162830416666663,
+   "vs_timoshenko_5_6": 0.0003388775881455802,
+   "vs_navier_finest": null,
+   "nodal_mean_mm": 0.020162987384615385,
+   "energy_vs_work": 1.0000004752970262,
+   "reaction_balance_printed": 0.0,
+   "ccx_seconds": 0.2704019546508789,
+   "ccx_messages": []
+  },
+  {
+   "case": "sliding_C3D20R_80x8x8",
+   "tip_mean_mm": 0.020166002968750023,
+   "vs_timoshenko_5_6": 0.0004962774732101202,
+   "vs_navier_finest": null,
+   "nodal_mean_mm": 0.020166093066666665,
+   "energy_vs_work": 0.9999998527844101,
+   "reaction_balance_printed": 0.0,
+   "ccx_seconds": 5.116721868515015,
+   "ccx_messages": []
+  },
+  {
+   "case": "s1_nu0_clamped_C3D20R_80x8x8",
+   "tip_mean_mm": 0.020120186666666685,
+   "vs_timoshenko_5_6": 9.27766733033672e-06,
+   "vs_navier_finest": null,
+   "nodal_mean_mm": 0.020120307822222242,
+   "energy_vs_work": 0.9999996686578114,
+   "reaction_balance_printed": 0.0,
+   "ccx_seconds": 5.057845115661621,
+   "ccx_messages": []
+  },
+  {
+   "case": "s2_minimal_C3D20R_80x8x8",
+   "tip_mean_mm": 0.020262539218749993,
+   "vs_timoshenko_5_6": 0.005285732226135794,
+   "vs_navier_finest": null,
+   "nodal_mean_mm": 0.02026262937777778,
+   "energy_vs_work": 1.0000000385563725,
+   "reaction_balance_printed": 0.0,
+   "ccx_seconds": 5.100825071334839,
+   "ccx_messages": []
+  }
+ ],
+ "criteria": {
+  "X2a": {
+   "criterion": "finest C3D20R tip-face mean within 0.5 % of NAVIER's finest",
+   "ccx_mm": 0.02001176140624999,
+   "navier_mm": 0.020011462915574724,
+   "navier_element_size_mm": 0.625,
+   "relative": 1.491598472966895e-05
+  },
+  "X2b": {
+   "criterion": "reaction equals 10 N within 1e-9 relative in both codes",
+   "navier_balance": 8.27402146796885e-11,
+   "ccx_balance_as_printed": {
+    "clamped_C3D20R_20x2x2": 0.0,
+    "clamped_C3D20R_40x4x4": 0.0,
+    "clamped_C3D20R_80x8x8": 0.0,
+    "clamped_C3D8I_160x16x16": 0.0
+   },
+   "ccx_print_resolution": "CalculiX prints totals with 7 significant digits (resolution 5e-7 of 10 N); a 1e-9 balance cannot be read from its output"
+  },
+  "X2c": {
+   "criterion": "independent C3D8I at 0.625 mm within 2 % of NAVIER at 0.625 mm",
+   "ccx_mm": 0.02001146273437502,
+   "navier_mm": 0.020011462915574724,
+   "relative": -9.05479550949851e-09
+  },
+  "B_clamped": {
+   "criterion": "clamped C3D20R within 0.2 % of NAVIER (H1 reading); > 0.5 % would indicate H2 or H3",
+   "relative": 1.491598472966895e-05
+  },
+  "B_T4": {
+   "criterion": "sliding-root C3D20R within 0.2 % of Timoshenko",
+   "ccx_mm": 0.020166002968750023,
+   "timoshenko_kappa_5_6_mm": 0.020156,
+   "timoshenko_cowper_mm": 0.020153,
+   "relative_to_5_6": 0.0004962774732101202,
+   "relative_to_cowper": 0.0006452125614063769
+  }
+ }
+}

@@ -1,0 +1,65 @@
+== E1a tridiagonal: ILU(0) is the exact LU
+  1 iterations, error 1.90e-16
+== E1b random sparse nonsymmetric system against dense LU
+  bicgstab/ilu0: 6 iterations, true residual 4.82e-14, difference to dense LU 3.03e-14
+  bicgstab/jacobi: 12 iterations, true residual 8.54e-13, difference to dense LU 6.28e-13
+== E1c advection-diffusion matrices, manufactured solution
+  cell Peclet   0.1: ILU(0) converged in 17 iterations (error 5.56e-09); Jacobi converged in 56 iterations (error 4.20e-09)
+  cell Peclet     1: ILU(0) converged in 14 iterations (error 6.91e-11); Jacobi converged in 41 iterations (error 8.56e-10)
+  cell Peclet    10: ILU(0) converged in 11 iterations (error 9.94e-11); Jacobi converged in 214 iterations (error 3.23e-11)
+  cell Peclet   100: ILU(0) converged in 12 iterations (error 1.05e-10); Jacobi failed in 4000 iterations (error 6.05e-05)
+== E1d symmetric positive-definite system: BiCGSTAB equals PCG
+  BiCGSTAB-ILU(0) 9 iterations, PCG 43 iterations, difference 1.42e-12
+== E1e singular and defective matrices are refused
+  zero row, ILU(0): ILU(0): row 3 has no diagonal entry in the pattern
+  zero row, Jacobi: Jacobi preconditioner: zero or non-finite diagonal in row 3
+  inconsistent singular system: BiCGSTAB failed after 0 iterations (11 restarts, 0 residual replacements): breakdown: the shadow residual is orthogonal to A p
+== E1g rounding floor (added after the 0.5 mm finding)
+  tolerance 1e-18: converged after 20 iterations, true residual 1.40e-15, backward error 4.17e-16, solution error 3.42e-16
+  3 iterations: BiCGSTAB did not converge in 3 iterations (0 restarts, 0 residual replacements): relative residual 0.00108, true residual 0.00108, target 1e-12; backward error 0.00103 against the rounding floor 1.42e-14
+== E2a steady 1-D advection-diffusion against the exponential solution (global Peclet 20)
+  10 elements (cell Peclet 2): Galerkin 1.353e-01, SUPG 1.192e-03
+  20 elements (cell Peclet 1): Galerkin 3.455e-02, SUPG 8.901e-05
+  40 elements (cell Peclet 0.5): Galerkin 7.879e-03, SUPG 5.382e-06
+  80 elements (cell Peclet 0.25): Galerkin 1.929e-03, SUPG 3.335e-07
+  observed order 40 -> 80: Galerkin 2.03, SUPG 4.01
+== E1f the advective step uses BiCGSTAB
+== E2a' cell Peclet 10: SUPG stays bounded
+  Galerkin: error 6.672e-01, values -0.6672 .. 1.0000 (above 300 K)
+  SUPG:     error 2.790e-02, values -0.0000 .. 1.0000 (above 300 K)
+== E2b a uniform temperature stays uniform under a non-solenoidal velocity
+  largest deviation after 10 steps: 6.253e-13 K (ok)
+== E2c transient pulse against the exact solution (Crank-Nicolson, dt 0.5 s, 300 s)
+  100 elements (cell Peclet 1): consistent capacity 2.406e-03 K, lumped 2.501e-03 K
+  200 elements (cell Peclet 0.5): consistent capacity 6.020e-04 K, lumped 6.203e-04 K
+  400 elements (cell Peclet 0.25): consistent capacity 1.468e-04 K, lumped 1.589e-04 K
+  observed order 200 -> 400: consistent 2.04, lumped 1.96
+== E2d energy accounting with advection (channel, source, open ends, convective wall)
+  50 steps of 5 s: worst balance 6.21e-12, worst unexplained advective energy 7.34e-16 (ok)
+  steady: source 0.32 W, enthalpy out - in -1.63546 W, convective loss 1.95546 W, closure 4.54e-12 (ok)
+== E2e parallel-plate channel: fully developed Nusselt number (exact 5.385)
+   8 elements across: Nu = 5.39748 (+0.232 %)
+  16 elements across: Nu = 5.38790 (+0.054 %)
+  32 elements across: Nu = 5.38548 (+0.009 %)
+  observed order 1.98; extrapolated Nu = 5.38466 (-0.006 %)
+== E3a plane Poiseuille flow from the lattice Boltzmann solver (Re_H = 10)
+  H = 16 cells: tau 0.573, u_lb 0.0152, 23000 steps (37.3 s simulated, 3.4 s wall, 84 MLUPS), change 1.84e-06, density 0.99883..1.01444
+            profile deviation 0.280 % of the centreline, flow rate 1.0108 of U H
+  H = 32 cells: tau 0.646, u_lb 0.0152, 37400 steps (121 s simulated, 15.9 s wall, 115 MLUPS), change 1.84e-06, density 0.99912..1.01679
+            profile deviation 0.056 % of the centreline, flow rate 1.0110 of U H
+  deviation ratio 16 -> 32: 5.01
+== E3b parameter policy
+  the cell Reynolds number U dx / nu = 667 is too high for a stable lattice: it would need a relaxation time of 0.5003 (below 0.52). At this cell size (1 mm) the largest admissible inlet velocity is 0.135 m/s; refine the mesh or lower the velocity
+== E3c nodal mapping
+  per-section scale factors 1.00036 .. 1.04388; largest no-slip nodal speed 0 m/s; inlet flux error 8.88e-16; worst cross-section flux error 0.000 %
+== E3d lattice Boltzmann velocity in the channel energy equation (H = 16 cells, L = 30 H)
+  flow: 39400 steps, 12.1 s wall
+  Nu = 5.3832 (-0.03 %), section scale factors 1.00074 .. 1.04408, unexplained advective energy 3.36e-07 of the outflow
+== E4a conjugate heat transfer, fixed steps: partitioned against monolithic
+  40 steps; max difference 6.281e-11 K; heat mismatch 0.00e+00; interface continuity 2.40e-10 K; 0.70 s monolithic, 3.26 s partitioned
+== E4c conservation
+  source 3.2 J = stored 1.59431 J + carried away 1.60569 J; closure 1.19e-10 (monolithic 1.22e-10)
+== E4b adaptive: partitioned against monolithic
+  monolithic 66 steps (3.13 s), partitioned 66 steps (14.71 s); max difference 8.248e-11 K
+
+ALL ADVECTION TESTS PASSED: 43 passed, 0 failed

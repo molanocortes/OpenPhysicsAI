@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="400" viewBox="0 0 1280 400" font-family="-apple-system, 'Segoe UI', Inter, Helvetica, Arial, sans-serif" role="img">
+<title>Hall of fame</title>
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#04070e"/><stop offset="1" stop-color="#0d1629"/></linearGradient>
+<linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7d88a"/><stop offset="1" stop-color="#b8860b"/></linearGradient>
+<linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e4e8ee"/><stop offset="1" stop-color="#8e98a6"/></linearGradient>
+<linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6b58a"/><stop offset="1" stop-color="#8b5a2b"/></linearGradient>
+</defs><rect width="1280" height="400" fill="url(#bg)"/>
+<circle cx="304.6" cy="217.7" r="0.9" fill="#dfe8ff" opacity="0.65"><animate attributeName="opacity" values="0.65;0.05;0.65" dur="4.2s" begin="2.9s" repeatCount="indefinite"/></circle>
+<circle cx="775.2" cy="363.5" r="1.2" fill="#dfe8ff" opacity="0.29"><animate attributeName="opacity" values="0.29;0.05;0.29" dur="3.3s" begin="5.0s" repeatCount="indefinite"/></circle>
+<circle cx="601.9" cy="334.6" r="1.2" fill="#dfe8ff" opacity="0.37"><animate attributeName="opacity" values="0.37;0.05;0.37" dur="5.5s" begin="1.2s" repeatCount="indefinite"/></circle>
+<circle cx="194.1" cy="370.3" r="1.2" fill="#dfe8ff" opacity="0.56"><animate attributeName="opacity" values="0.56;0.05;0.56" dur="4.8s" begin="0.3s" repeatCount="indefinite"/></circle>
+<circle cx="970.5" cy="236.4" r="0.9" fill="#dfe8ff" opacity="0.58"><animate attributeName="opacity" values="0.58;0.05;0.58" dur="5.4s" begin="1.3s" repeatCount="indefinite"/></circle>
+<circle cx="761.3" cy="368.1" r="1.2" fill="#dfe8ff" opacity="0.54"><animate attributeName="opacity" values="0.54;0.05;0.54" dur="5.7s" begin="2.0s" repeatCount="indefinite"/></circle>
+<circle cx="1025.2" cy="177.8" r="0.7" fill="#dfe8ff" opacity="0.63"><animate attributeName="opacity" values="0.63;0.05;0.63" dur="2.8s" begin="0.7s" repeatCount="indefinite"/></circle>
+<circle cx="277.7" cy="386.2" r="1.2" fill="#dfe8ff" opacity="0.58"><animate attributeName="opacity" values="0.58;0.05;0.58" dur="5.5s" begin="2.1s" repeatCount="indefinite"/></circle>
+<circle cx="1066.9" cy="229.6" r="1.2" fill="#dfe8ff" opacity="0.47"><animate attributeName="opacity" values="0.47;0.05;0.47" dur="5.7s" begin="3.4s" repeatCount="indefinite"/></circle>
+<circle cx="1189.1" cy="342.6" r="0.7" fill="#dfe8ff" opacity="0.53"><animate attributeName="opacity" values="0.53;0.05;0.53" dur="3.6s" begin="2.7s" repeatCount="indefinite"/></circle>
+<circle cx="732.1" cy="41.6" r="0.7" fill="#dfe8ff" opacity="0.50"><animate attributeName="opacity" values="0.50;0.05;0.50" dur="6.0s" begin="1.3s" repeatCount="indefinite"/></circle>
+<circle cx="159.3" cy="192.8" r="1.2" fill="#dfe8ff" opacity="0.20"><animate attributeName="opacity" values="0.20;0.05;0.20" dur="5.3s" begin="2.1s" repeatCount="indefinite"/></circle>
+<circle cx="193.0" cy="117.6" r="1.2" fill="#dfe8ff" opacity="0.63"><animate attributeName="opacity" values="0.63;0.05;0.63" dur="2.7s" begin="3.1s" repeatCount="indefinite"/></circle>
+<circle cx="57.5" cy="287.4" r="0.9" fill="#dfe8ff" opacity="0.45"><animate attributeName="opacity" values="0.45;0.05;0.45" dur="5.7s" begin="1.4s" repeatCount="indefinite"/></circle>
+<circle cx="302.0" cy="14.4" r="0.5" fill="#dfe8ff" opacity="0.19"/>
+<circle cx="767.7" cy="12.6" r="0.7" fill="#dfe8ff" opacity="0.68"/>
+<circle cx="373.3" cy="105.3" r="0.5" fill="#dfe8ff" opacity="0.69"/>
+<circle cx="435.0" cy="144.1" r="0.7" fill="#dfe8ff" opacity="0.64"/>
+<circle cx="483.6" cy="184.2" r="1.2" fill="#dfe8ff" opacity="0.50"/>
+<circle cx="762.4" cy="223.7" r="0.9" fill="#dfe8ff" opacity="0.39"/>
+<circle cx="922.0" cy="95.1" r="0.9" fill="#dfe8ff" opacity="0.39"/>
+<circle cx="330.5" cy="121.2" r="0.9" fill="#dfe8ff" opacity="0.16"/>
+<circle cx="531.5" cy="232.0" r="0.5" fill="#dfe8ff" opacity="0.36"/>
+<circle cx="754.2" cy="53.3" r="0.9" fill="#dfe8ff" opacity="0.41"/>
+<circle cx="869.5" cy="141.0" r="0.9" fill="#dfe8ff" opacity="0.56"/>
+<circle cx="28.4" cy="24.2" r="0.5" fill="#dfe8ff" opacity="0.68"/>
+<circle cx="321.4" cy="182.5" r="0.9" fill="#dfe8ff" opacity="0.25"/>
+<circle cx="237.1" cy="303.2" r="0.9" fill="#dfe8ff" opacity="0.32"/>
+<circle cx="482.8" cy="308.9" r="0.5" fill="#dfe8ff" opacity="0.68"/>
+<circle cx="875.2" cy="52.6" r="0.7" fill="#dfe8ff" opacity="0.51"/>
+<circle cx="344.8" cy="131.1" r="1.2" fill="#dfe8ff" opacity="0.51"/>
+<circle cx="124.2" cy="240.3" r="0.9" fill="#dfe8ff" opacity="0.52"/>
+<circle cx="287.3" cy="323.9" r="0.7" fill="#dfe8ff" opacity="0.19"/>
+<circle cx="949.8" cy="87.2" r="1.2" fill="#dfe8ff" opacity="0.30"/>
+<circle cx="1007.4" cy="13.6" r="0.7" fill="#dfe8ff" opacity="0.32"/>
+<circle cx="1070.3" cy="229.9" r="0.9" fill="#dfe8ff" opacity="0.34"/>
+<circle cx="1059.8" cy="34.2" r="0.9" fill="#dfe8ff" opacity="0.47"/>
+<circle cx="539.2" cy="207.4" r="0.9" fill="#dfe8ff" opacity="0.41"/>
+<circle cx="811.7" cy="116.2" r="1.2" fill="#dfe8ff" opacity="0.17"/>
+<circle cx="529.0" cy="79.8" r="1.2" fill="#dfe8ff" opacity="0.67"/>
+<circle cx="1126.4" cy="394.8" r="1.2" fill="#dfe8ff" opacity="0.46"/>
+<circle cx="1261.8" cy="286.9" r="0.5" fill="#dfe8ff" opacity="0.56"/>
+<circle cx="1071.0" cy="265.2" r="0.9" fill="#dfe8ff" opacity="0.45"/>
+<circle cx="1138.8" cy="344.6" r="0.9" fill="#dfe8ff" opacity="0.22"/>
+<circle cx="313.0" cy="14.1" r="0.7" fill="#dfe8ff" opacity="0.64"/>
+<circle cx="1151.6" cy="230.8" r="0.5" fill="#dfe8ff" opacity="0.41"/>
+<circle cx="154.6" cy="201.3" r="0.7" fill="#dfe8ff" opacity="0.51"/>
+<circle cx="672.0" cy="165.5" r="0.5" fill="#dfe8ff" opacity="0.34"/>
+<circle cx="323.2" cy="344.7" r="1.2" fill="#dfe8ff" opacity="0.60"/>
+<circle cx="78.6" cy="88.3" r="0.5" fill="#dfe8ff" opacity="0.44"/>
+<circle cx="1045.5" cy="68.5" r="0.9" fill="#dfe8ff" opacity="0.66"/>
+<circle cx="1031.7" cy="329.4" r="0.5" fill="#dfe8ff" opacity="0.42"/>
+<circle cx="730.7" cy="160.1" r="0.9" fill="#dfe8ff" opacity="0.29"/>
+<circle cx="791.2" cy="207.9" r="0.5" fill="#dfe8ff" opacity="0.41"/>
+<circle cx="993.9" cy="0.7" r="0.5" fill="#dfe8ff" opacity="0.58"/>
+<circle cx="59.1" cy="19.9" r="1.2" fill="#dfe8ff" opacity="0.69"/>
+<circle cx="1093.7" cy="34.5" r="1.2" fill="#dfe8ff" opacity="0.32"/>
+<circle cx="402.7" cy="140.5" r="1.2" fill="#dfe8ff" opacity="0.47"/>
+<circle cx="461.9" cy="76.4" r="0.9" fill="#dfe8ff" opacity="0.39"/>
+<circle cx="163.3" cy="1.4" r="1.2" fill="#dfe8ff" opacity="0.59"/>
+<circle cx="725.4" cy="17.2" r="1.2" fill="#dfe8ff" opacity="0.48"/>
+<circle cx="1001.8" cy="152.1" r="0.5" fill="#dfe8ff" opacity="0.49"/>
+<circle cx="552.4" cy="149.0" r="1.2" fill="#dfe8ff" opacity="0.57"/>
+<circle cx="403.1" cy="380.1" r="1.2" fill="#dfe8ff" opacity="0.40"/>
+<circle cx="313.7" cy="214.3" r="0.5" fill="#dfe8ff" opacity="0.59"/>
+<circle cx="287.3" cy="52.1" r="0.5" fill="#dfe8ff" opacity="0.67"/>
+<circle cx="479.0" cy="359.1" r="0.9" fill="#dfe8ff" opacity="0.22"/>
+<circle cx="883.9" cy="375.6" r="1.2" fill="#dfe8ff" opacity="0.52"/>
+<circle cx="939.2" cy="225.5" r="0.5" fill="#dfe8ff" opacity="0.60"/>
+<circle cx="917.2" cy="189.4" r="0.7" fill="#dfe8ff" opacity="0.58"/>
+<circle cx="56.7" cy="36.7" r="0.5" fill="#dfe8ff" opacity="0.51"/>
+<circle cx="481.0" cy="327.8" r="0.9" fill="#dfe8ff" opacity="0.61"/>
+<circle cx="155.2" cy="337.6" r="1.2" fill="#dfe8ff" opacity="0.61"/>
+<circle cx="1219.1" cy="231.6" r="0.5" fill="#dfe8ff" opacity="0.17"/>
+<circle cx="982.3" cy="204.5" r="0.7" fill="#dfe8ff" opacity="0.21"/>
+<circle cx="958.7" cy="373.8" r="0.5" fill="#dfe8ff" opacity="0.45"/>
+<circle cx="1112.9" cy="72.2" r="0.5" fill="#dfe8ff" opacity="0.28"/>
+<circle cx="230.1" cy="100.0" r="1.2" fill="#dfe8ff" opacity="0.29"/>
+<circle cx="767.3" cy="375.5" r="1.2" fill="#dfe8ff" opacity="0.68"/>
+<circle cx="480.4" cy="94.1" r="1.2" fill="#dfe8ff" opacity="0.61"/>
+<circle cx="1237.9" cy="166.1" r="1.2" fill="#dfe8ff" opacity="0.24"/>
+<circle cx="513.3" cy="355.0" r="0.7" fill="#dfe8ff" opacity="0.20"/>
+<circle cx="957.6" cy="366.6" r="1.2" fill="#dfe8ff" opacity="0.47"/>
+<circle cx="1098.4" cy="54.5" r="0.7" fill="#dfe8ff" opacity="0.23"/>
+<circle cx="660.0" cy="373.9" r="0.9" fill="#dfe8ff" opacity="0.52"/>
+<circle cx="1094.8" cy="238.1" r="0.9" fill="#dfe8ff" opacity="0.64"/>
+<circle cx="393.3" cy="107.2" r="1.2" fill="#dfe8ff" opacity="0.26"/>
+<circle cx="729.5" cy="95.5" r="1.2" fill="#dfe8ff" opacity="0.58"/>
+<circle cx="183.8" cy="396.5" r="1.2" fill="#dfe8ff" opacity="0.54"/>
+<circle cx="263.4" cy="232.2" r="0.5" fill="#dfe8ff" opacity="0.41"/>
+<text x="640" y="54" text-anchor="middle" fill="#eef3fb" font-size="28" font-weight="700" letter-spacing="8">HALL OF FAME</text>
+<text x="640" y="82" text-anchor="middle" fill="#8b97ab" font-size="14">Flags captured first, then power: a flag counts once, a semi holy grail twice, a holy grail three times</text>
+<rect x="515" y="190" width="250" height="188" rx="8" fill="url(#g1)"/>
+<text x="640" y="248" text-anchor="middle" fill="#10151f" fill-opacity="0.75" font-size="46" font-weight="800">1</text>
+<text x="640" y="152" text-anchor="middle" fill="#6c7890" font-size="20" font-style="italic">unclaimed</text>
+<text x="640" y="176" text-anchor="middle" fill="#4c5870" font-size="14">your name here<animate attributeName="opacity" values="0.35;1;0.35" dur="3.5s" begin="1s" repeatCount="indefinite"/></text>
+<rect x="250" y="238" width="250" height="140" rx="8" fill="url(#g2)"/>
+<text x="375" y="296" text-anchor="middle" fill="#10151f" fill-opacity="0.75" font-size="46" font-weight="800">2</text>
+<text x="375" y="200" text-anchor="middle" fill="#6c7890" font-size="20" font-style="italic">unclaimed</text>
+<text x="375" y="224" text-anchor="middle" fill="#4c5870" font-size="14">your name here<animate attributeName="opacity" values="0.35;1;0.35" dur="3.5s" begin="2s" repeatCount="indefinite"/></text>
+<rect x="780" y="270" width="250" height="108" rx="8" fill="url(#g3)"/>
+<text x="905" y="328" text-anchor="middle" fill="#10151f" fill-opacity="0.75" font-size="46" font-weight="800">3</text>
+<text x="905" y="232" text-anchor="middle" fill="#6c7890" font-size="20" font-style="italic">unclaimed</text>
+<text x="905" y="256" text-anchor="middle" fill="#4c5870" font-size="14">your name here<animate attributeName="opacity" values="0.35;1;0.35" dur="3.5s" begin="3s" repeatCount="indefinite"/></text>
+</svg>

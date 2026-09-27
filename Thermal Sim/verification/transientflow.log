@@ -1,0 +1,11 @@
+== capabilities correspond to reachable settings
+== setup: a block with a scheduled heater and convection
+== invalid schedules and settings are rejected
+== adaptive run with a switched heater and explicit output times
+  tolerance 1e-3: 14 accepted, 0 rejected, largest local estimate 0.30394340295197664, energy 199.99999999999977 J
+== schema-to-solver wiring
+  wiring: 14 -> 67 steps when the tolerance tightens; MIN_STEP at t = 5 s
+== fixed stepping is unchanged and lands on schedule changes
+== schedules persist
+
+ALL TRANSIENT FLOW TESTS PASSED: 81 passed, 0 failed
