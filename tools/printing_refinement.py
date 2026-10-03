@@ -25,6 +25,14 @@ Acceptance, not silently amended after execution:
   percentage or a convergence order from this small study. Max stress at fixed
   edges is not a convergence observable.
 
+ADDITIONAL INSPECTOR CRITERION, declared before its first execution:
+Call mesh_inspect after each mesh_generate, before launching its physics job.
+It must report generated=true, current=true, elements=64/h^3 and
+nodes=(8/h+1)(2/h+1)(4/h+1), derived independently from the fixed box.
+Its reported jacobian_determinant_mm3 must be finite and positive and equal
+h^3/8 to 1e-12 relative tolerance. This tests persisted mesh state and units;
+it changes no physics input or existing refinement/balance threshold.
+
 EXPLICIT CRITERION AMENDMENT 1, after the first run and before the amended run:
 The first criterion divided FDM released support reaction by the exported
 largest_bed_reaction_n and failed. Source inspection established that the latter
@@ -182,6 +190,20 @@ def run(client, report, output, kind, spacing, substeps=8):
         expected = int(64 / spacing ** 3)
         if mesh.get("mesh", {}).get("elements") != expected:
             raise RuntimeError(f"aligned mesh does not have {expected} elements")
+        inspected = call(client, "mesh_inspect", {})
+        record["mesh_inspection"] = inspected
+        inspected_mesh = inspected.get("mesh", {})
+        det = inspected_mesh.get("quality", {}).get("jacobian_determinant_mm3")
+        expected_nodes = int((8 / spacing + 1) * (2 / spacing + 1) * (4 / spacing + 1))
+        inspector_checks = {"generated": inspected.get("generated") is True,
+                            "current": inspected.get("current") is True,
+                            "element_count": inspected_mesh.get("elements") == expected,
+                            "node_count": inspected_mesh.get("nodes") == expected_nodes,
+                            "determinant_mm3": finite(det) and det > 0 and math.isclose(
+                                det, spacing ** 3 / 8, rel_tol=1e-12, abs_tol=0)}
+        record["mesh_inspection_checks"] = inspector_checks
+        if not all(inspector_checks.values()):
+            raise RuntimeError(f"mesh_inspect failed independent box criterion: {inspector_checks}")
         inputs = json.loads(json.dumps(FDM_INPUT if kind == "fdm" else LPBF_INPUT))
         if kind == "fdm":
             inputs["process"]["thermal_substeps"] = substeps
@@ -259,6 +281,7 @@ def main():
                               "lpbf": "maximum u_z on largest-x face before cut, mm; no cut requested"},
               "metric_definitions": {"independent_fdm_energy": "absolute heat-ledger residual / largest absolute ledger term, J/J",
                                      "equilibrium": "recovered free-equation residual norm / (applied nodal load norm + individual prescribed-DOF reaction norm + assembled free RHS norm including eigenstrain), dimensionless"},
+              "mesh_inspector_criterion": "generated/current true; elements=64/h^3; nodes=(8/h+1)(2/h+1)(4/h+1); positive detJ=h^3/8 mm^3 within 1e-12 relative",
               "workspace": str(workspace), "output": str(output), "runs": [], "accepted": False}
     original = json.loads(INITIAL_EVIDENCE.read_text())
     report["criterion_amendments"] = [{
