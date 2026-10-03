@@ -1497,6 +1497,8 @@ def labwalk():
     # Manual defaults must be visibly examples and inferred, not automatically labelled calibrated.
     check("Strain provenance: inferred" in bt and "Process provenance: inferred" in bt and "not a calibrated printer profile" in bt,
           "LPBF and FDM starting values are shown as inferred examples, never automatically calibrated", bt[-2000:])
+    check("Review deposition and cooling settings" in bt and "5 PRINT" in bt,
+          "FDM instructions and workflow labels describe deposition and printing", bt[-2000:])
     # Reopen a cached shipped scenario: the saved input snapshot survives mode switches and a process restart.
     result_dir = tmp / "NAVIER-Projects/lab"
     shutil.copyfile(result_dir / "tiny.lab", result_dir / "micro_mixer.lab")
@@ -1543,6 +1545,30 @@ def labwalk():
         check(1000 < half < full * .85, f"section removes object pixels: {full} -> {half}", t)
     else:
         check(False, "native section captures exist", t)
+    # Criterion before this hotkey implementation's first run: window key events address the displayed lab result,
+    # preserve the hidden FEM field and tunnel settings, and never start the hidden tunnel.
+    keys = ['workspace solid', 'fem field displacement', 'view pressure', 'slice off', 'streamlines off', 'particles off',
+            'vortices off', 'volume off', f'lab open "{ROOT / "build/labscene.lab"}"', 'lab pause', 'lab frame 0', 'frames 6',
+            'uikey space', 'frames 4', 'lab info', 'uikey space', 'frames 4', 'lab info', 'lab frame 0',
+            'uikey right', 'frames 4', 'lab info', 'uikey left', 'frames 4', 'lab info', 'uikey 1', 'frames 4', 'lab info',
+            'uikey x', 'frames 4', 'lab info', 'uikey ]', 'frames 4', 'lab info',
+            'uikey s', 'uikey p', 'uikey v', 'uikey o', 'uikey l', 'uikey w', 'frames 6',
+            'echo KEYBOARD_STATE', 'status', 'view', 'fem field', 'workspace', 'slice', 'streamlines', 'particles',
+            'vortices', 'volume', 'quit', '']
+    (tmp / 'keyboard.nav').write_text("\n".join(keys))
+    kr = subprocess.run([str(APP), '--headless', '--size', '1440x900', '--exec', f'exec {tmp / "keyboard.nav"}'],
+                        capture_output=True, text=True, timeout=120, cwd=ROOT, env=env)
+    kt = kr.stdout + kr.stderr
+    check(kr.returncode == 0 and 'playing, playback' in kt and 'paused, playback' in kt,
+          'Space toggles replay through the real window keyboard path', kt[-2000:])
+    check('frame 2/2, paused' in kt and 'frame 1/2, paused' in kt and 'frames, field stress' in kt,
+          'arrow keys step stored frames and numeric keys select the displayed result field', kt[-2000:])
+    check('section axis 0 fraction 0.520' in kt,
+          'axis and bracket keys control the displayed result section', kt[-2000:])
+    state = kt.partition('KEYBOARD_STATE')[2]
+    check(re.search(r'state\s+paused', state) and 'showing displacement' in state and 'field = pressure' in state
+          and 'workspace: solid' in state and re.search(r'streamlines\s+off', state),
+          'lab shortcuts leave the hidden tunnel paused and its field and FEM field unchanged', state[-2000:])
     # Both volume and reconstruction tests create small, explicitly synthetic UI fixtures.
     for test in ("labvoltest", "labwatertest"):
         subprocess.run(["make", f"build/{test}"], cwd=ROOT, check=True, capture_output=True)

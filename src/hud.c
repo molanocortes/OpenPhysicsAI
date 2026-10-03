@@ -891,17 +891,19 @@ static const char *solid_hint(const StepInfo info[STEP_COUNT], int step) {
         return solid_build_path ? "Material assigned. Set the build up next." : "Material assigned. Hold a face next.";
     case STEP_HOLD:
         if (solid_build_path)
-            return "Choose the machine, the inherent strain and the cut. Every value shows its unit; RUN BUILD is in step 5.";
+            return build_kind == 1 ? "Review deposition and cooling settings. Every value shows its unit; RUN PRINT is in step 5."
+                                   : "Choose the machine, the inherent strain and the cut. Every value shows its unit; RUN BUILD is in step 5.";
         if (info[STEP_HOLD].state == ST_DONE) return "Held and loaded. Press SOLVE.";
         return "Click a face on the part, then press HOLD; click another face, type a force and press LOAD.";
     case STEP_SOLVE:
-        if (s->job_active) return solid_build_path ? "Building. The window stays live; the part appears layer by layer."
+        if (s->job_active) return solid_build_path ? "Printing. The window stays live; the part appears layer by layer."
                                                    : "Solving. The window stays live; the result appears by itself.";
-        if (solid_build_path) return info[STEP_HOLD].state == ST_DONE ? "Press RUN BUILD." : "Mesh the part first.";
+        if (solid_build_path) return info[STEP_HOLD].state == ST_DONE ? (build_kind == 1 ? "Press RUN PRINT." : "Press RUN BUILD.") : "Mesh the part first.";
         return info[STEP_HOLD].state == ST_DONE ? "Press SOLVE." : "Hold and load the part first.";
     default:
         if (!s->have_result) return solid_build_path ? "Run the build first." : "Solve first.";
-        return solid_build_path ? "Press PLAY BUILD to watch it grow; the deflections are at true scale."
+        return solid_build_path ? (build_kind == 1 ? "Press PLAY PRINT to watch it grow; the deflections are at true scale."
+                                                  : "Press PLAY BUILD to watch it grow; the deflections are at true scale.")
                                 : "Read the numbers, then press CHECK MESH and REPORT.";
     }
 }
@@ -1461,7 +1463,7 @@ static float step_solve(Ui *ui, float x, float y, float w) {
     if (busy) {
         if (fem_job_stopping()) step_button(ui, "STOPPING...##run", x, y, w, 26, false, "it ends at the next layer or iteration");
         else if (ui_button(ui, "STOP##run", x, y, w, 26, false)) fem_stop_job(s->job_id);
-    } else if (step_button(ui, solid_build_path ? "RUN BUILD##run" : "SOLVE##run", x, y, w, 26, false, why)) {
+    } else if (step_button(ui, solid_build_path ? (build_kind == 1 ? "RUN PRINT##run" : "RUN BUILD##run") : "SOLVE##run", x, y, w, 26, false, why)) {
         if (solid_build_path) build_run_now(field_num("layer", 1.0));
         else solid_run_now();
     }
@@ -1924,7 +1926,7 @@ static float step_results(Ui *ui, float x, float y, float w) {
 
         /* watching it happen: true scale, from the first layer, with the part growing as it was deposited */
         float half = (w - gap) / 2;
-        if (ui_button(ui, "PLAY BUILD##bplay", x, y, half, bh2, false)) {
+        if (ui_button(ui, is_lpbf ? "PLAY BUILD##bplay" : "PLAY PRINT##bplay", x, y, half, bh2, false)) {
             exec_cmd("fem field displacement");
             exec_cmd("fem deform true");
             exec_cmd("fem range all");
@@ -1940,7 +1942,7 @@ static float step_results(Ui *ui, float x, float y, float w) {
                       is_lpbf ? "PLAY BUILD shows the part growing layer by layer and opening at the cut, with the "
                                 "shape drawn at true scale: what you see is the distortion, not a magnified picture "
                                 "of it."
-                              : "PLAY BUILD shows the part growing layer by layer, with the shape drawn at true "
+                              : "PLAY PRINT shows the part growing layer by layer, with the shape drawn at true "
                                 "scale: what you see is the distortion, not a magnified picture of it. The last "
                                 "stored time is the part after release from the bed.", 4) + 4;
         const LayerStudy *ls = fem_layer_study();
@@ -3237,8 +3239,8 @@ static void analysis_panel(float px, float py, float pw, float ph, double time) 
 
     /* the strip: six steps, two rows, each showing where it stands */
     const char *CHIP[STEP_COUNT] = {"1 PART", "2 MESH", "3 MATERIAL",
-                                    solid_build_path ? "4 BUILD" : "4 HOLD & LOAD",
-                                    solid_build_path ? "5 RUN" : "5 SOLVE", "6 RESULTS"};
+                                    solid_build_path ? (build_kind == 1 ? "4 PROCESS" : "4 BUILD") : "4 HOLD & LOAD",
+                                    solid_build_path ? (build_kind == 1 ? "5 PRINT" : "5 RUN") : "5 SOLVE", "6 RESULTS"};
     const float cgap = 4, cw = (w - 2 * cgap) / 3, chh = 34;
     for (int i = 0; i < STEP_COUNT; i++) {
         float cx = x + (i % 3) * (cw + cgap), cy = y + (i / 3) * (chh + cgap);

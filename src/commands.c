@@ -1512,6 +1512,24 @@ static void cmd_uikeys(int argc, char **argv) {
     LOGI("typed %d characters into the panel field: '%s'", typed, hud_text_value());
 }
 
+static void cmd_uikey(int argc, char **argv) {
+    int key = 0;
+    if (argc > 1) {
+        if (strlen(argv[1]) == 1) key = (unsigned char)tolower((unsigned char)argv[1][0]);
+        else if (str_ieq(argv[1], "space")) key = ' ';
+        else if (str_ieq(argv[1], "left")) key = KEY_LEFT;
+        else if (str_ieq(argv[1], "right")) key = KEY_RIGHT;
+        else if (str_ieq(argv[1], "up")) key = KEY_UP;
+        else if (str_ieq(argv[1], "down")) key = KEY_DOWN;
+        else if (str_ieq(argv[1], "escape")) key = KEY_ESCAPE;
+    }
+    if (!key) { LOGE("usage: uikey <character|space|left|right|up|down|escape>"); return; }
+    int wait = app_inject_key(key);
+    if (!wait) { LOGE("the input queue is full"); return; }
+    g_wait_frames = MAXI(g_wait_frames, wait + 2);
+    LOGI("key pressed through the window input path: %s", argv[1]);
+}
+
 static void cmd_uilist(int argc, char **argv) {
     static const char *kinds[] = {"button", "slider", "region"};
     int n = ui_widget_count(app.ui);
@@ -1644,7 +1662,7 @@ static void cmd_fem(int argc, char **argv) {
     }
     if (str_ieq(argv[1], "field")) {
         if (argc < 3) {
-            LOGE("usage: fem field von_mises|displacement|temperature");
+            LOGI("showing %s [%s]", fem_field_label(fem_field()), fem_field_unit(fem_field()));
             return;
         }
         for (int i = 0; i < FEM_FIELD_COUNT; i++)
@@ -2359,6 +2377,7 @@ static const Command COMMANDS[] = {
     {"uiclickat", "<x> <y> [frames]", "click a point of the 3D view, e.g. to pick a face (UI testing)", cmd_uiclickat, NULL},
     {"uiscroll", "<x> <y> <points>", "turn the wheel at a window point (UI testing)", cmd_uiscroll, NULL},
     {"uikeys", "<text>", "type into the focused panel field through the real key path (UI testing)", cmd_uikeys, NULL},
+    {"uikey", "<key>", "press a keyboard shortcut through the window event path (UI testing)", cmd_uikey, NULL},
     {"uiclick", "<label> [pos] [frames]", "click a button or slider through the real input path (UI testing)", cmd_uiclick, NULL},
     {"uidrag", "<x0> <y0> <x1> <y1> [alt] [shift] [frames N]", "drag through the real input path, e.g. Option-drag the model (UI testing)", cmd_uidrag, NULL},
     /* additive manufacturing */

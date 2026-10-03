@@ -174,6 +174,7 @@ bool app_probe_sample(vec3 p, float *rho, float u[3]);
 int app_inject_click(float x, float y, int hold_frames);
 int app_inject_drag(float x0, float y0, float x1, float y1, uint32_t mods, int frames); /* UI testing */
 int app_inject_scroll(float x, float y, float dy);                                     /* UI testing */
+int app_inject_key(int key);                                                         /* UI testing */
 bool app_rake_handle(float *px, float *py); /* streamline rake handle in window points, if shown */
 bool app_pick(double mx, double my, vec3 *hit);
 
