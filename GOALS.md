@@ -567,6 +567,11 @@ Checkpoints completed on this branch:
 - [Post-radiation refinement](validation/printing-refinement/post-radiation.json): the same eight real jobs and all
   40 mesh-inspector checks pass without altered inputs or criteria. Finest changes: LPBF 2.4583153 percent,
   FDM space 2.5474215 percent, FDM time 0.3831007 percent. LPBF remains nonmonotone; these are sensitivities.
+- Recomputed and captured both native open-cell demonstrations after that cooling correction, retaining the
+  [previous numerical capture](validation/printing-refinement/native-before-radiation.json). Current FDM has 27
+  stored states, released peak 1.54044 MPa and z warp [-0.0507017, 0.00107592] mm; LPBF has 12 states and its
+  elastic 690.734 MPa peak is unchanged. [Current evidence](docs/media/foundation/evidence.json) records source,
+  engine, renderer, result and media hashes. The 27-frame 960 x 600 native film is 5680 ms. No new measurement validation.
 
 Remaining research work: conforming printing meshes and documented spatial/time convergence; FDM bead/toolpath,
 raster anisotropy, interlayer bonding and viscoelastic constitutive laws with sourced parameters; connecting the
