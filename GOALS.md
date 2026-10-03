@@ -550,7 +550,10 @@ Checkpoints completed on this branch:
 - `2bd014b`: long lab validation retains its original cases and thresholds in `make test-lab-validation`, run detached.
   Session subsets explicitly omit statistical/steady validations: fire F1/F2 (36.29 s, relative projection 1.15e-10,
   mass 1.45e-13), room D (7.42 s, pressure error -0.411%, relative mass 2.00e-15), FSI F3 (14.40 s with native GPU,
-  unchanged 2000 steps, momentum change +0.002%). Full fire/room/FSI remain pending in the detached run.
+  unchanged 2000 steps, momentum change +0.002%). The [full fire run](validation/lab/fire-2026-10-03.log) confirms
+  the existing open plume issue: F1/F2/F3/V1 pass, V2 at 2.6 m is -27.5 percent and V3 at 2.6 m is -38.4 percent
+  against the unchanged 25 percent criterion. It exits 1 after 3178 s under concurrent load. Room/FSI full cases
+  were not reached by that failing wrapper; their session subsets above are the only new results claimed here.
 
 Remaining research work: conforming printing meshes and documented spatial/time convergence; FDM bead/toolpath,
 raster anisotropy, interlayer bonding and viscoelastic constitutive laws with sourced parameters; connecting the
