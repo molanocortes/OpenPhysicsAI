@@ -2,7 +2,7 @@
  *
  * VOXEL-DERIVED MESH. The build volume is sampled on a regular grid aligned with the build frame. Element layers start at
  * the build plate top (z = 0), so element layers coincide with deposited layer groups. A cell belongs to a body when its
- * centre is inside the body's closed surface (majority of three jittered ray-parity tests along z). All elements are
+ * sample point near its centre is inside the body's closed surface (majority of ray-parity tests along x/y/z). All elements are
  * undistorted boxes (Jacobian = hx hy hz / 8 everywhere) and share nodes conformingly.
  *
  * Consequences that callers must report: the boundary is a staircase, so volume and surface area differ from the STL,
@@ -63,7 +63,7 @@ typedef struct HexMesh {
     int nbodies;
     double body_volume_mesh[16], body_volume_stl[16];
     double body_area_mesh[16], body_area_stl[16];
-    double mean_face_distance, max_face_distance;
+    double mean_face_distance, max_face_distance; /* area-weighted mean of projected boundary-face centres, maximum (m) */
     int regions;             /* face-connected element regions */
     int edge_contacts;       /* nodes shared by different face-connected regions (edge or vertex contact) */
     /* cells whose centre lies inside more than one body of the same region: the mesher gives such a cell to one body

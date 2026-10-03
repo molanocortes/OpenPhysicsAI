@@ -45,3 +45,13 @@ withholds a discretisation-error estimate for such geometry
 ([EVIDENCE.md](../../docs/release/EVIDENCE.md)). The conforming mesher (`tetmesh.h`, `mesh_generate` with method tet) follows
 the surface instead; it rounds sharp edges at the surface cell scale and serves the static structural analysis only.
 Its verification: `./build/tettest` (M1 to M6); the owner's STL files with `./build/tettest --stl FILE --size 2`.
+
+Printing-mesh robustness, 2026-10-03: `meshtest` PM1 to PM5 verify anisotropic layer alignment, exact multi-body
+ownership and overlaps, serial/threaded classification equality, numeric input refusals and translation-stable closed
+surface volume. The reported mean boundary offset is weighted by face area, so thin z layers do not bias it toward
+their numerous small vertical faces. The thickness warning uses the largest grid spacing and remains conservative:
+wall orientation determines which spacing resolves a wall. Refinement is still required before trusting stresses.
+Body membership is retained from the original three-axis vote rather than queried again for every element. On the
+eight-body, 64,000-element synthetic ownership fixture, three serial timings had median 0.224780 s before and
+0.012112 s after (18.6 times faster); this is a mesher timing, not a print-solver speed claim. Retained membership
+costs two bytes per bounding-grid cell for multiple bodies, and none for a single body.

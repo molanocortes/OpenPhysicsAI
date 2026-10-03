@@ -111,6 +111,7 @@ static JsonValue *mesh_summary_json(Project *p) {
     JsonValue *bd = json_set_object(o, "boundary");
     json_set_int(bd, "faces", hm->nfaces);
     json_set_number(bd, "mean_distance_to_stl_mm", 1e3 * hm->mean_face_distance);
+    json_set_string(bd, "mean_distance_weighting", "boundary-face area");
     json_set_number(bd, "max_distance_to_stl_mm", 1e3 * hm->max_face_distance);
     JsonValue *sels = json_set_array(o, "selections");
     for (int i = 0; i < p->nselections; i++) {
@@ -141,7 +142,7 @@ static void mesh_warnings(Project *p, JsonValue *w) {
         tet_warnings(p, w);
         return;
     }
-    double hmin = fmin(hm->h[0], fmin(hm->h[1], hm->h[2]));
+    double hmax = fmax(hm->h[0], fmax(hm->h[1], hm->h[2]));
     bool unchecked = false;
     for (int i = 0; i < ms->nbodies && i < hm->nbodies; i++) {
         double vs = hm->body_volume_stl[i], vm = hm->body_volume_mesh[i];
@@ -152,9 +153,10 @@ static void mesh_warnings(Project *p, JsonValue *w) {
         if (!b) continue;
         double t05 = b->diag.thickness_p05 * b->unit_scale, tmin = b->diag.min_thickness * b->unit_scale;
         if (!isfinite(t05)) unchecked = true;
-        else if (t05 < 2 * hmin)
-            json_push(w, json_stringf("walls of '%s' down to %.3g mm (5th percentile; minimum %.3g mm) span fewer than two elements of %.3g mm: they are poorly resolved or lost",
-                                      b->name, 1e3 * t05, 1e3 * tmin, 1e3 * hmin));
+        else if (t05 < 2 * hmax)
+            json_push(w, json_stringf("walls of '%s' down to %.3g mm (5th percentile; minimum %.3g mm) are thinner than twice the largest element spacing of %.3g mm: "
+                                      "depending on wall orientation they may be poorly resolved or lost; refine the spacing across the wall",
+                                      b->name, 1e3 * t05, 1e3 * tmin, 1e3 * hmax));
     }
     if (unchecked) json_push(w, json_string("wall thickness has not been measured: run geometry_diagnostics (thickness: run) to find walls thinner than two elements"));
     int expected = ms->include_plate ? 1 : ms->nbodies;
