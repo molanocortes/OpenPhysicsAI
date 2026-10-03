@@ -43,6 +43,10 @@ def capture(kind, repo, out, size, stills_only=False):
                 f'fem step {preset["hero"]}', 'frames 60',
                 f'screenshot {q(out / (kind + ".png"))}', 'frames 8', 'hud off', 'frames 8',
                 f'fem export {q(out / (kind + "-art.png"))} 2', 'frames 8', 'hud clean', 'frames 8']
+    if kind == 'fdm' and not stills_only:
+        # Keep one geometric representation throughout growth. Switching to the
+        # smoother STL on the final layer could look like physical shape change.
+        commands += ['fem surface off', 'frames 8']
     frames = []
     for i in range(0 if stills_only else preset['frames']):
         if kind == 'fdm':
@@ -60,7 +64,7 @@ def capture(kind, repo, out, size, stills_only=False):
         frames.append(dict(path=str(path.relative_to(out)), stored_step_one_based=step,
                            requested_yaw_degrees=yaw))
     if kind == 'lpbf':
-        commands += ['camera orbit 30 28', 'frames 120']
+        commands += ['fem surface off', 'camera orbit 30 28', 'frames 120']
         for step in ([] if stills_only else range(1, 18)):
             commands += [f'fem step {step}', 'frames 12', f'screenshot {q(folder / ("build-%02d.png" % step))}']
         commands += ['fem step 16', 'fem section y 0.55', 'frames 30',
@@ -95,6 +99,10 @@ def capture(kind, repo, out, size, stills_only=False):
                     renderer_sha256=hashlib.sha256((repo / 'navier').read_bytes()).hexdigest(),
                     pixels='Native OpenGL output; no painted fields or fabricated time interpolation',
                     deformation_scale=0 if kind == 'thermal' else 1,
+                    surface_representation=('interpolated STL for complete-part stills; active mesh for cuts/sections' if stills_only
+                                            else 'active finite-element boundary throughout growth' if kind == 'fdm'
+                                            else 'interpolated STL for the orbit; active mesh for build/cut/sections' if kind == 'lpbf'
+                                            else 'interpolated STL'),
                     range='all stored states, full peak (not percentile clipped)',
                     presentation='Designed geometry; artificial studio lighting, ambient occlusion, bloom and backdrop',
                     preset=preset, fps=20, frames=frames)

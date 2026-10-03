@@ -19,6 +19,8 @@ at 25 s; by 150 s the nodal range is 24.147 to 25.134 C. The film compresses phy
 [Watch deposition and cooling](media/art-gallery/fdm.mp4). A hot rim grows above a cooling shell. The FDM model
 activates material, accounts for deposited enthalpy, solves cooling and incremental thermal stress, then releases
 it from the bed. Sixteen 1.5 mm simulation layers aggregate nominal 0.2 mm printed layers; bead paths are unresolved. Key times have equal screen duration but uneven physical spacing.
+Growth films keep the finite-element boundary throughout, so finishing the build does not introduce a display-only
+shape change. The complete-part stills interpolate the saved field onto the original STL surface.
 
 ## Helical Lantern
 

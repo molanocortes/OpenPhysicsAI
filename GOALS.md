@@ -633,8 +633,13 @@ close to 1e-8 relative. Then verify a 3D held coupon and the elastic limit befor
   labels now correctly identify process steps, because the inherent-strain writer does not store physical times.
 - Focused native checks passed: palettes 31/31, overlays 34/34, time labels 12/12. These include actual image changes,
   exact overlay restoration and unchanged numerical fields/ranges. Python syntax, native build and link checks pass.
-  The repository session regression was launched detached and is still running at this checkpoint; no completed
-  regression claim is made here. No solver equation was changed by this gallery follow-up.
+  The repository session regression completed with exit 0; its [full log](validation/art-gallery/regression.log)
+  retains historical shortfalls and the stated session-only scope. Native MCP passed 518 checks and HTTP passed 190.
+  No solver equation was changed by this gallery follow-up.
 - Limits stay visible: curved voxel surface-area bias is 29.43 to 37.92 percent, no convergence study or measurement
   comparison, FDM layers aggregate roads, and metal printing uses assumed elastic inherent strain. Attractive surface
   interpolation does not remove those limitations or turn demonstration material parameters into calibrated data.
+
+- Final gallery review keeps the active finite-element boundary throughout both growth movies. Completion no longer
+  switches to a smoother STL mid-film, which could be mistaken for physical deformation. Complete-part artwork stills
+  retain explicit interpolation onto the designed STL.

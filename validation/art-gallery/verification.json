@@ -13,7 +13,12 @@
     "overlays": 34,
     "time_labels": 12
   },
-  "test_fast": "running; see /private/tmp/openphysics-art-gallery/regression.log",
+  "test_fast": {
+    "exit": 0,
+    "log": "regression.log",
+    "seconds_log_timestamp": 1656.564629,
+    "scope": "Repository session tier; retains historical failures and explicit subsets of full fire/room/FSI validation"
+  },
   "physics": "No solver equations changed in this gallery follow-up",
   "capture_note": "First thermal capture rendered all frames, then refused an unknown final panel query. Replaced with uitext and recaptured successfully. Original log retained locally under capture-history."
 }
