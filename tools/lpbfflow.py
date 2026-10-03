@@ -221,6 +221,10 @@ def main():
         job, run_dir = v.get("job_id", ""), v.get("run_directory", "")
         check(v.get("analysis") == "lpbf_build", "the job is an lpbf_build analysis")
         check("declared process input" in v.get("scope", ""), "the operation does not assert that every supplied strain is calibrated")
+        # Inherent strains can create stress without external mechanical loads.
+        load_warnings = [w.get("message", "").lower() for w in v.get("warnings", []) if w.get("code") == "NO_LOADS"]
+        check(bool(load_warnings) and all("without additional thermal or eigenstrain loading" in w for w in load_warnings),
+              "the absent-mechanical-load warning qualifies its zero-state claim for process loading")
         dup = call_ok(c, "lpbf_build_run", args, "an identical build")
         check(dup.get("deduplicated") is True and dup.get("job_id") == job, "an identical build returns the running job")
         st = wait_job(c, job)

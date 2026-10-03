@@ -71,11 +71,12 @@ mechanical solve, plus the release: `thermal_substeps x (layers_deposited + 2) +
 and the disk). Probe temperature histories are always kept at every thermal substep, in the summary, because they are a
 few hundred numbers.
 
-The two modes do not give exactly the same stresses, and the difference measures the increment lumping: on the PLA wall
-of `tools/printflow.py`, `key_times` reports a peak of 7.791 MPa on the bed and `substeps` 7.578 MPa (2.7 % lower),
-because the finer increments catch material that rises above the relaxation temperature between two key times and
-release its stress, which the coarse increments miss. `substeps` is the more resolved answer; `key_times` is the
-default because it is a few times cheaper.
+The two modes do not give exactly the same stresses; their difference measures mechanical increment lumping. The
+original PLA wall record from `tools/printflow.py` was 7.791 MPa at `key_times` and 7.578 MPa at `substeps`. Amended
+2026-10-03 after the deposition, stress-field and radiation corrections: the same workflow reports 8.506 MPa at
+the nine key times and 9.028 MPa at 21 substep states (6.1 percent higher). Finer increments resolve temperature
+paths, relaxation resets and stress redistribution differently; the change has no guaranteed sign. `substeps` is
+the more resolved calculation, not a physical-accuracy certificate; `key_times` is cheaper.
 
 ## 5. The summary
 

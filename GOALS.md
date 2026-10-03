@@ -492,7 +492,7 @@ Checkpoints completed on this branch:
 - `973ef54`: mesh ownership and diagnostics. Mesh suite 52/52, operations 279/279, independent ASan/UBSan 52/52.
   Eight coincident bodies, unchanged 64,000 elements: median construction 0.224780 to 0.012112 s (18.6 times faster).
   The 25,000-element anisotropic fixture has 25 complete layers and minimum det J 0.005 mm3.
-- `9bf44fd`: conservative FDM deposition and explicit full-print heat ledger; exact piecewise thermoelastic integration;
+- `9bf44fd`: conservative FDM deposition and explicit full-print heat ledger; exact piecewise thermal eigenstress integration for the incremental law;
   mean Gauss-point von Mises; accumulated LPBF reactions; active-node extrema after support removal. Printing 35/35.
   Independent constant/table-capacity/support-removal energy errors: 1.85e-16, 4.93e-16, 3.08e-15 relative.
   The demonstration wall accounts for 1500.57176 J previously omitted and closes its full heat ledger to 1.63e-11.
@@ -528,7 +528,7 @@ Checkpoints completed on this branch:
   into the isolated worktree; the original dependency and checkout were not changed. Fresh MFEM download/build and
   the complete 3D magnetic numerical suite were not rerun here.
 - Complete engineering `make test` finished detached with exit 0; base `make test-fast` finished with exit 0.
-  The omitted fire/room/FSI executables are now included in that recipe and are being checked separately. Topology
+  The fire/room/FSI executables now enter that recipe through the explicit session cases recorded below. Topology
   checks also enter the recipe (25/25 in the completed full suite). The runtime remains above the three-minute goal.
 - Quality gates A and D-H passed: zero warnings under the project compiler flags, links/flag boards, operation
   coverage, portable paths, commit hygiene and material provenance (34 sourced records, four demonstration/other
@@ -572,13 +572,32 @@ Checkpoints completed on this branch:
   stored states, released peak 1.54044 MPa and z warp [-0.0507017, 0.00107592] mm; LPBF has 12 states and its
   elastic 690.734 MPa peak is unchanged. [Current evidence](docs/media/foundation/evidence.json) records source,
   engine, renderer, result and media hashes. The 27-frame 960 x 600 native film is 5680 ms. No new measurement validation.
+- Complete post-radiation `make test-fast` finished with `POST_RADIATION_TEST_FAST_EXIT=0`: thermal 82/82,
+  mechanics 288/288, native MCP 518/518 and HTTP 190/190. Log creation to last output was 3410.686 s (57 min 11 s),
+  under concurrent desktop/Blender load. The final warning-only wording change is checked separately through the
+  printing response regressions; physical equations are unchanged. Existing recorded numerical shortfalls remain
+  visible in the suite output; exit 0 does not erase them or the full-fire failure above.
 - Latest LPBF workflow retries hit the inherited 20-second client deadline during synchronous typed-support
   generation: [initial](validation/printing-refinement/support-timeout-initial.log) and
   [retry](validation/printing-refinement/support-timeout-retry.log). An identical [isolated bridge probe](validation/printing-refinement/support-timings.json)
   completed block/thin-wall/cone/tree/lattice in 6.782/3.059/0.435/16.348/9.869 s, all with the expected 96 elements.
   That probe's 97-byte stderr did not block its pipe. Load sensitivity is plausible, not proved by the failed logs.
   The workflow now names and times each type and preserves failed workspaces/stderr; numerical criteria and the
-  20-second deadline are unchanged. A serial complete rerun remains pending after the current regression run.
+  20-second deadline are unchanged. The [serial complete rerun](validation/printing-refinement/lpbf-final.log) now
+  passes 239/239; thin-wall/cone/tree/lattice took 1.454/0.221/6.029/3.738 s. This records a passing serial run,
+  not a proof of the earlier timeout cause.
+
+- Final review found an inherited static warning that asserted all stresses were zero in process results with
+  nonzero thermal/inherent-strain stresses. The shared warning now qualifies the zero-state claim by absence of
+  thermal or eigenstrain loading. Two response regressions [fail before](validation/printing-refinement/load-warning-before.log);
+  no physical equation or result-view pixel changes. The native capture keeps its original warnings and hashes,
+  with a correction note in its evidence record. Complete response checks pass: [FDM 91/91](validation/printing-refinement/fdm-final.log)
+  and LPBF 239/239, including the two warning regressions. Workflow assertion counts can vary with job-status polling.
+  The current FDM fixture has 8.506 MPa at key times and 9.028 MPa at substeps; its contract now retains the earlier
+  numbers as historical and does not assert a guaranteed direction of stress change.
+- The [final verification record](validation/printing-refinement/final-checks.json) pins the latest logs and warning
+  source hashes. The complete [post-radiation session log](validation/printing-refinement/regression-after-radiation.log)
+  is retained, including its historical recorded failures and explicit session-only scope.
 
 Remaining research work: conforming printing meshes and documented spatial/time convergence; FDM bead/toolpath,
 raster anisotropy, interlayer bonding and viscoelastic constitutive laws with sourced parameters; connecting the

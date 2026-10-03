@@ -166,6 +166,10 @@ def main():
         run_dir = v.get("run_directory", "")
         check(v.get("analysis") == "fff_print", "the job is an fff_print analysis")
         check(bool(job) and bool(run_dir), "the print returns a job id and a run directory")
+        # Thermal process strains can create stress without external mechanical loads.
+        load_warnings = [w.get("message", "").lower() for w in v.get("warnings", []) if w.get("code") == "NO_LOADS"]
+        check(bool(load_warnings) and all("without additional thermal or eigenstrain loading" in w for w in load_warnings),
+              "the absent-mechanical-load warning qualifies its zero-state claim for process loading")
         spec_hash = v.get("spec_hash", "")
         dup = call_ok(c, "mech_print_run", {"process": PROCESS, "probes": probes}, "identical print")
         check(dup.get("deduplicated") is True and dup.get("job_id") == job, "an identical print returns the running job instead of a second one")

@@ -699,5 +699,15 @@
   "results_sha256": {
     "fdm": "5176e888729e8be528a2f615789ae0bd4089bf4e6c64d363492191e3a523ad6c",
     "lpbf": "3d3b5adca2fbbd55ccb65607181b6430e7e7dc42f54c0cea92baad4fdf356abf"
-  }
+  },
+  "historical_metadata_corrections": [
+    {
+      "code": "NO_LOADS",
+      "capture_warning": "The saved capture inherited a static warning claiming every displacement and stress would be zero when external mechanical loads were absent.",
+      "correction": "The shared warning now conditions a zero state on absence of additional thermal or eigenstrain loading; printing process stresses need no external mechanical force.",
+      "physical_results_changed": false,
+      "record_preserved": "Current capture source, result hashes and raw warnings are retained as captured at bcf25da; the wording change does not modify a physical solve or rendering.",
+      "before_check": "validation/printing-refinement/load-warning-before.log"
+    }
+  ]
 }

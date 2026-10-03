@@ -135,4 +135,7 @@ State of the project and what was actually tested: [STATUS.md](STATUS.md), [Ther
    passed in 11 min 15 s on 2026-09-20, so it is run detached with a log before a wave's final report and in CI, not
    inside a step. Measured on the development laptop while other sessions were building: `make test-fast` 4 min 34 s,
    `make test` 11 min 15 s. test-fast does not yet meet the three minutes it was asked for; its three heaviest suites
-   are advtest, mechtest and tsteptest, and shortening them is a task of their owners, not a reason to drop them.
+   were advtest, mechtest and tsteptest in that recipe, not a reason to drop them. The expanded 2026-10-03
+   session tier completed in 57 min 11 s on this shared laptop (log creation to final output, with other work running).
+   It includes large lab verification cases; the earlier four-minute measurement does not describe this recipe.
+   The three-minute goal remains open; do not reduce numerical criteria to meet it.

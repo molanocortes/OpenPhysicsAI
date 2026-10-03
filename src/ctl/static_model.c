@@ -571,7 +571,8 @@ bool static_model_build(Project *p, const StaticSettings *s, StaticModel *m, Jso
     bool imposed = false;
     for (size_t i = 0; i < 3 * (size_t)nn && !imposed; i++) imposed = m->fixed[i] && m->fixed_value[i] != 0;
     if (!nloads && !imposed)
-        warn(warnings, "NO_LOADS", "there are no loads, gravity or nonzero prescribed displacements: every displacement and stress will be zero");
+        warn(warnings, "NO_LOADS", "there are no external mechanical loads, gravity or nonzero prescribed displacements; "
+                                  "without additional thermal or eigenstrain loading, displacement and stress are zero");
     for (int bi = 0; bi < hm->nbodies && bi < MESH_MAX_BODIES; bi++) {
         double vs = hm->body_volume_stl[bi], vm = hm->body_volume_mesh[bi];
         if (vs > 0 && fabs(vm - vs) > 0.03 * vs)
