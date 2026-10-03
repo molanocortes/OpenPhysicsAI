@@ -521,17 +521,36 @@ Checkpoints completed on this branch:
   [initial invalid zero-net-reaction normalization](validation/printing-refinement/initial-invalid-normalization.json)
   and [explicitly amended PASS](validation/printing-refinement/amended.json) are retained without erasing history.
 - `e410df9`: eight real `mesh_inspect` calls passed 40 independent checks of current/generated state, exact box
-  element/node counts and det J in mm3. This removes the known unexercised operation from the coverage baseline.
+  element/node counts and det J in mm3. The complete [inspector follow-up run](validation/printing-refinement/inspected.json)
+  is retained separately from the original and amended studies. This removes the known unexercised operation
+  from the coverage baseline.
 - Both the app and engine link with the existing cached MFEM 4.8 backend as well as without it. The cache was copied
   into the isolated worktree; the original dependency and checkout were not changed. Fresh MFEM download/build and
   the complete 3D magnetic numerical suite were not rerun here.
 - Complete engineering `make test` finished detached with exit 0; base `make test-fast` finished with exit 0.
   The omitted fire/room/FSI executables are now included in that recipe and are being checked separately. Topology
   checks also enter the recipe (25/25 in the completed full suite). The runtime remains above the three-minute goal.
-- Inexpensive quality gates D-H passed: links/flag boards, operation coverage, portable paths, commit hygiene and
-  material provenance (34 sourced records, four demonstration/other records). Final HTTP client checks remain 190/190.
+- Quality gates A and D-H passed: zero warnings under the project compiler flags, links/flag boards, operation
+  coverage, portable paths, commit hygiene and material provenance (34 sourced records, four demonstration/other
+  records). Final HTTP client checks remain 190/190. The full sanitizer gate was not run; the independent mesh
+  ASan/UBSan run above passed.
 - Presentation 14/14 and topology UI 18/18. The cap-colour check now compares with a matched empty studio instead of
   misclassifying neutral background pixels as a simulated face; its original contrast criterion is unchanged.
+- `9947599`: final scientific review caught the same near-zero-force normalization defect in the optional J2 path. A freely
+  contracting hex reported 0.854 despite matching its affine closed form. The accepted nonlinear residual now uses
+  applied/release forces, individual incremental reactions and the initial nonlinear predictor as its force scale.
+  It reports 6.06e-16 with unchanged displacement/stress/strain; printing checks pass 44/44 and LPBF MCP 239/239. The exported result
+  names the elastic or J2 definition, and both retain an explicit absolute-N fallback for a zero force scale.
+- FDM scope now explicitly names its incremental (hypoelastic) approximation: old stress is not rescaled as E(T)
+  changes, with an instantaneous reset above T_relax. The exact thermal integral verifies that implemented law;
+  time-dependent polymer viscoelasticity remains a separate, required constitutive upgrade. FDM MCP checks pass 89/89.
+- `86f0701`: real Solid keyboard checks fail before the routing fix (3 passed, five failed) and pass afterwards (8/8); Space
+  controls visible stored-time FEM playback without starting hidden fluid. CLEAN VIEW labels section axis, position
+  and flip. The two-mesh interface and report say sensitivity, not proof of convergence or an accuracy bound.
+- `2bd014b`: long lab validation retains its original cases and thresholds in `make test-lab-validation`, run detached.
+  Session subsets explicitly omit statistical/steady validations: fire F1/F2 (36.29 s, relative projection 1.15e-10,
+  mass 1.45e-13), room D (7.42 s, pressure error -0.411%, relative mass 2.00e-15), FSI F3 (14.40 s with native GPU,
+  unchanged 2000 steps, momentum change +0.002%). Full fire/room/FSI remain pending in the detached run.
 
 Remaining research work: conforming printing meshes and documented spatial/time convergence; FDM bead/toolpath,
 raster anisotropy, interlayer bonding and viscoelastic constitutive laws with sourced parameters; connecting the
@@ -539,3 +558,9 @@ separate laser/melt model to part-scale mechanical response for LPBF. Measuremen
 are still required. The manual app exposes the existing scenario/setup controls, not every conceivable solver parameter.
 The plugin adapter is local development transport; lab scenarios do not yet have typed MCP job operations, and public
 deployment still needs authorization, user/workspace isolation and a real ChatGPT session.
+
+The next mesh acceptance case must include rotated walls: the current aligned box study does not measure staircase
+surface-area bias, which also biases convection. Use the same 8 x 2 x 4 mm wall at 0, 30 and 45 degrees and h = 1,
+0.5, 0.25 mm, with z-aligned layers. Before running, require positive J, one face-connected part and report volume,
+surface area and uniform-convection flux against independent 64 mm3, 112 mm2 and h_film A delta T. A boundary
+treatment improvement must bring the finest flux within 2 percent; do not infer that from an aligned-wall PASS.

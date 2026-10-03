@@ -1,17 +1,17 @@
 {
   "date": "2026-10-03",
   "reproduce": "make && python3 tools/demo_printing.py --capture --film",
-  "renderer_commit": "e14aefc",
+  "renderer_commit": "86f0701",
   "demo_commit": "7f359e1",
   "physics_commit": "9bf44fd",
   "source": "Native macOS application; computed FDM and LPBF results, no generated imagery.",
   "geometry": "Deterministic 24 x 6 x 12 mm open-cell structure from tools/demo_printing.py; 1124 one-mm hex elements, 1974 nodes.",
   "physical_validation": "None. Demonstration material values and inferred process/strain inputs. This structure generated no supports.",
   "models": {
-    "fdm": "Homogenised layer deposition, heat, temperature-dependent thermoelastic response and release, not deposited roads or bonding.",
+    "fdm": "Homogenised layer deposition, heat, temperature-dependent incremental (hypoelastic) stress accumulation with an instantaneous relaxation-temperature reset, and release; not deposited roads, bonding or a time-dependent viscoelastic law.",
     "lpbf": "Elastic inherent strain, no yielding in this demonstration; no laser or melt-pool calculation."
   },
-  "presentation": "Artificial key/fill lighting and neutral background. Data and geometry are computed. Clean views state field, units, time, range and true deformation scale.",
+  "presentation": "Artificial key/fill lighting and neutral background. Data and geometry are computed. Clean views state field, units, time, range, true deformation scale and the section axis/fraction/flip (or OFF).",
   "gif": {
     "frames": 27,
     "size": [
@@ -301,12 +301,12 @@
   ],
   "assets": {
     "fdm-clean.png": {
-      "bytes": 1036583,
-      "sha256": "db7a3002eeb6d320baa13b70de489164546be3579b3583fb69458634807a4d1f"
+      "bytes": 1029015,
+      "sha256": "4858edbedafe38364394fc9a44afc976cc7a8f366649077697cba1422549ce31"
     },
     "fdm-replay.gif": {
-      "bytes": 2322497,
-      "sha256": "c21e2263baed93a964d2bff8d5d7319049254f3e6159cd677c1f1a405a1c7443"
+      "bytes": 2438134,
+      "sha256": "561bb535922bf69d9ba966d341a04bcf6df6ec0391c4f211bf1afb3ac0b98489"
     },
     "lpbf-cut-after.png": {
       "bytes": 820917,
@@ -317,8 +317,8 @@
       "sha256": "d61d248fc1d4be32e6ef1b19104dbdb03d41732603e53689ff72533bd8fe0b47"
     },
     "lpbf-section.png": {
-      "bytes": 1022470,
-      "sha256": "8eb4d7e9cd8f23b5ecdfd295cd4abd387667e4bd474703fb31334924bacf02a3"
+      "bytes": 1016128,
+      "sha256": "d1358c942d254a8bb5d4b210caa50e449d9573c18c19b08cd1599da7deed1d0d"
     },
     "ui-after.png": {
       "bytes": 816067,
@@ -328,5 +328,11 @@
       "bytes": 836116,
       "sha256": "fc70c772dcbfa762e6f293e6c8755084e562541b41135e4935aed628fc422a0f"
     }
-  }
+  },
+  "recapture": "Final clean-view stills and the film reuse the same saved results and camera; no physical fields or result hashes changed. Before/after comparisons remain their original captures.",
+  "recaptured_assets": [
+    "fdm-clean.png",
+    "lpbf-section.png",
+    "fdm-replay.gif"
+  ]
 }
