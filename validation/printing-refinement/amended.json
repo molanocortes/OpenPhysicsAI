@@ -3470,14 +3470,14 @@
     "access": {
       "workspace": "/var/folders/x4/xsz53mxd3j9f9txp7wy8_bdc0000gn/T/printing-refinement-wy3hydbh/projects",
       "read_roots": [
-        "/Users/sebas",
+        "$HOME",
         "/tmp",
         "/Volumes",
         "/var/folders/x4/xsz53mxd3j9f9txp7wy8_bdc0000gn/T/printing-refinement-wy3hydbh/projects",
         "/var/folders/x4/xsz53mxd3j9f9txp7wy8_bdc0000gn/T/printing-refinement-wy3hydbh"
       ],
       "write_roots": [
-        "/Users/sebas/NAVIER-Projects",
+        "$HOME/NAVIER-Projects",
         "/var/folders/x4/xsz53mxd3j9f9txp7wy8_bdc0000gn/T"
       ]
     }
@@ -3604,5 +3604,6 @@
     "4e336cc96a2a8fc81a8cb47041e167f125b02dbc00c2ce24fc5538e9e581e6bf",
     "4e336cc96a2a8fc81a8cb47041e167f125b02dbc00c2ce24fc5538e9e581e6bf"
   ],
-  "temporal_mesh_identical": true
+  "temporal_mesh_identical": true,
+  "serialization_note": "Absolute user-home prefixes in string values are written as $HOME for portability; physical numbers are unchanged."
 }

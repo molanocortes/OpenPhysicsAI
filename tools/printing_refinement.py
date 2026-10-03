@@ -65,6 +65,8 @@ JOB_SECONDS = 480
 SPACINGS = (1.0, 0.5, 0.25)
 SUBSTEPS = (4, 8, 16)
 INITIAL_EVIDENCE = Path(__file__).resolve().parent.parent / "validation/printing-refinement/initial-invalid-normalization.json"
+USER_HOME_PREFIX = str(Path.home())
+SERIALIZATION_NOTE = "Absolute user-home prefixes in string values are written as $HOME for portability; physical numbers are unchanged."
 NUMERICS = {"solver": "iterative", "tolerance": 1e-10}
 FDM_PROCESS = dict(PROCESS, provenance="inferred", thermal_substeps=8)
 FDM_INPUT = {"body": "wall", "process": FDM_PROCESS,
@@ -84,9 +86,23 @@ def digest(path):
     return h.hexdigest()
 
 
+def portable_paths(value):
+    """Sanitize user-home path prefixes only; preserve numbers and evidence hashes."""
+    if isinstance(value, str):
+        if value == USER_HOME_PREFIX or value.startswith(USER_HOME_PREFIX + "/"):
+            return "$HOME" + value[len(USER_HOME_PREFIX):]
+    elif isinstance(value, list):
+        return [portable_paths(item) for item in value]
+    elif isinstance(value, dict):
+        return {key: portable_paths(item) for key, item in value.items()}
+    return value
+
+
 def checkpoint(path, report):
     temporary = path.with_name(path.name + ".tmp")
-    temporary.write_text(json.dumps(report, indent=2, allow_nan=False) + "\n")
+    serialized = portable_paths(report)
+    serialized["serialization_note"] = SERIALIZATION_NOTE
+    temporary.write_text(json.dumps(serialized, indent=2, allow_nan=False) + "\n")
     os.replace(temporary, path)
 
 
