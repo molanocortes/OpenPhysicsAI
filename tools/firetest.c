@@ -32,7 +32,13 @@
  * and the test prints the scatter of the averages of five 6 s blocks, so that the result's own uncertainty shows. The
  * criteria are unchanged. That run: F1, F2 (5.3e-13), F3 (+0.12 %), V1 (-8.4 %), V3 (+12.7 %, -16.2 %) pass; V2 +27.2 % +- 17 %
  * at 2.0 m (FAIL by the mean), +5.5 % +- 16 % at 2.6 m. V2 at 2.0 m is recorded open (GOALS.md): printed, not counted, as
- * mechtest's D12 is. */
+ * mechtest's D12 is.
+ *
+ * Session subset, declared before its first run, 2026-10-03: --fast runs the SAME default 4 cm reactive grid and
+ * physical inputs through 1 s, including ignition during the ramp. It checks F1 projection and F2 mass with their
+ * original 1e-6 criteria. It does NOT exercise F3 steady heat release, V1 flame height or V2/V3 statistical plume
+ * correlations; the default full test retains every case and its original criteria. FIRE_DX and FIRE_T_END do not
+ * alter this fixed session subset. */
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -48,8 +54,13 @@ static void verdict(bool ok, const char *name) {
     failures += !ok;
 }
 
-int main(void) {
-    const double dx = getenv("FIRE_DX") ? atof(getenv("FIRE_DX")) : 0.04, Q = 100.0, T0 = 293.15; /* FIRE_DX: a resolution study */
+int main(int argc, char **argv) {
+    bool fast = argc == 2 && !strcmp(argv[1], "--fast");
+    if (argc > 1 && !fast) {
+        fprintf(stderr, "usage: firetest [--fast]\n");
+        return 2;
+    }
+    const double dx = !fast && getenv("FIRE_DX") ? atof(getenv("FIRE_DX")) : 0.04, Q = 100.0, T0 = 293.15; /* FIRE_DX: a resolution study */
     FireSpec s;
     fire_spec_defaults(&s);
     s.n[0] = (int)lround(1.6 / dx), s.n[1] = s.n[0], s.n[2] = 2 * s.n[0], s.dx = dx, s.T0 = T0;
@@ -68,7 +79,12 @@ int main(void) {
     fire_diagnostics(F, NULL, NULL, &m0, NULL, NULL);
     long steps = 0;
     time_t w0 = time(NULL);
-    const double t_end = getenv("FIRE_T_END") ? atof(getenv("FIRE_T_END")) : 38, t_avg = 8; /* FIRE_T_END: a longer average, overnight */
+    const double t_end = fast ? 1.0 : (getenv("FIRE_T_END") ? atof(getenv("FIRE_T_END")) : 38), t_avg = 8; /* FIRE_T_END: a longer average, overnight */
+    if (fast) {
+        printf("== session subset: same %d x %d x %d reactive grid, %.2f m cells, through %.1f s; F1/F2 only\n",
+               s.n[0], s.n[1], s.n[2], dx, t_end);
+        fflush(stdout);
+    }
     double blkT[5][2] = {{0}}, blkW[5][2] = {{0}}, blkt[5] = {0};
     while (fire_time(F) < t_end) {
         double dt = fire_step(F, pool);
@@ -111,6 +127,15 @@ int main(void) {
     printf("== F2: mass\n  in the box %.6f kg (start %.6f); in %.6f, out %.6f; imbalance %.2e kg (%.2e of the box); added by the 3000 K cap %.2e kg\n", m,
            m0, mi, mo, m - m0 - (mi - mo), fabs(m - m0 - (mi - mo)) / m0, fire_mass_capped(F));
     verdict(fabs(m - m0 - (mi - mo)) < 1e-6 * m0, "F2");
+    if (fast) {
+        printf("  NOT EXERCISED: F3 steady heat release; V1 flame height; V2/V3 statistical plume correlations\n"
+               "  Run default firetest detached for those full validations.\n");
+        pool_destroy(pool);
+        fire_free(F);
+        free(qz), free(Tc), free(wc);
+        printf(failures ? "firetest --fast: %d FAILED\n" : "firetest --fast: F1/F2 passed; full validation not run\n", failures);
+        return failures ? 1 : 0;
+    }
     double hbar = hrr_sum / tavg / 1e3;
     printf("== F3: heat\n  averaged heat release %.2f kW against the burner's %.0f kW (%+.2f %%)\n", hbar, Q, 100 * (hbar / Q - 1));
     verdict(fabs(hbar / Q - 1) < 0.03, "F3");

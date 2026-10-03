@@ -35,6 +35,7 @@ make leaderboard # score every challenge from its result files and write the boa
 make test-ui    # clicks every app control off-screen and asserts its effect
 make test-printing # analytic FDM/LPBF checks, mesh checks and complete MCP printing workflows
 make test-plugin   # native MCP and local Streamable HTTP integration, no real ChatGPT model
+make test-lab-validation # complete fire, room and FSI validations, detached (fire alone about 25 minutes)
 ./navier-ctl doctor                       # self-diagnosis, including a reference solve
 ./navier-ctl --embedded call capabilities_get   # what the engine can and cannot do, machine-readable
 ```
@@ -126,8 +127,11 @@ State of the project and what was actually tested: [STATUS.md](STATUS.md), [Ther
    so the session keeps working, or is written to the overnight queue (`validation/QUEUE.md`) with its command, its
    expected time and what number it will answer. Long runs are the last step of a verified model, never a way to
    find out whether the model is right; that is done on the cheap cases first.
-   The one exception, so that a session can still test itself: `make test-fast` (every C suite plus the MCP protocol
-   test, no flow script and no doctor) is the tier a session runs after each step. `make test` is the full suite; it
+   The one exception, so that a session can still test itself: `make test-fast` (C verification and explicitly labelled
+   session subsets of long statistical suites, plus MCP protocol/transport checks, no flow script or doctor) is the tier
+   a session runs after each step. The original fire plume, room steady-state and FSI validation cases retain their
+   full criteria in `make test-lab-validation`, run detached; session subsets do not claim their validation results.
+   `make test` is the complete engineering workflow suite; it
    passed in 11 min 15 s on 2026-09-20, so it is run detached with a log before a wave's final report and in CI, not
    inside a step. Measured on the development laptop while other sessions were building: `make test-fast` 4 min 34 s,
    `make test` 11 min 15 s. test-fast does not yet meet the three minutes it was asked for; its three heaviest suites
