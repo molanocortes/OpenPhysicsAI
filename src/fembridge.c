@@ -2672,8 +2672,8 @@ static void convergence_finish(void) {
     g_conv.stress_change_pct = g_conv.coarse_p99 > 0 ? (g_conv.fine_p99 - g_conv.coarse_p99) / g_conv.coarse_p99 * 100 : 0;
     g_conv.converged = fabs(g_conv.disp_change_pct) < 5 && fabs(g_conv.stress_change_pct) < 5;
     snprintf(g_conv.message, sizeof g_conv.message,
-             g_conv.converged ? "converged: displacement %+.1f %%, stress %+.1f %% from %d to %d elements"
-                              : "not converged: displacement %+.1f %%, stress %+.1f %% from %d to %d elements - refine again or accept",
+             g_conv.converged ? "small change: displacement %+.1f %%, stress %+.1f %% from %d to %d elements"
+                              : "refine again: displacement %+.1f %%, stress %+.1f %% from %d to %d elements",
              g_conv.disp_change_pct, g_conv.stress_change_pct, g_conv.coarse_elements, g_conv.fine_elements);
     g_conv.state = CONV_DONE;
     LOGOK("mesh check: %s", g_conv.message);
@@ -2905,16 +2905,18 @@ bool fem_write_report(char *dir_out, size_t cap) {
         fprintf(f, "- Energy: %s (twice the strain energy equals the external work).\n",
                 json_get_bool(ck, "energy_ok", false) ? "consistent" : "OFF - do not use these numbers");
     }
-    fprintf(f, "\n## Mesh convergence\n\n");
+    fprintf(f, "\n## Two-mesh sensitivity\n\n");
     if (g_conv.state == CONV_DONE)
         fprintf(f, "%s. Element size %.3g mm (%d elements) against %.3g mm (%d elements): displacement %.4g -> %.4g mm "
                    "(%+.1f %%), 99th-percentile stress %.4g -> %.4g MPa (%+.1f %%).%s\n",
-                g_conv.converged ? "Converged" : "NOT converged", g_conv.coarse_mm, g_conv.coarse_elements,
+                g_conv.converged ? "Both changes below 5 percent" : "One or both changes at least 5 percent",
+                g_conv.coarse_mm, g_conv.coarse_elements,
                 g_conv.fine_mm, g_conv.fine_elements, g_conv.coarse_disp, g_conv.fine_disp, g_conv.disp_change_pct,
                 g_conv.coarse_p99, g_conv.fine_p99, g_conv.stress_change_pct,
                 g_conv.capped ? " The finer mesh was capped at about 60 000 elements." : "");
     else
         fprintf(f, "Not run. Press CHECK MESH in the application: an answer from a single mesh is not evidence.\n");
+    fprintf(f, "Two meshes show sensitivity, not an accuracy bound or proof of convergence.\n");
     fprintf(f, "\n## What these numbers are not\n\n");
     fprintf(f, "- Small-strain linear elasticity: no plasticity, no contact, no large deflection, no buckling.\n");
     fprintf(f, "- The mesh is a voxel mesh: the surface is a staircase, so stresses on inclined and curved faces are "

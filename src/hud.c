@@ -2082,12 +2082,14 @@ static float step_results(Ui *ui, float x, float y, float w) {
     y += bh + 6;
     if (cv->state == CONV_DONE) {
         snprintf(a, sizeof a, "%.3g mm -> %.3g mm", cv->coarse_mm, cv->fine_mm);
-        kv(ui, x, y, w, cv->converged ? "mesh check: converged" : "mesh check: not converged", a,
+        kv(ui, x, y, w, cv->converged ? "mesh change: below 5%" : "mesh change: refine again", a,
            cv->converged ? UI_GOOD : UI_ACCENT2);
         y += 17;
         snprintf(a, sizeof a, "displacement %+.1f %% \xC2\xB7 stress %+.1f %% \xC2\xB7 %d \xE2\x86\x92 %d elements",
                  cv->disp_change_pct, cv->stress_change_pct, cv->coarse_elements, cv->fine_elements);
         y = wrap_text(ui, x, y, w, UI_DIM, a, 2) + 4;
+        y = wrap_text(ui, x, y, w, UI_DIM,
+                      "Two meshes show sensitivity, not an accuracy bound or proof of convergence.", 3) + 4;
         if (cv->capped) y = wrap_text(ui, x, y, w, UI_DIM, "The finer mesh was capped at about 60 000 elements.", 2) + 2;
     } else if (cv->state == CONV_FAILED) {
         y = wrap_text(ui, x, y, w, UI_BAD, cv->message, 2) + 4;
@@ -4078,11 +4080,17 @@ void hud_draw(void) {
     }
     if (!app.hud_on) {
         if (clean_view) {
-            char title[240], meta[360], note[260] = {0};
+            char title[240], meta[360], note[260] = {0}, section_meta[80] = {0};
             if (labapp_active()) {
                 snprintf(title, sizeof title, "%s", labapp_title());
                 snprintf(meta, sizeof meta, "%s", labapp_status());
                 if (strcmp(labapp_domain(), "relativity")) lab_legend(16, H - 46);
+                if (labapp_native3d()) {
+                    int axis = labapp_section_axis();
+                    if (axis >= 0) snprintf(section_meta, sizeof section_meta, "SECTION %c at %.3g%% - %s", "XYZ"[axis],
+                                             100 * labapp_section_fraction(), labapp_section_flipped() ? "flipped" : "normal");
+                    else snprintf(section_meta, sizeof section_meta, "SECTION OFF");
+                }
             } else if (app.workspace == WS_SOLID && fem_state()->have_result) {
                 const FemState *s = fem_state();
                 snprintf(title, sizeof title, "%s \xC2\xB7 %s [%s]", s->project, fem_field_label(fem_field()), fem_field_unit(fem_field()));
@@ -4091,6 +4099,9 @@ void hud_draw(void) {
                          fem_range_all() ? "all stored times" : "this stored time");
                 solid_legend(14, H - 14);
                 printing_model_note(note, sizeof note);
+                if (fem_section_on()) snprintf(section_meta, sizeof section_meta, "SECTION %c at %.3g%% - %s", "XYZ"[fem_section_axis()],
+                                               100 * fem_section_position(), fem_section_flipped() ? "flipped" : "normal");
+                else snprintf(section_meta, sizeof section_meta, "SECTION OFF");
             } else {
                 snprintf(title, sizeof title, "%s \xC2\xB7 %s", app.scene, display_field_label(app.display_field));
                 snprintf(meta, sizeof meta, "t = %.5g s \xC2\xB7 step %llu", st->sim_time, (unsigned long long)st->step);
@@ -4098,12 +4109,14 @@ void hud_draw(void) {
             }
             float tw = MAXI(ui_text_width(ui, FONT_BOLD, title), ui_text_width(ui, FONT_SMALL, meta));
             tw = MAXI(tw, ui_text_width(ui, FONT_SMALL, note));
-            ui_rect(ui, 10, 10, MINI(tw + 20, W - 20), note[0] ? 72 : 52, 0x08101AD0u, 7);
+            tw = MAXI(tw, ui_text_width(ui, FONT_SMALL, section_meta));
+            ui_rect(ui, 10, 10, MINI(tw + 20, W - 20), 52 + (note[0] ? 20 : 0) + (section_meta[0] ? 20 : 0), 0x08101AD0u, 7);
             ui_text(ui, FONT_BOLD, 20, 18, UI_TEXT, title);
             ui_text(ui, FONT_SMALL, 20, 38, UI_DIM, meta);
             if (note[0]) ui_text(ui, FONT_SMALL, 20, 58, UI_ACCENT2, note);
+            if (section_meta[0]) ui_text(ui, FONT_SMALL, 20, note[0] ? 78 : 58, UI_DIM, section_meta);
             panel_text[0] = 0, panel_text_len = 0;
-            panel_say("Clean view: %s\n%s\n%s\n", title, meta, note);
+            panel_say("Clean view: %s\n%s\n%s\n%s\n", title, meta, note, section_meta);
         }
         if (!app.headless) ui_text(ui, FONT_SMALL, 12, H - 20, 0x6F869960u, "H \xE2\x80\x94 show interface"); /* a capture carries no hint */
         return;

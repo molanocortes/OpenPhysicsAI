@@ -108,7 +108,7 @@ they do not add another physics engine. The retained library inputs and real key
 checked by `python3 tools/uicheck.py --lab`.
 
 CLEAN VIEW (`hud clean`, H to restore the interface) gives the result the full viewport while retaining its field,
-units, stored time, range policy, deformation scale, maximum displacement and model/provenance notice. Printing
+units, stored time, range policy, deformation scale, maximum displacement, section setting and model/provenance notice. Printing
 examples say when inputs are inferred, material values are demonstrations, yielding is absent or no measurement
 comparison was made. A polished image must not imply a more complete model than the one that computed it.
 
@@ -154,9 +154,10 @@ lights up, a click collects it, shift-click drops it, and HOLD or LOAD (force ty
 and where, peak stress with its singularity flag beside the 99th percentile to design with, safety factor against
 yield shown only next to what the material values are worth, applied load against the reactions with the residual,
 mass, and the mesh the numbers came from. CHECK MESH solves the same case again at 0.7 of the element size (capped
-near 60 000 elements) and says how far the answer moved, "converged" under 5 %. REPORT writes
+near 60 000 elements) and says how far the answer moved, with both changes below 5 % labelled a small change.
+Two meshes show sensitivity, not an accuracy bound or proof of convergence. REPORT writes
 <project>/report/<date>-<time>/ - one folder per report, so a second report never overwrites the first - with the
-summary, the setup, the checks, the convergence and three images, and says what the numbers are not.
+summary, the setup, the checks, the mesh sensitivity and three images, and says what the numbers are not.
 
 BUILD is the same six steps asked of the printer instead of the part, for the two job kinds the engine has. LPBF
 METAL sets the build orientation (the machine axis the long side lay along), the simulation layer thickness, the

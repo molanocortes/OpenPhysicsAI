@@ -322,7 +322,13 @@ static void hotkey(const PlatformEvent *e) {
         return;
     }
     switch (e->key) {
-    case ' ': console_exec(app.status.running ? "pause" : "start", true); break;
+    case ' ':
+        if (app.workspace == WS_SOLID) {
+            /* Solid owns the input even before it has a result; never start a hidden fluid run. */
+            if (fem_visible() && fem_state()->have_result)
+                console_exec(fem_playing() ? "fem pause" : "fem play", true);
+        } else console_exec(app.status.running ? "pause" : "start", true);
+        break;
     /* only when the interface is visible: a focused terminal that is not drawn would swallow the key that shows it again */
     case KEY_ENTER: case '`': case 't':
         if (app.hud_on) {
