@@ -339,18 +339,18 @@ def steps():
         lambda t: check("result colour map viridis" in t, "and back to viridis", t))
     add("mode_simple", ["mode simple", "frames 10", "uitext", "mode", "uilist"],
         lambda t: check("mode simple" in t and ("Choose a part" in t or "Results" in t) and "Simple##mode" not in t,
-                        "two modes on the top bar (Advanced, Agent); the guided screens stay reachable by command", t))
+                        "two modes on the top bar (Manual, Agentic); the guided screens stay reachable by command", t))
     add("glossary_open", ["uiclick ?", "frames 8", "uilist"],
         lambda t: check("CLOSE##glossary" in t, "? opens the glossary of the words used", t))
     add("glossary_close", ["uiclick CLOSE", "frames 6", "uilist"],
         lambda t: check("CLOSE##glossary" not in t, "and CLOSE puts it away", t))
-    add("mode_agent", ["uiclick Agent", "frames 10", "uitext", "mode"],
+    add("mode_agent", ["uiclick Agentic", "frames 10", "uitext", "mode"],
         lambda t: check("mode agent" in t and "Ask the lab" in t, "the Agent switch shows the one question field", t))
     add("agent_settings", ["uiclick SETTINGS", "frames 8", "uitext"],
         lambda t: check("Found on this computer" in t, "the agent settings list the tools found on this computer", t))
     add("agent_settings_close", ["uiclick SETTINGS", "frames 6"],
         lambda t: check(True, "settings close again", t))
-    add("mode_advanced", ["uiclick Advanced", "frames 10", "mode", "uilist"],
+    add("mode_advanced", ["uiclick Manual", "frames 10", "mode", "uilist"],
         lambda t: check("mode advanced" in t and "6 RESULTS" in t, "Advanced brings the six-step strip back, with nothing lost", t))
     add("solid_unknown_job", ["fem job nosuchjob-1", "frames 8", "fem status"],
         lambda t: check("no run directory" in t and "no result displayed" in t,
@@ -1453,7 +1453,7 @@ def labwalk():
         "uiclick speed", "frames 10", "lab info",
         "uiclick labctl0 0.9", "frames 6",
         "uiclick RUN WITH THESE", "frames 300", "lab info",
-        'uiclick "libdom relativity"', "frames 6", "uilist", "quit", ""]))
+        'uiclick LIBRARY', 'frames 4', 'uiclick "NEXT DOMAINS"', 'frames 4', 'uiclick "NEXT DOMAINS"', 'frames 4', 'uiclick "libdom relativity"', "frames 6", "uilist", "quit", ""]))
     env = dict(os.environ, HOME=str(tmp))
     run = subprocess.run([str(APP), "--headless", "--size", "1440x900", "--exec", f"exec {script}"], capture_output=True, text=True,
                          timeout=900, cwd=str(ROOT), env=env)
@@ -1470,6 +1470,50 @@ def labwalk():
     before, _, after = t.partition('[ >> ] uiclick "libdom relativity"')
     check("lib black_hole" not in before and "lib black_hole" in after,
           "the library shows one domain at a time: clicking a closed domain's heading lists its scenarios", after[-1500:])
+    # Acceptance criteria declared before the revised UI's first run: every shipped domain/scenario is reachable
+    # by real clicks; cached results restore their own controls; mode switches preserve paused frames; manual
+    # stepping and playback speed are reachable. Browsing alone must never launch a simulation.
+    catalog = sorted((json.loads(p.read_text())["domain"], p.stem) for p in (ROOT / "examples/lab").glob("*.json"))
+    domains = sorted(set(d for d, _ in catalog))
+    browse = ["mode agentic", "frames 4", "mode", "mode manual", "frames 6", "mode", "uiclick LIBRARY", "frames 4", "uilist"]
+    for page in range((len(domains) + 4) // 5):
+        for domain in domains[page * 5:(page + 1) * 5]:
+            browse += [f'uiclick "libdom {domain}"', "frames 4", "uilist"]
+            count = sum(d == domain for d, _ in catalog)
+            for _ in range((count + 5) // 6 - 1):
+                browse += ['uiclick "NEXT SCENARIOS"', "frames 4", "uilist"]
+        browse += ['uiclick "NEXT DOMAINS"', "frames 4"]
+    browse += ['uiclick "METAL / FDM PRINTING"', "frames 6", "uilist", 'uiclick "4 BUILD"', 'frames 4', 'uitext', 'uilist', 'uiclick "FDM / FFF PLASTIC"', 'frames 4', 'uitext', 'uilist', f'screenshot {tmp / "manual-printing.png"}', "quit", ""]
+    (tmp / "browse.nav").write_text("\n".join(browse))
+    run = subprocess.run([str(APP), "--headless", "--size", "1440x900", "--exec", f"exec {tmp / 'browse.nav'}"],
+                         capture_output=True, text=True, timeout=120, cwd=ROOT, env=env)
+    bt = run.stdout + run.stderr
+    check("usage: mode" not in bt and "mode advanced" in bt and "mode agent" in bt,
+          "manual and agentic commands switch the same persistent modes as the buttons", bt[-2000:])
+    missing = [base for _, base in catalog if not re.search(r"lib " + re.escape(base) + r"(?:\s|$)", bt)]
+    check(not missing, f"all {len(domains)} domains and {len(catalog)} shipped scenarios are reachable through library pages", str(missing))
+    check("lab: running" not in bt and "uiclick: no widget" not in bt, "browsing the library starts no solver and all clicks find a widget", bt[-2000:])
+    check("4 BUILD" in bt and "5 RUN" in bt, "the library's printing route reaches the existing manual build workflow", bt[-2000:])
+    # Manual defaults must be visibly examples and inferred, not automatically labelled calibrated.
+    check("Strain provenance: inferred" in bt and "Process provenance: inferred" in bt and "not a calibrated printer profile" in bt,
+          "LPBF and FDM starting values are shown as inferred examples, never automatically calibrated", bt[-2000:])
+    # Reopen a cached shipped scenario: the saved input snapshot survives mode switches and a process restart.
+    result_dir = tmp / "NAVIER-Projects/lab"
+    shutil.copyfile(result_dir / "tiny.lab", result_dir / "micro_mixer.lab")
+    cached_sc = json.loads((result_dir / "tiny.json").read_text())
+    (result_dir / "micro_mixer.json").write_text(json.dumps(cached_sc))
+    cached = ['mode manual', 'frames 6', 'uiclick LIBRARY', 'frames 4', 'uiclick "NEXT DOMAINS"', 'frames 4', 'uiclick "libdom heat"', 'frames 4',
+              'uiclick "lib micro_mixer"', 'frames 8', 'lab pause', 'lab frame 2', 'frames 4', 'uilist',
+              'uiclick Agentic', 'frames 8', 'uiclick Manual', 'frames 8', 'lab info',
+              'uiclick NEXT##labframe', 'frames 4', 'lab info', 'uiclick PREV##labframe', 'frames 4', 'lab info',
+              'uiclick 12 fps', 'frames 4', 'uilist', f'screenshot {tmp / "manual-after.png"}', 'quit', '']
+    (tmp / "cached.nav").write_text("\n".join(cached))
+    run = subprocess.run([str(APP), "--headless", "--size", "1440x900", "--exec", f"exec {tmp / 'cached.nav'}"],
+                         capture_output=True, text=True, timeout=120, cwd=ROOT, env=env)
+    ct = run.stdout + run.stderr
+    check("labctl0" in ct and "RUN WITH THESE" in ct, "a cached scenario restores its input controls in a new app process", ct[-2000:])
+    check("frame 3/5" in ct and "frame 4/5" in ct and "paused" in ct, "paused playback survives mode switches and PREV/NEXT change stored frames", ct[-2000:])
+    check("24 fps##labfps" in ct and "uiclick: no widget" not in ct, "playback speed and the two mode controls work through real clicks", ct[-2000:])
     # Retained 3D geometry: a verified two-hex fixture, real section controls, and camera-only reuse.
     subprocess.run(["make", "build/labscenetest"], cwd=ROOT, check=True, capture_output=True)
     subprocess.run([str(ROOT / "build/labscenetest")], cwd=ROOT, check=True, capture_output=True)

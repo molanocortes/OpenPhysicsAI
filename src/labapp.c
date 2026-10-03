@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <stdatomic.h>
 
 #include "app.h"
 #include "common.h"
@@ -53,7 +54,8 @@ typedef struct LabApp {
     char status[256];
     /* a scenario run in the background */
     pthread_t worker;
-    bool running, finished, run_ok;
+    bool running, run_ok;
+    _Atomic bool finished; /* worker publishes run_ok and run_err to the UI thread */
     char run_out[1024], run_err[512];
     JsonValue *run_scenario;
     char domain[32], time_unit[16];
@@ -88,6 +90,26 @@ static void set_field(const char *name) {
     g.dirty = true;
 }
 
+/* A result's input snapshot carries the controls that produced it. Never keep the previous result's controls. */
+static void restore_scenario(const char *path) {
+    json_free(g.scenario);
+    g.scenario = NULL;
+    g.scenario_path[0] = 0;
+    char source[1100];
+    snprintf(source, sizeof source, "%s", path);
+    char *ext = strrchr(source, '.');
+    if (ext) snprintf(ext, sizeof source - (size_t)(ext - source), ".json");
+    g.scenario = json_read_file(source, 16u << 20, NULL);
+    if (!g.scenario) {
+        const char *base = strrchr(path, '/');
+        base = base ? base + 1 : path;
+        char resource[256];
+        snprintf(resource, sizeof resource, "examples/lab/%.*s.json", (int)strcspn(base, "."), base);
+        if (app_resource_path(resource, source, sizeof source)) g.scenario = json_read_file(source, 16u << 20, NULL);
+    }
+    if (g.scenario) snprintf(g.scenario_path, sizeof g.scenario_path, "%s", source);
+}
+
 bool labapp_open(const char *path) {
     char err[256];
     LabFile *lf = lab_open(path, err, sizeof err);
@@ -101,6 +123,7 @@ bool labapp_open(const char *path) {
         return false;
     }
     labapp_close();
+    restore_scenario(path);
     g.lf = lf;
     snprintf(g.path, sizeof g.path, "%s", path);
     g.cached_frame = g.uploaded_frame = g.volume_frame = -1;g.volume_field[0]=0;
@@ -224,12 +247,21 @@ static void start_run(const char *scenario) {
     const char *base = strrchr(scenario, '/');
     base = base ? base + 1 : scenario;
     snprintf(g.run_out, sizeof g.run_out, "%s/%.*s.lab", dir, (int)(strcspn(base, ".")), base);
+    char snapshot[1100];
+    snprintf(snapshot, sizeof snapshot, "%s/%.*s.json", dir, (int)strcspn(base, "."), base);
+    if (!json_write_file(snapshot, root, JSON_PRETTY)) {
+        json_free(root);
+        snprintf(g.run_err, sizeof g.run_err, "Cannot save the scenario input snapshot.");
+        LOGE("lab: %s", g.run_err);
+        return;
+    }
     g.run_scenario = root;
     json_free(g.scenario);
     g.scenario = json_clone(root);
     snprintf(g.scenario_path, sizeof g.scenario_path, "%s", scenario);
     snprintf(g.run_name, sizeof g.run_name, "%s", json_get_str(root, "title", base));
     g.finished = false;
+    g.run_err[0] = 0;
     g.running = true;
     if (pthread_create(&g.worker, NULL, run_worker, NULL) != 0) {
         g.running = false;
@@ -464,6 +496,7 @@ void labapp_command(int argc, char **argv) {
         else if (argc >= 4) g.auto_range = false, g.lo = atof(argv[2]), g.hi = atof(argv[3]), g.dirty = true;
     } else if (str_ieq(c, "info")) {
         LOGI("lab: %s", g.path);
+        LOGI("  frame %d/%d, %s, playback %.0f fps", g.frame + 1, g.nframes, g.playing ? "playing" : "paused", g.fps);
         LOGI("  renderer %s, frame reads %u, uploads %u, section axis %d fraction %.3f flip %d",g.native3d && g.use_gpu?"retained GPU 3D":"software",g.reads,g.uploads,g.section_axis,g.section_fraction,g.section_flip);
         if(g.water_spacing>0)LOGI("  water display %s",g.water_surface?"surface":"particles");
         LOGI("  %s", lab_header(g.lf));
@@ -509,7 +542,19 @@ const char *labapp_domain(void) { return g.active ? g.domain : ""; }
 const char *labapp_time_unit(void) { return g.active ? g.time_unit : ""; }
 bool labapp_running(void) { return g.running; }
 const char *labapp_run_name(void) { return g.run_name; }
+const char *labapp_run_error(void) { return g.running ? "" : g.run_err; }
+double labapp_fps(void) { return g.fps; }
 void labapp_run(const char *path) { start_run(path); }
+
+void labapp_select(const char *scenario) {
+    const char *base = strrchr(scenario, '/');
+    base = base ? base + 1 : scenario;
+    char result[1200];
+    snprintf(result, sizeof result, "%s/%.*s.lab", labapp_results_dir(), (int)strcspn(base, "."), base);
+    struct stat st;
+    if (stat(result, &st) == 0) labapp_open(result);
+    else start_run(scenario);
+}
 
 /* the value a dotted path names in a scenario ("bodies.1.velocity_m_s.2"), or NULL */
 static JsonValue *path_get(JsonValue *root, const char *path) {

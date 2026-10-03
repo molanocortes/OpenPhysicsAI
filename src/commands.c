@@ -2116,10 +2116,12 @@ static void cmd_agent(int argc, char **argv) {
 static void cmd_mode(int argc, char **argv) {
     if (argc > 1) {
         int m = -1;
+        if (str_ieq(argv[1], "manual")) m = UI_ADVANCED;
+        if (str_ieq(argv[1], "agentic")) m = UI_AGENT;
         for (int i = 0; i < UI_MODE_COUNT; i++)
             if (str_ieq(argv[1], ui_mode_name(i))) m = i;
         if (m < 0) {
-            LOGE("usage: mode simple|advanced|agent");
+            LOGE("usage: mode manual|agentic (advanced|agent|simple remain aliases)");
             return;
         }
         app_set_ui_mode(m);
@@ -2367,7 +2369,7 @@ static const Command COMMANDS[] = {
     {"fem", "<field|deform|step|range|play|pause|speed|section|glass|explode|edges|shadows|export|job|show|hide|fit>",
      "how the finite-element result is drawn in the shared 3D view", cmd_fem, NULL},
     {"agent", "wait [seconds] | stop | status | command <line>", "scripts: wait for the agent's command to end, or stop it", cmd_agent, NULL},
-    {"mode", "[simple|advanced|agent]", "who the window is for: a guided path, every control, or your AI tool", cmd_mode, NULL},
+    {"mode", "[manual|agentic]", "control the physics yourself or use your AI tool", cmd_mode, NULL},
     {"uitext", "", "print every sentence the analysis panel wrote this frame (UI testing)", cmd_uitext, NULL},
     {"elapsed", "[reset] [label]", "seconds since the last reset: how long a step of a script actually took", cmd_elapsed, NULL},
     {"echo", "<text>", "print text", cmd_echo, NULL},

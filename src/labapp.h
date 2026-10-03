@@ -38,7 +38,10 @@ const char *labapp_domain(void);
 const char *labapp_time_unit(void); /* "" for seconds; a domain's own unit otherwise (relativity: M) */
 bool labapp_running(void);           /* a scenario is being run in the background */
 const char *labapp_run_name(void);   /* the scenario being run */
+const char *labapp_run_error(void);  /* a failed run remains visible in the manual panel */
 void labapp_run(const char *scenario_path);
+void labapp_select(const char *scenario_path); /* reopen its saved result or run it on first use */
+double labapp_fps(void);
 /* a scenario's own knobs: "controls": [{"label", "path" (dots, array indices as numbers), "min", "max", "log"}] in the
  * scenario the open result was run from; changing one and rerunning makes a new result */
 typedef struct LabControl {

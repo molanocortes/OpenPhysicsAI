@@ -74,7 +74,9 @@ static bool slider_row(Ui *ui, const char *id, const char *label, const char *va
 
 /* the pill at the right end of the toolbar; computed early so the layer buttons know how much room is left */
 static void perf_text(char *buf, size_t cap) {
-    if (app.workspace == WS_SOLID) {
+    if (labapp_active()) {
+        snprintf(buf, cap, "%s replay \xC2\xB7 %.0f FPS", labapp_native3d() ? "3D" : "result", app.fps);
+    } else if (app.workspace == WS_SOLID) {
         const FemState *fs = fem_state();
         if (fs->job_active) snprintf(buf, cap, "SOLVING %.0f%% \xC2\xB7 %.0f FPS", fs->job_progress * 100, app.fps);
         else if (fs->nelems > 0) snprintf(buf, cap, "%d elements \xC2\xB7 %.0f FPS", fs->nelems, app.fps);
@@ -85,9 +87,10 @@ static void perf_text(char *buf, size_t cap) {
 }
 
 static bool glossary_open;
-/* two modes (owner, 2026-09-26): Advanced, where people play with the world themselves, and Agent, where they ask */
+static bool lab_library_open;
+/* Manual and Agentic use the same result, camera and playback state. */
 static float mode_switch_width(Ui *ui) {
-    return ui_text_width(ui, FONT_SMALL, "Advanced") + ui_text_width(ui, FONT_SMALL, "Agent") + 2 * 20 + 2 + 36;
+    return ui_text_width(ui, FONT_SMALL, "Manual") + ui_text_width(ui, FONT_SMALL, "Agentic") + 2 * 20 + 2 + 36;
 }
 
 static float toolbar(float W) {
@@ -98,7 +101,18 @@ static float toolbar(float W) {
     perf_text(perf, sizeof perf);
 
     #define BTN(label, w, active) (ui_block_mouse(ui, x, y, w, h), ui_button(ui, label, x, y, w, h, active))
-    if (app.ui_mode != UI_ADVANCED || labapp_active()) goto perf_pill; /* an agent, or a lab simulation, needs no tunnel tabs */
+    ui_block_mouse(ui, 12, 3, 82, 24);
+    if (ui_button(ui, "LIBRARY##labnav", 12, 3, 82, 24, lab_library_open)) {
+        app_set_ui_mode(UI_ADVANCED);
+        lab_library_open = !lab_library_open;
+    }
+    if (app.ui_mode != UI_ADVANCED) goto perf_pill;
+    if (labapp_active() || lab_library_open || labapp_running()) {
+        if (BTN("FLUID##labnav", 66, false)) { labapp_close(); lab_library_open=false; exec_cmd("workspace fluid"); }
+        x += 70;
+        if (BTN("SOLID##labnav", 66, false)) { labapp_close(); lab_library_open=false; exec_cmd("workspace solid"); }
+        goto perf_pill;
+    }
     /* The tunnel's own actions belong to the tunnel. In the analysis workspace START, RESET and LOAD STL are not
      * dim, they are absent: the water tunnel is a different instrument and its verbs mean nothing to a part. */
     if (app.workspace == WS_FLUID) {
@@ -211,8 +225,8 @@ perf_pill:;
      * the title row at the top right, where it never competes with the tunnel's crowded toolbar. */
     {
         float mx = W - 12 - mode_switch_width(ui), y = 3, h = 24;
-        static const char *const ML[UI_MODE_COUNT] = {"Simple##mode", "Advanced##mode", "Agent##mode"};
-        static const char *const MV[UI_MODE_COUNT] = {"Simple", "Advanced", "Agent"};
+        static const char *const ML[UI_MODE_COUNT] = {"Simple##mode", "Manual##mode", "Agentic##mode"};
+        static const char *const MV[UI_MODE_COUNT] = {"Simple", "Manual", "Agentic"};
         for (int i = UI_ADVANCED; i < UI_MODE_COUNT; i++) {
             float bw = ui_text_width(ui, FONT_SMALL, MV[i]) + 20;
             ui_block_mouse(ui, mx, y, bw, h);
@@ -241,23 +255,23 @@ static void title_strip(float W) {
     char t[256];
     const char *name, *kind;
     if (labapp_active()) {
-        name = "NAVIER";
+        name = "OpenPhysicsAI";
         kind = "  physics lab \xC2\xB7 ";
         snprintf(t, sizeof t, "%s", labapp_title());
     } else if (app.workspace == WS_SOLID) {
         const FemState *fs = fem_state();
-        name = "NAVIER-AM";
+        name = "OpenPhysicsAI";
         kind = app.ui_mode == UI_ADVANCED ? (fs->meshed && fs->mesh_method == 1 ? (fs->tet_order == 2 ? "  additive-manufacturing analysis \xC2\xB7 tet10 FEM \xC2\xB7 "
                                                                                                  : "  additive-manufacturing analysis \xC2\xB7 tet4 FEM \xC2\xB7 ")
                                                                                : "  additive-manufacturing analysis \xC2\xB7 hex8 FEM \xC2\xB7 ")
                                           : "  print simulation \xC2\xB7 ";
         snprintf(t, sizeof t, "%s", fs->have_project ? (fs->body[0] ? fs->body : fs->project) : "");
     } else if (labapp_active()) {
-        name = "NAVIER";
+        name = "OpenPhysicsAI";
         kind = "  physics lab \xC2\xB7 ";
         snprintf(t, sizeof t, "%s", labapp_title());
     } else {
-        name = "NAVIER";
+        name = "OpenPhysicsAI";
         kind = "  lattice-Boltzmann water tunnel \xC2\xB7 D3Q19 \xC2\xB7 ";
         snprintf(t, sizeof t, "%s", app.has_model ? app.model_name : "empty tunnel");
     }
@@ -272,10 +286,13 @@ static void title_strip(float W) {
     float w1 = ui_text_width(ui, FONT_BOLD, name);
     float w2 = ui_text_width(ui, FONT_SMALL, kind);
     float w3 = ui_text_width(ui, FONT_SMALL, t);
-    float x = (W - (w1 + w2 + w3)) * 0.5f, y = 7;
+    float right = W - mode_switch_width(ui) - 24;
+    float x = MAXI(106, (W - (w1 + w2 + w3)) * 0.5f), y = 7;
+    ui_push_clip(ui, 106, 0, MAXI(right - 106, 0), 30);
     x += ui_text(ui, FONT_BOLD, x, y, 0xE8FBFFFFu, name);
     x += ui_text(ui, FONT_SMALL, x, y + 1, UI_DIM, kind);
     ui_text(ui, FONT_SMALL, x, y + 1, UI_ACCENT2, t);
+    ui_pop_clip(ui);
 }
 
 /* CONTROLS header with FLOW / MODEL / TIME tabs on the right */
@@ -485,7 +502,8 @@ static bool solid_box_pick;     /* BOX armed: a drag in the view collects faces 
 static bool solid_box_front;    /* the box takes only the faces turned towards the camera */
 static int build_kind;          /* 0 lpbf_build (metal powder bed), 1 fff_print (plastic filament) */
 static int build_orient;        /* 0 the part's long axis lay along machine X, 1 along Y */
-static int build_prov = 2;      /* provenance of a typed strain: user, inferred, calibrated */
+static int build_prov = 1;      /* example strain is inferred until the user states otherwise */
+static int fdm_prov = 1;        /* example printer settings are inferred, never automatically calibrated */
 static bool build_cut = true;   /* the wire cut that releases the part from the plate */
 
 static const char *const BUILD_PROV[3] = {"user", "inferred", "calibrated"};
@@ -1272,7 +1290,7 @@ static bool build_run_now(double layer_mm) {
         char strain[300];
         snprintf(strain, sizeof strain,
                  "\"exx\": %.10g, \"eyy\": %.10g, \"ezz\": %.10g, \"provenance\": \"%s\", "
-                 "\"source\": \"typed into the NAVIER interface\"",
+                 "\"source\": \"manual inputs; provenance explicitly selected in the interface\"",
                  field_num("exx", 0), field_num("eyy", 0), field_num("ezz", -0.03), BUILD_PROV[build_prov]);
         char cut[220] = "";
         if (build_cut)
@@ -1294,9 +1312,9 @@ static bool build_run_now(double layer_mm) {
              "{\"body\": \"%s\", \"process\": {\"layer_height\": \"%.10g mm\", \"printed_layer_height\": \"%.10g mm\", "
              "\"nozzle_temperature\": \"%.10g degC\", \"bed_temperature\": \"%.10g degC\", "
              "\"ambient_temperature\": \"%.10g degC\", \"deposition_rate\": \"%.10g mm^3/s\", "
-             "\"provenance\": \"user\"}, \"label\": \"print from the NAVIER interface\"}",
+             "\"provenance\": \"%s\"}, \"label\": \"print from the NAVIER interface\"}",
              s->body, layer_mm, field_num("printed layer", 0.2), field_num("nozzle", 210.0),
-             field_num("bed", 60.0), field_num("ambient", 30.0), field_num("rate", 8.0));
+             field_num("bed", 60.0), field_num("ambient", 30.0), field_num("rate", 8.0), BUILD_PROV[fdm_prov]);
     return build_follow(fem_op("mech_print_run", "%s", params));
 }
 
@@ -1316,14 +1334,16 @@ static float step_build(Ui *ui, float x, float y, float w) {
     /* the two job kinds the engine has, named by what the machine is */
     float bw = (w - gap) / 2;
     if (ui_button(ui, "LPBF METAL##bk", x, y, bw, bh, build_kind == 0)) build_kind = 0;
-    if (ui_button(ui, "FFF PLASTIC##bk", x + bw + gap, y, bw, bh, build_kind == 1)) build_kind = 1;
+    if (ui_button(ui, "FDM / FFF PLASTIC##bk", x + bw + gap, y, bw, bh, build_kind == 1)) build_kind = 1;
     y += bh + 8;
 
     if (build_kind == 0) {
+        panel_say("Strain provenance: %s\n", BUILD_PROV[build_prov]);
         y = wrap_text(ui, x, y, w, UI_DIM,
                       "Every simulation layer is laid stress-free on the part that has already distorted below it, "
                       "then contracts by the inherent strain. The strain is a calibrated input, not a material "
                       "property.", 4) + 4;
+        y = wrap_text(ui, x, y, w, UI_ACCENT2, "The starting strain is an example, not a fit to this printer. Review it before running.", 2) + 4;
         ui_text(ui, FONT_SMALL, x, y + 5, UI_DIM, "orientation");
         if (ui_button(ui, "X##ori", x + 80, y, 44, bh, build_orient == 0)) build_orient = 0;
         if (ui_button(ui, "Y##ori", x + 80 + 48, y, 44, bh, build_orient == 1)) build_orient = 1;
@@ -1375,9 +1395,10 @@ static float step_build(Ui *ui, float x, float y, float w) {
         build_field(ui, x + 190, y, 20, 80, "\xCE\xBD", "poisson", nudef, "");
         y += bh + 6;
     } else {
+        panel_say("Process provenance: %s\n", BUILD_PROV[fdm_prov]);
         y = wrap_text(ui, x, y, w, UI_DIM,
                       "Each layer is deposited hot on the layers below and cools; the part distorts as it cools. "
-                      "Every printer setting is stated with its unit, and nothing is guessed.", 3) + 4;
+                      "The starting settings are examples, not a calibrated printer profile. Review every value before running.", 4) + 4;
         float lw = 92, fw = 76;
         build_field(ui, x, y, lw, fw, "layer", "layer", "1", "mm (simulation)");
         y += bh + 4;
@@ -1391,11 +1412,18 @@ static float step_build(Ui *ui, float x, float y, float w) {
         y += bh + 4;
         build_field(ui, x, y, lw, fw, "rate", "rate", "8", "mm\xC2\xB3/s");
         y += bh + 6;
-        y = wrap_text(ui, x, y, w, UI_DIM, "Provenance: user. These are the values you typed, not a machine profile.", 2) + 2;
+        ui_text(ui, FONT_SMALL, x, y + 5, UI_DIM, "provenance");
+        float pw = (w - 80 - 2 * gap) / 3;
+        for (int i = 0; i < 3; i++) {
+            char label[48];
+            snprintf(label, sizeof label, "%c%s##fdmprov", (char)toupper((unsigned char)BUILD_PROV[i][0]), BUILD_PROV[i] + 1);
+            if (ui_button(ui, label, x + 80 + i * (pw + gap), y, pw, bh, fdm_prov == i)) fdm_prov = i;
+        }
+        y += bh + 6;
     }
 
     /* where the defaults on this page come from */
-    snprintf(a, sizeof a, "The defaults come from the assigned material: %s.",
+    snprintf(a, sizeof a, "Material properties use the assigned material: %s. Process settings are examples until reviewed.",
              s->material_name[0] ? s->material_name : "none assigned yet");
     y = wrap_text(ui, x, y, w, s->material[0] ? UI_DIM : UI_ACCENT2, a, 3);
     return y + 4;
@@ -3316,15 +3344,85 @@ static const char *lib_domain_name(const char *d) {
     return d;
 }
 
-/* opens the scenario's last result if there is one, runs it otherwise */
+/* Library navigation has bounded pages, so every shipped domain and scenario stays reachable at small heights. */
 static void lib_open(const LibEntry *L) {
-    const char *home = getenv("HOME");
-    char res[1200], cmd[1300];
-    snprintf(res, sizeof res, "%s/NAVIER-Projects/lab/%s.lab", home ? home : "/tmp", L->base);
-    struct stat st;
-    if (stat(res, &st) == 0) snprintf(cmd, sizeof cmd, "lab open %s", res);
-    else snprintf(cmd, sizeof cmd, "lab run %s", L->path);
-    exec_cmd(cmd);
+    labapp_select(L->path);
+    lab_library_open = false;
+}
+
+static bool library_choice(Ui *ui, const char *id, const char *title, float x, float y, float w, bool selected) {
+    bool hover = ui_hover(ui, x, y, w, 26);
+    ui_rect(ui, x, y, w, 26, selected ? 0x1B4A5EFFu : hover ? 0x16222EFFu : 0x0F1822FFu, 5);
+    ui_rect_outline(ui, x, y, w, 26, selected ? 0x38E1FFB0u : 0x243A4C90u, 5, 1);
+    ui_text(ui, FONT_SMALL, x + 8, y + 6, selected ? UI_ACCENT : UI_TEXT, title);
+    return ui_clickable(ui, id, x, y, w, 26);
+}
+
+static void lab_library(Ui *ui, float x, float y, float w, float ph) {
+    static int domain_page, scenario_page;
+    static char open_dom[32];
+    if (lib_n < 0) lib_load();
+    if (ui_button(ui, "METAL / FDM PRINTING##library", x, y, w, 28, false)) {
+        labapp_close(); lab_library_open = false;
+        app_set_ui_mode(UI_ADVANCED);
+        app_set_workspace(WS_SOLID);
+        solid_build_path = true;
+        solid_step = STEP_PART;
+    }
+    y += 36;
+    const char *domains[96];
+    int counts[96], nd = 0;
+    for (int i = 0; i < lib_n; i++) {
+        if (!nd || strcmp(domains[nd - 1], lib[i].domain)) domains[nd] = lib[i].domain, counts[nd++] = 0;
+        counts[nd - 1]++;
+    }
+    int rows = ph > 550 ? 5 : 3;
+    int pages = MAXI(1, (nd + rows - 1) / rows);
+    domain_page = CLAMP(domain_page, 0, pages - 1);
+    char page[64];
+    snprintf(page, sizeof page, "%d domains - %d / %d", nd, domain_page + 1, pages);
+    section(ui, x, y, w, "PHYSICS", page); y += 20;
+    for (int i = domain_page * rows; i < nd && i < (domain_page + 1) * rows; i++) {
+        char id[64];
+        snprintf(id, sizeof id, "libdom %s", domains[i]);
+        bool selected = !strcmp(open_dom, domains[i]);
+        if (library_choice(ui, id, lib_domain_name(domains[i]), x, y, w - 36, selected)) {
+            snprintf(open_dom, sizeof open_dom, "%s", domains[i]); scenario_page = 0;
+        }
+        char n[16]; snprintf(n, sizeof n, "%d", counts[i]);
+        ui_text_right(ui, FONT_MONO, x + w - 4, y + 6, UI_DIM, n);
+        panel_say("%s: %d scenarios\n", lib_domain_name(domains[i]), counts[i]);
+        y += 30;
+    }
+    float half = (w - 6) / 2;
+    if (ui_button(ui, "PREV DOMAINS##library", x, y, half, 24, false)) domain_page = (domain_page + pages - 1) % pages;
+    if (ui_button(ui, "NEXT DOMAINS##library", x + half + 6, y, half, 24, false)) domain_page = (domain_page + 1) % pages;
+    y += 36;
+    if (!open_dom[0]) {
+        say(ui, FONT_SMALL, x, y, w, UI_DIM, "Choose a physics domain. A saved result opens immediately; a new simulation runs in the background.", 3);
+        return;
+    }
+    int selected[96], ns = 0;
+    for (int i = 0; i < lib_n; i++) if (!strcmp(lib[i].domain, open_dom)) selected[ns++] = i;
+    int srows = ph > 550 ? 6 : 3, spages = MAXI(1, (ns + srows - 1) / srows);
+    scenario_page = CLAMP(scenario_page, 0, spages - 1);
+    snprintf(page, sizeof page, "%d / %d", scenario_page + 1, spages);
+    section(ui, x, y, w, "SCENARIOS", page); y += 20;
+    panel_say("Selected domain: %s\n", open_dom);
+    for (int i = scenario_page * srows; i < ns && i < (scenario_page + 1) * srows; i++) {
+        const LibEntry *L = &lib[selected[i]];
+        char shown[140], id[128];
+        snprintf(shown, sizeof shown, "%s", L->title);
+        while (ui_text_width(ui, FONT_SMALL, shown) > w - 16 && strlen(shown) > 4)
+            shown[strlen(shown) - 4] = 0, strcat(shown, "...");
+        snprintf(id, sizeof id, "lib %s", L->base);
+        if (library_choice(ui, id, shown, x, y, w, false)) lib_open(L);
+        y += 30;
+    }
+    if (spages > 1) {
+        if (ui_button(ui, "PREV SCENARIOS##library", x, y, half, 24, false)) scenario_page = (scenario_page + spages - 1) % spages;
+        if (ui_button(ui, "NEXT SCENARIOS##library", x + half + 6, y, half, 24, false)) scenario_page = (scenario_page + 1) % spages;
+    }
 }
 
 static void lab_panel(float px, float py, float pw, float ph, double time) {
@@ -3340,15 +3438,24 @@ static void lab_panel(float px, float py, float pw, float ph, double time) {
     uint32_t led = running ? UI_ACCENT2 : playing ? UI_GOOD : UI_DIM;
     float pulse = (running || playing) ? 0.6f + 0.4f * (float)sin(time * 5.0) : 1.0f;
     ui_rect(ui, x, y + 4, 9, 9, (led & 0xFFFFFF00u) | (uint32_t)(255 * pulse), 4.5f);
-    ui_text(ui, FONT_BOLD, x + 16, y, led, running ? "COMPUTING" : playing ? "PLAYING" : "PAUSED");
+    ui_text(ui, FONT_BOLD, x + 16, y, led, running ? "COMPUTING" : !labapp_active() ? "READY" : playing ? "PLAYING" : "PAUSED");
     if (labapp_active()) {
         snprintf(a, sizeof a, "%s \xC2\xB7 frame %d of %d", labapp_domain(), labapp_frame() + 1, labapp_nframes());
         ui_text_right(ui, FONT_SMALL, x + w, y + 1, UI_DIM, a);
     }
     y += 24;
+    float half = (w - 6) / 2;
+    if (ui_button(ui, "RESULT##labtab", x, y, half, 26, !lab_library_open) && labapp_active()) lab_library_open = false;
+    if (ui_button(ui, "LIBRARY##labtab", x + half + 6, y, half, 26, lab_library_open)) lab_library_open = true;
+    y += 36;
+    if (labapp_run_error()[0]) y = say(ui, FONT_SMALL, x, y, w, UI_BAD, labapp_run_error(), 3) + 8;
     if (running) {
         snprintf(a, sizeof a, "Running %s. It opens here when it is done.", labapp_run_name());
         y = say(ui, FONT_SMALL, x, y, w, UI_ACCENT2, a, 3) + 8;
+    }
+    if (lab_library_open || !labapp_active()) {
+        lab_library(ui, x, y, w, ph);
+        return;
     }
     if (labapp_active()) {
         y = say(ui, FONT_TITLE, x, y, w, 0xE8FBFFFFu, labapp_title(), 2) + 10;
@@ -3418,49 +3525,9 @@ static void lab_panel(float px, float py, float pw, float ph, double time) {
             y += 38;
         }
     }
-    /* switch simulations: the lab's library */
-    if (lib_n < 0) lib_load();
-    section(ui, x, y, w, "LIBRARY", "open or run");
-    y += 20;
-    float bottom = py + ph - 44;
-    ui_push_clip(ui, x - 2, y, w + 4, bottom - y);
-    /* one domain open at a time, the open result's own by default, so the list always fits */
-    static char open_dom[16] = "";
-    static char seen_dom[32] = "";
-    if (strcmp(seen_dom, labapp_domain())) snprintf(seen_dom, sizeof seen_dom, "%s", labapp_domain()), snprintf(open_dom, sizeof open_dom, "%s", seen_dom);
-    const char *last = "";
-    for (int i = 0; i < lib_n && y < bottom - 18; i++) {
-        if (strcmp(last, lib[i].domain)) {
-            last = lib[i].domain;
-            int cnt = 0;
-            for (int k = i; k < lib_n && !strcmp(lib[k].domain, last); k++) cnt++;
-            bool open = !strcmp(open_dom, last), hov = ui_hover(ui, x, y - 1, w, 18);
-            if (hov) ui_rect(ui, x - 2, y - 1, w + 4, 18, 0x1C3448A0u, 4);
-            char head[80];
-            snprintf(head, sizeof head, "%s %s", open ? "-" : "+", lib_domain_name(last));
-            ui_text(ui, FONT_SMALL, x, y, open ? UI_ACCENT2 : (hov ? UI_TEXT : UI_DIM), head);
-            char nb[16];
-            snprintf(nb, sizeof nb, "%d", cnt);
-            ui_text_right(ui, FONT_SMALL, x + w - 4, y, UI_DIM, nb);
-            char id[64];
-            snprintf(id, sizeof id, "libdom %s", last);
-            if (ui_clickable(ui, id, x, y - 1, w, 18)) snprintf(open_dom, sizeof open_dom, "%s", open ? "" : last);
-            y += 19;
-        }
-        if (strcmp(open_dom, lib[i].domain)) continue;
-        bool hov = ui_hover(ui, x, y - 1, w, 17);
-        if (hov) ui_rect(ui, x - 2, y - 1, w + 4, 17, 0x1C3448A0u, 4);
-        char shown[140];
-        snprintf(shown, sizeof shown, "%s", lib[i].title);
-        while (ui_text_width(ui, FONT_SMALL, shown) > w - 16 && strlen(shown) > 4) shown[strlen(shown) - 4] = 0, strcat(shown, "...");
-        ui_text(ui, FONT_SMALL, x + 14, y, hov ? UI_TEXT : UI_DIM, shown);
-        char id[120];
-        snprintf(id, sizeof id, "lib %s", lib[i].base);
-        if (ui_clickable(ui, id, x, y - 1, w, 17)) lib_open(&lib[i]);
-        y += 17;
-    }
-    ui_pop_clip(ui);
-    if (labapp_active() && ui_button(ui, "BACK TO THE TUNNEL##labclose", x, py + ph - 36, w, 26, false)) exec_cmd("lab close");
+    if (ui_button(ui, "CHOOSE ANOTHER SIMULATION##library", x, y, w, 26, false)) lab_library_open = true;
+    if (labapp_active() && ui_button(ui, "CLOSE RESULT##labclose", x, py + ph - 36, w, 26, false)) { labapp_close(); lab_library_open = true; }
+
 }
 
 /* play, pause and scrub the open lab result */
@@ -3472,6 +3539,19 @@ static void playback_bar(float x, float y, float w) {
     ui_rect(ui, x, y - 4, w, 30, 0x08101AD0u, 8);
     if (ui_button(ui, labapp_playing() ? "PAUSE##labplay" : "PLAY##labplay", x + 6, y, 64, 22, labapp_playing()))
         exec_cmd(labapp_playing() ? "lab pause" : "lab play");
+    if (ui_button(ui, "PREV##labframe", x + 74, y, 42, 22, false)) {
+        labapp_set_playing(false); labapp_set_frame(labapp_frame() - 1);
+    }
+    if (ui_button(ui, "NEXT##labframe", x + 120, y, 42, 22, false)) {
+        labapp_set_playing(false); labapp_set_frame(labapp_frame() + 1);
+    }
+    char speed[48];
+    snprintf(speed, sizeof speed, "%.0f fps##labfps", labapp_fps());
+    if (ui_button(ui, speed, x + 166, y, 62, 22, false)) {
+        char cmd[48];
+        snprintf(cmd, sizeof cmd, "lab fps %.0f", labapp_fps() < 12 ? 12.0 : labapp_fps() < 24 ? 24.0 : 6.0);
+        exec_cmd(cmd);
+    }
     double f = labapp_frame();
     char t[48];
     double tm = labapp_frame_time(labapp_frame());
@@ -3481,7 +3561,7 @@ static void playback_bar(float x, float y, float w) {
     else if (fabs(tm) < 1 && tm != 0) snprintf(t, sizeof t, "%.3g ms", tm * 1e3);
     else snprintf(t, sizeof t, "%.4g s", tm);
     float tw = ui_text_width(ui, FONT_MONO, t) + 16;
-    if (n > 1 && ui_slider(ui, "labscrub", x + 80, y + 6, w - 92 - tw, 10, &f, 0, n - 1, false)) {
+    if (n > 1 && w > 250 + tw && ui_slider(ui, "labscrub", x + 240, y + 6, w - 252 - tw, 10, &f, 0, n - 1, false)) {
         labapp_set_playing(false);
         labapp_set_frame((int)lround(f));
     }
@@ -3934,7 +4014,7 @@ void hud_draw(void) {
         simple_panel(px, py, app.panel_w, H - py - 10, time);
     else if (app.ui_mode == UI_AGENT)
         agent_panel(px, py, app.panel_w, H - py - 10, time);
-    else if (labapp_active() || labapp_running())
+    else if (lab_library_open || labapp_active() || labapp_running())
         lab_panel(px, py, app.panel_w, H - py - 10, time);
     else if (app.workspace == WS_SOLID)
         analysis_panel(px, py, app.panel_w, H - py - 10, time);
