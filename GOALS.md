@@ -572,6 +572,13 @@ Checkpoints completed on this branch:
   stored states, released peak 1.54044 MPa and z warp [-0.0507017, 0.00107592] mm; LPBF has 12 states and its
   elastic 690.734 MPa peak is unchanged. [Current evidence](docs/media/foundation/evidence.json) records source,
   engine, renderer, result and media hashes. The 27-frame 960 x 600 native film is 5680 ms. No new measurement validation.
+- Latest LPBF workflow retries hit the inherited 20-second client deadline during synchronous typed-support
+  generation: [initial](validation/printing-refinement/support-timeout-initial.log) and
+  [retry](validation/printing-refinement/support-timeout-retry.log). An identical [isolated bridge probe](validation/printing-refinement/support-timings.json)
+  completed block/thin-wall/cone/tree/lattice in 6.782/3.059/0.435/16.348/9.869 s, all with the expected 96 elements.
+  That probe's 97-byte stderr did not block its pipe. Load sensitivity is plausible, not proved by the failed logs.
+  The workflow now names and times each type and preserves failed workspaces/stderr; numerical criteria and the
+  20-second deadline are unchanged. A serial complete rerun remains pending after the current regression run.
 
 Remaining research work: conforming printing meshes and documented spatial/time convergence; FDM bead/toolpath,
 raster anisotropy, interlayer bonding and viscoelastic constitutive laws with sourced parameters; connecting the

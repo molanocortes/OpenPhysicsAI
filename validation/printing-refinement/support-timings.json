@@ -1,0 +1,1078 @@
+[
+  {
+    "operation": "project_create",
+    "args": {
+      "name": "lpbf_bridge_typed",
+      "description": "same typed support fixture, timeout diagnosis"
+    },
+    "elapsed_s": 0.006504583056084812,
+    "original_deadline_exceeded": false,
+    "value": {
+      "project": {
+        "id": "3af8deae43d30d34805f4d237598d171",
+        "name": "lpbf_bridge_typed",
+        "description": "same typed support fixture, timeout diagnosis",
+        "directory": "/private/tmp/openphysics-support-probe-_svtoutw/ws/lpbf_bridge_typed",
+        "revision": 2,
+        "unsaved_changes": false,
+        "created": "2026-10-03T05:22:40Z",
+        "modified": "2026-10-03T05:22:40Z",
+        "bodies": 0,
+        "selections": 0,
+        "material_assignments": 0,
+        "boundary_conditions": 0,
+        "mesh_generated": false,
+        "assumptions": 0
+      },
+      "project_file": "/private/tmp/openphysics-support-probe-_svtoutw/ws/lpbf_bridge_typed/project.json",
+      "next_steps": [
+        "geometry_import: load the part STL with an explicit unit"
+      ]
+    }
+  },
+  {
+    "operation": "geometry_import",
+    "args": {
+      "path": "/private/tmp/openphysics-support-probe-_svtoutw/bridge.stl",
+      "units": "mm",
+      "name": "bridge"
+    },
+    "elapsed_s": 0.0044390830444172025,
+    "original_deadline_exceeded": false,
+    "value": {
+      "body": {
+        "name": "bridge",
+        "role": "part",
+        "units": {
+          "value": "mm",
+          "source": "user"
+        },
+        "size_mm": [
+          12,
+          4,
+          6
+        ],
+        "bounds_mm": {
+          "min": [
+            -6,
+            -2,
+            0
+          ],
+          "max": [
+            6,
+            2,
+            6
+          ]
+        },
+        "volume_mm3": 191.99999999999937,
+        "surface_area_mm2": 272,
+        "triangles": 544,
+        "surface_patches": 10,
+        "closed_solid": true,
+        "geometry_revision": 1,
+        "source": {
+          "original_path": "/private/tmp/openphysics-support-probe-_svtoutw/bridge.stl",
+          "stored_file": "inputs/bridge-cbb49118fb8c.stl",
+          "sha256": "cbb49118fb8ca0447c7aee4fd72c5b2b9218504b4e454e2602e80b499408b84d",
+          "bytes": 27284,
+          "format": "binary",
+          "header": "voxel test part"
+        },
+        "placement": {
+          "up_axis": "+Z",
+          "up_axis_source": "default",
+          "rotate_z_deg": 0,
+          "rotations": [],
+          "position_mm": [
+            0,
+            0
+          ],
+          "z_offset_mm": 0,
+          "rotation_matrix": [
+            [
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              1
+            ]
+          ],
+          "translation_mm": [
+            -6,
+            -2,
+            0
+          ],
+          "transform": "x_build = R * (unit_scale * x_file) + t"
+        },
+        "repair_options": {
+          "remove_degenerate": true,
+          "remove_duplicate_faces": true,
+          "orient_outward": true
+        }
+      },
+      "diagnostics": {
+        "topology": {
+          "source_triangles": 544,
+          "analysis_triangles": 544,
+          "unique_vertices": 274,
+          "merged_duplicate_vertices": 1358,
+          "weld_tolerance_mm": 1.4e-05,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "boundary_loops": 0,
+          "watertight": true,
+          "consistently_oriented": true,
+          "closed_solid": true,
+          "components": 1,
+          "closed_components": 1,
+          "nested_shells": 0,
+          "surface_patches": 10
+        },
+        "repairs": {
+          "degenerate_faces_found": 0,
+          "degenerate_faces_removed": 0,
+          "duplicate_faces_found": 0,
+          "duplicate_faces_removed": 0,
+          "opposite_duplicate_faces": 0,
+          "inconsistent_edges_found": 0,
+          "faces_flipped_for_consistency": 0,
+          "shells_reoriented": 0,
+          "non_orientable_components": 0,
+          "holes_filled": "none (no automatic hole filling)"
+        },
+        "components": [
+          {
+            "id": 0,
+            "triangles": 544,
+            "closed": true,
+            "area_mm2": 272.00000000000006,
+            "enclosed_volume_mm3": 191.99999999999937,
+            "nesting_depth": 0
+          }
+        ],
+        "checks": {
+          "self_intersections": "not checked",
+          "wall_thickness": "not checked"
+        },
+        "issues": []
+      },
+      "units_check": {
+        "largest_extent_in_file_units": 12,
+        "declared_unit": "mm",
+        "largest_extent_mm": 12,
+        "plausible": true,
+        "criterion": "largest extent between 1 mm and 1000 mm (typical additive manufacturing parts)",
+        "if_unit_were": [
+          {
+            "unit": "mm",
+            "largest_extent_mm": 12,
+            "plausible": true
+          },
+          {
+            "unit": "cm",
+            "largest_extent_mm": 120,
+            "plausible": true
+          },
+          {
+            "unit": "m",
+            "largest_extent_mm": 12000,
+            "plausible": false
+          },
+          {
+            "unit": "in",
+            "largest_extent_mm": 304.79999999999995,
+            "plausible": true
+          },
+          {
+            "unit": "ft",
+            "largest_extent_mm": 3657.6000000000004,
+            "plausible": false
+          },
+          {
+            "unit": "um",
+            "largest_extent_mm": 0.012,
+            "plausible": false
+          }
+        ],
+        "assessment": "plausible: with mm the part is 12 mm across its largest extent"
+      },
+      "warnings": [],
+      "assumptions": [
+        {
+          "subject": "bodies/bridge/up_axis",
+          "text": "file axis +Z of body 'bridge' is taken as the build direction (+Z)",
+          "source": "default",
+          "revision": 2
+        }
+      ]
+    }
+  },
+  {
+    "operation": "material_define",
+    "args": {
+      "material": {
+        "id": "alsi10mg_test",
+        "name": "AlSi10Mg, test values",
+        "family": "metal",
+        "status": "user_supplied",
+        "processes": [
+          "lpbf"
+        ],
+        "provenance": "test values, only to exercise the operation",
+        "density_kg_m3": {
+          "value": 2680
+        },
+        "youngs_modulus_pa": {
+          "value": 70000000000.0
+        },
+        "poisson_ratio": {
+          "value": 0.33
+        }
+      }
+    },
+    "elapsed_s": 0.003066041972488165,
+    "original_deadline_exceeded": false,
+    "value": {
+      "material": {
+        "id": "alsi10mg_test",
+        "name": "AlSi10Mg, test values",
+        "family": "metal",
+        "processes": [
+          "lpbf"
+        ],
+        "status": "user_supplied",
+        "defined_in": "project",
+        "provenance": "test values, only to exercise the operation",
+        "values_at_20_c": {
+          "density_kg_m3": 2680,
+          "youngs_modulus_pa": 70000000000,
+          "poisson_ratio": 0.33
+        },
+        "temperature_dependent": []
+      },
+      "warnings": [],
+      "assigned_to": []
+    }
+  },
+  {
+    "operation": "material_assign",
+    "args": {
+      "body": "bridge",
+      "material": "alsi10mg_test",
+      "source": "user"
+    },
+    "elapsed_s": 0.0005897500086575747,
+    "original_deadline_exceeded": false,
+    "value": {
+      "assignment": {
+        "body": "bridge",
+        "material": "alsi10mg_test",
+        "source": "user"
+      },
+      "material": {
+        "id": "alsi10mg_test",
+        "name": "AlSi10Mg, test values",
+        "family": "metal",
+        "processes": [
+          "lpbf"
+        ],
+        "status": "user_supplied",
+        "defined_in": "project",
+        "provenance": "test values, only to exercise the operation",
+        "values_at_20_c": {
+          "density_kg_m3": 2680,
+          "youngs_modulus_pa": 70000000000,
+          "poisson_ratio": 0.33
+        },
+        "temperature_dependent": []
+      },
+      "warnings": []
+    }
+  },
+  {
+    "operation": "mesh_generate",
+    "args": {
+      "element_size": "1 mm"
+    },
+    "elapsed_s": 0.0031370000215247273,
+    "original_deadline_exceeded": false,
+    "value": {
+      "mesh": {
+        "method": "voxel_hex8",
+        "description": "layer-aligned voxel mesh of 8-node hexahedra: undistorted boxes whose boundary is a staircase approximation of the STL surface",
+        "nodes": 355,
+        "elements": 192,
+        "dofs_structural": 1065,
+        "elements_by_region": {
+          "part": 192,
+          "support": 0,
+          "build_plate": 0
+        },
+        "element_size_mm": [
+          1,
+          1,
+          1
+        ],
+        "grid_cells": [
+          12,
+          4,
+          6
+        ],
+        "quality": {
+          "jacobian": "constant and positive in every element (det J = hx hy hz / 8); no inverted or distorted elements",
+          "jacobian_determinant_mm3": 0.125,
+          "aspect_ratio": 1,
+          "face_connected_regions": 1,
+          "inside_test": {
+            "method": "parity of ray crossings along x, y and z through one sample point per cell, majority of three",
+            "uncertain_cells": 0,
+            "abstained_rays": 0,
+            "abstained_rays_meaning": "rays whose crossing count was odd: they went through a hole or a sheet of zero thickness, so that axis did not vote for that column",
+            "uncertain_fraction_of_elements": 0,
+            "refused_above_fraction": 0.05
+          },
+          "edge_or_vertex_contact_nodes": 0
+        },
+        "bodies": [
+          {
+            "name": "bridge",
+            "volume_stl_mm3": 192,
+            "volume_mesh_mm3": 191.9999999999995,
+            "volume_error_percent": -2.619405273084588e-13,
+            "area_stl_mm2": 272.00000000000335,
+            "area_mesh_mm2": 272.0000000000001,
+            "area_ratio_mesh_to_stl": 0.999999999999988
+          }
+        ],
+        "boundary": {
+          "faces": 272,
+          "mean_distance_to_stl_mm": 2.0755722321345044e-17,
+          "mean_distance_weighting": "boundary-face area",
+          "max_distance_to_stl_mm": 8.673617379884035e-16
+        },
+        "selections": [],
+        "hash": "0227d657735a8c69b048f641f08f11a0e55e4cdf913e946b484ae20a05f1b5d1",
+        "generated_at_revision": 6,
+        "seconds": 0.0016220000106841326
+      },
+      "element_size_source": "user",
+      "warnings": [
+        "wall thickness has not been measured: run geometry_diagnostics (thickness: run) to find walls thinner than two elements"
+      ],
+      "resolution_dependence": "Volume, surface area and stresses at inclined or curved faces change with the element size. Repeat the analysis with half the element size to check that the quantities of interest have converged."
+    }
+  },
+  {
+    "operation": "lpbf_supports_generate",
+    "args": {
+      "body": "bridge",
+      "layer_thickness_sim": "1 mm",
+      "material": {
+        "youngs_modulus": "70000 MPa",
+        "poissons_ratio": 0.33,
+        "provenance": "user"
+      },
+      "supports": {
+        "type": "block"
+      }
+    },
+    "elapsed_s": 6.781820624950342,
+    "original_deadline_exceeded": false,
+    "value": {
+      "support_elements": 96,
+      "part_elements": 192,
+      "supports": {
+        "elements": 96,
+        "part_elements": 192,
+        "type": "block",
+        "parameters": [
+          {
+            "name": "wall_thickness",
+            "value": 0.2,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: the tutorial says a support's shell thickness directly sets its stiffness (p. 56) and gives no value"
+          },
+          {
+            "name": "spacing",
+            "value": 1,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: CADS Additive's support parameters are documented in its infosheets, not in the Simufact Additive tutorial (p. 54), and the owner's files do not hold them"
+          },
+          {
+            "name": "tooth_height",
+            "value": 0,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: no tooth interface unless one is given"
+          },
+          {
+            "name": "relative_density",
+            "value": 1,
+            "unit": "-",
+            "provenance": "assumed",
+            "source": "assumed: supports printed like the part are 100 % dense (tutorial p. 60)"
+          },
+          {
+            "name": "offset_from_part",
+            "value": 0,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: no offset from the part's walls"
+          }
+        ],
+        "assumed": [
+          "wall_thickness",
+          "spacing",
+          "tooth_height",
+          "relative_density",
+          "offset_from_part"
+        ],
+        "volume_mm3": 34.56000000000002,
+        "contact_area_mm2": 8.759765625000002,
+        "contact_fraction": 0.364990234375,
+        "columns_dropped_for_offset": 0,
+        "homogenised": {
+          "unit_cells_solved": 1,
+          "applied": "each support element takes the full orthotropic stiffness matrix of its band, from the periodic unit cell, times the relative density; supports stay elastic (no yield). The conduction fractions are for the heat model",
+          "bands": [
+            {
+              "depth": "the whole column below the tooth band",
+              "elements": 96,
+              "solid_fraction": 0.36,
+              "stiffness_vertical": 0.28176123774132855,
+              "stiffness_lateral": 0.15939945426984506,
+              "conduction_vertical": 0.3600000000001506,
+              "conduction_lateral_x": 0.2090329543223793,
+              "conduction_lateral_y": 0.2090329543223812,
+              "surface_per_volume_per_mm": 3.2000000000001894,
+              "voxels_per_pitch": 20
+            }
+          ]
+        },
+        "source": "the parameters below, each with its own source",
+        "provenance": "assumed",
+        "removed": false,
+        "rule": "overhang",
+        "critical_angle_deg": 45,
+        "critical_angle_source": "assumed: the Simufact Additive tutorial names the critical surface angle (p. 55) but gives no value; 45 degrees is the common convention",
+        "supported_faces": 24,
+        "faces_that_would_stand_on_the_part": 0,
+        "downward_faces_steeper_than_the_angle": 0,
+        "model": "a downward voxel face gets support where a face of the STL flatter than the critical angle lies over it and the column below reaches the plate through empty space; a column that would stand on the part, as inside a closed channel, gets none. The support is of the given type, homogenised from its explicitly solved unit cell (homogenised.bands), activated with its layer and strained like the part"
+      },
+      "warnings": [
+        {
+          "code": "NO_LOADS",
+          "message": "there are no loads, gravity or nonzero prescribed displacements: every displacement and stress will be zero"
+        },
+        {
+          "code": "STAIRCASE_BOUNDARY",
+          "message": "the voxel mesh approximates inclined and curved surfaces by steps (boundary faces lie up to 8.67e-16 mm from the STL surface); stresses at those surfaces and at re-entrant steps depend on the mesh"
+        }
+      ],
+      "next_step": "lpbf_build_run with the same supports object builds with exactly these supports"
+    }
+  },
+  {
+    "operation": "lpbf_supports_generate",
+    "args": {
+      "body": "bridge",
+      "layer_thickness_sim": "1 mm",
+      "material": {
+        "youngs_modulus": "70000 MPa",
+        "poissons_ratio": 0.33,
+        "provenance": "user"
+      },
+      "supports": {
+        "type": "thin_wall"
+      }
+    },
+    "elapsed_s": 3.059284916962497,
+    "original_deadline_exceeded": false,
+    "value": {
+      "support_elements": 96,
+      "part_elements": 192,
+      "supports": {
+        "elements": 96,
+        "part_elements": 192,
+        "type": "thin_wall",
+        "parameters": [
+          {
+            "name": "wall_thickness",
+            "value": 0.2,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: the tutorial says a support's shell thickness directly sets its stiffness (p. 56) and gives no value"
+          },
+          {
+            "name": "spacing",
+            "value": 1,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: CADS Additive's support parameters are documented in its infosheets, not in the Simufact Additive tutorial (p. 54), and the owner's files do not hold them"
+          },
+          {
+            "name": "direction_x",
+            "value": 0,
+            "unit": "-",
+            "provenance": "assumed",
+            "source": "assumed: walls along the model's x"
+          },
+          {
+            "name": "tooth_height",
+            "value": 0,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: no tooth interface unless one is given"
+          },
+          {
+            "name": "relative_density",
+            "value": 1,
+            "unit": "-",
+            "provenance": "assumed",
+            "source": "assumed: supports printed like the part are 100 % dense (tutorial p. 60)"
+          },
+          {
+            "name": "offset_from_part",
+            "value": 0,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: no offset from the part's walls"
+          }
+        ],
+        "assumed": [
+          "wall_thickness",
+          "spacing",
+          "direction_x",
+          "tooth_height",
+          "relative_density",
+          "offset_from_part"
+        ],
+        "volume_mm3": 19.199999999999978,
+        "contact_area_mm2": 4.875000000000002,
+        "contact_fraction": 0.203125,
+        "columns_dropped_for_offset": 0,
+        "homogenised": {
+          "unit_cells_solved": 1,
+          "applied": "each support element takes the full orthotropic stiffness matrix of its band, from the periodic unit cell, times the relative density; supports stay elastic (no yield). The conduction fractions are for the heat model",
+          "bands": [
+            {
+              "depth": "the whole column below the tooth band",
+              "elements": 96,
+              "solid_fraction": 0.2,
+              "stiffness_vertical": 0.15148139897527185,
+              "stiffness_lateral": 0.15148139897527246,
+              "conduction_vertical": 0.20000000000007556,
+              "conduction_lateral_x": 0.20000000000002263,
+              "conduction_lateral_y": 0,
+              "surface_per_volume_per_mm": 1.9999999999999978,
+              "voxels_per_pitch": 20
+            }
+          ]
+        },
+        "source": "the parameters below, each with its own source",
+        "provenance": "assumed",
+        "removed": false,
+        "rule": "overhang",
+        "critical_angle_deg": 45,
+        "critical_angle_source": "assumed: the Simufact Additive tutorial names the critical surface angle (p. 55) but gives no value; 45 degrees is the common convention",
+        "supported_faces": 24,
+        "faces_that_would_stand_on_the_part": 0,
+        "downward_faces_steeper_than_the_angle": 0,
+        "model": "a downward voxel face gets support where a face of the STL flatter than the critical angle lies over it and the column below reaches the plate through empty space; a column that would stand on the part, as inside a closed channel, gets none. The support is of the given type, homogenised from its explicitly solved unit cell (homogenised.bands), activated with its layer and strained like the part"
+      },
+      "warnings": [
+        {
+          "code": "NO_LOADS",
+          "message": "there are no loads, gravity or nonzero prescribed displacements: every displacement and stress will be zero"
+        },
+        {
+          "code": "STAIRCASE_BOUNDARY",
+          "message": "the voxel mesh approximates inclined and curved surfaces by steps (boundary faces lie up to 8.67e-16 mm from the STL surface); stresses at those surfaces and at re-entrant steps depend on the mesh"
+        }
+      ],
+      "next_step": "lpbf_build_run with the same supports object builds with exactly these supports"
+    }
+  },
+  {
+    "operation": "lpbf_supports_generate",
+    "args": {
+      "body": "bridge",
+      "layer_thickness_sim": "1 mm",
+      "material": {
+        "youngs_modulus": "70000 MPa",
+        "poissons_ratio": 0.33,
+        "provenance": "user"
+      },
+      "supports": {
+        "type": "cone"
+      }
+    },
+    "elapsed_s": 0.4346882909303531,
+    "original_deadline_exceeded": false,
+    "value": {
+      "support_elements": 96,
+      "part_elements": 192,
+      "supports": {
+        "elements": 96,
+        "part_elements": 192,
+        "type": "cone",
+        "parameters": [
+          {
+            "name": "base_radius",
+            "value": 1,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: CADS Additive's support parameters are documented in its infosheets, not in the Simufact Additive tutorial (p. 54), and the owner's files do not hold them"
+          },
+          {
+            "name": "top_radius",
+            "value": 0.45000000000000007,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: the tutorial's example sets a support radius of 0.45 mm (p. 224), an example and not a default"
+          },
+          {
+            "name": "spacing",
+            "value": 3,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: CADS Additive's support parameters are documented in its infosheets, not in the Simufact Additive tutorial (p. 54), and the owner's files do not hold them"
+          },
+          {
+            "name": "tooth_height",
+            "value": 0,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: no tooth interface unless one is given"
+          },
+          {
+            "name": "relative_density",
+            "value": 1,
+            "unit": "-",
+            "provenance": "assumed",
+            "source": "assumed: supports printed like the part are 100 % dense (tutorial p. 60)"
+          },
+          {
+            "name": "offset_from_part",
+            "value": 0,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: no offset from the part's walls"
+          }
+        ],
+        "assumed": [
+          "base_radius",
+          "top_radius",
+          "spacing",
+          "tooth_height",
+          "relative_density",
+          "offset_from_part"
+        ],
+        "volume_mm3": 18.4545918367347,
+        "contact_area_mm2": 1.6948242187500004,
+        "contact_fraction": 0.07061767578125,
+        "columns_dropped_for_offset": 0,
+        "homogenised": {
+          "unit_cells_solved": 4,
+          "applied": "each support element takes the full orthotropic stiffness matrix of its band, from the periodic unit cell, times the relative density; supports stay elastic (no yield). The conduction fractions are for the heat model",
+          "bands": [
+            {
+              "depth_below_part_mm": [
+                3,
+                4
+              ],
+              "support_height_mm": 4,
+              "elements": 24,
+              "solid_fraction": 0.3027423469387755,
+              "stiffness_vertical": 0.23309796452223994,
+              "stiffness_lateral": 0.12018542755078035,
+              "conduction_vertical": 0.2951419932677311,
+              "conduction_lateral_x": 0,
+              "conduction_lateral_y": 0,
+              "surface_per_volume_per_mm": 0.8816326530612255,
+              "voxels_per_pitch": 14
+            },
+            {
+              "depth_below_part_mm": [
+                2,
+                3
+              ],
+              "support_height_mm": 4,
+              "elements": 24,
+              "solid_fraction": 0.2209183673469388,
+              "stiffness_vertical": 0.16731532850357841,
+              "stiffness_lateral": 0.07728463062026576,
+              "conduction_vertical": 0.2162408500007288,
+              "conduction_lateral_x": 0,
+              "conduction_lateral_y": 0,
+              "surface_per_volume_per_mm": 0.8258503401360555,
+              "voxels_per_pitch": 14
+            },
+            {
+              "depth_below_part_mm": [
+                1,
+                2
+              ],
+              "support_height_mm": 4,
+              "elements": 24,
+              "solid_fraction": 0.15057397959183674,
+              "stiffness_vertical": 0.11092787892409475,
+              "stiffness_lateral": 0.044345239430241885,
+              "conduction_vertical": 0.145894788338043,
+              "conduction_lateral_x": 0,
+              "conduction_lateral_y": 0,
+              "surface_per_volume_per_mm": 0.6122448979591845,
+              "voxels_per_pitch": 14
+            },
+            {
+              "depth_below_part_mm": [
+                0,
+                1
+              ],
+              "support_height_mm": 4,
+              "elements": 24,
+              "solid_fraction": 0.09470663265306123,
+              "stiffness_vertical": 0.06737816234482441,
+              "stiffness_lateral": 0.02319968747318504,
+              "conduction_vertical": 0.0902329157499531,
+              "conduction_lateral_x": 0,
+              "conduction_lateral_y": 0,
+              "surface_per_volume_per_mm": 0.45986394557823174,
+              "voxels_per_pitch": 14
+            }
+          ]
+        },
+        "source": "the parameters below, each with its own source",
+        "provenance": "assumed",
+        "removed": false,
+        "rule": "overhang",
+        "critical_angle_deg": 45,
+        "critical_angle_source": "assumed: the Simufact Additive tutorial names the critical surface angle (p. 55) but gives no value; 45 degrees is the common convention",
+        "supported_faces": 24,
+        "faces_that_would_stand_on_the_part": 0,
+        "downward_faces_steeper_than_the_angle": 0,
+        "model": "a downward voxel face gets support where a face of the STL flatter than the critical angle lies over it and the column below reaches the plate through empty space; a column that would stand on the part, as inside a closed channel, gets none. The support is of the given type, homogenised from its explicitly solved unit cell (homogenised.bands), activated with its layer and strained like the part"
+      },
+      "warnings": [
+        {
+          "code": "NO_LOADS",
+          "message": "there are no loads, gravity or nonzero prescribed displacements: every displacement and stress will be zero"
+        },
+        {
+          "code": "STAIRCASE_BOUNDARY",
+          "message": "the voxel mesh approximates inclined and curved surfaces by steps (boundary faces lie up to 8.67e-16 mm from the STL surface); stresses at those surfaces and at re-entrant steps depend on the mesh"
+        }
+      ],
+      "next_step": "lpbf_build_run with the same supports object builds with exactly these supports"
+    }
+  },
+  {
+    "operation": "lpbf_supports_generate",
+    "args": {
+      "body": "bridge",
+      "layer_thickness_sim": "1 mm",
+      "material": {
+        "youngs_modulus": "70000 MPa",
+        "poissons_ratio": 0.33,
+        "provenance": "user"
+      },
+      "supports": {
+        "type": "tree"
+      }
+    },
+    "elapsed_s": 16.347702957922593,
+    "original_deadline_exceeded": false,
+    "value": {
+      "support_elements": 96,
+      "part_elements": 192,
+      "supports": {
+        "elements": 96,
+        "part_elements": 192,
+        "type": "tree",
+        "parameters": [
+          {
+            "name": "trunk_radius",
+            "value": 1,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: CADS Additive's support parameters are documented in its infosheets, not in the Simufact Additive tutorial (p. 54), and the owner's files do not hold them"
+          },
+          {
+            "name": "branch_radius",
+            "value": 0.45000000000000007,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: the tutorial's example sets a support radius of 0.45 mm (p. 224), an example and not a default"
+          },
+          {
+            "name": "spacing",
+            "value": 2,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: CADS Additive's support parameters are documented in its infosheets, not in the Simufact Additive tutorial (p. 54), and the owner's files do not hold them"
+          },
+          {
+            "name": "trunk_spacing",
+            "value": 6,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: CADS Additive's support parameters are documented in its infosheets, not in the Simufact Additive tutorial (p. 54), and the owner's files do not hold them"
+          },
+          {
+            "name": "branch_height",
+            "value": 5,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: CADS Additive's support parameters are documented in its infosheets, not in the Simufact Additive tutorial (p. 54), and the owner's files do not hold them"
+          },
+          {
+            "name": "tooth_height",
+            "value": 0,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: no tooth interface unless one is given"
+          },
+          {
+            "name": "relative_density",
+            "value": 1,
+            "unit": "-",
+            "provenance": "assumed",
+            "source": "assumed: supports printed like the part are 100 % dense (tutorial p. 60)"
+          },
+          {
+            "name": "offset_from_part",
+            "value": 0,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: no offset from the part's walls"
+          }
+        ],
+        "assumed": [
+          "trunk_radius",
+          "branch_radius",
+          "spacing",
+          "trunk_spacing",
+          "branch_height",
+          "tooth_height",
+          "relative_density",
+          "offset_from_part"
+        ],
+        "volume_mm3": 14.1215706447188,
+        "contact_area_mm2": 3.818847656250001,
+        "contact_fraction": 0.15911865234375,
+        "columns_dropped_for_offset": 0,
+        "homogenised": {
+          "unit_cells_solved": 4,
+          "applied": "each support element takes the full orthotropic stiffness matrix of its band, from the periodic unit cell, times the relative density; supports stay elastic (no yield). The conduction fractions are for the heat model",
+          "bands": [
+            {
+              "depth_below_part_mm": [
+                3,
+                4
+              ],
+              "elements": 24,
+              "solid_fraction": 0.11274719935985368,
+              "stiffness_vertical": 0.07945713806687313,
+              "stiffness_lateral": 0.05043166386387007,
+              "conduction_vertical": 0.10018264350834745,
+              "conduction_lateral_x": 0,
+              "conduction_lateral_y": 0,
+              "surface_per_volume_per_mm": 0.375857338820299,
+              "voxels_per_pitch": 54
+            },
+            {
+              "depth_below_part_mm": [
+                2,
+                3
+              ],
+              "elements": 24,
+              "solid_fraction": 0.15791228471269622,
+              "stiffness_vertical": 0.10206460711900492,
+              "stiffness_lateral": 0.05408376298168169,
+              "conduction_vertical": 0.1382530886809085,
+              "conduction_lateral_x": 0,
+              "conduction_lateral_y": 0,
+              "surface_per_volume_per_mm": 0.9519890260631365,
+              "voxels_per_pitch": 54
+            },
+            {
+              "depth_below_part_mm": [
+                1,
+                2
+              ],
+              "elements": 24,
+              "solid_fraction": 0.15887679088553575,
+              "stiffness_vertical": 0.09470152555109462,
+              "stiffness_lateral": 0.031260623331222044,
+              "conduction_vertical": 0.13684237194636403,
+              "conduction_lateral_x": 0,
+              "conduction_lateral_y": 0,
+              "surface_per_volume_per_mm": 1.0507544581618877,
+              "voxels_per_pitch": 54
+            },
+            {
+              "depth_below_part_mm": [
+                0,
+                1
+              ],
+              "elements": 24,
+              "solid_fraction": 0.15886250190519738,
+              "stiffness_vertical": 0.09494966503957492,
+              "stiffness_lateral": 0.03137312726404804,
+              "conduction_vertical": 0.1370243129735307,
+              "conduction_lateral_x": 0,
+              "conduction_lateral_y": 0,
+              "surface_per_volume_per_mm": 1.0521262002743703,
+              "voxels_per_pitch": 54
+            }
+          ]
+        },
+        "source": "the parameters below, each with its own source",
+        "provenance": "assumed",
+        "removed": false,
+        "rule": "overhang",
+        "critical_angle_deg": 45,
+        "critical_angle_source": "assumed: the Simufact Additive tutorial names the critical surface angle (p. 55) but gives no value; 45 degrees is the common convention",
+        "supported_faces": 24,
+        "faces_that_would_stand_on_the_part": 0,
+        "downward_faces_steeper_than_the_angle": 0,
+        "model": "a downward voxel face gets support where a face of the STL flatter than the critical angle lies over it and the column below reaches the plate through empty space; a column that would stand on the part, as inside a closed channel, gets none. The support is of the given type, homogenised from its explicitly solved unit cell (homogenised.bands), activated with its layer and strained like the part"
+      },
+      "warnings": [
+        {
+          "code": "NO_LOADS",
+          "message": "there are no loads, gravity or nonzero prescribed displacements: every displacement and stress will be zero"
+        },
+        {
+          "code": "STAIRCASE_BOUNDARY",
+          "message": "the voxel mesh approximates inclined and curved surfaces by steps (boundary faces lie up to 8.67e-16 mm from the STL surface); stresses at those surfaces and at re-entrant steps depend on the mesh"
+        }
+      ],
+      "next_step": "lpbf_build_run with the same supports object builds with exactly these supports"
+    }
+  },
+  {
+    "operation": "lpbf_supports_generate",
+    "args": {
+      "body": "bridge",
+      "layer_thickness_sim": "1 mm",
+      "material": {
+        "youngs_modulus": "70000 MPa",
+        "poissons_ratio": 0.33,
+        "provenance": "user"
+      },
+      "supports": {
+        "type": "lattice"
+      }
+    },
+    "elapsed_s": 9.86906437505968,
+    "original_deadline_exceeded": false,
+    "value": {
+      "support_elements": 96,
+      "part_elements": 192,
+      "supports": {
+        "elements": 96,
+        "part_elements": 192,
+        "type": "lattice",
+        "parameters": [
+          {
+            "name": "cell_size",
+            "value": 2,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: CADS Additive's support parameters are documented in its infosheets, not in the Simufact Additive tutorial (p. 54), and the owner's files do not hold them"
+          },
+          {
+            "name": "strut_diameter",
+            "value": 0.5,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: CADS Additive's support parameters are documented in its infosheets, not in the Simufact Additive tutorial (p. 54), and the owner's files do not hold them"
+          },
+          {
+            "name": "tooth_height",
+            "value": 0,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: no tooth interface unless one is given"
+          },
+          {
+            "name": "relative_density",
+            "value": 1,
+            "unit": "-",
+            "provenance": "assumed",
+            "source": "assumed: supports printed like the part are 100 % dense (tutorial p. 60)"
+          },
+          {
+            "name": "offset_from_part",
+            "value": 0,
+            "unit": "mm",
+            "provenance": "assumed",
+            "source": "assumed: no offset from the part's walls"
+          }
+        ],
+        "assumed": [
+          "cell_size",
+          "strut_diameter",
+          "tooth_height",
+          "relative_density",
+          "offset_from_part"
+        ],
+        "volume_mm3": 25.305175781249968,
+        "contact_area_mm2": 2.717285156250001,
+        "contact_fraction": 0.11322021484375,
+        "columns_dropped_for_offset": 0,
+        "homogenised": {
+          "unit_cells_solved": 1,
+          "applied": "each support element takes the full orthotropic stiffness matrix of its band, from the periodic unit cell, times the relative density; supports stay elastic (no yield). The conduction fractions are for the heat model",
+          "bands": [
+            {
+              "depth": "the whole column below the tooth band",
+              "elements": 96,
+              "solid_fraction": 0.2635955810546875,
+              "stiffness_vertical": 0.0456238140100163,
+              "stiffness_lateral": 0.04562381401001635,
+              "conduction_vertical": 0.12459429831235855,
+              "conduction_lateral_x": 0.1245942983123612,
+              "conduction_lateral_y": 0.12459429831236538,
+              "surface_per_volume_per_mm": 2.6484375000001927,
+              "voxels_per_pitch": 32
+            }
+          ]
+        },
+        "source": "the parameters below, each with its own source",
+        "provenance": "assumed",
+        "removed": false,
+        "rule": "overhang",
+        "critical_angle_deg": 45,
+        "critical_angle_source": "assumed: the Simufact Additive tutorial names the critical surface angle (p. 55) but gives no value; 45 degrees is the common convention",
+        "supported_faces": 24,
+        "faces_that_would_stand_on_the_part": 0,
+        "downward_faces_steeper_than_the_angle": 0,
+        "model": "a downward voxel face gets support where a face of the STL flatter than the critical angle lies over it and the column below reaches the plate through empty space; a column that would stand on the part, as inside a closed channel, gets none. The support is of the given type, homogenised from its explicitly solved unit cell (homogenised.bands), activated with its layer and strained like the part"
+      },
+      "warnings": [
+        {
+          "code": "NO_LOADS",
+          "message": "there are no loads, gravity or nonzero prescribed displacements: every displacement and stress will be zero"
+        },
+        {
+          "code": "STAIRCASE_BOUNDARY",
+          "message": "the voxel mesh approximates inclined and curved surfaces by steps (boundary faces lie up to 8.67e-16 mm from the STL surface); stresses at those surfaces and at re-entrant steps depend on the mesh"
+        }
+      ],
+      "next_step": "lpbf_build_run with the same supports object builds with exactly these supports"
+    }
+  }
+]

@@ -1,0 +1,32 @@
+== refusals before any solve
+== a part that does not rest on the plate, and a stale mesh
+== the build
+   4 layers, before +0.0000 mm, after +0.0018 mm, springback +0.0018 mm, 64 elements cut
+== the build through the ordinary result operations
+== the result file's element birth and death
+== a second session reads the same build
+== the whole-part cross-check mode
+   layer by layer +0.0018 mm against whole part +0.0000 mm
+== plasticity
+   elastic +0.0018 mm, yielding +0.0029 mm, peak plastic strain 0.00403
+== supports
+   bridge: 96 support elements; largest displacement 0.01352 mm without, 0.01347 mm with, 0.01525 mm after removing them
+== the support rule
+   channel: 0 support elements (wave-4 rule: 256, overhang_all: 256); lean 60: 800; lean 30: 0
+== typed supports (docs/contracts/supports.md S7 to S9)
+Traceback (most recent call last):
+  File "/private/tmp/openphysics-printing-foundation/tools/lpbfflow.py", line 694, in <module>
+    sys.exit(main())
+  File "/private/tmp/openphysics-printing-foundation/tools/lpbfflow.py", line 464, in main
+    gt = call_ok(c, "lpbf_supports_generate", dict(gen, supports={"type": t}), f"{t} supports generated")
+  File "/private/tmp/openphysics-printing-foundation/tools/lpbfflow.py", line 59, in call_ok
+    sc = call(c, name, args)
+  File "/private/tmp/openphysics-printing-foundation/tools/lpbfflow.py", line 55, in call
+    return (c.call(name, args).get("result", {}).get("structuredContent")) or {}
+  File "/private/tmp/openphysics-printing-foundation/tools/mcptest.py", line 121, in call
+    return self.request("tools/call", params)
+  File "/private/tmp/openphysics-printing-foundation/tools/mcptest.py", line 101, in request
+    resp = self.recv()
+  File "/private/tmp/openphysics-printing-foundation/tools/mcptest.py", line 82, in recv
+    raise TimeoutError("no response from navier-mcp")
+TimeoutError: no response from navier-mcp

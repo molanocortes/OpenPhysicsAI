@@ -18,6 +18,7 @@ import shutil
 import struct
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -161,8 +162,9 @@ def main():
     ws = tmp / "ws"
     common = ["--workspace", str(ws), "--allow-read", str(tmp)]
     c = Client(["--embedded"] + common)
-    c.initialize()
+    completed = False
     try:
+        c.initialize()
         tools = {t["name"] for t in c.request("tools/list")["result"]["tools"]}
         check("lpbf_build_run" in tools, "lpbf_build_run is listed as a tool")
 
@@ -461,7 +463,12 @@ def main():
         call_err(c, "lpbf_supports_generate", dict(gen, supports={"type": "block", "wall_thickness": "3 mm", "provenance": "user",
                  "source": "flow test"}), "PRECONDITION_FAILED", "S8: a wall thicker than its pitch is refused")
         for t in ("thin_wall", "cone", "tree", "lattice"):
-            gt = call_ok(c, "lpbf_supports_generate", dict(gen, supports={"type": t}), f"{t} supports generated")
+            print(f"   generating {t} supports", flush=True)
+            started = time.monotonic()
+            try:
+                gt = call_ok(c, "lpbf_supports_generate", dict(gen, supports={"type": t}), f"{t} supports generated")
+            finally:
+                print(f"   {t} supports request elapsed {time.monotonic() - started:.3f} s", flush=True)
             bt = ((gt.get("supports") or {}).get("homogenised") or {}).get("bands") or [{}]
             check(gt.get("support_elements") == 96 and 0 < bt[0].get("stiffness_vertical", 0) < 1,
                   f"S7: {t} supports on the span, homogenised stiffness {bt[0].get('stiffness_vertical')}")
@@ -678,11 +685,19 @@ def main():
         r4 = (st4.get("summary") or {}).get("results") or {}
         check(abs(r4.get("tip_uz_after_cut_mm", 0) - 0.02) < 2e-4,
               f"the rebuild at the fitted strain gives the target deflection ({r4.get('tip_uz_after_cut_mm'):.5f} mm against 0.02)")
+        completed = True
     finally:
-        code, stderr = c.close()
-        if FAIL:
-            print(stderr[-3000:])
-        shutil.rmtree(tmp, ignore_errors=True)
+        closed, stderr = False, ""
+        try:
+            code, stderr = c.close()
+            closed = True
+        finally:
+            if completed and closed and not FAIL:
+                shutil.rmtree(tmp, ignore_errors=True)
+            else:
+                (tmp / "mcp-stderr.log").write_text(stderr, encoding="utf-8")
+                print(stderr[-3000:])
+                print(f"LPBF workflow evidence preserved at {tmp}", flush=True)
     if FAIL:
         print(f"\nLPBF FLOW TESTS FAILED: {PASS} passed, {FAIL} failed")
         return 1
