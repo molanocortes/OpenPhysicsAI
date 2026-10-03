@@ -95,6 +95,7 @@ default because it is a few times cheaper.
   "is_forecast": false,
   "layer_lumping": {"simulation_layer_mm": 3.0, "printed_layers_per_simulation_layer": 15, "toolpath_within_a_layer": "not modelled"},
   "creep_below_relaxation_temperature": "not modelled",
+  "constitutive_law": "temperature-dependent incremental stress accumulation (hypoelastic approximation); old stress is not rescaled when the modulus changes, and stress is reset above the relaxation temperature; no time-dependent viscoelastic law",
   "bed_stresses_are_upper_bound": true,
   "material": {"id": "pla_generic_demo", "status": "demonstration", "measured": false},
   "compared_with_measurement": false,
@@ -104,6 +105,11 @@ default because it is a few times cheaper.
 
 An agent that reads only `summary.scope` can tell that the numbers are a trend on demonstration data, not a prediction
 to certify a part with.
+
+The implemented stress law accumulates increments evaluated along the temperature path. A changed modulus does not
+rescale previously accumulated stress; above the relaxation temperature the stress is reset instantly. Exact
+integration of `E(T) alpha(T) dT` verifies this chosen incremental law. It does not supply a time-dependent polymer
+relaxation law or establish the general thermoelastic relation `sigma = D(T) (epsilon - epsilon_thermal)`.
 
 ## 6. File layout: `results.nvt` version 3
 

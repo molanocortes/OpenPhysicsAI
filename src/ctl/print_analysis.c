@@ -578,6 +578,9 @@ JsonValue *print_summary_json(const PrintCase *pc) {
     json_set_string(ll, "deposition_timing", "the enthalpy correction is a finite heat pulse during the first substep; "
                                          "local deposition temperatures require time refinement");
     json_set_string(sc, "creep_below_relaxation_temperature", "not modelled");
+    json_set_string(sc, "constitutive_law", "temperature-dependent incremental stress accumulation (hypoelastic approximation); "
+                    "old stress is not rescaled when the modulus changes, and stress is reset above the relaxation temperature; "
+                    "no time-dependent viscoelastic law");
     json_set_bool(sc, "bed_stresses_are_upper_bound", true);
     json_set_string(sc, "bed_stresses_note",
                     "the part is held on the bed near the glass transition for the whole print; without creep the stress that builds up there is an "

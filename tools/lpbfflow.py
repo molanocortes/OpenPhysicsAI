@@ -237,6 +237,10 @@ def main():
         check(abs(res.get("largest_plate_reaction_n", 1e9)) < 1e9, "the plate reactions are reported")
         check("eight Gauss-point von Mises" in res.get("stress_field_definition", ""),
               "the build summary states the actual stress scalar definition")
+        eqdef = res.get("equilibrium_error_definition", "")
+        check("recovered linear free residual" in eqdef and "eigenstrain" in eqdef and
+              "absolute residual in N if scale is zero" in eqdef,
+              "the elastic summary defines its linear equilibrium diagnostic and zero-scale units")
 
         print("== the build through the ordinary result operations")
         err = call_err(c, "results_query", {"job_id": job, "quantity": "temperature"}, "UNSUPPORTED", "a temperature query on a build is refused")
@@ -297,6 +301,10 @@ def main():
               f"a yield stress nothing reaches gives the elastic answer to the last digit "
               f"({r5.get('tip_uz_after_cut_mm')} against {res.get('tip_uz_after_cut_mm')})")
         check((r5.get("plasticity") or {}).get("yielded") is False, "and reports that nothing yielded")
+        eqdef = r5.get("equilibrium_error_definition", "")
+        check("accepted nonlinear free residual" in eqdef and "incremental reaction" in eqdef and
+              "initial nonlinear predictor" in eqdef and "absolute residual in N if scale is zero" in eqdef,
+              "the J2 summary defines accepted nonlinear balance rather than the last linear correction")
         v = call_ok(c, "lpbf_build_run", dict(args, plasticity=dict(yield_ok, yield_strength="60 MPa",
                                                                     hardening_modulus="2 GPa"),
                                               label="low yield, hardening"), "plastic build that yields")

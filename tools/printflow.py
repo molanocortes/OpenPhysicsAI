@@ -186,6 +186,9 @@ def main():
         check(scope.get("compared_with_measurement") is False, "the summary says nothing was compared with a measurement")
         check(scope.get("bed_stresses_are_upper_bound") is True, "the summary says the stresses on the bed are an upper bound")
         check(scope.get("creep_below_relaxation_temperature") == "not modelled", "the summary says creep is not modelled")
+        law = scope.get("constitutive_law", "")
+        check("hypoelastic" in law and "no time-dependent viscoelastic law" in law,
+              "the summary identifies the implemented incremental stress law and its polymer relaxation limit")
         check((scope.get("material") or {}).get("status") == "demonstration" and (scope.get("material") or {}).get("measured") is False,
               "the summary carries the material's own status")
         lump = scope.get("layer_lumping") or {}

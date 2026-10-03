@@ -4116,11 +4116,12 @@ static void test_lpbf_build(void) {
             if (ok) lpbf_activate(m, all, b.ne);
             /* twelve increments: yield is reached at the fourth (E eps_y = sy needs drive 3.29e-3) */
             const double d = 1e-3;
-            double worst = 0, worst_drive = 0, got_at_peak = 0, want_at_peak = 0;
+            double worst = 0, worst_drive = 0, got_at_peak = 0, want_at_peak = 0, equilibrium_peak = 0;
             int steps = 12;
             for (int i = 0; ok && i < steps; i++) {
                 const double eps[3] = {-d, 0, 0};
                 ok = lpbf_strain(m, all, b.ne, eps, err, sizeof err);
+                equilibrium_peak = fmax(equilibrium_peak, ok ? lpbf_equilibrium_error(m) : INFINITY);
                 double drive = (i + 1) * d, trial = E * drive;
                 double want = trial <= sy ? trial : (sy * E + Hh * trial) / (E + Hh);
                 double got = 0;
@@ -4140,6 +4141,7 @@ static void test_lpbf_build(void) {
                 unload_want = got_at_peak - E * 2 * d;
             }
             double alpha_after = lpbf_peak_plastic_strain(m);
+            double equilibrium_unload = ok ? lpbf_equilibrium_error(m) : INFINITY;
             lpbf_free(m);
             REPORT("P1/P2/P4 uniaxial bar, %s: worst error %.2e over 12 increments (at drive %.4f), peak %.6e Pa "
                    "against %.6e Pa; unloaded to %.6e Pa against %.6e Pa (slope E), residual plastic strain %.6e "
@@ -4153,6 +4155,11 @@ static void test_lpbf_build(void) {
             CHECK(ok && fabs(unload_got - unload_want) < 1e-9 * fabs(unload_want) &&
                       fabs(alpha_after - alpha_peak) <= 1e-15,
                   "P2b: unloading is elastic, with no further yielding");
+            REPORT("V11 %s bar accepted nonlinear equilibrium: worst loading %.2e, unloading %.2e",
+                   hcase ? "hardening" : "perfect plastic", equilibrium_peak, equilibrium_unload);
+            CHECK(ok && isfinite(equilibrium_peak) && isfinite(equilibrium_unload) &&
+                  equilibrium_peak < 1e-6 && equilibrium_unload < 1e-6,
+                  "V11: nonlinear load/unload diagnostics use a nonvanishing physical force scale");
             if (!hcase)
                 CHECK(ok && fabs(got_at_peak - sy) < 1e-9 * sy,
                       "P4: an eigenstrain driven far past yield leaves the stress capped at exactly sigma_y");
@@ -4866,6 +4873,37 @@ static void test_printing_numerics(void) {
         double equilibrium = ok ? lpbf_equilibrium_error(m) : INFINITY;
         REPORT("V10 freely contracted hex: last elastic solve equilibrium error %.2e", equilibrium);
         CHECK(ok && equilibrium < 1e-9, "V10: vanishing recovered stress does not amplify the equilibrium roundoff: %s", err);
+        lpbf_free(m);
+        /* V11 criteria precede the first run in lpbf-build.md. Independent closed form: a homogeneous isotropic
+         * free eigenstrain is an affine contraction from A, with exactly zero stress and plastic strain. */
+        m = lpbf_new(&mesh, E, nu, held, HEX8_INCOMPATIBLE, SOLID_SOLVER_DIRECT, 1e-12, err, sizeof err);
+        ok = m != NULL;
+        if (ok) lpbf_set_plasticity(m, 250e6, 0, 40, 1e-12);
+        if (ok) lpbf_activate(m, &one, 1);
+        if (ok) ok = lpbf_strain(m, &one, 1, free_eigen, err, sizeof err);
+        double displacement_error = 0, stress_error = 0;
+        if (ok) {
+            for (int n = 0; n < b.nn; n++) for (int k = 0; k < 3; k++) {
+                double want_u = free_eigen[k] * (b.xyz[3*n+k] - b.xyz[3*A+k]);
+                displacement_error = fmax(displacement_error, fabs(lpbf_u(m)[3*n+k] - want_u) / 0.001);
+            }
+            for (int q = 0; q < 48; q++) stress_error = fmax(stress_error, fabs(lpbf_stress(m)[q]) / (E * 0.001));
+        }
+        equilibrium = ok ? lpbf_equilibrium_error(m) : INFINITY;
+        REPORT("V11 J2-enabled free contraction: normalized nonlinear residual %.2e, affine displacement error %.2e, "
+               "stress/(E eps) %.2e, plastic strain %.2e", equilibrium, displacement_error, stress_error,
+               ok ? lpbf_peak_plastic_strain(m) : INFINITY);
+        CHECK(ok && isfinite(equilibrium) && equilibrium < 1e-9 && displacement_error < 1e-10 &&
+              stress_error < 1e-10 && lpbf_peak_plastic_strain(m) == 0,
+              "V11: free J2 no-yield contraction retains the closed form and a meaningful nonlinear diagnostic: %s", err);
+        lpbf_free(m);
+        m = lpbf_new(&mesh, E, nu, held, HEX8_INCOMPATIBLE, SOLID_SOLVER_DIRECT, 1e-12, err, sizeof err);
+        ok = m != NULL;
+        if (ok) lpbf_set_plasticity(m, 250e6, 0, 40, 1e-12);
+        if (ok) lpbf_activate(m, &one, 1);
+        if (ok) ok = lpbf_strain(m, NULL, 0, zero, err, sizeof err);
+        CHECK(ok && lpbf_equilibrium_error(m) == 0 && lpbf_last_newton_residual(m) == 0,
+              "V11: a fresh unloaded J2 hex reports exactly zero residual with a zero force scale");
         lpbf_free(m);
         free(held), free(b.xyz), free(b.rho), free(b.conn);
     }

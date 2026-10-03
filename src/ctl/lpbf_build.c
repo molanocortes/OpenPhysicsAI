@@ -1349,6 +1349,11 @@ JsonValue *lpbf_summary_json(const LpbfCase *lc) {
     json_set_int(r, "solves", lc->solves);
     json_set_number(r, "seconds", lc->seconds);
     json_set_number(r, "equilibrium_error_last_solve", lc->equilibrium_error);
+    json_set_string(r, "equilibrium_error_definition", lc->s.yield_stress > 0
+        ? "accepted nonlinear free residual norm / (reduced applied/release force norm + individual constrained "
+          "incremental reaction norm + initial nonlinear predictor free residual norm); absolute residual in N if scale is zero"
+        : "recovered linear free residual norm / (applied nodal load norm + individual constrained reaction norm + "
+          "assembled free RHS norm including eigenstrain); absolute residual in N if scale is zero");
     if (lc->s.max_element_size > 0) {
         JsonValue *am = json_set_object(r, "adaptive_mesh");
         json_set_number(am, "surface_element_size_mm", 1e3 * lc->c.h[0]);
