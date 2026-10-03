@@ -567,3 +567,8 @@ surface-area bias, which also biases convection. Use the same 8 x 2 x 4 mm wall 
 0.5, 0.25 mm, with z-aligned layers. Before running, require positive J, one face-connected part and report volume,
 surface area and uniform-convection flux against independent 64 mm3, 112 mm2 and h_film A delta T. A boundary
 treatment improvement must bring the finest flux within 2 percent; do not infer that from an aligned-wall PASS.
+
+The next FDM constitutive acceptance starts with a synthetic single-Maxwell-branch material, before fitting any
+polymer: E_infinity = 1 GPa, E_1 = 2 GPa, tau = 10 s, held strain 0.001. The material-point response must match
+sigma(t) = 0.001 [E_infinity + E_1 exp(-t/tau)] to 1e-10 relative; stored energy plus nonnegative dissipation must
+close to 1e-8 relative. Then verify a 3D held coupon and the elastic limit before using sourced polymer parameters.
