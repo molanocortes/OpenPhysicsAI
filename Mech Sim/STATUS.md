@@ -554,3 +554,29 @@ row (the gripper: 28 rows, 1.8 kB). Histories are the main memory cost (8 bytes 
    then the serial merge into the shared checkout.
 4. Contact extensions: compliant contact for impact forces, hull–hull and part pieces from meshes (convex
    decomposition declared by the user), rolling friction.
+
+## Printing numerical integrity, 2026-10-03
+
+Criteria were added before their first runs in [the FDM contract](../docs/contracts/print-results.md#8-numerical-amendments-2026-10-03)
+and [the LPBF contract](../docs/contracts/lpbf-build.md#13-numerical-amendments-2026-10-03).
+`make build/mechtest` and `build/mechtest --printing` exercise the same checks included in the normal mechanics suite.
+
+- FDM now supplies the complete deposited nozzle enthalpy, including the heat missing at conforming interface/bed
+  nodes. Constant/linear-capacity three-layer checks close against an independent polynomial enthalpy integral at
+  1.85e-16/4.93e-16 relative; removing a 0.25-capacity support closes at 3.08e-15. Nodal temperatures stayed 300 to 400 K.
+- The eight-layer demonstration PLA wall supplied 3449.70746 J, including a 1500.57176 J deposition correction;
+  stored + bed + air heat closes at 1.63e-11 relative. This is numerical conservation, not measured-print validation.
+- Exact piecewise-table thermoelastic integration replaces the fixed temperature-grid trapezoid. A 0.01 K transition
+  with an interior modulus-floor crossing gives the closed-form restrained stress 448742.083333 Pa within
+  2.72e-15 relative in one increment and 1.69e-15 in multiple increments.
+- Elastic LPBF plate reactions now carry the accumulated stress: the fully held verification hex gives 33.653846 MN
+  after one eigenstrain increment, 67.307692 MN after two and the same after a zero-strain equilibration.
+  A free uniform contraction retains a stable last-solve equilibrium error of 1.26e-16, rather than normalising by
+  near-zero recovered stress. Removed support-only nodes no longer determine shown-part temperature/warp extrema.
+- Both print stress fields now average Gauss-point von Mises after evaluating the invariant. In the checked bent
+  strips, taking the mean tensor first understated this scalar by up to 28.58 percent in FDM and 52.01 percent in LPBF.
+
+The first-substep deposition pulse is a stated simulation-layer approximation and needs temporal convergence for
+local temperatures. FDM still lacks resolved roads, inter-road thermal contact, raster anisotropy/interlayer strength,
+crystallisation and sub-transition creep. LPBF remains an inherent-strain process model with optional isothermal J2
+plasticity; no laser-resolved thermal cycle or melt-pool prediction was added. No new measured material values were invented.

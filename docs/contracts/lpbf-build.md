@@ -335,6 +335,22 @@ states (for example: part-to-part supports allowed outside the port volumes).
 for copyright, by the owner's decision. The numbers on the head in this section stay as the record of the runs of
 2026-09-19; they can no longer be rerun from this repository.
 
+## 13. Numerical amendments, 2026-10-03
+
+These criteria are fixed before the new checks run. They verify the inherent-strain mechanics; they do not add
+a resolved laser, melt-pool flow or thermal cycle to this reduced-order process model.
+
+- V8: for a fully restrained unit hex receiving the same eigenstrain in two increments, the final plate nodal reaction
+  is twice the one-increment reaction to 1e-10 relative and equals the closed-form face traction. A following zero-strain
+  equilibration preserves it to the same tolerance. Reactions must represent accumulated stress, rather than only the
+  last elastic increment; plastic and elastic runs share that definition.
+- V9: on a bent two-layer specimen the reported element von Mises equals the mean of the eight Gauss-point von Mises
+  values within 1e-12 relative. Uniform stress is unchanged. This scalar is an element mean, not the maximum of the
+  integration-point stress and not a guarantee of mesh convergence.
+- V10: a freely contracting unit hex on 3-2-1 isostatic constraints, with isotropic eigenstrain -0.001, reports the
+  last elastic solve's equilibrium error below 1e-9. That diagnostic retains the solid solver's eigenstrain-load
+  normalisation; dividing by the nearly zero final stress would incorrectly amplify harmless roundoff.
+
 ## 12. A cut that frees a part standing on supports (wave 5, 2026-09-19)
 
 When the cut runs through the whole section of a part that stands on supports, the part above it is free the moment

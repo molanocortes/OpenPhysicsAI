@@ -3750,6 +3750,24 @@ static FffMaterial fff_const_material(double E, double nu, double alpha) {
     return m;
 }
 
+/* Independent scalar recovery from the stored tensor: the invariant precedes spatial averaging. */
+static double print_vm_error(const double *stress, const double *vm, int ne, double *cancellation) {
+    double err = 0;
+    *cancellation = 0;
+    for (int e = 0; e < ne; e++) {
+        double mean = 0, tensor[6] = {0};
+        for (int g = 0; g < 8; g++) {
+            const double *s = stress + 48 * (size_t)e + 6 * (size_t)g;
+            mean += sqrt(0.5 * ((s[0] - s[1]) * (s[0] - s[1]) + (s[1] - s[2]) * (s[1] - s[2]) +
+                              (s[2] - s[0]) * (s[2] - s[0])) + 3 * (s[3] * s[3] + s[4] * s[4] + s[5] * s[5])) / 8;
+            for (int k = 0; k < 6; k++) tensor[k] += s[k] / 8;
+        }
+        err = fmax(err, fabs(vm[e] - mean) / fmax(mean, 1e-30));
+        if (mean > 1) *cancellation = fmax(*cancellation, 1 - von_mises(tensor) / mean);
+    }
+    return err;
+}
+
 /* the print's element activation in the time-indexed result file: it round-trips, and files without it still load */
 /* ---------------------------------------------------------------- the inherent-strain LPBF build (docs/contracts/lpbf-build.md) */
 
@@ -4054,6 +4072,13 @@ static void test_lpbf_build(void) {
         if (ok) {
             tip = lpbf_u(m)[3 * bnode(&b, nx, 0, nz) + 2];
             mid = lpbf_u(m)[3 * bnode(&b, nx / 2, 0, nz) + 2];
+            double *vm = calloc((size_t)b.ne, sizeof(double)), cancellation = 0;
+            lpbf_von_mises(m, vm);
+            double verr = print_vm_error(lpbf_stress(m), vm, b.ne, &cancellation);
+            REPORT("V9 LPBF bending scalar: mean integration-point von Mises relative error %.2e; tensor-before-invariant cancellation %.2f%%",
+                   verr, 100 * cancellation);
+            CHECK(verr < 1e-12 && cancellation > 0.01, "V9: bending stress is averaged after the invariant, with nonuniform stress exercised");
+            free(vm);
         }
         lpbf_free(m);
         /* a clamped strip under a constant curvature: w(x) = kappa x^2 / 2 */
@@ -4480,6 +4505,15 @@ static void test_fff_print(void) {
                kappa, ref, 100 * (kappa / ref - 1), s_free);
         CHECK(ok && s_free < 1e-6 * E * alpha * 100 && kappa > 0 && fabs(kappa / ref - 1) < 0.02,
               "warping from layer-wise deposition: the strip curls up with the bimetal curvature (2%%)");
+        if (ok) {
+            double *vm = calloc((size_t)b.ne, sizeof(double)), cancellation = 0;
+            fff_mech_von_mises(m, vm);
+            double verr = print_vm_error(fff_mech_stress(m), vm, b.ne, &cancellation);
+            REPORT("F11 FDM bending scalar: mean integration-point von Mises relative error %.2e; tensor-before-invariant cancellation %.2f%%",
+                   verr, 100 * cancellation);
+            CHECK(verr < 1e-12 && cancellation > 0.01, "F11: FDM bending stress is averaged after the invariant, with nonuniform stress exercised");
+            free(vm);
+        }
         if (!ok) printf("  fff: %s\n", err);
         fff_mech_free(m);
         free(T), free(bed), free(b.xyz), free(b.rho), free(b.conn);
@@ -4608,6 +4642,10 @@ static void test_fff_print(void) {
                "on the bed %.2f MPa, released %.2f MPa; vertical warp %.3f to %.3f mm; release support reaction %.1e N of bed reactions %.1e N; %.1f s",
                S.nlayers, S.print_time / 3600, S.thermal_steps, S.mech_solves, S.worst_energy_balance, S.peak_vm_bed / 1e6, S.peak_vm_released / 1e6,
                1e3 * S.warp_z_min, 1e3 * S.warp_z_max, S.release_support_reaction, S.bed_reaction_total, S.seconds_thermal + S.seconds_mech);
+        REPORT("F14 PLA wall heat ledger: supplied %.9g J, corrected %.9g J, stored %.9g J, bed %.9g J, air %.9g J; "
+               "deposition identity %.2e, whole-print error %.2e", S.deposition_heat, S.deposition_correction,
+               S.stored_heat, S.bed_heat, S.air_heat, S.deposition_balance, S.global_heat_balance);
+        CHECK(ok && S.global_heat_balance < 1e-6, "F14: complete wall conserves nozzle enthalpy through convection, radiation and bed cool-down");
         CHECK(ok && S.nlayers == 8 && S.frames == 2 * 8 + 3 && S.worst_energy_balance < 1e-6 && S.release_support_reaction < 1e-6 * (1 + S.bed_reaction_total) &&
                   S.peak_vm_released > 0,
               "a whole print: every step conserves energy, the bed release is self-equilibrated and residual stresses remain");
@@ -4616,8 +4654,183 @@ static void test_fff_print(void) {
     }
 }
 
-int main(void) {
+typedef struct PrintHeatCapture {
+    double T[16], low, high;
+    const FffMesh *mesh;
+    double remaining_warp_min, remaining_warp_max, extrema_error;
+} PrintHeatCapture;
+
+static bool capture_print_heat(const FffFrame *frame, void *ctx) {
+    PrintHeatCapture *c = ctx;
+    memcpy(c->T, frame->T, sizeof c->T);
+    for (int n = 0; n < 16; n++) c->low = fmin(c->low, frame->T[n]), c->high = fmax(c->high, frame->T[n]);
+    if (!strcmp(frame->stage, "supports removed")) {
+        unsigned char shown[16] = {0};
+        for (int e = 0; e < c->mesh->nelems; e++)
+            if (frame->active[e])
+                for (int a = 0; a < 8; a++) shown[c->mesh->conn[8 * e + a]] = 1;
+        double maximum_u = 0, maximum_T = 0;
+        c->remaining_warp_min = INFINITY, c->remaining_warp_max = -INFINITY;
+        for (int n = 0; n < 16; n++)
+            if (shown[n]) {
+                const double *u = frame->u + 3 * n;
+                c->remaining_warp_min = fmin(c->remaining_warp_min, u[2]);
+                c->remaining_warp_max = fmax(c->remaining_warp_max, u[2]);
+                maximum_u = fmax(maximum_u, sqrt(u[0] * u[0] + u[1] * u[1] + u[2] * u[2]));
+                maximum_T = fmax(maximum_T, frame->T[n]);
+            }
+        c->extrema_error = fmax(fabs(frame->T_max - maximum_T) / 1e-10, fabs(frame->u_max - maximum_u) / 1e-12);
+    }
+    return true;
+}
+
+/* Criteria F10, F12 and V8 are recorded in the process contracts before their first run. */
+static void test_printing_numerics(void) {
+    char err[300] = {0};
+    printf("== printing numerical integrity: exact table integration and accumulated plate reactions\n");
+    {
+        BoxMesh b = box_hex(1, 1, 1, 1, 1, 1, 1);
+        FffMesh mesh = {b.nn, b.ne, b.xyz, b.conn};
+        unsigned char *held = malloc((size_t)b.nn);
+        memset(held, 1, (size_t)b.nn);
+        FffMaterial mat = fff_const_material(1e9, 0, 1e-4);
+        mat.E_floor = 2e9;
+        mat.E.n = 4;
+        double knots[4] = {300, 300.005, 300.015, 301}, values[4] = {1e9, 1e9, 3e9, 3e9};
+        memcpy(mat.E.t, knots, sizeof knots), memcpy(mat.E.v, values, sizeof values);
+        mat.alpha.n = 2, mat.alpha.t[0] = 300, mat.alpha.t[1] = 301;
+        mat.alpha.v[0] = 1e-4, mat.alpha.v[1] = 2e-4;
+        /* Independent polynomial integral, including the interior floor crossing at 300.010 K. */
+        const double cuts[5] = {0, 0.005, 0.010, 0.015, 1};
+        const double mods[5] = {2e9, 2e9, 2e9, 3e9, 3e9};
+        double want = 0;
+        for (int j = 0; j < 4; j++) {
+            double width = cuts[j + 1] - cuts[j], a = 1e-4 * (1 + cuts[j]), da = 1e-4 * width;
+            double Em = mods[j], dE = mods[j + 1] - Em;
+            want += width * (Em * a + 0.5 * (Em * da + a * dE) + dE * da / 3);
+        }
+        double got[2] = {0, 0}, errors[2] = {INFINITY, INFINITY};
+        bool ok = true;
+        for (int run = 0; run < 2; run++) {
+            FffMech *m = fff_mech_new(&mesh, &mat, held, err, sizeof err);
+            if (!m) { ok = false; break; }
+            fff_mech_activate(m, 0, 300);
+            const double increments[5] = {300.005, 300.010, 300.015, 300.375, 301};
+            for (int s = 0; s < (run ? 5 : 1); s++) {
+                double T[8];
+                for (int n = 0; n < 8; n++) T[n] = run ? increments[s] : 301;
+                if (!fff_mech_increment(m, T, err, sizeof err)) { ok = false; break; }
+            }
+            got[run] = -fff_mech_stress(m)[0];
+            errors[run] = fabs(got[run] - want) / want;
+            fff_mech_free(m);
+        }
+        REPORT("F10 0.01 K transition and modulus-floor crossing: restrained stress %.12g Pa, exact %.12g Pa; one/multiple increments errors %.2e / %.2e",
+               got[0], want, errors[0], errors[1]);
+        CHECK(ok && errors[0] < 1e-10 && errors[1] < 1e-10, "F10: exact thermoelastic path across sharp table knots and the modulus floor: %s", err);
+        free(held), free(b.xyz), free(b.rho), free(b.conn);
+    }
+    {
+        BoxMesh b = box_hex(1, 1, 3, 0.001, 0.001, 0.003, 1000);
+        FffMesh mesh = {b.nn, b.ne, b.xyz, b.conn};
+        FffProcess process = {0.001, 400, 300, 300, 0, false, 1e-5, 0.002, 0, 0, 3};
+        for (int scenario = 0; scenario < 3; scenario++) {
+            bool variable = scenario == 1, support = scenario == 2;
+            int support_band[3] = {0, -1, -1};
+            double band_props[6] = {0.5, 0.5, 0.5, 0.25, 0.25, 0};
+            mesh.support_band = support ? support_band : NULL;
+            mesh.nbands = support ? 1 : 0, mesh.band_props = support ? band_props : NULL;
+            FffMaterial mat = fff_const_material(2e9, 0, 1e-4);
+            mat.rho = const_table(1000), mat.cp = const_table(1000);
+            if (variable) {
+                mat.cp.n = 2, mat.cp.t[0] = 300, mat.cp.t[1] = 400;
+                mat.cp.v[0] = 1000, mat.cp.v[1] = 2000;
+            }
+            PrintHeatCapture capture = {{0}, INFINITY, -INFINITY, &mesh, 0, 0, 0};
+            FffCallbacks cb = {capture_print_heat, NULL, &capture};
+            FffSummary sum;
+            bool ok = fff_simulate(&mesh, &mat, &process, &cb, &sum, err, sizeof err);
+            double stored = 0, removed = 0, slope = variable ? 10 : 0, volume = 1e-9;
+            /* Independent closed-form enthalpy integral: rho [cp(300) dT + cp' dT^2 / 2]. */
+            for (int e = 0; e < 3; e++)
+                for (int g = 0; g < 8; g++) {
+                    double N[8], Tg = 0, gp = 1 / sqrt(3.0);
+                    hex8_shape(HEX8_XI[g][0] * gp, HEX8_XI[g][1] * gp, HEX8_XI[g][2] * gp, N, NULL);
+                    for (int a = 0; a < 8; a++) Tg += N[a] * capture.T[mesh.conn[8 * e + a]];
+                    double dT = Tg - 300;
+                    double energy = volume / 8 * 1000 * (1000 * dT + 0.5 * slope * dT * dT);
+                    if (support && e == 0) removed += 0.25 * energy;
+                    else stored += energy;
+                }
+            double supplied = (support ? 2.25 : 3) * volume * 1000 * (1000 * 100 + 0.5 * slope * 100 * 100);
+            double relative = fabs(stored + removed + sum.bed_heat - supplied) / supplied;
+            REPORT("%s %s cp%s, three-layer deposition: supplied %.12g J, stored %.12g J, bed %.12g J, correction %.12g J; "
+                   "independent whole-print error %.2e, deposition identity %.2e; nodal range %.6f..%.6f K",
+                   support ? "F13" : "F12", variable ? "linear" : "constant", support ? " with removable support" : "", supplied, stored, sum.bed_heat, sum.deposition_correction, relative,
+                   sum.deposition_balance, capture.low, capture.high);
+            CHECK(ok && relative < 1e-7 && fabs(sum.deposition_heat / supplied - 1) < 1e-12 &&
+                  sum.deposition_balance < 1e-12 && sum.deposition_correction > 0 &&
+                  fabs(sum.stored_heat - stored) / supplied < 1e-10 && sum.global_heat_balance < 1e-7 &&
+                  fabs(sum.removed_heat - removed) / supplied < 1e-10 && (!support || (sum.support_elements == 1 && removed > 0)) &&
+                  capture.low >= 300 - 1e-6 && capture.high <= 400 + 1e-6,
+                  "F12/F13: deposition and support removal conserve physical nozzle enthalpy and respect thermal bounds: %s", err);
+            if (support) {
+                CHECK(ok && capture.extrema_error <= 1 && fabs(sum.warp_z_min - capture.remaining_warp_min) <= 1e-12 &&
+                      fabs(sum.warp_z_max - capture.remaining_warp_max) <= 1e-12,
+                      "F15: removed supports cannot control shown-part extrema");
+            }
+        }
+        free(b.xyz), free(b.rho), free(b.conn);
+    }
+    {
+        BoxMesh b = box_hex(1, 1, 1, 1, 1, 1, 1);
+        LpbfMesh mesh = {b.nn, b.ne, b.xyz, b.conn};
+        unsigned char *held = malloc(3 * (size_t)b.nn);
+        memset(held, 1, 3 * (size_t)b.nn);
+        const double E = 100e9, nu = 0.3, eigen[3] = {-1e-3, 0, 0}, zero[3] = {0, 0, 0};
+        double r[3], r1 = 0, r2 = 0, rzero = 0;
+        LpbfModel *m = lpbf_new(&mesh, E, nu, held, HEX8_INCOMPATIBLE, SOLID_SOLVER_DIRECT, 1e-12, err, sizeof err);
+        bool ok = m != NULL;
+        int one = 0;
+        if (ok) lpbf_activate(m, &one, 1);
+        if (ok) ok = lpbf_strain(m, &one, 1, eigen, err, sizeof err);
+        if (ok) r1 = lpbf_plate_reaction(m, r);
+        if (ok) ok = lpbf_strain(m, &one, 1, eigen, err, sizeof err);
+        if (ok) r2 = lpbf_plate_reaction(m, r);
+        if (ok) ok = lpbf_strain(m, NULL, 0, zero, err, sizeof err);
+        if (ok) rzero = lpbf_plate_reaction(m, r);
+        double want = E * (1 - nu) / ((1 + nu) * (1 - 2 * nu)) * 1e-3 / 4;
+        REPORT("V8 total plate nodal reaction: one increment %.12g N, two %.12g N, zero-strain equilibration %.12g N; exact first %.12g N",
+               r1, r2, rzero, want);
+        CHECK(ok && fabs(r1 / want - 1) < 1e-10 && fabs(r2 / (2 * want) - 1) < 1e-10 && fabs(rzero / r2 - 1) < 1e-10,
+              "V8: total accumulated elastic plate reactions equal analytical traction and persist: %s", err);
+        lpbf_free(m);
+        memset(held, 0, 3 * (size_t)b.nn);
+        int A = bnode(&b, 0, 0, 0), B = bnode(&b, 1, 0, 0), C = bnode(&b, 0, 1, 0);
+        held[3 * A] = held[3 * A + 1] = held[3 * A + 2] = 1;
+        held[3 * B + 1] = held[3 * B + 2] = held[3 * C + 2] = 1;
+        m = lpbf_new(&mesh, E, nu, held, HEX8_INCOMPATIBLE, SOLID_SOLVER_DIRECT, 1e-12, err, sizeof err);
+        ok = m != NULL;
+        const double free_eigen[3] = {-0.001, -0.001, -0.001};
+        if (ok) lpbf_activate(m, &one, 1);
+        if (ok) ok = lpbf_strain(m, &one, 1, free_eigen, err, sizeof err);
+        double equilibrium = ok ? lpbf_equilibrium_error(m) : INFINITY;
+        REPORT("V10 freely contracted hex: last elastic solve equilibrium error %.2e", equilibrium);
+        CHECK(ok && equilibrium < 1e-9, "V10: vanishing recovered stress does not amplify the equilibrium roundoff: %s", err);
+        lpbf_free(m);
+        free(held), free(b.xyz), free(b.rho), free(b.conn);
+    }
+}
+
+int main(int argc, char **argv) {
     setvbuf(stdout, NULL, _IOLBF, 0);
+    if (argc == 2 && !strcmp(argv[1], "--printing")) {
+        test_printing_numerics();
+        test_fff_print();
+        test_lpbf_build();
+        printf("\nPRINTING VERIFICATION: %d passed, %d failed\n", g_pass, g_fail);
+        return g_fail ? 1 : 0;
+    }
     test_math();
     test_mass_properties();
     test_free_body();
@@ -4642,6 +4855,7 @@ int main(void) {
     test_flexible_core();
     test_flexible_reduction();
     test_flexible_assembly();
+    test_printing_numerics();
     test_fff_print();
     test_print_results();
     test_adaptive_mesh();

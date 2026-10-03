@@ -1343,6 +1343,7 @@ JsonValue *lpbf_summary_json(const LpbfCase *lc) {
     json_set_number(r, "free_end_x_mm", 1e3 * lc->tip_x);
     json_set_number(r, "peak_von_mises_before_cut_mpa", lc->peak_vm_before / 1e6);
     json_set_number(r, "peak_von_mises_after_cut_mpa", lc->peak_vm_after / 1e6);
+    json_set_string(r, "stress_field_definition", "element mean of eight Gauss-point von Mises values, not a Gauss-point maximum");
     json_set_int(r, "layers", lc->layers);
     json_set_int(r, "stored_times", c->noutputs);
     json_set_int(r, "solves", lc->solves);

@@ -187,3 +187,45 @@ These criteria were written before the implementation ran. Each one is either me
 | A7 | `tools/printflow.py`, an independent MCP client, prints a small PLA wall end to end, provokes the refusals of section 3, reopens the project in a second engine session and reads the same stored times and the same peak von Mises (1e-9 relative), and checks from the results that the worst heat balance is ≤ 1e-6 and that the support reaction after release is ≤ 1e-6 of the largest bed reaction |
 | A8 | `make test` runs `tools/printflow.py` and every suite passes |
 | A9 | Speed: the truss-bridge print at 3 mm elements finishes in ≤ 180 s with its final warp and peak stress equal to the 519 s reference within 1e-6 relative for exact methods, or within a stated measured tolerance for iterative ones |
+
+## 8. Numerical amendments, 2026-10-03
+
+The following criteria are fixed before the new checks run. Synthetic material tables below are verification data,
+not a measured filament or a printer forecast.
+
+- F10: on a fully restrained hex, a piecewise linear modulus transition only 0.01 K wide and a piecewise linear
+  expansion table give the closed-form stress integral to 1e-10 relative in one increment and in multiple increments.
+  The integration splits at all material-table breakpoints, the relaxation temperature and every modulus-floor crossing;
+  Simpson integration is exact on each resulting quadratic product. The previous fixed 0.5 K trapezoid is replaced.
+- F11: on a bent two-layer specimen the reported element von Mises equals the mean of the eight Gauss-point von Mises
+  values within 1e-12 relative. It is no longer computed from the mean stress tensor, whose opposite bending stresses
+  can cancel before the invariant is evaluated. Uniform stress retains its previous value. This is an element mean,
+  not a Gauss-point maximum and not a spatial convergence certificate.
+- F12: for three deposited hex layers with no convection or radiation, the independently integrated final enthalpy
+  plus reported heat into the bed equals the supplied nozzle enthalpy within 1e-7 relative, both for constant heat
+  capacity and for a linear temperature-dependent heat capacity. The layer deposition correction must be nonzero;
+  the reported deposition identity must close within 1e-12 relative. This checks deposition energy separately from
+  the thermal solver's subsequent step balances. With bed and ambient at 300 K and deposition at 400 K, stored-frame
+  nodal temperatures must stay in [300 - 1e-6, 400 + 1e-6] K.
+- F13: repeat the constant-capacity three-layer print with a homogenised support bottom layer at capacity/stiffness
+  fraction 0.25, then remove that support. The independent retained-part enthalpy plus removed-support enthalpy and
+  bed heat equals supplied nozzle enthalpy within 1e-7 relative. The support-removal ledger equals the independent
+  support enthalpy within 1e-10 of supplied energy.
+- F14: the existing eight-layer demonstration PLA wall, with convection, radiation and both bed cool-down stages,
+  closes its whole-print physical heat ledger within 1e-6 relative. This is a conservation check, not measured-print
+  validation of the demonstration material.
+- F15: after support removal, the stored frame's maximum temperature/displacement and final warp extrema equal the
+  extrema independently computed over nodes of the remaining active elements, within 1e-10 K and 1e-12 m.
+
+Conforming nodes at a new layer's interface already carry the previous layer's temperature. Setting only brand-new
+nodes to the nozzle temperature loses some of the incoming material's energy before any cooling solve. The amended
+layer model retains those interface temperatures and supplies the missing enthalpy during the first thermal substep
+as a nodal heat pulse. At each new element's Gauss point the secant capacity between its interpolated initial
+temperature and the nozzle temperature multiplies `N_a (T_nozzle - T_a) detJ`. Summing these nodal contributions is
+exactly the missing Gauss-integrated enthalpy. A contribution on a prescribed bed node goes directly into the bed
+heat ledger; free-node contributions enter the thermal solve. The pulse duration is the first substep, so substep
+refinement is still required for local temperature-history convergence. This correction does not resolve individual
+extruded roads, contact resistance, or a toolpath.
+
+The result summary additionally reports supplied nozzle enthalpy above ambient, deposition correction, stored
+enthalpy above ambient, heat into the air, enthalpy removed with supports, and the resulting whole-print heat balance.

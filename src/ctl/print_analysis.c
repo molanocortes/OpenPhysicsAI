@@ -530,6 +530,14 @@ JsonValue *print_summary_json(const PrintCase *pc) {
     json_set_string(r, "release_check", "the support reaction after release is zero when the released part is self-equilibrated");
     json_set_number(r, "heat_into_bed_j", pc->bed_heat);
     json_set_number(r, "heat_into_bed_during_print_j", pc->bed_heat_print);
+    json_set_number(r, "supplied_nozzle_enthalpy_above_ambient_j", pc->deposition_heat);
+    json_set_number(r, "deposition_enthalpy_correction_j", pc->deposition_correction);
+    json_set_number(r, "stored_enthalpy_above_ambient_j", pc->stored_heat);
+    json_set_number(r, "heat_into_air_j", pc->air_heat);
+    json_set_number(r, "enthalpy_removed_with_supports_j", pc->removed_heat);
+    json_set_number(r, "worst_deposition_balance_relative", pc->deposition_balance);
+    json_set_number(r, "whole_print_heat_balance_relative", pc->global_heat_balance);
+    json_set_string(r, "stress_field_definition", "element mean of eight Gauss-point von Mises values, not a Gauss-point maximum");
     if (pc->sup_stats && pc->sup_stats->support_elements > 0) {
         JsonValue *sp = lpbf_supports_json(pc->sup_stats);
         json_set_int(sp, "removed_after_release", pc->supports_removed);
@@ -538,9 +546,9 @@ JsonValue *print_summary_json(const PrintCase *pc) {
         json_set_number(to, "sum_of_nodal_force_magnitudes_n", pc->tearoff_sum);
         json_set_string(to, "definition", "the forces the supports exerted on the part at the nodes they share with it, just "
                                           "before their removal after the bed release");
-        json_set_string(sp, "heat_model", "each support band conducts with its unit cell's conductivity fractions along x, y and "
-                                          "z and stores heat with its solid fraction; the heat its internal surfaces exchange "
-                                          "with the air is not modelled, only its outer faces'");
+        json_set_string(sp, "heat_model", "each support band conducts with its stated conductivity fractions along x, y and "
+                                          "z and stores heat with its stated capacity fraction; pattern surface per volume "
+                                          "provides homogenised convection and radiation over its element faces");
         json_set(r, "supports", sp);
     }
     json_set_int(r, "stored_times", c->noutputs);
@@ -558,7 +566,10 @@ JsonValue *print_summary_json(const PrintCase *pc) {
     json_set_number(ll, "simulation_layer_mm", 1e3 * pc->s.layer_height);
     json_set_number(ll, "printed_layer_mm", 1e3 * pc->s.printed_layer_height);
     json_set_number(ll, "printed_layers_per_simulation_layer", pc->s.printed_layer_height > 0 ? pc->s.layer_height / pc->s.printed_layer_height : 0);
-    json_set_string(ll, "toolpath_within_a_layer", "not modelled: a simulation layer is deposited at once at the nozzle temperature");
+    json_set_string(ll, "toolpath_within_a_layer", "not modelled: a simulation layer is activated at once with nozzle enthalpy; "
+                                                "missing energy at conforming nodes is delivered in the first thermal substep");
+    json_set_string(ll, "deposition_timing", "the enthalpy correction is a finite heat pulse during the first substep; "
+                                         "local deposition temperatures require time refinement");
     json_set_string(sc, "creep_below_relaxation_temperature", "not modelled");
     json_set_bool(sc, "bed_stresses_are_upper_bound", true);
     json_set_string(sc, "bed_stresses_note",
@@ -572,7 +583,7 @@ JsonValue *print_summary_json(const PrintCase *pc) {
     JsonValue *nm = json_set_array(sc, "not_modelled");
     static const char *const NOT[] = {"toolpath within a layer",  "creep below the relaxation temperature",
                                       "plasticity",               "raster anisotropy and interlayer strength",
-                                      "crystallisation shrinkage", "supports",
+                                      "crystallisation shrinkage", "resolved roads and inter-road thermal contact resistance",
                                       "gravity",                  "adhesion failure during the print"};
     for (size_t i = 0; i < sizeof NOT / sizeof NOT[0]; i++) json_push(nm, json_string(NOT[i]));
     json_set_string(sc, "use", "compare designs, process settings and trends; do not certify a part with these numbers");
@@ -636,6 +647,9 @@ bool print_job_run(Job *job, void *data, char *code, size_t codelen, char *err, 
     pc->seconds_total = now_s() - t0;
     pc->volume = sum.printed_volume;
     pc->bed_heat = sum.bed_heat, pc->bed_heat_print = sum.bed_heat_print;
+    pc->deposition_heat = sum.deposition_heat, pc->deposition_correction = sum.deposition_correction;
+    pc->stored_heat = sum.stored_heat, pc->air_heat = sum.air_heat, pc->removed_heat = sum.removed_heat;
+    pc->deposition_balance = sum.deposition_balance, pc->global_heat_balance = sum.global_heat_balance;
     pc->tearoff_max = sum.tearoff_max, pc->tearoff_sum = sum.tearoff_sum, pc->supports_removed = sum.support_elements;
     c->nsteps = sum.thermal_steps;
     c->worst_balance = pc->worst_balance;

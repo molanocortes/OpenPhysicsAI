@@ -206,6 +206,26 @@ static void internal_force(const LpbfMesh *M, int e, const double *sig, double *
     }
 }
 
+/* The plate carries total accumulated stress, including layers strained in earlier steps. Recovering the reaction
+ * from just the most recent linear solve loses that history (and reports zero after a zero-strain equilibration). */
+static double accumulated_reaction(LpbfModel *m, const HexModel *hm, const int *map, int na,
+                                   const unsigned char *used, double *fint) {
+    int nn = m->mesh.nnodes;
+    memset(fint, 0, 3 * (size_t)nn * sizeof(double));
+    for (int a = 0; a < na; a++) internal_force(&m->mesh, map[a], m->stress + 48 * (size_t)map[a], fint);
+    push_hanging(hm, fint);
+    double free_norm = 0, total = 0;
+    memset(m->reaction, 0, 3 * (size_t)nn * sizeof(double));
+    for (int n = 0; n < nn; n++)
+        for (int k = 0; k < 3; k++) {
+            if (!used[n]) continue;
+            total += fint[3 * n + k] * fint[3 * n + k];
+            if (m->fixed[3 * n + k]) m->reaction[3 * n + k] = fint[3 * n + k];
+            else free_norm += fint[3 * n + k] * fint[3 * n + k];
+        }
+    return total > 0 ? sqrt(free_norm / total) : 0;
+}
+
 /* The stress of one element at the current step displacement, returned onto the yield surface from the state at the
  * start of the step. `u_step` is the displacement increment of this step, `eps0e` its eigenstrain (may be NULL). */
 static void element_stress(const LpbfModel *m, int e, const double D[6][6], const double *u_step, const double *eps0e,
@@ -324,19 +344,7 @@ static bool plastic_step(LpbfModel *m, const HexModel *hm, const SolidLoads *L, 
     }
     /* at equilibrium the internal force of the total stress is carried by the plate; what is left at a free node is
      * the error. fint above is the increment, so the total is recomputed from the accepted stresses. */
-    memset(fint, 0, 3 * (size_t)nn * sizeof(double));
-    for (int a = 0; a < na; a++) internal_force(M, map[a], m->stress + 48 * (size_t)map[a], fint);
-    push_hanging(hm, fint);
-    double free_norm = 0, total = 0;
-    memset(m->reaction, 0, 3 * (size_t)nn * sizeof(double));
-    for (int n = 0; n < nn; n++)
-        for (int k = 0; k < 3; k++) {
-            if (!used[n]) continue;
-            total += fint[3 * n + k] * fint[3 * n + k];
-            if (m->fixed[3 * n + k]) m->reaction[3 * n + k] = fint[3 * n + k];
-            else free_norm += fint[3 * n + k] * fint[3 * n + k];
-        }
-    m->equilibrium_error = total > 0 ? sqrt(free_norm / total) : 0;
+    m->equilibrium_error = accumulated_reaction(m, hm, map, na, used, fint);
     ok = true;
 done:
     free(u_step), free(R), free(fint), free(sig_start), free(alpha_start), free(sig_new), free(alpha_new);
@@ -472,16 +480,15 @@ static bool step(LpbfModel *m, const unsigned char *strained, const double eps[3
     if (!solid_solve(&hm, &L, &opt, &res, err, errlen)) goto done;
     m->seconds += now_s() - t0;
     m->solves++;
-    m->equilibrium_error = res.equilibrium_error;
     for (int n = 0; n < nn; n++)
         if (used[n])
             for (int k = 0; k < 3; k++) m->u[3 * n + k] += res.u[3 * n + k];
     for (int a = 0; a < na; a++)
         for (int k = 0; k < 48; k++) m->stress[48 * (size_t)map[a] + (size_t)k] += res.gp_stress[48 * (size_t)a + (size_t)k];
-    memset(m->reaction, 0, 3 * (size_t)nn * sizeof(double));
-    for (int n = 0; n < nn; n++)
-        for (int k = 0; k < 3; k++)
-            if (used[n] && m->fixed[3 * n + k]) m->reaction[3 * n + k] = res.reaction[3 * n + k];
+    accumulated_reaction(m, &hm, map, na, used, force);
+    /* Last elastic solve residual uses its eigenstrain right-hand side as well as reactions. Normalising by only
+     * recovered stress would turn harmless roundoff in a freely contracted, stress-free part into an O(1) error. */
+    m->equilibrium_error = res.equilibrium_error;
     ok = true;
 done:
     solid_result_free(&res);
@@ -535,10 +542,7 @@ void lpbf_von_mises(const LpbfModel *m, double *vm) {
     for (int e = 0; e < m->mesh.nelems; e++) {
         vm[e] = 0;
         if (!m->active[e]) continue;
-        double s[6] = {0};
-        for (int g = 0; g < 8; g++)
-            for (int k = 0; k < 6; k++) s[k] += m->stress[48 * (size_t)e + 6 * (size_t)g + (size_t)k] / 8;
-        vm[e] = von_mises(s);
+        for (int g = 0; g < 8; g++) vm[e] += von_mises(m->stress + 48 * (size_t)e + 6 * (size_t)g) / 8;
     }
 }
 
