@@ -39,7 +39,7 @@ static const char *VS_POS = GLSL
     "  gl_Position.z -= u_zbias * gl_Position.w; }\n";
 
 static const char *FS_FLOOR = GLSL
-    "in vec3 v_world; out vec4 o; uniform vec3 u_center; uniform float u_minor, u_major, u_fade;\n"
+    "in vec3 v_world; out vec4 o; uniform vec3 u_center; uniform float u_minor, u_major, u_fade; uniform int u_result;\n"
     "float grid(vec2 p, float s) { vec2 q = p / s; vec2 g = abs(fract(q - 0.5) - 0.5) / max(fwidth(q), vec2(1e-5));\n"
     "  return 1.0 - min(min(g.x, g.y), 1.0); }\n"
     "void main() {\n"
@@ -48,6 +48,9 @@ static const char *FS_FLOOR = GLSL
     "  vec2 w = floor(p / (u_minor * 0.25)); float weave = mod(w.x + w.y, 2.0);\n"
     "  vec3 c = vec3(0.004, 0.007, 0.011) + vec3(0.0025, 0.0035, 0.0045) * weave;\n"
     "  c += vec3(0.030, 0.075, 0.110) * grid(p, u_minor) * 0.6 + vec3(0.06, 0.16, 0.24) * grid(p, u_major);\n"
+    /* A result is the subject, not the checkerboard. Keep the same reference-plane coordinates with a sparse,
+     * neutral grid, no weave. This floor is a presentation aid, never a simulated material or physical light. */
+    "  if (u_result == 1) c = vec3(0.007, 0.009, 0.012) + vec3(0.009, 0.011, 0.013) * grid(p, u_major);\n"
     "  o = vec4(c, fade); }\n";
 
 static const char *FS_COLOR = GLSL
@@ -202,7 +205,7 @@ static const char *FS_ISO = GLSL GLSL_CMAP
     /* u_alpha < 1 draws the piece as glass: the caller sorts the transparent pieces back to front and turns off depth
      * writes, so what lies behind them stays visible */
     "uniform float u_alpha;\n"
-    /* u_flat mixes in a matte shading whose brightness stays below 1, so a field surface keeps the colour the legend
+    /* u_flat selects matte shading whose brightness stays below 1, so a field surface keeps the colour the legend
      * promises instead of blooming towards white; the vortex isosurfaces keep the glossy look at u_flat = 0. */
     "uniform float u_flat;\n"
     "void main() {\n"
@@ -212,10 +215,16 @@ static const char *FS_ISO = GLSL GLSL_CMAP
     "  if (u_flat > 0.5 && v_s < -2e30) base = v_s > -2.85e30 ? vec3(1.00, 0.72, 0.24)\n"
     "                                        : (v_s > -2.95e30 ? vec3(0.22, 0.88, 1.00) : vec3(0.24));\n"
     "  vec3 L = normalize(vec3(0.35, 0.9, 0.25)); float d = max(dot(N, L), 0.0), hemi = 0.5 + 0.5 * N.y;\n"
+    /* Neutral fill from the other side makes low-field faces readable while keeping every hue honest. The
+     * channel-common factor lies in [0.52, 0.98]; lighting is artificial, not a solved radiation field. The uniform
+     * branch also avoids the two glossy power evaluations for every result pixel. */
+    "  if (u_flat > 0.5) {\n"
+    "    float fill = max(dot(N, normalize(vec3(-0.6, 0.25, -0.75))), 0.0);\n"
+    "    vec3 matte = base * (0.52 + 0.08 * hemi + 0.26 * d + 0.12 * fill);\n"
+    "    o = vec4(matte, u_alpha); return; }\n"
     "  float spec = pow(max(dot(N, normalize(L + V)), 0.0), 48.0); float fres = pow(1.0 - max(dot(N, V), 0.0), 3.0);\n"
     "  vec3 c = base * (0.25 + 0.35 * hemi + 0.6 * d) + vec3(spec * 0.4) + base * fres * 0.9;\n"
-    "  vec3 matte = base * (0.42 + 0.20 * hemi + 0.34 * d);\n"
-    "  o = vec4(mix(c, matte, u_flat), u_alpha); }\n";
+    "  o = vec4(c, u_alpha); }\n";
 
 static const char *FS_VOLUME = GLSL GLSL_CMAP
     "in vec3 v_world; out vec4 o; uniform vec3 u_eye, u_n; uniform vec2 u_range; uniform float u_density;\n"
@@ -944,6 +953,7 @@ static void draw_scene(Renderer *r, const RenderFrame *f) {
     const Camera *cam = f->cam;
     const vec3 N = v3((float)f->nx, (float)f->ny, (float)f->nz);
     const float maxdim = MAXI(N.x, MAXI(N.y, N.z));
+    const bool result_scene = f->solid_workspace;
     const float lo = f->field_lo, hi = f->field_hi > f->field_lo ? f->field_hi : f->field_lo + 1e-12f;
     /* texture-space range for everything that samples the (normalised) field texture */
     const float fscale = r->field_scale > 0 ? r->field_scale : 1.0f;
@@ -955,9 +965,15 @@ static void draw_scene(Renderer *r, const RenderFrame *f) {
     glDisable(GL_BLEND);
     glUseProgram(r->p_bg);
     u2f(r->p_bg, "u_res", (float)f->target_w, (float)f->target_h);
-    u1f(r->p_bg, "u_neutral", rs->backdrop_neutral ? 1.0f : 0.0f);
-    u3f(r->p_bg, "u_ntop", rs->backdrop_top[0], rs->backdrop_top[1], rs->backdrop_top[2]);
-    u3f(r->p_bg, "u_nbot", rs->backdrop_bottom[0], rs->backdrop_bottom[1], rs->backdrop_bottom[2]);
+    u1f(r->p_bg, "u_neutral", rs->backdrop_neutral || result_scene ? 1.0f : 0.0f);
+    if (result_scene && !rs->backdrop_neutral) {
+        /* Default result studio; an explicitly chosen backdrop keeps its own colours. */
+        u3f(r->p_bg, "u_ntop", 0.015f, 0.018f, 0.022f);
+        u3f(r->p_bg, "u_nbot", 0.006f, 0.007f, 0.009f);
+    } else {
+        u3f(r->p_bg, "u_ntop", rs->backdrop_top[0], rs->backdrop_top[1], rs->backdrop_top[2]);
+        u3f(r->p_bg, "u_nbot", rs->backdrop_bottom[0], rs->backdrop_bottom[1], rs->backdrop_bottom[2]);
+    }
     glBindVertexArray(r->vao_empty);
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -978,6 +994,7 @@ static void draw_scene(Renderer *r, const RenderFrame *f) {
         u1f(r->p_floor, "u_minor", major / 4.0f);
         u1f(r->p_floor, "u_major", major);
         u1f(r->p_floor, "u_fade", maxdim * 1.3f);
+        u1i(r->p_floor, "u_result", result_scene ? 1 : 0);
         draw_box_quad(r, v3(c.x - R, y, c.z - R), v3(c.x + R, y, c.z - R), v3(c.x + R, y, c.z + R), v3(c.x - R, y, c.z + R));
         glDisable(GL_BLEND);
     }
@@ -1014,7 +1031,7 @@ static void draw_scene(Renderer *r, const RenderFrame *f) {
         um4(r->p_iso, "u_vp", &cam->viewproj);
         u3f(r->p_iso, "u_eye", cam->eye.x, cam->eye.y, cam->eye.z);
         u2f(r->p_iso, "u_range", f->result_lo, f->result_hi);
-        u1f(r->p_iso, "u_flat", 0.85f);
+        u1f(r->p_iso, "u_flat", 1.0f);
         bind_tex(r->p_iso, "u_cmap", 1, GL_TEXTURE_2D, r->tex_result_cmap);
         glBindVertexArray(r->vao_res);
         if (!f->result_parts || f->result_nparts <= 0) {
@@ -1096,7 +1113,14 @@ static void draw_scene(Renderer *r, const RenderFrame *f) {
         glUseProgram(r->p_color);
         um4(r->p_color, "u_vp", &cam->viewproj);
         u4f(r->p_color, "u_color", 0.62f, 0.68f, 0.78f, 0.85f);
+        u3f(r->p_color, "u_offset", 0, 0, 0);
+        /* The first printed layer can coincide with its reference shape. Stabilise the crease overlay just like
+         * feature edges, without changing its positions or the depth test against the solid. */
+        u1f(r->p_color, "u_zbias", 1e-4f);
+        glDepthMask(GL_FALSE);
         draw_positions(r, f->result_outline, f->result_outline_vertices, GL_LINES);
+        glDepthMask(GL_TRUE);
+        u1f(r->p_color, "u_zbias", 0.0f);
     }
 
     /* vortex isosurfaces */

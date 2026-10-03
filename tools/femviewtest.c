@@ -6,6 +6,7 @@
 int app_inject_click(float x,float y,int n) { abort(); }
 int app_inject_drag(float x,float y,float x1,float y1,uint32_t m,int n) { abort(); }
 int app_inject_scroll(float x,float y,float dy) { abort(); }
+int app_inject_key(int key) { abort(); }
 bool app_rake_handle(float *x,float *y) { abort(); }
 bool app_export_image(const char *path,int scale) { abort(); } /* EXPORT IMAGE belongs to the window, not to this test */
 static int passed, failed;
@@ -56,6 +57,84 @@ static void coordinates(ThermalCase *c) {
     CHECK(ok && v==B.surf.nverts,"every visible vertex uses the shown time and scale (no origin/undeformed flash)");
     free(s.value);
 }
+/* Deliberately sparse STL: one pair of facets spans every face of the entire cube. A cut through its middle
+ * leaves all corner elements alive, so corner-only visibility tests would incorrectly bridge the gap. */
+static Body *sparse_cube(int n) {
+    Body *b=calloc(1,sizeof *b);
+    snprintf(b->name,sizeof b->name,"sparse-cube");
+    b->surf.nv=8; b->surf.nt=12;
+    b->build_v=calloc(24,sizeof(double)); b->build_normal=calloc(36,sizeof(double));
+    b->surf.tri=calloc(36,sizeof(int));
+    const int corners[8][3]={{0,0,0},{1,0,0},{1,1,0},{0,1,0},{0,0,1},{1,0,1},{1,1,1},{0,1,1}};
+    const int quads[6][4]={{0,3,2,1},{4,5,6,7},{0,1,5,4},{2,3,7,6},{1,2,6,5},{0,4,7,3}};
+    const double normals[6][3]={{0,0,-1},{0,0,1},{0,-1,0},{0,1,0},{1,0,0},{-1,0,0}};
+    for(int v=0;v<8;v++) for(int a=0;a<3;a++) b->build_v[3*v+a]=corners[v][a]*n*.001;
+    for(int f=0;f<6;f++) {
+        int tris[6]={quads[f][0],quads[f][1],quads[f][2],quads[f][0],quads[f][2],quads[f][3]};
+        memcpy(b->surf.tri+6*f,tris,sizeof tris);
+        for(int t=0;t<2;t++) memcpy(b->build_normal+3*(2*f+t),normals[f],sizeof normals[f]);
+    }
+    return b;
+}
+static void sparse_surface_checks(void) {
+    fem_section(-1,.5); fem_show_group(0,true); fem_show_group(1,true); fem_show_group(2,true);
+    Project *p=project_new("sparse-cube","/tmp/navier-femviewtest/sparse-cube", "Synthetic rendering contract");
+    project_add_body(p,sparse_cube(6));
+    engine_lock(app.engine); engine_set_project(app.engine,p); engine_unlock(app.engine);
+    ThermalCase *c=fixture(6); fem_set_surface_view(true); attach(c,"view-sparse","lpbf_build");
+    CHECK(B.st.on_surface && B.st.surface_tris==12,"intact sparse STL stays smooth with twelve mapped facets");
+    c->elem_death=malloc((size_t)c->nelems*sizeof(int));
+    for(int e=0;e<c->nelems;e++) c->elem_death[e]=e/36==2 ? 2 : -1;
+    fem_set_step(2); rebuild_surface();
+    CHECK(!B.st.on_surface && B.st.surface_tris==528,"sparse STL cannot bridge a removed interior element layer");
+    free(c->elem_death); c->elem_death=NULL;
+    c->elem_birth=malloc((size_t)c->nelems*sizeof(int));
+    for(int e=0;e<c->nelems;e++) c->elem_birth[e]=(e/36)/2;
+    fem_set_step(0); rebuild_surface();
+    CHECK(!B.st.on_surface && B.st.surface_tris==240,"sparse STL growth draws exactly the first two layers and their top");
+    fem_set_step(2); rebuild_surface();
+    CHECK(B.st.on_surface && B.st.surface_tris==12,"fully born intact geometry returns to the mapped STL");
+    fem_section(0,.5); rebuild_surface();
+    CHECK(!B.st.on_surface && B.st.surface_tris==288,"sparse STL section uses a closed active mesh boundary");
+    fem_section(-1,.5);
+    c->elem_group=calloc((size_t)c->nelems,1);
+    for(int e=0;e<36;e++) c->elem_group[e]=1;
+    fem_set_step(2); rebuild_surface();
+    CHECK(!B.st.on_surface && B.st.surface_tris==432,"shown support geometry stays on the FE boundary even when all elements exist");
+    for(int e=0;e<36;e++) c->elem_group[e]=2;
+    rebuild_surface();
+    bool grey=false;
+    for(uint32_t v=0;v<B.surf.nverts;v++) if(B.surf.verts[7*(size_t)v+6]<-1e20f) grey=true;
+    CHECK(!B.st.on_surface && B.st.surface_tris==432 && grey,"shown plate geometry retains its FE boundary and neutral grey scalar sentinel");
+    for(int e=0;e<36;e++) c->elem_group[e]=1;
+    fem_show_group(1,false); rebuild_surface();
+    CHECK(!B.st.on_surface && B.st.surface_tris==384,"hidden groups also open a closed finite-element boundary");
+    fem_show_group(1,true);
+    printf("sparse STL: intact 12; cut 528; early growth 240; half section 288; hidden support 384 triangles\n");
+
+    /* A coarse staircase can lie inside the original skin even at zero deformation. FIT at the first layer must
+     * include the final mapped source geometry as well as the union of computed mesh nodes. */
+    Project *offset=project_new("offset-cube","/tmp/navier-femviewtest/offset-cube", "Non-grid-aligned rendering contract");
+    Body *ob=sparse_cube(6);
+    for(int v=0;v<8;v++) for(int a=0;a<3;a++) ob->build_v[3*v+a]=ob->build_v[3*v+a]==0 ? -.00025 : .00625;
+    project_add_body(offset,ob);
+    engine_lock(app.engine); engine_set_project(app.engine,offset); engine_unlock(app.engine);
+    ThermalCase *of=fixture(6);
+    memset(of->mech_u,0,9*(size_t)of->nnodes*sizeof(double));
+    of->elem_birth=calloc((size_t)of->nelems,sizeof(int));
+    for(int e=0;e<of->nelems;e++) of->elem_birth[e]=(e/36)/2;
+    fem_set_deform_scale(1); attach(of,"view-offset","fff_print");
+    fem_set_step(0); rebuild_surface();
+    vec3 flo,fhi; bool fits=fem_world_bounds(&flo,&fhi);
+    fem_set_step(2); rebuild_surface();
+    CHECK(B.st.on_surface && B.st.surface_tris==12,"non-grid-aligned fully born print uses its mapped source STL");
+    for(uint32_t v=0;v<B.surf.nverts;v++) {
+        const float *q=B.surf.verts+7*(size_t)v;
+        if(q[0]<flo.x-2e-5 || q[0]>fhi.x+2e-5 || q[1]<flo.y-2e-5 || q[1]>fhi.y+2e-5 ||
+           q[2]<flo.z-2e-5 || q[2]>fhi.z+2e-5) fits=false;
+    }
+    CHECK(fits,"first-layer FIT also contains the final mapped STL beyond the staircase at zero displacement");
+}
 int main(void) {
     EngineConfig cfg; engine_config_default(&cfg); char err[256];
     snprintf(cfg.workspace,sizeof cfg.workspace,"/tmp/navier-femviewtest");
@@ -90,10 +169,19 @@ int main(void) {
     fem_fake_growth(2); fem_fake_cut(2,2.5,2);
     for(int mode=0;mode<3;mode++) {
         fem_set_deform_scale(mode==0 ? 1 : mode==1 ? 10 : -1);
-        fem_set_step(0); fem_set_playing(true); app.time=10; B.play_clock=10; B.play_pos=0;
+        fem_set_step(0); rebuild_surface();
+        vec3 fit_lo, fit_hi;
+        CHECK(fem_world_bounds(&fit_lo,&fit_hi),"first-layer print FIT produces all-time bounds");
+        fem_set_playing(true); app.time=10; B.play_clock=10; B.play_pos=0;
+        bool fit_covers=true;
         for(int t=0;t<3;t++) {
             if(t) { app.time+=.25; advance_playback(); }
             rebuild_surface(); CHECK(B.step==t,"playback visits each stored time"); coordinates(c);
+            for(uint32_t i=0;i<B.surf.nverts;i++) {
+                const float *p=B.surf.verts+7*(size_t)i;
+                if(p[0]<fit_lo.x-2e-5 || p[0]>fit_hi.x+2e-5 || p[1]<fit_lo.y-2e-5 || p[1]>fit_hi.y+2e-5 ||
+                   p[2]<fit_lo.z-2e-5 || p[2]>fit_hi.z+2e-5) fit_covers=false;
+            }
             double expected=(t+1)*(t+1)*.02;
             CHECK(fabs(B.st.max_displacement_mm-expected)<1e-8,"max displacement excludes not-yet-born nodes");
             int count; const float *o=fem_outline(&count); bool in_bounds=o && count>0;
@@ -101,6 +189,7 @@ int main(void) {
             for(int i=0;i<count;i++) if(o[3*i+1]>maxz+2e-5) in_bounds=false;
             CHECK(in_bounds,"undeformed outline follows current birth/death visibility");
         }
+        CHECK(fit_covers,"first-layer FIT bounds contain every later visible deformed vertex");
         fem_set_playing(false);
     }
     ThermalCase *big=fixture(29); attach(big,"view-bench","fff_print");
@@ -109,6 +198,7 @@ int main(void) {
     for(int t=0;t<12;t++) { fem_set_step(t%3); rebuild_surface(); total+=B.rebuild_ms; worst=MAXI(worst,B.rebuild_ms); }
     printf("24389 elements, section+AUTO+outline+all-times: mean %.3f ms, max %.3f ms (12 rebuilds)\n",total/12,worst);
     fem_show_group(0,false); rebuild_surface(); CHECK(B.st.have_result && !B.surface_valid,"empty view retains result controls");
+    sparse_surface_checks();
     fem_shutdown(); engine_destroy(app.engine); app.engine=NULL;
     printf("FEM VIEW CHECKS: %d passed, %d failed\n",passed,failed); return failed ? 1 : 0;
 }

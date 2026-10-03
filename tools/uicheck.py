@@ -256,8 +256,10 @@ def steps():
     add("solid_grow", ["uiclick \"6 RESULTS\"", "frames 4", "uiclick VOXELS", "frames 4",
                        "fem grow z", "frames 6", "fem step 1", "frames 4", "fem status",
                        "fem step last", "frames 4", "fem status"],
-        lambda t: check(len(_tris(t)) >= 2 and _tris(t)[0] < _tris(t)[-1],
-                        f"the faked growing part draws fewer triangles at the first stored time than at the last {_tris(t)[:1]}->{_tris(t)[-1:]}", t))
+        # Only the two displayed result statuses count. The debug command also logs its current triangle count,
+        # which can be the last time before the script explicitly selects the first time.
+        lambda t: check(len(_result_tris(t)) >= 2 and _result_tris(t)[0] < _result_tris(t)[-1],
+                        f"the faked growing part draws fewer triangles at the first stored time than at the last {_result_tris(t)[:1]}->{_result_tris(t)[-1:]}", t))
     add("solid_grow_off", ["fem grow off", "frames 6", "fem status"],
         lambda t: check("growth off" in t and _tris(t) and _tris(t)[-1] > 0,
                         "growth off draws the whole mesh again", t))
@@ -378,6 +380,10 @@ def _deforms(t):
 def _box_faces(t):
     m = re.findall(r"box (?:took|dropped) (\d+) faces?", t)
     return [int(x) for x in m]
+
+
+def _result_tris(t):
+    return [int(n) for n in re.findall(r"\[info\] result [^\n]*? (\d+) triangles", t)]
 
 
 def _tris(t):
@@ -1499,6 +1505,58 @@ def labwalk():
           "LPBF and FDM starting values are shown as inferred examples, never automatically calibrated", bt[-2000:])
     check("Review deposition and cooling settings" in bt and "5 PRINT" in bt,
           "FDM instructions and workflow labels describe deposition and printing", bt[-2000:])
+    # Actual cheap print jobs, not synthetic fields: adopting a result must select its own workflow and fields.
+    _write_stl(tmp / "print-cube.stl", _cube_facets(4.0))
+    process = {"layer_height": "1 mm", "printed_layer_height": "0.2 mm", "nozzle_temperature": "210 degC",
+               "bed_temperature": "60 degC", "ambient_temperature": "30 degC", "deposition_rate": "8 mm^3/s",
+               "min_layer_time": "1 s", "cooldown_bed_on": "5 s", "cooldown_bed_off": "5 s",
+               "thermal_substeps": 2, "provenance": "inferred"}
+    metal = {"layer_thickness_sim": "1 mm", "inherent_strain": {"exx": -.001, "eyy": -.002, "ezz": -.01,
+             "provenance": "inferred", "source": "UI verification tensor, not a calibration"},
+             "material": {"youngs_modulus": "215000 MPa", "poissons_ratio": .3, "provenance": "inferred"}}
+    pc = ["lab close", "mode manual", "workspace solid", "am project_create name=print_ui overwrite=true",
+          f'am geometry_import path="{tmp / "print-cube.stl"}" units=mm name=cube',
+          "am material_assign body=cube material=pla_generic_demo source=user", 'am mesh_generate element_size="1 mm"',
+          "am mech_print_run '" + json.dumps({"process": process}) + "'", "frames 120", "fem follow last", "frames 30",
+          'uiclick "6 RESULTS"', "frames 4", "echo FDM_UI_FIELDS", "uilist", "uitext",
+          'uiclick "TERMINAL##output"', "frames 4", "echo TERMINAL_OPEN", "uitext",
+          'uiclick "TERMINAL##output"', "frames 4", "echo TERMINAL_CLOSED", "uitext",
+          "uikey t", "frames 4", "echo TERMINAL_KEYBOARD", "uitext", "uikey escape", "frames 4",
+          "am material_assign body=cube material=ss316l_lpbf_demo source=user",
+          "am lpbf_build_run '" + json.dumps(metal) + "'", "frames 120", "fem follow last", "frames 30",
+          'uiclick "6 RESULTS"', "frames 4", "echo LPBF_UI_FIELDS", "uilist", "uitext",
+          "uiclick VIEW", "frames 4", 'uiclick "CLEAN VIEW"', "frames 8", "echo CLEAN_UI", "uilist", "uitext",
+          f'screenshot {tmp / "clean-print.png"}', "uikey h", "frames 8", "echo RESTORED_UI", "uilist", "uitext", "quit", ""]
+    (tmp / "print-ui.nav").write_text("\n".join(pc))
+    pr = subprocess.run([str(APP), "--headless", "--size", "1440x900", "--exec", f"exec {tmp / 'print-ui.nav'}"],
+                        capture_output=True, text=True, timeout=90, cwd=ROOT, env=env)
+    pt = pr.stdout + pr.stderr
+    fdm_ui = pt.split('[ >> ] echo FDM_UI_FIELDS', 1)[-1].split('[ >> ] am material_assign', 1)[0]
+    lpbf_ui = pt.split('[ >> ] echo LPBF_UI_FIELDS', 1)[-1]
+    check(pr.returncode == 0 and "PLAY PRINT" in fdm_ui and "5 PRINT" in fdm_ui and "TEMPERATURE" in fdm_ui,
+          "adopting an actual FDM result selects the print workflow and exposes its temperature field", pt[-3500:])
+    check("PLAY BUILD" in lpbf_ui and "4 BUILD" in lpbf_ui and "5 RUN" in lpbf_ui and "TEMPERATURE" not in lpbf_ui,
+          "adopting an actual LPBF result selects the build workflow and omits absent temperature", lpbf_ui[-3000:])
+    check("BUILD COMPLETE" in lpbf_ui and "AFTER THE CUT" not in lpbf_ui and "tip, after the cut" not in lpbf_ui,
+          "a build without a cut does not claim a cut or release in the native result panel", lpbf_ui[-3000:])
+    opened = pt.split('[ >> ] echo TERMINAL_OPEN', 1)[-1].split('[ >> ] uiclick', 1)[0]
+    closed = pt.split('[ >> ] echo TERMINAL_CLOSED', 1)[-1].split('[ >> ] uikey', 1)[0]
+    keyboard = pt.split('[ >> ] echo TERMINAL_KEYBOARD', 1)[-1].split('[ >> ] uikey escape', 1)[0]
+    check('Terminal output: collapsed' in fdm_ui and 'Terminal output: expanded' in opened
+          and 'Terminal output: collapsed' in closed,
+          'Manual terminal output starts collapsed and the real toggle opens and closes it', pt[-3500:])
+    check('Terminal output: expanded' in keyboard,
+          'the real terminal keyboard shortcut opens visible command output in Manual', keyboard[-2000:])
+    clean = pt.split('[ >> ] echo CLEAN_UI', 1)[-1].split('[ >> ] uikey h', 1)[0]
+    restored = pt.split('[ >> ] echo RESTORED_UI', 1)[-1]
+    check('Clean view:' in clean and '[MPa]' in clean and 'stored time' in clean and 'deformation' in clean
+          and 'max displacement' in clean and '6 RESULTS' not in clean,
+          'CLEAN VIEW hides controls and preserves numerical field, time, deformation and displacement metadata', clean[-2500:])
+    check('elastic (no yielding)' in clean and 'input inferred' in clean and 'no measurement comparison' in clean
+          and 'process inferred' in fdm_ui and 'material demonstration' in fdm_ui,
+          'native print inspectors and clean view visibly identify model scope and input provenance', clean[-2500:])
+    check('6 RESULTS' in restored and 'CLEAN VIEW' in restored,
+          'H through the real input path restores the Manual inspector from clean view', restored[-2500:])
     # Reopen a cached shipped scenario: the saved input snapshot survives mode switches and a process restart.
     result_dir = tmp / "NAVIER-Projects/lab"
     shutil.copyfile(result_dir / "tiny.lab", result_dir / "micro_mixer.lab")
@@ -1599,7 +1657,122 @@ def labwalk():
     return 1 if FAIL else 0
 
 
+
+def printsurface():
+    """Actual printing jobs on a sparse-facet cube, through MCP and native clicks, not a physical validation.
+
+    Criteria declared in docs/analysis.md before execution: 192 early-layer triangles, 532 after the one-layer
+    LPBF kerf, twelve mapped facets for a fully born FDM cube; active SURFACE/VOXELS differ by fewer than 50
+    viewport pixels and early/final geometry differs by more than 500. No synthetic result fields are used.
+    """
+    from mcptest import Client
+    from printflow import box_stl, PROCESS
+    tmp = Path(tempfile.mkdtemp(prefix="printsurface-"))
+    ws = tmp / "projects"
+    ws.mkdir()
+    stl = tmp / "cube.stl"
+    box_stl(stl, (0, 0, 0), (6, 6, 6))
+    c = Client(["--embedded", "--workspace", str(ws), "--allow-read", str(tmp)])
+    c.initialize()
+    def call(name, args):
+        r = c.call(name, args)["result"]["structuredContent"]
+        if not r.get("ok"):
+            raise RuntimeError(f"{name}: {r}")
+        return r.get("value", {})
+    try:
+        for kind in ("lpbf", "fdm"):
+            call("project_create", {"name": kind, "description": "Presentation contract; demonstration material and inferred process"})
+            call("geometry_import", {"path": str(stl), "units": "mm", "name": "cube"})
+            call("material_assign", {"body": "cube", "material": "ss316l_lpbf_demo" if kind == "lpbf" else "pla_generic_demo", "source": "user"})
+            mesh = call("mesh_generate", {"element_size": "1 mm"})
+            check(mesh.get("mesh", {}).get("elements") == 216, f"{kind} fixture has exactly 216 computed cells", str(mesh))
+            call("project_save", {})
+            if kind == "lpbf":
+                run = call("lpbf_build_run", {"body": "cube", "build_orientation": "X", "layer_thickness_sim": "1 mm",
+                    "inherent_strain": {"exx": -0.001, "eyy": -0.001, "ezz": -0.001,
+                        "provenance": "inferred", "source": "Demonstration tensor for rendering contract, not a calibration"},
+                    "material": {"youngs_modulus": "200000 MPa", "poissons_ratio": 0.3, "provenance": "inferred"},
+                    "cut": {"height": "2.5 mm", "kerf": "1 mm", "from_x": "1 mm", "provenance": "assumed"}})
+            else:
+                process = dict(PROCESS, cooldown_bed_on="1 s", cooldown_bed_off="1 s", provenance="inferred")
+                run = call("mech_print_run", {"body": "cube", "process": process})
+            status = {}
+            for _ in range(12):
+                status = call("job_status", {"job_id": run["job_id"], "wait_seconds": 10})
+                if status.get("state") not in ("queued", "running"):
+                    break
+            check(status.get("state") == "succeeded", f"{kind} solver produced a saved result", str(status))
+            if status.get("state") != "succeeded":
+                return 1
+    finally:
+        c.close()
+    lines = ["mode manual", "workspace solid", "backdrop neutral", "floorgrid off", "box off"]
+    for kind in ("lpbf", "fdm"):
+        lines += [f'solid open "{ws / kind}"', "frames 8", "fem follow last", "frames 12", "fem pause",
+                  "fem deform true", "fem fit", "camera orbit 40 18", 'uiclick "6 RESULTS"', "frames 240"]
+        states = ("early", "late") if kind == "lpbf" else ("early", "whole")
+        for state in states:
+            lines += [f"fem step {'0' if state == 'early' else 'last'}", 'uiclick "SURFACE##draw"', "frames 60",
+                      f"echo PRINTSURFACE {kind}_{state}", "solid status", "uitext",
+                      f'screenshot "{tmp / (kind + "-" + state + "-surface.png")}"',
+                      'uiclick "VOXELS##draw"', "frames 60", "solid status",
+                      f'screenshot "{tmp / (kind + "-" + state + "-voxels.png")}"']
+            if state != "early":
+                lines += ["fem hide", "frames 60", f'screenshot "{tmp / (kind + "-fit-hidden.png")}"', "fem show", "frames 60"]
+    lines += ["echo PRINTSURFACE done", "quit", ""]
+    script = tmp / "printsurface.nav"
+    script.write_text("\n".join(lines))
+    r = subprocess.run([str(APP), "--headless", "--size", "1440x900", "--workspace", str(ws), "--exec", f"exec {script}"],
+                       capture_output=True, text=True, timeout=120, cwd=ROOT)
+    t = r.stdout + r.stderr
+    (tmp / "native.log").write_text(t)
+    check(r.returncode == 0 and "PRINTSURFACE done" in t, "native printing script reached its end", t)
+    stages = {}
+    for m in re.finditer(r"\[info\] PRINTSURFACE (lpbf_early|lpbf_late|fdm_early|fdm_whole)\s*\n", t):
+        tail = t[m.end():]
+        stages[m.group(1)] = tail.split("PRINTSURFACE ", 1)[0]
+    expected = {"lpbf_early": 192, "lpbf_late": 532, "fdm_early": 192, "fdm_whole": 12}
+    for key, count in expected.items():
+        stage = stages.get(key, "")
+        actual = _tris(stage)
+        check(bool(actual) and actual[0] == count, f"{key} SURFACE has exactly {count} triangles", stage)
+        kind, state = key.split("_", 1)
+        surface, voxels = tmp / f"{kind}-{state}-surface.png", tmp / f"{kind}-{state}-voxels.png"
+        if not surface.exists() or not voxels.exists():
+            check(False, f"{key} captures exist", t)
+            continue
+        if key != "fdm_whole":
+            diff = _differing(_decode(surface), _decode(voxels), x1=950)
+            check(diff < 50, f"{key} SURFACE matches visible FE boundary ({diff} differing viewport pixels)", stage)
+            check("Active element boundary" in stage, f"{key} explains why the original STL is not used", stage)
+    for kind, final in (("lpbf", "late"), ("fdm", "whole")):
+        early, late = tmp / f"{kind}-early-surface.png", tmp / f"{kind}-{final}-surface.png"
+        if early.exists() and late.exists():
+            diff = _differing(_decode(early), _decode(late), x1=950)
+            check(diff > 500, f"{kind} early/final geometry changes visible pixels ({diff})", t)
+    for kind, state in (("lpbf", "late"), ("fdm", "whole")):
+        final, hidden = tmp / f"{kind}-{state}-voxels.png", tmp / f"{kind}-fit-hidden.png"
+        if final.exists() and hidden.exists():
+            w, h, ch, px = _decode(final)
+            bg = _decode(hidden)[3]
+            xlo, ylo, xhi, yhi = w, h, -1, -1
+            for y in range(h):
+                for x in range(950):
+                    i = (y*w+x)*ch
+                    if max(abs(px[i+k]-bg[i+k]) for k in range(3)) > 24:
+                        xlo, ylo = min(xlo,x), min(ylo,y)
+                        xhi, yhi = max(xhi,x), max(yhi,y)
+            check(xhi >= xlo and xlo >= 20 and xhi < 930 and ylo >= 20 and yhi < h-20,
+                  f"{kind} FIT on first layer frames final shape with 20-pixel margins ({xlo},{ylo})..({xhi},{yhi})", t)
+        else:
+            check(False, f"{kind} first-layer FIT captures exist", t)
+    print(f"PRINT SURFACE: {PASS} passed, {FAIL} failed; native captures {tmp}")
+    return 1 if FAIL else 0
+
+
 def main():
+    if "--printsurface" in sys.argv:
+        return printsurface()
     if "--lab" in sys.argv:
         rc = labwalk()
         print(f"\n{'LAB WALKTHROUGH FAILED' if FAIL else 'LAB WALKTHROUGH PASSED'}: {PASS} passed, {FAIL} failed")

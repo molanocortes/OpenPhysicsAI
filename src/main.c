@@ -183,6 +183,7 @@ static void fill_render_frame(RenderFrame *f, RenderSettings *rs_frame, double n
     f->dt = (float)app.dt;
     f->nx = app.nx, f->ny = app.ny, f->nz = app.nz;
     f->has_model = app.has_model;
+    f->solid_workspace = app.workspace == WS_SOLID;
     f->model = app.model_M;
     f->field_lo = app.lat_lo, f->field_hi = app.lat_hi;
     f->speed_hi = app.speed_hi;

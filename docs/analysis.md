@@ -171,9 +171,56 @@ such distance, and a vertex further out than that is not drawn. Normals are the 
 except where a facet turns away from that average by more than 45 degrees, so creases stay sharp. The mapping is
 built once per geometry and mesh (12 018 vertices onto 20 080 elements in 3 ms) and cached. SURFACE and VOXELS
 switch between the part and the mesh the numbers came from (`fem surface on|off|toggle`), and a marker sits on the
-largest value of what is drawn. With a section on, the STL is clipped by the same plane and the faces the section
-opens are drawn as voxel faces, because that is what they are; the undeformed white outline is the voxel boundary
-and belongs to the VOXELS view.
+largest value of what is drawn. Whenever any element is hidden by growth, a cut, a section, groups or topology,
+SURFACE uses the visible finite-element boundary and labels that fallback: a long original STL facet can otherwise
+bridge absent material even when all its corner elements exist. This boundary closes the newly exposed interior
+faces and keeps the original STL feature edges out of the gap. The undeformed white outline follows the same
+visible element boundary. Generated support and plate groups keep this boundary even when all elements exist,
+because that extra geometry need not be in the original part STL. An intact part-only result can return to the
+smooth mapped STL.
+
+Rendering regression criteria (2026-10-03, declared before execution): a cube represented by only twelve STL facets
+must use its finite-element boundary whenever birth, death, a section or a hidden group removes any element. The
+intact six-cell cube remains twelve mapped facets; a one-cell interior cut has exactly 528 FE triangles, first-third
+growth has 240, and a half section has 288. No filled STL facet or feature edge may span the removed material.
+Native before/after captures of the same saved LPBF build must show a changed cut silhouette (at least 500 changed
+pixels in the 3D view), while SURFACE and VOXELS show the same filled boundary at the released time. These are
+presentation contract checks, not physical validation.
+
+`python3 tools/uicheck.py --printsurface` additionally solves real demonstration LPBF and FDM jobs through MCP on a
+216-cell cube and clicks SURFACE/VOXELS in the native app: the first layer is exactly 192 triangles, the LPBF kerf
+cut is 532, and the fully born FDM skin is twelve. In active states, their viewport pictures must differ by fewer
+than 50 pixels; early/final pictures must differ by more than 500.
+
+The result studio uses artificial key/fill lighting and a quiet reference floor, solely for shape readability. Its
+scalar texture, numerical range, geometry and legend are unchanged. Before execution, the presentation check
+requires identical legend pixels and triangle counts across the change, plus at least 500 changed body pixels; the
+result shader multiplies all colour channels by one bounded factor (0.52 to 0.98), with no white specular term.
+Fluid shading retains its original path. The SOLID workspace keeps this studio while its result is hidden, so
+SHOW/HIDE comparisons use the same room instead of confusing a background change with computed material.
+
+Observed in the native checks: the sparse-STL regression failed four cases before the fix; the completed renderer
+suite passed 69/69, including three additional review cases which failed before their fixes. `--printsurface`
+passed 19/19 (LPBF early/released: zero differing pixels against VOXELS, FDM early: two). The same
+saved wall cut changed 61,677 view pixels, first birth 38,010; the studio changed 244,359. The opaque colour-bar
+interior had zero changed RGB pixels; its translucent frame edges changed with the background. The fluid viewport
+differed by two pixels. These checks establish display consistency, not measured-print accuracy.
+
+
+Print FIT criterion (2026-10-03, declared before execution): fitting the first shallow stored layer must frame every
+later visible computed vertex at deformation scales 1, 10 and AUTO. Camera bounds use the complete time-indexed
+visible domain and a conservative displacement bound, cached with the existing all-times deformation scan. Native
+LPBF and FDM playback, fitted at their first layer, must keep the final geometry at least 20 pixels from the viewport
+edges. Eligible mapped STL vertices join the envelope because they can extend outside a coarse staircase even
+at zero deformation. Orbiting or stepping does not reset the user's camera.
+
+Review regression criteria (2026-10-03, before their first run): fully visible support and plate elements must
+remain on the finite-element boundary even if the original part STL is intact; plate vertices keep their grey
+sentinel. A zero-displacement print whose mapped STL extends 0.25 mm outside its FE nodes must fit that final
+smooth surface inside the camera bounds chosen at the first shallow layer.
+
+The final 24,389-element section/AUTO/outline check took a mean 2.554 ms, maximum 5.288 ms over twelve cached
+rebuilds. This is viewer rebuild time on this machine, not a solver timing or a guaranteed frame rate.
 
 BOX in HOLD & LOAD arms a rectangle: drag it and every face whose centre falls inside is taken, shift-drag drops
 them, and a selection carries up to 512 faces. There is no occlusion test, so a box takes the faces behind the part

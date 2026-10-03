@@ -65,6 +65,7 @@ typedef struct FemState {
     double yield_mpa, density_kg_m3, youngs_gpa, poisson;
     /* the result drawn on the part's own surface rather than on the voxel boundary */
     bool on_surface;              /* the drawn surface is the STL, interpolated from the mesh (or a tetrahedral mesh's own faces) */
+    bool visibility_mesh;         /* hidden elements require the actual FE boundary, including when SURFACE is requested */
     int tet_mesh;                 /* the result is on a tetrahedral mesh: 0, SOLID_ELEM_TET4 or SOLID_ELEM_TET10 */
     double snap_max_mm;           /* the largest distance a vertex had to move to land in an element */
     double snap_mean_mm;
