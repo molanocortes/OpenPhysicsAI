@@ -185,6 +185,7 @@ void register_commands(void);
 void commands_update(void); /* advances queued script commands; call once per frame */
 bool commands_pending(void); /* script commands still queued or waiting */
 void hud_draw(void);
+void hud_set_clean_view(bool enabled); /* a full viewport with the result's numerical metadata and legend */
 bool hud_pick_mode(void); /* the HOLD & LOAD step is open: a click on the part picks a face */
 bool hud_box_mode(void);  /* BOX is armed: a drag collects every face whose centre falls inside the rectangle */
 bool hud_simple_face_mode(void);                /* Simple mode is asking which face sits on the plate */

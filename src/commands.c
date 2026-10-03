@@ -1140,7 +1140,13 @@ static void cmd_msaa(int argc, char **argv) {
 
 static void cmd_floorgrid(int argc, char **argv) { apply_onoff(&app.rs.floor_on, argc, argv, 1, "floor grid"); }
 static void cmd_box(int argc, char **argv) { apply_onoff(&app.rs.box_on, argc, argv, 1, "tunnel box"); }
-static void cmd_hud(int argc, char **argv) { apply_onoff(&app.hud_on, argc, argv, 1, "HUD"); }
+static void cmd_hud(int argc, char **argv) {
+    if (argc > 1 && str_ieq(argv[1], "clean")) {
+        hud_set_clean_view(true);
+        app.hud_on = false;
+        LOGI("clean view: computed field, stored time, scale and legend; H restores the interface");
+    } else if (apply_onoff(&app.hud_on, argc, argv, 1, "HUD")) hud_set_clean_view(false);
+}
 
 /* ---- camera and output -------------------------------------------------------------------------- */
 
@@ -2358,7 +2364,7 @@ static const Command COMMANDS[] = {
     {"msaa", "<1|2|4|8>", "anti-aliasing samples", cmd_msaa, NULL},
     {"floorgrid", "<on|off>", "floor grid", cmd_floorgrid, complete_onoff},
     {"box", "<on|off>", "tunnel outline", cmd_box, complete_onoff},
-    {"hud", "<on|off>", "interface overlay (H)", cmd_hud, complete_onoff},
+    {"hud", "<on|off|clean>", "interface overlay or clean numerical view (H restores)", cmd_hud, complete_onoff},
     {"fps", "<n|off>", "cap the render frame rate (default 60) so the solver gets the spare CPU", cmd_fps, NULL},
     /* camera & output */
     {"camera", "<iso|front|back|side|top|bottom|model|lock|unlock|orbit y p|zoom f|fov d>", "camera presets and control", cmd_camera, complete_cams},
