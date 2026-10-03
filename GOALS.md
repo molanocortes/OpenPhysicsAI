@@ -503,6 +503,36 @@ Checkpoints completed on this branch:
 - A fresh build without optional MFEM now reports missing 3D magnetics instead of failing to link. Generated backend
   configuration rebuilds the dispatcher when the dependency is added or removed.
 
+- `82a03b8`, `460fcde`: active-result keyboard routing, Manual terminal collapse, quantitative CLEAN VIEW and honest
+  printing workflow labels. Final lab controls: 38/38 through real input.
+- `e14aefc`: active FE boundaries prevent smooth STL facets from spanning missing material or hiding generated
+  supports/plates. FIT spans all stored times and eligible source geometry. Renderer 69/69, default UI 132/132,
+  real printing view 19/19. Final 24,389-element rebuild mean 2.554 ms, maximum 5.288 ms over twelve rebuilds.
+- `7f359e1`, `e7436a6`: [portable native demo](tools/demo_printing.py) and
+  [view evidence](docs/media/foundation/evidence.json), including [FDM replay](docs/media/foundation/fdm-replay.gif),
+  [plastic view](docs/media/foundation/fdm-clean.png) and [metal section](docs/media/foundation/lpbf-section.png).
+  Both demonstrations have 1,124 elements; process/material inputs are inferred/demonstration, no measurements.
+- `dabec98`: export FDM residuals at release and the last actual solve, using the existing eigenstrain RHS force scale.
+  Printing checks 40/40, complete FDM workflow 88/88. Independent hex: residuals 1.34e-16 on bed, 2.49e-16 released.
+- `71f5d0c`: [independent mesh/time study](tools/printing_refinement.py), eight real MCP jobs on a fixed 8 x 2 x 4 mm wall
+  and fixed 1 mm simulation layers. Finest changes: LPBF 2.4583%, FDM mesh 2.5468%, FDM thermal substeps 0.38339%.
+  LPBF is nonmonotone; no order or experimental accuracy is claimed. Maximum residual 8.93e-11, independently
+  reconstructed FDM whole heat closure 1.53e-11. The
+  [initial invalid zero-net-reaction normalization](validation/printing-refinement/initial-invalid-normalization.json)
+  and [explicitly amended PASS](validation/printing-refinement/amended.json) are retained without erasing history.
+- `e410df9`: eight real `mesh_inspect` calls passed 40 independent checks of current/generated state, exact box
+  element/node counts and det J in mm3. This removes the known unexercised operation from the coverage baseline.
+- Both the app and engine link with the existing cached MFEM 4.8 backend as well as without it. The cache was copied
+  into the isolated worktree; the original dependency and checkout were not changed. Fresh MFEM download/build and
+  the complete 3D magnetic numerical suite were not rerun here.
+- Complete engineering `make test` finished detached with exit 0; base `make test-fast` finished with exit 0.
+  The omitted fire/room/FSI executables are now included in that recipe and are being checked separately. Topology
+  checks also enter the recipe (25/25 in the completed full suite). The runtime remains above the three-minute goal.
+- Inexpensive quality gates D-H passed: links/flag boards, operation coverage, portable paths, commit hygiene and
+  material provenance (34 sourced records, four demonstration/other records). Final HTTP client checks remain 190/190.
+- Presentation 14/14 and topology UI 18/18. The cap-colour check now compares with a matched empty studio instead of
+  misclassifying neutral background pixels as a simulated face; its original contrast criterion is unchanged.
+
 Remaining research work: conforming printing meshes and documented spatial/time convergence; FDM bead/toolpath,
 raster anisotropy, interlayer bonding and viscoelastic constitutive laws with sourced parameters; connecting the
 separate laser/melt model to part-scale mechanical response for LPBF. Measurements and independent print validation

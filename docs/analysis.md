@@ -354,5 +354,7 @@ and carries no plasticity or deposition history, so it does not predict residual
 same staircase mesh, so convection and radiation areas are the mesh areas, not the STL areas (both are reported).
 Static jobs do not checkpoint: a cancelled or interrupted static run is lost and has to be repeated. Transient jobs write checkpoints and can be paused and resumed (`job_pause`, `job_resume`; see `Thermal Sim/STATUS.md`).
 
-All library materials are demonstration values: they are not traceable to a grade, supplier or test and are not
-calibrated, so magnitudes are indicative and only trends should be read from them.
+The library distinguishes demonstration records from published records with property sources. Demonstration
+values support examples, not calibrated predictions. Published properties still require a match to the actual grade,
+processing state, temperature range and loading direction; a material citation alone is not print validation.
+Inspect the resolved record and per-property provenance in `spec.json` before using a magnitude.
