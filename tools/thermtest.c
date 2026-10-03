@@ -209,7 +209,181 @@ static double sine_error(int nx) {
     return worst;
 }
 
-int main(void) {
+/* Radiation R1-R4, criteria declared 2026-10-03 before the first run:
+ * R1/R2: uniform, affine and bilinear-temperature planar faces reproduce independently integrated T^4 nodal loads
+ * and total outward power to 1e-10 relative, including a tilted/sheared face with its true SI area.
+ * R3: the derivative of those nodal loads, measured by centred 0.01 K nodal perturbations, matches the exact
+ * integral of 4 eps sigma T^3 Ni Nj to 1e-6 relative. Polynomial monomial moments below use no Gauss quadrature.
+ * R4: prescribing the analytic nodal radiation plus the independently isolated conduction load at one free corner
+ * recovers its manufactured temperature to 1e-8 K and closes boundary/prescribed/source energy to 1e-9 relative.
+ * No criterion is weakened after observing the old face-mean approximation. */
+static double radiation_moment(int p, int side, int other) {
+    if (other < 0) return side ? 1.0 / (p + 2) : 1.0 / ((p + 1.0) * (p + 2));
+    if (side && other) return 1.0 / (p + 3);
+    if (!side && !other) return 2.0 / ((p + 1.0) * (p + 2) * (p + 3));
+    return 1.0 / ((p + 2.0) * (p + 3));
+}
+
+/* Expand (a + b u + c v + d u v)^power, then integrate against one or two corner basis functions on [0,1]^2. */
+static double radiation_polynomial(const double t[4], int power, int iu, int iv, int ju, int jv) {
+    double p[5][5] = {{1}}, next[5][5];
+    for (int k = 0; k < power; k++) {
+        memset(next, 0, sizeof next);
+        for (int i = 0; i <= k; i++) for (int j = 0; j <= k; j++) {
+            next[i][j] += p[i][j] * t[0];
+            next[i+1][j] += p[i][j] * t[1];
+            next[i][j+1] += p[i][j] * t[2];
+            next[i+1][j+1] += p[i][j] * t[3];
+        }
+        memcpy(p, next, sizeof p);
+    }
+    double sum = 0;
+    for (int i = 0; i <= power; i++) for (int j = 0; j <= power; j++)
+        sum += p[i][j] * radiation_moment(i, iu, ju) * radiation_moment(j, iv, jv);
+    return sum;
+}
+
+static bool radiation_fixed_loads(const Box *b, const Mat *mt, const double T[8], bool radiate, double reaction[8],
+                                  double *outward, char *err, size_t errlen) {
+    unsigned char fixed[8];
+    memset(fixed, 1, sizeof fixed);
+    double T1[8];
+    ThermalFace face = {0, 1, THERMAL_RADIATION, 0.7, 300};
+    ThermalModel m = {8, 1, b->xyz, b->conn, NULL, 1, &mt->m, NULL, fixed, T, NULL,
+                      radiate ? 1 : 0, radiate ? &face : NULL, NULL};
+    ThermalOptions opt = {.theta = 1, .picard_tol = 1e-11, .pcg_tol = 1e-13};
+    ThermalSolver *s = thermal_create(&m, &opt, err, errlen);
+    ThermalStepStats st = {0};
+    bool ok = s && thermal_step(s, &m, T, T1, 0, 0, &st, err, errlen);
+    if (ok) {
+        *outward = -st.boundary_energy;
+        for (int n = 0; n < 8; n++) reaction[n] = thermal_node_reaction(s, &m, n);
+    }
+    thermal_free(s);
+    return ok;
+}
+
+static void test_radiation_quadrature(void) {
+    printf("== radiation face quadrature: independent polynomial integrals, tangent and nonlinear solve\n");
+    char err[256] = {0};
+    const double coefficients[3][4] = {{400,0,0,0}, {300,100,0,0}, {300,100,60,40}};
+    for (int run = 0; run < 3; run++) {
+        Box b;
+        box_init(&b, 1, 1, 1, 0.02, 0.03, 0.01); /* m: a 20 x 30 x 10 mm hex */
+        double T[8], area = b.L[0] * b.L[1];
+        if (run == 2) {
+            for (int n = 0; n < b.nn; n++) {
+                double x = b.xyz[3*n], y = b.xyz[3*n+1];
+                b.xyz[3*n] += 0.25 * y;
+                b.xyz[3*n+2] += 0.5 * x - 0.2 * y;
+            }
+            /* Cross of planar tangents (1,0,.5) and (.25,1,-.2): (-.5,.325,1). */
+            area *= sqrt(0.25 + 0.325 * 0.325 + 1);
+        }
+        const double *c = coefficients[run];
+        for (int k = 0; k <= 1; k++) for (int j = 0; j <= 1; j++) for (int i = 0; i <= 1; i++)
+            T[nid(&b,i,j,k)] = c[0] + c[1]*i + c[2]*j + c[3]*i*j;
+        Mat mt;
+        mat_const(&mt, 0.2, 1000, 1000);
+        double baseline[8], loads[8], flux = 0, unused = 0;
+        bool ok = radiation_fixed_loads(&b, &mt, T, false, baseline, &unused, err, sizeof err) &&
+                  radiation_fixed_loads(&b, &mt, T, true, loads, &flux, err, sizeof err);
+        double expected[4], total = 0, worst = 0;
+        for (int j = 0; j <= 1; j++) for (int i = 0; i <= 1; i++) {
+            int n = nid(&b,i,j,1), q = i + 2*j;
+            expected[q] = 0.7 * THERMAL_SIGMA * area *
+                          (radiation_polynomial(c,4,i,j,-1,-1) - pow(300,4)/4);
+            total += expected[q];
+            if (ok) worst = fmax(worst, fabs(loads[n] - baseline[n] - expected[q]));
+        }
+        double flux_error = fabs(flux - total) / total, nodal_error = worst / total;
+        printf("  R1/R2 %s face: %.12g W outward against %.12g W, flux error %.2e, nodal error %.2e, area %.12g m2\n",
+               run == 0 ? "uniform" : run == 1 ? "affine" : "bilinear tilted/sheared", flux, total, flux_error, nodal_error, area);
+        CHECK(ok && flux_error < 1e-10 && nodal_error < 1e-10,
+              "R1/R2: Stefan-Boltzmann flux and each nodal load match the independent polynomial integral: %s", err);
+        double tangent_error = 0;
+        const double delta = 0.01;
+        for (int vj = 0; ok && vj <= 1; vj++) for (int ui = 0; ok && ui <= 1; ui++) {
+            int nd = nid(&b,ui,vj,1);
+            double Tp[8], Tm[8], rp[8], rm[8], bp[8], bm[8];
+            memcpy(Tp,T,sizeof T), memcpy(Tm,T,sizeof T);
+            Tp[nd] += delta, Tm[nd] -= delta;
+            ok = radiation_fixed_loads(&b,&mt,Tp,true,rp,&unused,err,sizeof err) &&
+                 radiation_fixed_loads(&b,&mt,Tm,true,rm,&unused,err,sizeof err) &&
+                 radiation_fixed_loads(&b,&mt,Tp,false,bp,&unused,err,sizeof err) &&
+                 radiation_fixed_loads(&b,&mt,Tm,false,bm,&unused,err,sizeof err);
+            for (int j = 0; ok && j <= 1; j++) for (int i = 0; i <= 1; i++) {
+                int n = nid(&b,i,j,1);
+                double want = 4 * 0.7 * THERMAL_SIGMA * area * radiation_polynomial(c,3,i,j,ui,vj);
+                double got = ((rp[n]-bp[n]) - (rm[n]-bm[n])) / (2*delta);
+                tangent_error = fmax(tangent_error, fabs(got/want - 1));
+            }
+        }
+        CHECK(ok && tangent_error < 1e-6, "R3: radiative nodal derivative matches exact tangent (%.2e): %s", tangent_error, err);
+        unsigned char fixed[8];
+        memset(fixed,1,sizeof fixed);
+        int free_node = nid(&b,1,1,1);
+        fixed[free_node] = 0;
+        double power[8] = {0}, start[8], T1[8];
+        power[free_node] = baseline[free_node] + expected[3];
+        for (int n = 0; n < 8; n++) start[n] = 300;
+        ThermalFace face = {0,1,THERMAL_RADIATION,0.7,300};
+        ThermalModel m = {8,1,b.xyz,b.conn,NULL,1,&mt.m,NULL,fixed,T,NULL,1,&face,NULL};
+        m.node_power = power;
+        ThermalOptions opt = {.theta=1, .picard_tol=1e-11, .pcg_tol=1e-13};
+        ThermalSolver *s = thermal_create(&m,&opt,err,sizeof err);
+        ThermalStepStats st = {0};
+        bool solved = ok && s && thermal_step(s,&m,start,T1,0,0,&st,err,sizeof err);
+        double terr = solved ? fabs(T1[free_node] - T[free_node]) : INFINITY;
+        printf("  R3/R4 tangent error %.2e, manufactured free corner error %.2e K, energy balance %.2e\n",
+               tangent_error, terr, st.balance_error);
+        CHECK(solved && terr < 1e-8 && st.balance_error < 1e-9,
+              "R4: analytic radiation loads recover the independent manufactured nodal temperature: %s",err);
+        thermal_free(s);
+        box_free(&b);
+    }
+    /* R5 added before its first run: Crank-Nicolson boundary energy equals dt/2 times independently integrated
+     * old plus new Stefan-Boltzmann powers to 1e-10 relative; the full prescribed-node energy balance is <1e-9.
+     * This checks time weighting and SI joules as well as the steady watt cases above. */
+    {
+        Box b;
+        box_init(&b,1,1,1,0.02,0.03,0.01);
+        Mat mt;
+        mat_const(&mt,0.2,1000,1000);
+        const double old[4] = {300,100,0,0}, next[4] = {300,100,60,40};
+        double T0[8], target[8], T1[8], exact = 0, dt = 2.5;
+        unsigned char fixed[8];
+        memset(fixed,1,sizeof fixed);
+        for (int k = 0; k <= 1; k++) for (int j = 0; j <= 1; j++) for (int i = 0; i <= 1; i++) {
+            int n = nid(&b,i,j,k);
+            T0[n] = old[0]+old[1]*i+old[2]*j+old[3]*i*j;
+            target[n] = next[0]+next[1]*i+next[2]*j+next[3]*i*j;
+            if (k == 1) exact += dt * 0.5 * 0.7 * THERMAL_SIGMA * b.L[0]*b.L[1] *
+                 (radiation_polynomial(old,4,i,j,-1,-1)+radiation_polynomial(next,4,i,j,-1,-1)-pow(300,4)/2);
+        }
+        ThermalFace face = {0,1,THERMAL_RADIATION,0.7,300};
+        ThermalModel m = {8,1,b.xyz,b.conn,NULL,1,&mt.m,NULL,fixed,target,NULL,1,&face,NULL};
+        ThermalOptions opt = {.theta=0.5,.picard_tol=1e-11,.pcg_tol=1e-13};
+        ThermalSolver *s = thermal_create(&m,&opt,err,sizeof err);
+        ThermalStepStats st = {0};
+        bool ok = s && thermal_step(s,&m,T0,T1,0,dt,&st,err,sizeof err);
+        double error = ok ? fabs(-st.boundary_energy/exact - 1) : INFINITY;
+        printf("  R5 theta=.5: %.12g J radiated against %.12g J, flux error %.2e, full energy balance %.2e\n",
+               -st.boundary_energy,exact,error,st.balance_error);
+        CHECK(ok && error < 1e-10 && st.balance_error < 1e-9,
+              "R5: theta-weighted old/new polynomial radiation and prescribed-node ledger close: %s",err);
+        thermal_free(s);
+        box_free(&b);
+    }
+}
+
+int main(int argc, char **argv) {
+    if (argc == 2 && !strcmp(argv[1], "--radiation")) {
+        test_radiation_quadrature();
+        printf("\nRADIATION VERIFICATION: %d passed, %d failed\n",g_pass,g_fail);
+        return g_fail ? 1 : 0;
+    }
+    test_radiation_quadrature();
     char err[512];
 
     printf("== tables\n");

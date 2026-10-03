@@ -554,6 +554,19 @@ Checkpoints completed on this branch:
   the existing open plume issue: F1/F2/F3/V1 pass, V2 at 2.6 m is -27.5 percent and V3 at 2.6 m is -38.4 percent
   against the unchanged 25 percent criterion. It exits 1 after 3178 s under concurrent load. Room/FSI full cases
   were not reached by that failing wrapper; their session subsets above are the only new results claimed here.
+- A further independent review exposed face-mean radiation cooling errors of 8.16 and 9.75 percent on nonuniform
+  temperatures. Radiation now integrates its nonlinear flux, Newton tangent and ledger with 3 x 3 face quadrature.
+  [Before](validation/printing-refinement/radiation-before.log): three pass, six fail; [after](validation/printing-refinement/radiation-after.log):
+  ten pass. Flux errors are at most 1.20e-15, tangent finite-difference error 3.47e-10, manufactured temperature
+  error 1.14e-13 K. Theta = 0.5 gives 0.719781097868 J against the independent polynomial integral; the complete
+  thermal suite passes 82/82. These are planar-face integration checks, not a cure for staircase STL boundary area.
+- Removed the unproved general local stress upper bound from the FDM summary, schema, panel and report. Neglecting
+  creep alone does not prove a bound under temperature-dependent stiffness and heterogeneous stress redistribution.
+  The new scope regressions [fail before](validation/printing-refinement/stress-scope-before.log) (88 pass, two fail)
+  and [pass after](validation/printing-refinement/stress-scope-after.log) (90/90); historical results retain a correction note.
+- [Post-radiation refinement](validation/printing-refinement/post-radiation.json): the same eight real jobs and all
+  40 mesh-inspector checks pass without altered inputs or criteria. Finest changes: LPBF 2.4583153 percent,
+  FDM space 2.5474215 percent, FDM time 0.3831007 percent. LPBF remains nonmonotone; these are sensitivities.
 
 Remaining research work: conforming printing meshes and documented spatial/time convergence; FDM bead/toolpath,
 raster anisotropy, interlayer bonding and viscoelastic constitutive laws with sourced parameters; connecting the

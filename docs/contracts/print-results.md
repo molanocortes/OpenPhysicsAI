@@ -96,7 +96,8 @@ default because it is a few times cheaper.
   "layer_lumping": {"simulation_layer_mm": 3.0, "printed_layers_per_simulation_layer": 15, "toolpath_within_a_layer": "not modelled"},
   "creep_below_relaxation_temperature": "not modelled",
   "constitutive_law": "temperature-dependent incremental stress accumulation (hypoelastic approximation); old stress is not rescaled when the modulus changes, and stress is reset above the relaxation temperature; no time-dependent viscoelastic law",
-  "bed_stresses_are_upper_bound": true,
+  "bed_stresses_are_upper_bound": false,
+  "bed_stresses_note": "creep below the relaxation temperature is omitted; temperature-dependent stiffness and stress redistribution mean this approximation establishes no general local stress bound",
   "material": {"id": "pla_generic_demo", "status": "demonstration", "measured": false},
   "compared_with_measurement": false,
   "not_modelled": ["toolpath within a layer", "creep below the relaxation temperature", "plasticity", "raster anisotropy and interlayer strength", "crystallisation", "supports", "gravity", "adhesion failure"]
@@ -110,6 +111,8 @@ The implemented stress law accumulates increments evaluated along the temperatur
 rescale previously accumulated stress; above the relaxation temperature the stress is reset instantly. Exact
 integration of `E(T) alpha(T) dT` verifies this chosen incremental law. It does not supply a time-dependent polymer
 relaxation law or establish the general thermoelastic relation `sigma = D(T) (epsilon - epsilon_thermal)`.
+Omitting creep also does not establish a general upper bound on local bed stresses: a spatially varying temperature
+field changes stiffness and redistributes stress. The legacy scope key is retained with `false`; no stress bound is claimed.
 
 ## 6. File layout: `results.nvt` version 3
 

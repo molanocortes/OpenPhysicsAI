@@ -33,6 +33,7 @@ make headless
 ./build/femtest      # against exact and analytical solutions
 ./build/tettest      # the tetrahedral mesh and the TET4 / TET10 elements: patch, cantilever, Kirsch, fillet, balance
 ./build/thermtest    # conduction, phase change (Stefan), energy balance
+./build/thermtest --radiation # independent polynomial face flux, tangent, nonlinear and transient radiation checks
 ./build/tsteptest    # adaptive integration
 ./build/orchtest     # the orchestrator, with thermal participants
 ./build/advtest      # nonsymmetric solver and advective transport
@@ -42,6 +43,11 @@ The structural path is additionally cross-checked against CalculiX 2.23 in
 [../../release/evaluation/EVALUATION_REPORT.md](../../release/evaluation/EVALUATION_REPORT.md) §2 (same assembled
 problem to ~1e-7; an independently built model to 0.0015 %). Stage evidence for the thermal work:
 [../../Thermal Sim/verification/](../../Thermal%20Sim/verification/).
+
+Radiation uses the interpolated temperature at 3 x 3 surface quadrature points for its Stefan-Boltzmann flux,
+Newton tangent and energy ledger. This integrates bilinear temperatures exactly on planar parallelogram faces;
+warped-face geometry remains a quadrature approximation. Accurate integration on a voxel face does not correct
+the staircase surface-area bias relative to the original STL.
 
 ## Known numerical limits
 

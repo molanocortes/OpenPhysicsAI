@@ -1982,8 +1982,8 @@ static float step_results(Ui *ui, float x, float y, float w) {
             kv(ui, x, y, w, "peak stress", a, UI_TEXT);
             y += 17;
             y = wrap_text(ui, x, y, w, UI_DIM,
-                          "The stress on the bed is an upper bound: creep below the relaxation temperature is not "
-                          "modelled.", 3) + 3;
+                          "Creep below the relaxation temperature is not modelled. No local stress bound is "
+                          "established.", 3) + 3;
         }
         /* the two analyses count their layers and their compute time in their own summaries */
         long long layers = is_lpbf ? json_get_int(bres, "layers", 0)

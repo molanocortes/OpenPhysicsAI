@@ -2793,7 +2793,7 @@ bool fem_write_report(char *dir_out, size_t cap) {
         } else {
             fprintf(f, "| Warp of the released part | %.4g to %.4g mm | vertical displacement after release from the bed |\n",
                     json_get_num(bres, "warp_z_min_mm", 0), json_get_num(bres, "warp_z_max_mm", 0));
-            fprintf(f, "| Peak von Mises, on the bed | %.4g MPa | an upper bound: creep is not modelled |\n",
+            fprintf(f, "| Peak von Mises, on the bed | %.4g MPa | creep omitted; no local stress bound established |\n",
                     json_get_num(bres, "peak_von_mises_on_bed_mpa", 0));
             fprintf(f, "| Peak von Mises, released | %.4g MPa | after release |\n",
                     json_get_num(bres, "peak_von_mises_released_mpa", 0));

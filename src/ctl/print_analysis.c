@@ -581,10 +581,10 @@ JsonValue *print_summary_json(const PrintCase *pc) {
     json_set_string(sc, "constitutive_law", "temperature-dependent incremental stress accumulation (hypoelastic approximation); "
                     "old stress is not rescaled when the modulus changes, and stress is reset above the relaxation temperature; "
                     "no time-dependent viscoelastic law");
-    json_set_bool(sc, "bed_stresses_are_upper_bound", true);
+    json_set_bool(sc, "bed_stresses_are_upper_bound", false);
     json_set_string(sc, "bed_stresses_note",
-                    "the part is held on the bed near the glass transition for the whole print; without creep the stress that builds up there is an "
-                    "upper bound");
+                    "creep below the relaxation temperature is omitted; temperature-dependent stiffness and stress redistribution "
+                    "mean this approximation establishes no general local stress bound");
     JsonValue *mj = json_set_object(sc, "material");
     json_set_string(mj, "id", pc->material_id);
     json_set_string(mj, "status", pc->material_status);

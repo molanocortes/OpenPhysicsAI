@@ -334,5 +334,12 @@
     "fdm-clean.png",
     "lpbf-section.png",
     "fdm-replay.gif"
-  ]
+  ],
+  "historical_scope_corrections": {
+    "bed_stresses_are_upper_bound": {
+      "original_retained": true,
+      "current_value": false,
+      "reason": "Omitting creep does not establish a general local stress bound under heterogeneous temperature-dependent stiffness and stress redistribution. Historical job summaries and result hashes are preserved."
+    }
+  }
 }

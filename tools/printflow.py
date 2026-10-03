@@ -184,7 +184,13 @@ def main():
               f"warp {summary.get('results', {}).get('warp_z_min_mm', float('nan')):.4f} to {summary.get('results', {}).get('warp_z_max_mm', float('nan')):.4f} mm")
         check(scope.get("is_forecast") is False, "the summary says the result is not a forecast")
         check(scope.get("compared_with_measurement") is False, "the summary says nothing was compared with a measurement")
-        check(scope.get("bed_stresses_are_upper_bound") is True, "the summary says the stresses on the bed are an upper bound")
+        # Model-scope acceptance, declared before this correction's first run:
+        # neglecting creep does not establish a local stress bound when stiffness
+        # and strain redistribute through a heterogeneous printing temperature field.
+        check(scope.get("bed_stresses_are_upper_bound") is False,
+              "the summary does not assert an unproved bound on local bed stresses")
+        check("no general local stress bound" in scope.get("bed_stresses_note", ""),
+              "the summary explains why the approximation supplies no stress bound")
         check(scope.get("creep_below_relaxation_temperature") == "not modelled", "the summary says creep is not modelled")
         law = scope.get("constitutive_law", "")
         check("hypoelastic" in law and "no time-dependent viscoelastic law" in law,

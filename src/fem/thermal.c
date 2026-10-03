@@ -17,6 +17,7 @@
 #endif
 
 static const double GPT = 0.57735026918962576451;
+enum { FACE_COEFFS = 24 }; /* radiation: tangent[16], linearised load[4], old outward flux[4]; convection uses 4 */
 
 double thermal_table_eval(const ThermalTable *t, double T) {
     if (!t || t->n <= 0) return NAN;
@@ -197,6 +198,8 @@ typedef struct {
     double face_n[6][3];  /* unit outward normal (faces of hex8 voxel elements are planar) */
     double face_w[6][4];  /* |ds x dt| at each face Gauss point */
     double face_N[4][4];  /* [face Gauss point][face node]: bilinear shape values, the same for every face */
+    double rad_w[6][9];   /* 3x3 radiation Gauss weights times the physical surface Jacobian */
+    double rad_N[9][4];   /* radiation needs degree-five face integrals: Ni T^4 and Ni Nj T^3 */
     double Bc[8][3];      /* shape-function gradients averaged over the element (volume-weighted), for SUPG */
 } Geom;
 
@@ -276,6 +279,23 @@ static bool element_geometry(const double X[8][3], Geom *g) {
         double nl = sqrt(nsum[0] * nsum[0] + nsum[1] * nsum[1] + nsum[2] * nsum[2]);
         double out = (fc[0] - ec[0]) * nsum[0] + (fc[1] - ec[1]) * nsum[1] + (fc[2] - ec[2]) * nsum[2];
         for (int k = 0; k < 3; k++) g->face_n[f][k] = nl > 0 ? (out < 0 ? -1 : 1) * nsum[k] / nl : 0;
+        /* A bilinear face temperature gives degree <=5 in each coordinate for both the radiative nodal flux and
+         * its tangent. 3x3 Gauss integrates them exactly on planar parallelograms; a warped face retains its actual
+         * pointwise Jacobian (there the geometric quadrature is an approximation). Coordinates are in metres. */
+        static const double rp[3] = {-0.77459666924148337704, 0, 0.77459666924148337704};
+        static const double rw[3] = {5.0/9, 8.0/9, 5.0/9};
+        for (int gs = 0; gs < 3; gs++) for (int gt = 0; gt < 3; gt++) {
+            int gp = 3 * gs + gt;
+            double ds[3] = {0}, dt[3] = {0};
+            for (int q = 0; q < 4; q++) {
+                g->rad_N[gp][q] = 0.25 * (1 + S[q][0]*rp[gs]) * (1 + S[q][1]*rp[gt]);
+                double dNs = 0.25 * S[q][0] * (1 + S[q][1]*rp[gt]);
+                double dNt = 0.25 * S[q][1] * (1 + S[q][0]*rp[gs]);
+                for (int k = 0; k < 3; k++) ds[k] += dNs * X[fn[q]][k], dt[k] += dNt * X[fn[q]][k];
+            }
+            double n0 = ds[1]*dt[2] - ds[2]*dt[1], n1 = ds[2]*dt[0] - ds[0]*dt[2], n2 = ds[0]*dt[1] - ds[1]*dt[0];
+            g->rad_w[f][gp] = rw[gs] * rw[gt] * sqrt(n0*n0 + n1*n1 + n2*n2);
+        }
     }
     return true;
 }
@@ -308,7 +328,7 @@ struct ThermalSolver {
     bool any_anisotropic, any_phase;
     unsigned char *node_active;
     int *face_start, *face_list, *face_cursor, face_cap;
-    double *face_h;             /* 4 per face: h and effective ambient temperature at the iterate, then at the start of the step */
+    double *face_h;             /* FACE_COEFFS per face; convection: h/ambient now/old; radiation: tangent/load/old flux */
     int *src_slot, nsrc, src_cap, *src_elem;
     double *src_vec, src_scale, src_power;
     double *rhs, *x, *res, *ax, *prev;
@@ -585,7 +605,7 @@ static bool group_faces(ThermalSolver *s, const ThermalModel *m, char *err, size
     for (int e = 0; e < ne; e++) s->face_start[e + 1] += s->face_start[e];
     if (m->nfaces > s->face_cap) {
         int *nl = realloc(s->face_list, (size_t)m->nfaces * sizeof(int));
-        double *nh = realloc(s->face_h, 4 * (size_t)m->nfaces * sizeof(double));
+        double *nh = realloc(s->face_h, FACE_COEFFS * (size_t)m->nfaces * sizeof(double));
         if (nl) s->face_list = nl;
         if (nh) s->face_h = nh;
         if (!nl || !nh) {
@@ -708,7 +728,7 @@ static bool prepare_source(ThermalSolver *s, const ThermalModel *m, double tsrc,
 
 /* ---- element system ------------------------------------------------------------------------------ */
 
-static void eval_coefficients(ThermalSolver *s, const StepCtx *c, int e) {
+static void eval_coefficients(ThermalSolver *s, const StepCtx *c, int e, const Geom *g) {
     const ThermalModel *m = c->m;
     const int *cn = m->conn + 8 * (size_t)e;
     double t0 = 0, t1 = 0;
@@ -726,22 +746,31 @@ static void eval_coefficients(ThermalSolver *s, const StepCtx *c, int e) {
     for (int k = s->face_start[e]; k < s->face_start[e + 1]; k++) {
         int fi = s->face_list[k];
         const ThermalFace *f = &m->faces[fi];
+        double *fh = s->face_h + FACE_COEFFS * (size_t)fi;
         double h1 = 0, h0 = 0, a1 = f->ambient, a0 = f->ambient;
         if (f->kind == THERMAL_CONVECTION) {
             h1 = h0 = f->value;
         } else if (f->kind == THERMAL_RADIATION) {
-            /* Newton linearisation about the face mean temperature T*: eps sigma (T^4 - Ta^4) ~ h (T - Ta*) with
-             * h = 4 eps sigma T*^3 and Ta* = T* - (T*^4 - Ta^4) / (4 T*^3); exact at convergence, robust from cold starts */
+            /* Newton tangent and flux at every face point, never at the face mean. At convergence the nodal
+             * load is integral Ni eps sigma (T^4 - Ta^4) dA, with the same 3x3 rule used for its tangent and ledger. */
             const int *fn = HEX8_FACE_NODES[f->face];
-            double f1 = 0, f0 = 0, Ta4 = pow(f->ambient, 4);
-            for (int q = 0; q < 4; q++) f1 += 0.25 * c->T1[cn[fn[q]]], f0 += 0.25 * c->T0[cn[fn[q]]];
-            f1 = fmax(f1, 1.0), f0 = fmax(f0, 1.0);
-            h1 = 4 * f->value * THERMAL_SIGMA * f1 * f1 * f1;
-            h0 = 4 * f->value * THERMAL_SIGMA * f0 * f0 * f0;
-            a1 = f1 - (f1 * f1 * f1 * f1 - Ta4) / (4 * f1 * f1 * f1);
-            a0 = f0 - (f0 * f0 * f0 * f0 - Ta4) / (4 * f0 * f0 * f0);
+            double Ta4 = pow(f->ambient,4), es = f->value * THERMAL_SIGMA;
+            memset(fh,0,FACE_COEFFS * sizeof(double));
+            for (int gp = 0; gp < 9; gp++) {
+                const double *N = g->rad_N[gp];
+                double t1 = 0, t0 = 0;
+                for (int q = 0; q < 4; q++) t1 += N[q] * c->T1[cn[fn[q]]], t0 += N[q] * c->T0[cn[fn[q]]];
+                /* Positive temperatures are physical; retain the old 1 K tangent safeguard for a cold iterate. */
+                double h = 4 * es * pow(fmax(t1,1.0),3);
+                double q1 = es * (pow(t1,4) - Ta4), q0 = es * (pow(t0,4) - Ta4), w = g->rad_w[f->face][gp];
+                for (int a = 0; a < 4; a++) {
+                    fh[16+a] += w * N[a] * (h * t1 - q1);
+                    fh[20+a] += w * N[a] * q0;
+                    for (int b = 0; b < 4; b++) fh[4*a+b] += w * h * N[a] * N[b];
+                }
+            }
+            continue;
         }
-        double *fh = s->face_h + 4 * (size_t)fi;
         fh[0] = h1, fh[1] = a1, fh[2] = h0, fh[3] = a0;
     }
 }
@@ -974,7 +1003,15 @@ static void element_system(const ThermalSolver *s, const StepCtx *c, int e, cons
             for (int q = 0; q < 4; q++) be[fn[q]] += f->value * g->Fv[f->face][q];
             continue;
         }
-        const double *fh = s->face_h + 4 * (size_t)fi;
+        const double *fh = s->face_h + FACE_COEFFS * (size_t)fi;
+        if (f->kind == THERMAL_RADIATION) {
+            for (int q = 0; q < 4; q++) {
+                for (int r = 0; r < 4; r++) Ae[8 * fn[q] + fn[r]] += th * fh[4*q+r];
+                be[fn[q]] += th * fh[16+q];
+                if (!c->steady && th < 1) be[fn[q]] -= (1-th) * fh[20+q];
+            }
+            continue;
+        }
         for (int q = 0; q < 4; q++) {
             for (int r = 0; r < 4; r++) Ae[8 * fn[q] + fn[r]] += th * fh[0] * g->F[f->face][4 * q + r];
             be[fn[q]] += th * fh[0] * fh[1] * g->Fv[f->face][q];
@@ -1029,9 +1066,9 @@ static void assemble_range(void *vctx, int begin, int end, int tid) {
     for (int idx = begin; idx < end; idx++) {
         int e = c->order[idx];
         if (m->active && !m->active[e]) continue;
-        eval_coefficients(s, c, e);
         Geom local;
         const Geom *g = geom_of(s, m, e, &local);
+        eval_coefficients(s, c, e, g);
         const int *cn = m->conn + 8 * (size_t)e;
         double T0e[8], Ae[64], be[8];
         bool freev[8];
@@ -1166,7 +1203,18 @@ static void energy_pass(ThermalSolver *s, const StepCtx *c, ThermalStepStats *st
                 if (fg >= 0 && fg < THERMAL_MAX_GROUPS) st->group_boundary[fg] += qf;
                 continue;
             }
-            const double *fh = s->face_h + 4 * (size_t)fi;
+            const double *fh = s->face_h + FACE_COEFFS * (size_t)fi;
+            if (f->kind == THERMAL_RADIATION) {
+                double out1 = 0, out0 = 0;
+                for (int q = 0; q < 4; q++) {
+                    out1 -= fh[16+q], out0 += fh[20+q];
+                    for (int r = 0; r < 4; r++) out1 += fh[4*q+r] * T1e[fn[r]];
+                }
+                double qf = -w * (th * out1 + (c->steady ? 0 : (1-th) * out0));
+                boundary += qf;
+                if (fg >= 0 && fg < THERMAL_MAX_GROUPS) st->group_boundary[fg] += qf;
+                continue;
+            }
             double a1 = 0, a0 = 0;
             for (int q = 0; q < 4; q++) {
                 a1 += fh[1] * g->Fv[f->face][q];

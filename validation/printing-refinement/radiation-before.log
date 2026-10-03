@@ -1,0 +1,15 @@
+== radiation face quadrature: independent polynomial integrals, tangent and nonlinear solve
+  R1/R2 uniform face: 0.416772519796 W outward against 0.416772519796 W, flux error 2.66e-16, nodal error 3.00e-16, area 0.0006 m2
+  R3/R4 tangent error 1.01e-10, manufactured free corner error 1.14e-13 K, energy balance 1.33e-15
+  R1/R2 affine face: 0.164476297991 W outward against 0.17909310565 W, flux error 8.16e-02, nodal error 2.16e-02, area 0.0006 m2
+  FAIL tools/thermtest.c:303: R1/R2: Stefan-Boltzmann flux and each nodal load match the independent polynomial integral: 
+  FAIL tools/thermtest.c:322: R3: radiative nodal derivative matches exact tangent (3.30e-01): 
+  R3/R4 tangent error 3.30e-01, manufactured free corner error 1.67e+00 K, energy balance 3.84e-15
+  FAIL tools/thermtest.c:341: R4: analytic radiation loads recover the independent manufactured nodal temperature: 
+  R1/R2 bilinear tilted/sheared face: 0.416885894952 W outward against 0.461920000957 W, flux error 9.75e-02, nodal error 3.83e-02, area 0.000698587861332 m2
+  FAIL tools/thermtest.c:303: R1/R2: Stefan-Boltzmann flux and each nodal load match the independent polynomial integral: 
+  FAIL tools/thermtest.c:322: R3: radiative nodal derivative matches exact tangent (5.67e-01): 
+  R3/R4 tangent error 5.67e-01, manufactured free corner error 6.53e+00 K, energy balance 1.75e-15
+  FAIL tools/thermtest.c:341: R4: analytic radiation loads recover the independent manufactured nodal temperature: 
+
+RADIATION VERIFICATION: 3 passed, 6 failed
