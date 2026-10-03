@@ -1392,8 +1392,8 @@ JsonValue *lpbf_summary_json(const LpbfCase *lc) {
     json_set_number(r, "largest_plate_reaction_n", lc->plate_reaction);
     JsonValue *sc = json_set_object(o, "scope");
     json_set_string(sc, "statement",
-                    "inherent-strain process simulation: the strain is a calibrated input, not a material property, and the result is only as good as "
-                    "that calibration and the geometry it was calibrated on");
+                    "inherent-strain process simulation: the strain is a declared process input, not a material property. Predictive use requires "
+                    "calibration for the relevant process and geometry; inspect the recorded provenance, which may be inferred demonstration values");
     json_set_bool(sc, "is_forecast", false);
     json_set_string(sc, "method", "layer-by-layer activation, each layer stress-free on the deformed part, then its eigenstrain, then equilibrium");
     json_set_bool(sc, "plasticity", false);

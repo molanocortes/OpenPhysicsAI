@@ -218,6 +218,7 @@ def main():
         v = call_ok(c, "lpbf_build_run", args, "lpbf_build_run")
         job, run_dir = v.get("job_id", ""), v.get("run_directory", "")
         check(v.get("analysis") == "lpbf_build", "the job is an lpbf_build analysis")
+        check("declared process input" in v.get("scope", ""), "the operation does not assert that every supplied strain is calibrated")
         dup = call_ok(c, "lpbf_build_run", args, "an identical build")
         check(dup.get("deduplicated") is True and dup.get("job_id") == job, "an identical build returns the running job")
         st = wait_job(c, job)
