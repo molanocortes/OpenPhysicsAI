@@ -57,6 +57,14 @@ what the README shows. In the terminal of the panel:
 
 Code: `src/labapp.c`.
 
+The native app has **Manual** and **Agentic** modes. Manual shows the same controls for opening a result,
+choosing a field, replaying stored time and exploring a section. **LIBRARY** opens a separate paged browser of
+all domains; **FLUID** and **SOLID** remain reachable from either mode. Saved scenario choices are restored when
+reopening a result, so a displayed control does not silently replace the settings that produced it.
+The SOLID setup includes explicit **LPBF METAL** and **FDM / FFF PLASTIC** choices. Starting process values are
+marked inferred examples; assigning material and process provenance remains necessary before trusting a prediction.
+Agentic shows the connection controls for the same native engine. It does not change the computed physics.
+
 ## Retained 3D viewer (lab/3d-native)
 
 **One lit scene (2026-09-26).** Every 3D result is drawn by [src/labgpu.c](../../src/labgpu.c) in four passes: a shadow

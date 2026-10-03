@@ -215,6 +215,12 @@ test-fast: $(TESTS) $(MECH_TESTS) $(LAB_TESTS) $(AM_BINS)
 	./build/amtest
 	./build/mechtest
 	./build/dyntest
+	./build/poissontest
+	./build/battest
+	./build/melttest
+	./build/sheettest
+	./build/peritest
+	./build/euler3dtest
 	./build/labtest
 	./build/labscenetest
 	./build/lbm3dtest --fast
@@ -235,6 +241,7 @@ test-fast: $(TESTS) $(MECH_TESTS) $(LAB_TESTS) $(AM_BINS)
 	./build/rttest
 	./build/wtest --fast
 	python3 tools/mcptest.py
+	python3 tools/mcp_http_test.py
 
 # adds the interface checks: builds the app (Cocoa/OpenGL) and clicks every control off-screen
 .PHONY: test-ui
@@ -274,3 +281,14 @@ leaderboard:
 .PHONY: matcheck
 matcheck:
 	@python3 tools/matcheck.py
+
+.PHONY: test-plugin test-printing
+test-plugin: $(AM_BINS)
+	python3 tools/mcptest.py
+	python3 tools/mcp_http_test.py
+
+test-printing: build/mechtest build/meshtest $(AM_BINS)
+	./build/mechtest --printing
+	./build/meshtest
+	python3 tools/printflow.py
+	python3 tools/lpbfflow.py

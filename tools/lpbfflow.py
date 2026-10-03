@@ -234,6 +234,8 @@ def main():
         check(model.get("inherent_strain", {}).get("provenance") == "user", "the strain's provenance is recorded")
         check(model.get("cut", {}).get("provenance") == "assumed", "the cut's provenance is recorded literally")
         check(abs(res.get("largest_plate_reaction_n", 1e9)) < 1e9, "the plate reactions are reported")
+        check("eight Gauss-point von Mises" in res.get("stress_field_definition", ""),
+              "the build summary states the actual stress scalar definition")
 
         print("== the build through the ordinary result operations")
         err = call_err(c, "results_query", {"job_id": job, "quantity": "temperature"}, "UNSUPPORTED", "a temperature query on a build is refused")

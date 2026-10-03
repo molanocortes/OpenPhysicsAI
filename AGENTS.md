@@ -33,6 +33,8 @@ make check      # the quality gate: warnings, sanitizers, tests, link check, sch
 make matcheck   # the materials library carries a source on every value it claims
 make leaderboard # score every challenge from its result files and write the boards
 make test-ui    # clicks every app control off-screen and asserts its effect
+make test-printing # analytic FDM/LPBF checks, mesh checks and complete MCP printing workflows
+make test-plugin   # native MCP and local Streamable HTTP integration, no real ChatGPT model
 ./navier-ctl doctor                       # self-diagnosis, including a reference solve
 ./navier-ctl --embedded call capabilities_get   # what the engine can and cannot do, machine-readable
 ```

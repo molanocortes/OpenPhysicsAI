@@ -82,3 +82,41 @@ args = ["--allow-read", "/path/to/your/cad-exports"]
 | Codex | real client | not verified: no `codex` command-line client is installed on this machine; the configuration above follows the format of the existing `~/.codex/config.toml` |
 
 Until a model-driven session completes, treat the Claude Code and Codex integrations as protocol-verified only.
+
+## ChatGPT plugin development (2026-10-03)
+
+The native C MCP tools also run through a local Streamable HTTP adapter. It is Python standard-library transport
+and process glue; the physics, project validation, asynchronous jobs and result queries remain in the same C engine.
+The native viewer remains the result inspector. No model API key or external inference service is needed by the adapter.
+
+```bash
+make am
+./navier --listen
+# Or run ./navier-server when the viewer is not needed.
+python3 tools/mcp_http.py --port 8787
+```
+
+Endpoint: `http://127.0.0.1:8787/mcp`. The adapter defaults to `navier-mcp --connect`: all sessions use the running
+native engine, and jobs survive an HTTP-session DELETE or disconnect. Start a persistent engine first. For an isolated
+protocol check only: `python3 tools/mcp_http.py --port 8787 -- --embedded --workspace /tmp/navier-http`.
+Embedded sessions each own an engine and stopping that session cancels its jobs; use connect mode for real work.
+
+The adapter supports POST JSON responses, MCP session IDs, version checks and DELETE. GET returns 405 because this
+implementation does not offer an optional SSE stream. There are at most eight native backend processes (configurable
+1-32), and input messages are limited to 1 MiB. It binds loopback only and rejects foreign Host and Origin headers.
+Close idle sessions with DELETE to recover capacity. It does not serve result files or arbitrary filesystem URLs.
+
+Tool discovery now includes explicit read-only, destructive, idempotent and open-world annotations for every tool,
+and output schemas for the structured result envelope. The capabilities result names the available FDM/FFF and
+inherent-strain LPBF operations and their exclusions. It must not be read as a claim that all lab solvers are typed
+MCP operations: lab scenarios still use `build/labrun` and the app's library.
+
+Verification: `python3 tools/mcp_http_test.py` uses an independent HTTP client to check the native engine, lifecycle,
+state retention, embedded-session isolation, bounds and rejected origins; `python3 tools/mcptest.py` checks stdio.
+These are protocol checks, not a model-driven ChatGPT session or a published plugin.
+
+The [official MCP server guide](https://developers.openai.com/plugins/build/mcp-server) specifies Streamable HTTP,
+accurate tool annotations and a stable authenticated HTTPS deployment for public submission. This adapter is the
+single-user local development building block. Public hosting, identity/authorization, multi-user workspace isolation,
+privacy information and an actual ChatGPT developer-mode test remain required before publication. Do not expose this
+local adapter through a public proxy as a production server.

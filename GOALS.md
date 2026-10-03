@@ -466,3 +466,41 @@ page: [README.md](README.md); rules: [flags/README.md](flags/README.md).
   fusion shot, Hurricane Otis, a human heartbeat), each with its page, card and board; the hall of fame; credit to the
   person, the libraries and the AI model; the front page, AGENTS.md, llms.txt and the physics map tell people and
   agents to use the repository rather than rebuild the physics.
+
+### G16. Printing foundation and consolidated app (owner, 2026-10-03)
+
+- Current checkout has independent nozzle work in progress. Changes for this goal use the isolated
+  `improvement/printing-foundation` branch and do not overwrite that work.
+- Printing priority: improve numerical correctness of LPBF and FDM/FFF before extending claims; keep material and
+  process provenance, verify against independent analytic answers, and preserve explicit model limitations.
+- Mesh priority: retain deterministic body classification, protect finite/grid bounds, report geometry fidelity for
+  anisotropic layer meshes, and measure optimization on unchanged geometry.
+- App priority: one native application, clear Manual and Agentic modes, all-domain scenario navigation, restored
+  scenario controls and usable playback, verified through real clicks and before/after screenshots.
+- Plugin priority: transport the existing C MCP operations over bounded local Streamable HTTP, with explicit impact
+  hints and structured output schemas. Public deployment and ChatGPT model integration are separate acceptance steps.
+- Research-quality evidence requires spatial/time refinement and independent physical measurements for the stated
+  process. Passing analytic regressions is numerical verification, not new experimental validation.
+
+Checkpoints completed on this branch:
+
+- `973ef54`: mesh ownership and diagnostics. Mesh suite 52/52, operations 279/279, independent ASan/UBSan 52/52.
+  Eight coincident bodies, unchanged 64,000 elements: median construction 0.224780 to 0.012112 s (18.6 times faster).
+  The 25,000-element anisotropic fixture has 25 complete layers and minimum det J 0.005 mm3.
+- `9bf44fd`: conservative FDM deposition and explicit full-print heat ledger; exact piecewise thermoelastic integration;
+  mean Gauss-point von Mises; accumulated LPBF reactions; active-node extrema after support removal. Printing 35/35.
+  Independent constant/table-capacity/support-removal energy errors: 1.85e-16, 4.93e-16, 3.08e-15 relative.
+  The demonstration wall accounts for 1500.57176 J previously omitted and closes its full heat ledger to 1.63e-11.
+- `0047162`: Manual/Agentic navigation, separate paged library, scenario control restoration and result playback.
+  A further real-key-path check covers playback and section shortcuts without mutating the hidden tunnel/FEM state.
+- Local HTTP transport: 190 assertions passed, including a real FDM job retained after session deletion.
+  Native stdio MCP: 518 assertions passed. Actual ChatGPT use and public hosting have not been tested.
+- A fresh build without optional MFEM now reports missing 3D magnetics instead of failing to link. Generated backend
+  configuration rebuilds the dispatcher when the dependency is added or removed.
+
+Remaining research work: conforming printing meshes and documented spatial/time convergence; FDM bead/toolpath,
+raster anisotropy, interlayer bonding and viscoelastic constitutive laws with sourced parameters; connecting the
+separate laser/melt model to part-scale mechanical response for LPBF. Measurements and independent print validation
+are still required. The manual app exposes the existing scenario/setup controls, not every conceivable solver parameter.
+The plugin adapter is local development transport; lab scenarios do not yet have typed MCP job operations, and public
+deployment still needs authorization, user/workspace isolation and a real ChatGPT session.

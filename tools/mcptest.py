@@ -177,6 +177,12 @@ def main():
         check(schema.get("type") == "object", f"{t['name']}: inputSchema is an object schema")
         check("$ref" not in json.dumps(schema), f"{t['name']}: schema self-contained")
         check(isinstance(t.get("annotations", {}).get("readOnlyHint"), bool), f"{t['name']}: readOnlyHint")
+        # Acceptance declared before this change's first run: every advertised tool
+        # has explicit impact hints and a schema for its structured result envelope.
+        check(all(isinstance(t.get("annotations", {}).get(k), bool) for k in
+                  ("destructiveHint", "idempotentHint", "openWorldHint")), f"{t['name']}: explicit impact hints")
+        check(t.get("outputSchema", {}).get("type") == "object" and
+              "ok" in t["outputSchema"].get("required", []), f"{t['name']}: result envelope schema")
         check(1 <= len(t["name"]) <= 128 and all(ch.isalnum() or ch in "_-." for ch in t["name"]), f"{t['name']}: valid tool name")
     gi = next(t for t in tools if t["name"] == "geometry_import")
     check("units" in gi["inputSchema"].get("required", []), "geometry_import requires units")
@@ -207,6 +213,11 @@ def main():
     check(res["isError"] is False and structured(r)["ok"] is True, "capabilities_get succeeds")
     check(json.loads(res["content"][0]["text"])["ok"] is True, "text content mirrors structured content")
     check(len(structured(r)["value"]["model_limitations"]) > 0, "limitations reported")
+    analyses = {a["name"]: a for a in structured(r)["value"]["analyses"]}
+    check(analyses["fff_print"]["status"] == "available" and analyses["fff_print"]["operation"] == "mech_print_run",
+          "capabilities expose the implemented FDM operation")
+    check(analyses["lpbf_build"]["status"] == "available" and "inherent strain" in analyses["lpbf_build"]["physics"],
+          "capabilities expose LPBF with its actual model scope")
     r = c.call("geometry_import", {"path": str(stl)})
     res = r["result"]
     check(res["isError"] is True and "units" in res["content"][0]["text"], "input validation is a tool execution error mentioning units")

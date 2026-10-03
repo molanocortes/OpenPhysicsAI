@@ -265,3 +265,10 @@ untracked port in the `am-process` worktree, on 2026-09-17. Described here so th
 | Tests | `tools/labtest.c` (format), `tools/gastest.c` (G1 to G8), `tools/actest.c` (A1 to A4), `tools/imptest.c` (I1 to I5), `tools/orbtest.c` (O1 to O4), `tools/emtest.c` (E1 to E3), `tools/flowtest.c` (F1, F2), `tools/sphtest.c` (S1 to S3), `tools/hftest.c` (H1 to H5), `tools/mgtest.c` (M1 to M7), `tools/rttest.c` (R1 to R4), `tools/wtest.c` (W0 to W2; W0 alone in `make test-fast`, the rest take minutes); all in `make test-fast` |
 | State | implemented, verified against closed forms and balances; reachable from the command line (`build/labrun`) and from the app (`lab open`, `lab run`: `src/labapp.c` with retained 3D geometry in `src/lab/labscene.c` and GPU rendering in `src/labgpu.c`; other results use `src/lab/labview.c`, which `tools/labfilm.c` also uses), not yet from MCP |
 | Docs | [docs/lab/README.md](../lab/README.md) |
+
+### Printing and plugin verification additions (2026-10-03)
+
+`tools/mcp_http.py` adapts the native stdio MCP server to bounded loopback Streamable HTTP; it does not compute physics.
+`tools/mcp_http_test.py` is an independent HTTP client checking lifecycle, state, annotations, schemas and transport bounds.
+Both are described in [the client guide](../mcp-clients.md). `make test-plugin` runs both transport suites.
+`make test-printing` runs analytic printing checks, mesh checks and the complete FDM/LPBF MCP workflows.
