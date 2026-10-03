@@ -193,9 +193,9 @@ test: $(TESTS) $(AM_BINS)
 	python3 tools/studyflow.py
 	./navier-ctl doctor
 
-# the tier a session runs after each step (AGENTS.md rule 8): every C suite plus the MCP protocol test, no flow
-# script, no doctor. Under three minutes on the development laptop; `make test` stays the full suite and is run
-# detached with a log before a wave's final report and in CI.
+# the tier a session runs after each step (AGENTS.md rule 8): C suites plus MCP transport checks, no physics flow
+# scripts or doctor. Runtime exceeds the three-minute goal; do not hide a verification suite to meet it.
+# `make test` runs the engineering workflow tier detached before a wave's final report and in CI.
 .PHONY: test-fast
 test-fast: $(TESTS) $(MECH_TESTS) $(LAB_TESTS) $(AM_BINS)
 	./build/coretest
@@ -208,6 +208,7 @@ test-fast: $(TESTS) $(MECH_TESTS) $(LAB_TESTS) $(AM_BINS)
 	./build/advtest
 	./build/evaltest
 	./build/tettest
+	./build/topotest
 	./build/rendertest build/rendertest_out
 	python3 tools/pngcheck.py build/rendertest_out
 	./build/opstest
@@ -216,6 +217,9 @@ test-fast: $(TESTS) $(MECH_TESTS) $(LAB_TESTS) $(AM_BINS)
 	./build/mechtest
 	./build/dyntest
 	./build/poissontest
+	./build/firetest
+	./build/roomtest
+	./build/fsitest
 	./build/battest
 	./build/melttest
 	./build/sheettest

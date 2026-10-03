@@ -481,6 +481,11 @@ page: [README.md](README.md); rules: [flags/README.md](flags/README.md).
   hints and structured output schemas. Public deployment and ChatGPT model integration are separate acceptance steps.
 - Research-quality evidence requires spatial/time refinement and independent physical measurements for the stated
   process. Passing analytic regressions is numerical verification, not new experimental validation.
+- Visual quality is an acceptance requirement: clear shape, consistent result lighting, readable quantitative
+  legends and smooth exploration. Decorative lighting is documented; no generated image substitutes for a result.
+- Refinement must hold the physical setup and simulation layer thickness fixed. A separate three-mesh and
+  three-time-step study reports solution changes and conservation, without treating self-convergence as physical
+  validation or a bound on constitutive-model error. Criteria are recorded before the first run.
 
 Checkpoints completed on this branch:
 

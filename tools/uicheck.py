@@ -627,13 +627,17 @@ def _silhouette(img, x1):
     return mask
 
 
-def _top_patch(img, x1):
+def _top_patch(img, x1, background=None):
     """the centre of the highest face drawn in the view: scan down for the first solid run of part pixels, then
     average a small box just below it. That face belongs to the piece standing highest, the cap of the stack."""
     w, h, ch, px = img
     def solid(x, y):
         i = (y * w + x) * ch
         r, g, b = px[i], px[i + 1], px[i + 2]
+        if background is not None:
+            # Compare the computed body with the same empty studio. A neutral
+            # backdrop can have r > b too; hue alone is not evidence of a face.
+            return max(abs(px[i + c] - background[3][i + c]) for c in range(3)) > 8
         return max(r, g, b) >= 75 or b < r
     for y in range(90, h):
         run = start = 0
@@ -872,6 +876,8 @@ def presentation():
               "fem explode 0", "frames 6", "fem status",
               "fem explode 0.7", "fem fit", "frames 8", "fem status", f"screenshot {shots}/explode.png",
               f"screenshot {images}/presentation-exploded.png",
+              "fem hide", "frames 6", f"screenshot {shots}/explode-empty.png",
+              "fem show", "frames 6",
               # probing and sectioning must still work while the pieces stand apart
               "uiclick \"4 HOLD & LOAD\"", "frames 6", "uiclickat 250 330", "frames 6",
               "fem section z 0.6", "frames 6", f"screenshot {images}/presentation-section-exploded.png",
@@ -920,7 +926,7 @@ def presentation():
     else:
         check(False, f"the drawn triangle count was not reported ({tris})")
     # the piece that stands highest is the cap: the centre of its top face carries the result, not the background
-    top = _top_patch(explode, 560)
+    top = _top_patch(explode, 560, _decode(shots / "explode-empty.png"))
     if top:
         (px_x, px_y), col = top
         bg = _mean_brightness(explode, 20, 100, 60, 140)

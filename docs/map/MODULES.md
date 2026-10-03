@@ -272,3 +272,10 @@ untracked port in the `am-process` worktree, on 2026-09-17. Described here so th
 `tools/mcp_http_test.py` is an independent HTTP client checking lifecycle, state, annotations, schemas and transport bounds.
 Both are described in [the client guide](../mcp-clients.md). `make test-plugin` runs both transport suites.
 `make test-printing` runs analytic printing checks, mesh checks and the complete FDM/LPBF MCP workflows.
+`tools/demo_printing.py --capture --film` computes a small open-cell FDM/LPBF example, waits for both real jobs,
+and records native views and replay frames with their inputs and numerical summaries. It uses demonstration materials
+and explicitly inferred process choices, not measurements. See [the application guide](../analysis.md#in-the-application).
+
+`tools/printing_refinement.py` compares three fixed-setup mesh levels and three FDM thermal substep counts through
+the native MCP operations. It records criteria and amendments explicitly, including an invalid zero-net-reaction
+normalization found on its first run. The study is numerical self-convergence, not experimental validation.

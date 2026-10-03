@@ -92,20 +92,46 @@ a CSV time series with the temperature range, the energies and, for a thermomech
 
 ## In the application
 
-A page for a manual review, one line per control with the screenshot that shows it, is
-[`docs/app/REVIEW.md`](app/REVIEW.md). The design the three modes are held to is [`docs/app/DESIGN.md`](app/DESIGN.md).
+Earlier interface review and design references are [`docs/app/REVIEW.md`](app/REVIEW.md) and
+[`docs/app/DESIGN.md`](app/DESIGN.md). The current two-mode workflow is described below.
 
-A switch at the top right chooses how much of this the window shows, and remembers it. **Simple** is five screens
-(choose a part, how it will be printed, simulate, results, report) that run the LPBF build or the plastic print with a
-named print preset from `src/ctl/print_profiles.json`. A metal preset names the library record
-`alsi10mg_lpbf` and takes its elastic constants from it; when the record has a yield value with a source the
-build runs with J2 plasticity and the strain fitted with plasticity on (1 mm layers and detail), otherwise with the
-elastic fit (0.5 mm), each only at the layer and detail it was fitted at. Its results screen states what the
-simulation is and is not before any number. Sample parts ship in `samples/`. **Advanced** is everything described
-below. **Agent** starts the user's own command line tool (for example `claude -p`) with an MCP configuration pointing
-at this window's engine through a private control socket, passes the question as `$NAVIER_PROMPT`, shows the tool's
-words and the engine's journal as a transcript, and follows every job it starts; the window holds no key. A headless
-run defaults to Advanced; `--first-run` starts as a new user would.
+The top-right switch selects **Manual** or **Agentic** and remembers the choice. Manual provides a paged physics
+library with scenario inputs, RUN and playback; FLUID and SOLID remain reachable from the same window. The SOLID
+inspector keeps the six-step analysis workflow, with explicit METAL (LPBF) and PLASTIC (FDM/FFF) choices. FDM uses
+PROCESS, RUN PRINT and PLAY PRINT instructions. Loading a printing result adopts its workflow, and a result only
+offers the fields it contains. Manual collapses the terminal output until requested; typed commands remain available.
+
+Agentic connects the user's external command-line agent to this window's engine through its private control socket.
+It passes the question as `$NAVIER_PROMPT`, shows the agent's transcript and engine journal, and follows the jobs it
+starts. Both modes operate on the same projects and results. Legacy Advanced/Agent command aliases remain accepted;
+they do not add another physics engine. The retained library inputs and real keyboard playback/section paths are
+checked by `python3 tools/uicheck.py --lab`.
+
+CLEAN VIEW (`hud clean`, H to restore the interface) gives the result the full viewport while retaining its field,
+units, stored time, range policy, deformation scale, maximum displacement and model/provenance notice. Printing
+examples say when inputs are inferred, material values are demonstrations, yielding is absent or no measurement
+comparison was made. A polished image must not imply a more complete model than the one that computed it.
+
+Compute the open-cell example, wait for the actual jobs, and capture its native views and every FDM stored state:
+
+```bash
+make
+python3 tools/demo_printing.py --capture --film
+```
+
+The script saves inputs, summaries, native results, `capture.nav`, views and raw PNG frames below
+`build/demo-printing`. It does not resolve individual deposited roads or a metal melt pool. The saved
+[evidence record](media/foundation/evidence.json) includes exact inputs, model scope, hashes and playback timing.
+
+![Computed FDM deposition, cooling and release](media/foundation/fdm-replay.gif)
+
+This replay uses 27 computed states and one temperature range. Playback is accelerated, with a one-second final
+hold; lighting and the neutral studio are presentation aids. [The clean FDM view](media/foundation/fdm-clean.png)
+and [the metal section](media/foundation/lpbf-section.png) use the same renderer and visual language.
+[Before](media/foundation/ui-before.png) and [after](media/foundation/ui-after.png) show the interface on the same
+synthetic two-element fixture. [The old LPBF cut](media/foundation/lpbf-cut-before.png) and
+[corrected cut](media/foundation/lpbf-cut-after.png) show why the visible FE boundary matters: the old STL spanned
+material that the solver had removed.
 
 The SOLID workspace (`W`, or the SOLID button) drives the same operations from the interface: import, element size
 and GENERATE, a material, FIX BASE and the conditions list, the analysis kind and RUN ANALYSIS, then the result on
@@ -201,7 +227,7 @@ SHOW/HIDE comparisons use the same room instead of confusing a background change
 
 Observed in the native checks: the sparse-STL regression failed four cases before the fix; the completed renderer
 suite passed 69/69, including three additional review cases which failed before their fixes. `--printsurface`
-passed 19/19 (LPBF early/released: zero differing pixels against VOXELS, FDM early: two). The same
+passed 19/19 (LPBF early/released: zero differing pixels against VOXELS, FDM early: zero). The same
 saved wall cut changed 61,677 view pixels, first birth 38,010; the studio changed 244,359. The opaque colour-bar
 interior had zero changed RGB pixels; its translucent frame edges changed with the background. The fluid viewport
 differed by two pixels. These checks establish display consistency, not measured-print accuracy.
