@@ -895,7 +895,7 @@ int main(int argc, char **argv) {
         fem_set_supports_neutral(app.ui_mode == UI_SIMPLE);
     }
     camera_snap(&app.cam);
-    render_set_result_colormap(app.renderer, CMAP_VIRIDIS); /* colour-blind safe; turbo is one click on the legend */
+    render_set_result_colormap(app.renderer, CMAP_VIRIDIS); /* colour-blind safe; click the legend to cycle palettes */
     if (exec) console_exec(exec, true);
     if (run || (app.headless && steps > 0)) sim_run(app.sim, true);
     if (shot && !(quit_after > 0 && !app.headless)) app_request_screenshot(shot), app.shot_countdown = 0;

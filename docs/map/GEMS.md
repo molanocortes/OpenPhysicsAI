@@ -158,3 +158,11 @@ reluctivity, remanence, and currents given as J or as a current vector potential
 factorisation from Accelerate (`src/lab/magnet/spdirect.h`, reusable for any sparse symmetric system); verified by
 `tools/mag3dtest.cpp` (toroid, magnetised cylinder and sphere) and `tools/motor3dtest.c`.
 
+
+## Reproducible computed art
+
+`tools/art_gallery.py` generates and validates three closed sculptural STL models using the standard library.
+`tools/art_gallery_compute.py` runs their FDM, LPBF and thermal demonstrations over native MCP, with fixed numerical
+acceptance, preserved evidence and explicit mesh-area bias. `tools/art_gallery_capture.py` records fixed-range native
+stills and films. `tools/encode_video.swift` encodes the frames through macOS frameworks and verifies the output
+stream. The [gallery and exact recipe](../art-gallery.md) distinguish computed fields from presentation choices.

@@ -313,6 +313,16 @@ reporting iterations, residuals and the recomputed true residual.
 
 ## Reading results
 
+In the native result view, click the colour legend to cycle viridis, inferno, magma, plasma and turbo, or use
+`fem cmap <name>` to select any existing colour map (`fem cmap` reports the current choice). The surface and legend
+share the selected palette; changing it preserves the field and its numerical range. An unknown name is refused
+without changing the palette.
+
+`fem marker off` hides the peak cross; `fem outline off` hides the undeformed reference lines. Both default to on,
+can be restored with `on`, and leave the solved fields and colour range unchanged. The LPBF legend and clean view
+say **process step**, because its inherent-strain sequence does not carry physical printing times.
+The [computed art gallery](art-gallery.md) demonstrates these controls on reproducible curved printing and thermal cases.
+
 - Check `summary.checks` first: `equilibrium_ok` (applied loads plus reactions vanish) and `energy_ok` (twice the strain
   energy equals the external work, as it must for linear statics).
 - Nodal averages smooth Gauss-point stresses over the elements around a node; Gauss-point values are the raw element

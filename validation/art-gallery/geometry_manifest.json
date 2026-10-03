@@ -1,0 +1,239 @@
+{
+  "helical_flute_vase_mm": {
+    "vertices": 36098,
+    "triangles": 72192,
+    "edges": 108288,
+    "nonmanifold_edges": 0,
+    "inconsistent_edges": 0,
+    "surface_components": 1,
+    "euler_characteristic": 2,
+    "volume_mm3": 2270.1004657005765,
+    "min_triangle_area_mm2": 0.01799904257594461,
+    "bounds_mm": [
+      [
+        -8.788938244006475,
+        9.028603841232611
+      ],
+      [
+        -8.978843792352016,
+        8.938208385865206
+      ],
+      [
+        0.0,
+        24.0
+      ]
+    ],
+    "title": "Helical Flute",
+    "design": {
+      "type": "hollow fluted vase",
+      "height_mm": 24,
+      "radial_wall_mm": 2.1,
+      "base_mm": 1.5,
+      "flutes": 7,
+      "twist_degrees": 100.26761414789407
+    },
+    "path": "/private/tmp/openphysics-art-gallery/helical_flute_vase_mm.stl",
+    "units": "mm",
+    "serialized_stl_validation": {
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "min_triangle_area_mm2": 0.01799903948311604
+    },
+    "recommended_camera": {
+      "azimuth_degrees": 35,
+      "elevation_degrees": 26,
+      "look_at_mm": [
+        0,
+        0,
+        12
+      ]
+    },
+    "provenance": "Analytically designed input geometry, not a simulated or measured result.",
+    "voxel_estimates": [
+      {
+        "h_mm": 0.75,
+        "estimated_active_elements": 5375,
+        "base_elements": 256,
+        "elements_disconnected_from_base": 0,
+        "layers_with_unsupported_components": [],
+        "method": "analytic centre samples; native STL mesher must confirm"
+      },
+      {
+        "h_mm": 0.8,
+        "estimated_active_elements": 4443,
+        "base_elements": 226,
+        "elements_disconnected_from_base": 0,
+        "layers_with_unsupported_components": [],
+        "method": "analytic centre samples; native STL mesher must confirm"
+      },
+      {
+        "h_mm": 1.0,
+        "estimated_active_elements": 2325,
+        "base_elements": 146,
+        "elements_disconnected_from_base": 0,
+        "layers_with_unsupported_components": [],
+        "method": "analytic centre samples; native STL mesher must confirm"
+      }
+    ]
+  },
+  "helical_window_column_mm": {
+    "vertices": 30674,
+    "triangles": 61440,
+    "edges": 92160,
+    "nonmanifold_edges": 0,
+    "inconsistent_edges": 0,
+    "surface_components": 1,
+    "euler_characteristic": -46,
+    "volume_mm3": 1561.3055383777646,
+    "min_triangle_area_mm2": 0.00424082045255821,
+    "bounds_mm": [
+      [
+        -8.15,
+        8.15
+      ],
+      [
+        -8.15,
+        8.15
+      ],
+      [
+        0,
+        24
+      ]
+    ],
+    "title": "Helical Lantern",
+    "design": {
+      "type": "porous shell with 24 rounded helical windows",
+      "height_mm": 24,
+      "radial_wall_mm": 1.8,
+      "base_mm": 1.5,
+      "windows": 24,
+      "window_height_mm": 4.4,
+      "window_angular_width_radians": 0.47,
+      "hole_edge_round_mm": 0.18,
+      "twist_degrees": 80.21409131831524
+    },
+    "path": "/private/tmp/openphysics-art-gallery/helical_window_column_mm.stl",
+    "units": "mm",
+    "serialized_stl_validation": {
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "min_triangle_area_mm2": 0.004240815325443483
+    },
+    "recommended_camera": {
+      "azimuth_degrees": 35,
+      "elevation_degrees": 26,
+      "look_at_mm": [
+        0,
+        0,
+        12
+      ]
+    },
+    "provenance": "Analytically designed input geometry, not a simulated or measured result.",
+    "voxel_estimates": [
+      {
+        "h_mm": 0.75,
+        "estimated_active_elements": 3786,
+        "base_elements": 372,
+        "elements_disconnected_from_base": 0,
+        "layers_with_unsupported_components": [],
+        "method": "analytic centre samples; native STL mesher must confirm"
+      },
+      {
+        "h_mm": 0.8,
+        "estimated_active_elements": 3010,
+        "base_elements": 324,
+        "elements_disconnected_from_base": 0,
+        "layers_with_unsupported_components": [],
+        "method": "analytic centre samples; native STL mesher must confirm"
+      },
+      {
+        "h_mm": 1.0,
+        "estimated_active_elements": 1626,
+        "base_elements": 210,
+        "elements_disconnected_from_base": 0,
+        "layers_with_unsupported_components": [],
+        "method": "analytic centre samples; native STL mesher must confirm"
+      }
+    ]
+  },
+  "thermal_corolla_mm": {
+    "vertices": 25585,
+    "triangles": 51166,
+    "edges": 76749,
+    "nonmanifold_edges": 0,
+    "inconsistent_edges": 0,
+    "surface_components": 1,
+    "euler_characteristic": 2,
+    "volume_mm3": 4977.810166562057,
+    "min_triangle_area_mm2": 1.038016121634208e-05,
+    "bounds_mm": [
+      [
+        -13.999016544582837,
+        13.999016544582837
+      ],
+      [
+        -13.999016544582837,
+        13.999016544582837
+      ],
+      [
+        0,
+        18.0
+      ]
+    ],
+    "title": "Thermal Corolla",
+    "design": {
+      "type": "united heat-sink with 12 swept, twisted radial fins",
+      "height_mm": 18.0,
+      "base_radius_mm": 14,
+      "base_mm": 1.5,
+      "hub_radius_mm": 3.5,
+      "fins": 12,
+      "fin_width_mm": 1.65,
+      "twist_degrees": 20.05352282957881,
+      "fin_centreline_sweep_degrees": 17.188733853924695
+    },
+    "path": "/private/tmp/openphysics-art-gallery/thermal_corolla_mm.stl",
+    "units": "mm",
+    "serialized_stl_validation": {
+      "nonmanifold_edges": 0,
+      "degenerate_triangles": 0,
+      "min_triangle_area_mm2": 1.0387118777543947e-05
+    },
+    "recommended_camera": {
+      "azimuth_degrees": 35,
+      "elevation_degrees": 38,
+      "look_at_mm": [
+        0,
+        0,
+        9
+      ]
+    },
+    "provenance": "Analytically designed input geometry, not a simulated or measured result.",
+    "voxel_estimates": [
+      {
+        "h_mm": 0.75,
+        "estimated_active_elements": 11804,
+        "base_elements": 1097,
+        "elements_disconnected_from_base": 0,
+        "layers_with_unsupported_components": [],
+        "method": "analytic centre samples; native STL mesher must confirm"
+      },
+      {
+        "h_mm": 0.8,
+        "estimated_active_elements": 9970,
+        "base_elements": 973,
+        "elements_disconnected_from_base": 0,
+        "layers_with_unsupported_components": [],
+        "method": "analytic centre samples; native STL mesher must confirm"
+      },
+      {
+        "h_mm": 1.0,
+        "estimated_active_elements": 5154,
+        "base_elements": 616,
+        "elements_disconnected_from_base": 0,
+        "layers_with_unsupported_components": [],
+        "method": "analytic centre samples; native STL mesher must confirm"
+      }
+    ]
+  }
+}

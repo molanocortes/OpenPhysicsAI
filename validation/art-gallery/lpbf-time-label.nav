@@ -1,0 +1,59 @@
+mode manual
+workspace solid
+pause
+backdrop neutral
+floorgrid off
+box off
+solid open /private/tmp/openphysics-art-gallery/workspace/Helical_Lantern
+frames 8
+fem follow last
+frames 12
+fem pause
+fem step last
+fem field displacement
+fem range all
+fem deform true
+camera orbit 36 24
+fem fit
+hud clean
+frames 100
+echo TIMELABEL lpbf
+uitext
+screenshot /private/tmp/openphysics-art-gallery/lpbf-time-label-lpbf.png
+frames 6
+solid open /private/tmp/openphysics-art-gallery/workspace/Helical_Flute
+frames 8
+fem follow last
+frames 12
+fem pause
+fem step last
+fem field displacement
+fem range all
+fem deform true
+camera orbit 36 24
+fem fit
+hud clean
+frames 100
+echo TIMELABEL fdm
+uitext
+screenshot /private/tmp/openphysics-art-gallery/lpbf-time-label-fdm.png
+frames 6
+solid open /private/tmp/openphysics-art-gallery/workspace/Thermal_Corolla
+frames 8
+fem follow last
+frames 12
+fem pause
+fem step last
+fem field temperature
+fem range all
+fem deform true
+camera orbit 36 24
+fem fit
+hud clean
+frames 100
+echo TIMELABEL thermal
+uitext
+screenshot /private/tmp/openphysics-art-gallery/lpbf-time-label-thermal.png
+frames 6
+echo TIMELABEL end
+quit

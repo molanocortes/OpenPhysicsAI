@@ -618,3 +618,23 @@ The next FDM constitutive acceptance starts with a synthetic single-Maxwell-bran
 polymer: E_infinity = 1 GPa, E_1 = 2 GPa, tau = 10 s, held strain 0.001. The material-point response must match
 sigma(t) = 0.001 [E_infinity + E_1 exp(-t/tau)] to 1e-10 relative; stored energy plus nonnegative dissipation must
 close to 1e-8 relative. Then verify a 3D held coupon and the elastic limit before using sourced polymer parameters.
+
+### 2026-10-03 computed gallery follow-up (G12, G14)
+
+- Added the [computed sculpture gallery](docs/art-gallery.md): a helical FDM shell, a windowed LPBF column and a
+  curved-fin thermal sink. All three are real native MCP solves, with saved fields, input records, hashes and
+  [independent finite-array checks](validation/art-gallery/independent-audit.json). They passed criteria fixed before
+  the first run. Designed geometry and artificial studio lighting are explicitly distinguished from computed fields.
+- Captured 105 FDM, 144 LPBF-orbit and 122 thermal frames, plus 17 LPBF build/cut states, using the native app.
+  Films use fixed full-range colour maps. Saved projects remain replayable; reproducible geometry, solve and capture
+  tools avoid storing large solver results in Git. Native H.264 encoding verifies frame count, order, size and timing.
+- Native result palettes now support five choices by clicking the legend and all existing maps through `fem cmap`.
+  Optional peak-marker and undeformed-outline controls make the field easier to see. LPBF clean-view and legend
+  labels now correctly identify process steps, because the inherent-strain writer does not store physical times.
+- Focused native checks passed: palettes 31/31, overlays 34/34, time labels 12/12. These include actual image changes,
+  exact overlay restoration and unchanged numerical fields/ranges. Python syntax, native build and link checks pass.
+  The repository session regression was launched detached and is still running at this checkpoint; no completed
+  regression claim is made here. No solver equation was changed by this gallery follow-up.
+- Limits stay visible: curved voxel surface-area bias is 29.43 to 37.92 percent, no convergence study or measurement
+  comparison, FDM layers aggregate roads, and metal printing uses assumed elastic inherent strain. Attractive surface
+  interpolation does not remove those limitations or turn demonstration material parameters into calibrated data.

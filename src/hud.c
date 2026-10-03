@@ -1778,7 +1778,7 @@ static float view_tools(Ui *ui, float x, float y, float w) {
     if (s->nsteps > 1) {
         double v = fem_step();
         snprintf(a, sizeof a, "%d / %d", fem_step() + 1, s->nsteps);
-        if (slider_row(ui, "sl_step", "stored time", a, x, y, w, &v, 0, s->nsteps - 1, false)) {
+        if (slider_row(ui, "sl_step", !strcmp(s->result_kind, "lpbf_build") ? "process step" : "stored time", a, x, y, w, &v, 0, s->nsteps - 1, false)) {
             if (fem_playing()) exec_cmd("fem pause");
             fem_set_step((int)lround(v));
         }
@@ -3979,16 +3979,20 @@ static void solid_legend(float x, float bottom) {
     else
         snprintf(title, sizeof title, "%s  [%s]", fem_field_label(fem_field()), fem_field_unit(fem_field()));
     ui_text(ui, FONT_SMALL, x + 10, y + 7, UI_TEXT, title);
-    /* results keep their own colour map: viridis, readable with the common colour-vision deficiencies; a click on
-     * the legend switches to turbo and back */
+    /* Results and the legend share one texture; clicks cycle the presentation palettes. */
     int rc = render_result_colormap(app.renderer);
     /* a clipped bar has to say so, or the top colour reads as the peak */
     char cmlbl[48];
     snprintf(cmlbl, sizeof cmlbl, "%s%s", fem_range_p99() ? "99th pct \xC2\xB7 " : "", colormap_name(rc));
     ui_text_right(ui, FONT_SMALL, x + w - 10, y + 7, UI_FAINT, cmlbl);
     ui_colormap_bar(ui, x + 10, y + 26, w - 20, 10, render_result_colormap_texture(app.renderer), 3);
-    if (ui_clickable(ui, "legend", x, y, w, h))
-        render_set_result_colormap(app.renderer, rc == CMAP_VIRIDIS ? CMAP_TURBO : CMAP_VIRIDIS);
+    if (ui_clickable(ui, "legend", x, y, w, h)) {
+        static const int cycle[] = {CMAP_VIRIDIS, CMAP_INFERNO, CMAP_MAGMA, CMAP_PLASMA, CMAP_TURBO};
+        int next = CMAP_VIRIDIS;
+        for (int i = 0; i < (int)(sizeof cycle / sizeof cycle[0]); i++)
+            if (rc == cycle[i]) next = cycle[(i + 1) % (sizeof cycle / sizeof cycle[0])];
+        render_set_result_colormap(app.renderer, next);
+    }
     char lo[32], hi[32];
     if (s->have_result) {
         snprintf(lo, sizeof lo, "%.4g", s->range_lo);
@@ -4000,7 +4004,9 @@ static void solid_legend(float x, float bottom) {
     ui_text_right(ui, FONT_SMALL, x + w - 10, y + 42, UI_DIM, hi);
     if (s->have_result && s->nsteps > 1) {
         char t[64];
-        snprintf(t, sizeof t, "t = %.4g s   step %d/%d", s->time_s, fem_step() + 1, s->nsteps);
+        if (!strcmp(s->result_kind, "lpbf_build"))
+            snprintf(t, sizeof t, "process step %d/%d", fem_step() + 1, s->nsteps);
+        else snprintf(t, sizeof t, "t = %.4g s   step %d/%d", s->time_s, fem_step() + 1, s->nsteps);
         float tw = ui_text_width(ui, FONT_SMALL, t);
         ui_text(ui, FONT_SMALL, x + (w - tw) * 0.5f, y + 42, UI_ACCENT2, t);
     }
@@ -4094,9 +4100,13 @@ void hud_draw(void) {
             } else if (app.workspace == WS_SOLID && fem_state()->have_result) {
                 const FemState *s = fem_state();
                 snprintf(title, sizeof title, "%s \xC2\xB7 %s [%s]", s->project, fem_field_label(fem_field()), fem_field_unit(fem_field()));
-                snprintf(meta, sizeof meta, "t = %.5g s \xC2\xB7 stored time %d/%d \xC2\xB7 deformation \xC3\x97%.4g \xC2\xB7 max displacement %.5g mm \xC2\xB7 range: %s",
-                         s->time_s, fem_step() + 1, fem_step_count(), fem_deform_applied(), s->max_displacement_mm,
-                         fem_range_all() ? "all stored times" : "this stored time");
+                char progress[80];
+                bool process = !strcmp(s->result_kind, "lpbf_build");
+                if (process) snprintf(progress, sizeof progress, "process step %d/%d", fem_step() + 1, fem_step_count());
+                else snprintf(progress, sizeof progress, "t = %.5g s \xC2\xB7 stored time %d/%d", s->time_s, fem_step() + 1, fem_step_count());
+                snprintf(meta, sizeof meta, "%s \xC2\xB7 deformation \xC3\x97%.4g \xC2\xB7 max displacement %.5g mm \xC2\xB7 range: %s",
+                         progress, fem_deform_applied(), s->max_displacement_mm,
+                         fem_range_all() ? (process ? "all process steps" : "all stored times") : (process ? "this process step" : "this stored time"));
                 solid_legend(14, H - 14);
                 printing_model_note(note, sizeof note);
                 if (fem_section_on()) snprintf(section_meta, sizeof section_meta, "SECTION %c at %.3g%% - %s", "XYZ"[fem_section_axis()],

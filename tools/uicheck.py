@@ -241,6 +241,8 @@ def steps():
                               'uiclick "SOLVE"', "frames 10", "solid wait 240", "frames 20", "fem status", "fem step"],
         lambda t: check("succeeded" in t and "temperature" in t and _stored_times(t) and _stored_times(t) > 2,
                         f"the THERMAL run through the panel finishes with {_stored_times(t)} stored times", t))
+    add("solid_thermal_time_labels", ["hud clean", "frames 6", "uitext", "hud on", "frames 6"],
+        lambda t: check_result_time_labels(t, process=False))
     add("solid_speed_slider", ["uiclick \"6 RESULTS\"", "frames 4", "uiclick sl_rate 0.5", "frames 8", "fem speed"],
         lambda t: check(close(num(r"playback speed[: ]+([0-9.]+)", t), 3.87, rel=0.15),
                         "the playback-speed slider at 0.5 gives about 3.9 stored times per second (log 0.5..30)", t))
@@ -335,10 +337,10 @@ def steps():
     # ---- the three modes, the glossary and the results' own colour map ------------------------------------------
     add("results_viridis", ["uiclick \"6 RESULTS\"", "frames 4", "fem status"],
         lambda t: check("result colour map viridis" in t, "results are drawn in viridis by default (colour-blind safe)", t))
-    add("legend_turbo", ["uiclick legend", "frames 6", "fem status"],
-        lambda t: check("result colour map turbo" in t, "a click on the legend switches the results to turbo", t))
-    add("legend_back", ["uiclick legend", "frames 6", "fem status"],
-        lambda t: check("result colour map viridis" in t, "and back to viridis", t))
+    for name, cmds, fn in result_palette_steps():
+        add(name, cmds, fn)
+    for name, cmds, fn in result_overlay_steps():
+        add(name, cmds, fn)
     add("mode_simple", ["mode simple", "frames 10", "uitext", "mode", "uilist"],
         lambda t: check("mode simple" in t and ("Choose a part" in t or "Results" in t) and "Simple##mode" not in t,
                         "two modes on the top bar (Manual, Agentic); the guided screens stay reachable by command", t))
@@ -424,6 +426,76 @@ def _deform(t):
 def _cmap_changed(t):
     names = re.findall(r"([A-Za-z_]+)\*", t)
     return len(names) >= 2 and names[0] != names[-1]
+
+
+def result_palette_steps():
+    """Real legend clicks and terminal commands; each must preserve the field and range."""
+    actions = [(f"legend_{name}", "uiclick legend", name)
+               for name in ("inferno", "magma", "plasma", "turbo", "viridis")]
+    actions += [("fem_cmap_magma", "fem cmap magma", "magma"),
+                ("fem_cmap_invalid", "fem cmap no-such-palette", "magma"),
+                ("fem_cmap_gray", "fem cmap gray", "gray"),
+                ("legend_from_gray", "uiclick legend", "viridis")]
+    return [(tag, ["fem field", "fem range", action, "frames 6", "fem cmap", "fem status", "fem field", "fem range"],
+             lambda t, name=name, invalid=(tag == "fem_cmap_invalid"): _check_result_palette(t, name, invalid))
+            for tag, action, name in actions]
+
+
+def _check_result_palette(t, name, invalid):
+    maps = re.findall(r"result colour map (\w+)", t)
+    check(len(maps) >= 2 and maps[-2:] == [name, name],
+          f"result palette query and status agree on {name}", t)
+    _check_result_field_range(t)
+    if invalid:
+        check("unknown result colour map 'no-such-palette' - palette unchanged" in t,
+              "an unknown result palette is refused clearly", t)
+
+
+def result_overlay_steps():
+    """Presentation-only overlays accept on/off, refuse bad values, and restore their initial state."""
+    actions = [("overlays_default", "fem marker", "on", "on", None)]
+    for overlay in ("marker", "outline"):
+        marker, outline = ("off", "on") if overlay == "marker" else ("on", "off")
+        actions += [(f"{overlay}_off", f"fem {overlay} off", marker, outline, None),
+                    (f"{overlay}_invalid", f"fem {overlay} maybe", marker, outline, overlay),
+                    (f"{overlay}_extra_args", f"fem {overlay} on extra", marker, outline, overlay),
+                    (f"{overlay}_on", f"fem {overlay} on", "on", "on", None)]
+    return [(tag, ["fem field", "fem range", action, "frames 6", "fem marker", "fem outline", "fem field", "fem range"],
+             lambda t, marker=marker, outline=outline, invalid=invalid: _check_result_overlays(t, marker, outline, invalid))
+            for tag, action, marker, outline, invalid in actions]
+
+
+def _check_result_field_range(t):
+    fields = re.findall(r"showing ([^\n]+\[[^\n]+\])", t)
+    ranges = re.findall(r"colour range: ([^\n]+)", t)
+    check(len(fields) == 2 and fields[0] == fields[1] and len(ranges) == 2 and ranges[0] == ranges[1],
+          "presentation commands preserve the field and numerical range", t)
+
+
+def _check_result_overlays(t, marker, outline, invalid):
+    markers = re.findall(r"peak marker (on|off)", t)
+    outlines = re.findall(r"undeformed outline (on|off)", t)
+    check(markers and markers[-1] == marker and outlines and outlines[-1] == outline,
+          f"peak marker remains {marker} and undeformed outline remains {outline}", t)
+    _check_result_field_range(t)
+    if invalid:
+        check(f"usage: fem {invalid} on|off" in t, "invalid overlay arguments are refused clearly", t)
+
+
+def check_result_time_labels(t, process, expected_step=None):
+    """Clean-view progress distinguishes inherent-strain process indices from physical time."""
+    label = "process step" if process else "stored time"
+    match = re.search(rf"{label} (\d+)/(\d+)", t)
+    check(match is not None and (expected_step is None or tuple(map(int, match.groups())) == expected_step),
+          f"clean view identifies the current {label}", t)
+    if process:
+        check(re.search(r"\bt\s*=", t) is None and "stored time" not in t and "process step" in t,
+              "LPBF process indices are not labelled as seconds or stored time", t)
+        check("range: all process steps" in t or "range: this process step" in t,
+              "LPBF colour-range metadata uses process steps", t)
+    else:
+        check(re.search(r"\bt\s*=\s*[0-9.eE+-]+ s\b", t) is not None and "process step" not in t,
+              "transient FDM and thermal clean views retain physical seconds", t)
 
 
 def _step_delta(t):
@@ -1811,6 +1883,7 @@ def printsurface():
                       f'screenshot "{tmp / (kind + "-" + state + "-voxels.png")}"']
             if state != "early":
                 lines += ["fem hide", "frames 60", f'screenshot "{tmp / (kind + "-fit-hidden.png")}"', "fem show", "frames 60"]
+        lines += ["hud clean", "frames 8", f"echo PRINTTIME {kind}", "uitext", "echo PRINTTIME end", "hud on", "frames 8"]
     lines += ["echo PRINTSURFACE done", "quit", ""]
     script = tmp / "printsurface.nav"
     script.write_text("\n".join(lines))
@@ -1819,6 +1892,11 @@ def printsurface():
     t = r.stdout + r.stderr
     (tmp / "native.log").write_text(t)
     check(r.returncode == 0 and "PRINTSURFACE done" in t, "native printing script reached its end", t)
+    for kind in ("lpbf", "fdm"):
+        clean = re.search(rf"\[ >> \] echo PRINTTIME {kind}\n(.*?)(?=\[ >> \] echo PRINTTIME end)", t, re.S)
+        check(clean is not None, f"{kind} clean-view time labels were read back", t[-1500:])
+        if clean:
+            check_result_time_labels(clean.group(1), process=(kind == "lpbf"))
     stages = {}
     for m in re.finditer(r"\[info\] PRINTSURFACE (lpbf_early|lpbf_late|fdm_early|fdm_whole)\s*\n", t):
         tail = t[m.end():]
@@ -1933,7 +2011,8 @@ def main():
             continue
         fn(text)
     # errors anywhere except in the steps that deliberately provoke one
-    expected_err = {"ambiguous_click", "missing_click", "solid_refusal_shown"}  # these provoke a refusal on purpose
+    expected_err = {"ambiguous_click", "missing_click", "solid_refusal_shown", "fem_cmap_invalid",
+                    "marker_invalid", "marker_extra_args", "outline_invalid", "outline_extra_args"}  # intentional refusals
     stray = [ln for name, sec in sections.items() if name not in expected_err for ln in sec.splitlines() if "[err!]" in ln]
     check(not stray, f"no errors logged ({len(stray)} found)", "\n".join(stray[:8]))
     pixel_checks(APP, tmp)

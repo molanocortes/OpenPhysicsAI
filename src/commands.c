@@ -1663,7 +1663,36 @@ static void cmd_fem(int argc, char **argv) {
         LOGI("result colour map %s", colormap_name(render_result_colormap(app.renderer)));
         LOGI("groups part %d support %d plate %d", fem_group_shown(0), fem_group_shown(1), fem_group_shown(2));
         if (fem_last_error()[0]) LOGI("last refusal shown in the panel: %s", fem_last_error());
-        LOGI("usage: fem field <von_mises|displacement|temperature> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>");
+        LOGI("usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | marker on|off | outline on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>");
+        return;
+    }
+    if (str_ieq(argv[1], "cmap")) {
+        if (argc < 3) {
+            LOGI("result colour map %s (usage: fem cmap <name>)", colormap_name(render_result_colormap(app.renderer)));
+            return;
+        }
+        int c = colormap_find(argv[2]);
+        if (c < 0) {
+            LOGE("unknown result colour map '%s' - palette unchanged", argv[2]);
+            return;
+        }
+        render_set_result_colormap(app.renderer, c);
+        LOGOK("result colour map %s", colormap_name(c));
+        return;
+    }
+    if (str_ieq(argv[1], "marker") || str_ieq(argv[1], "outline")) {
+        bool marker = str_ieq(argv[1], "marker");
+        if (argc > 3 || (argc == 3 && !str_ieq(argv[2], "on") && !str_ieq(argv[2], "off"))) {
+            LOGE("usage: fem %s on|off", argv[1]);
+            return;
+        }
+        if (argc == 3) {
+            bool on = str_ieq(argv[2], "on");
+            if (marker) fem_set_marker(on);
+            else fem_set_outline(on);
+        }
+        LOGI("%s %s", marker ? "peak marker" : "undeformed outline",
+             (marker ? fem_marker_on() : fem_outline_on()) ? "on" : "off");
         return;
     }
     if (str_ieq(argv[1], "field")) {
@@ -2391,7 +2420,7 @@ static const Command COMMANDS[] = {
     {"lab", "<open|run|close|field|frame|play|pause|view|orbit|mesh|cmap|range|info>", "the physics lab: open a result (.lab) or run a scenario (.json), play it, turn it", cmd_lab, NULL},
     {"workspace", "[fluid|solid|toggle]", "switch between the water tunnel and the finite-element analysis", cmd_workspace, NULL},
     {"solid", "<new|open|run|wait|cancel|fixbase|import|export|mesh|repair|status>", "analysis actions: run a solve, support the base, share geometry with the tunnel", cmd_solid, NULL},
-    {"fem", "<field|deform|step|range|play|pause|speed|section|glass|explode|edges|shadows|export|job|show|hide|fit>",
+    {"fem", "<field|cmap|deform|step|range|play|pause|speed|section|glass|explode|edges|marker|outline|shadows|export|job|show|hide|fit>",
      "how the finite-element result is drawn in the shared 3D view", cmd_fem, NULL},
     {"agent", "wait [seconds] | stop | status | command <line>", "scripts: wait for the agent's command to end, or stop it", cmd_agent, NULL},
     {"mode", "[manual|agentic]", "control the physics yourself or use your AI tool", cmd_mode, NULL},

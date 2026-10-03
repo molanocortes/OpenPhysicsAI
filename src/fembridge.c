@@ -62,6 +62,7 @@ typedef struct Bridge {
     double deform;          /* < 0 = automatic */
     double deform_used;
     bool visible;
+    bool marker_on, outline_on; /* presentation only; numerical fields are unchanged */
 
     /* what the surface was built from */
     bool surface_valid, surface_dirty;
@@ -525,6 +526,7 @@ void fem_show_job(const char *id) {
 
 void fem_init(void) {
     memset(&B, 0, sizeof B);
+    B.marker_on = B.outline_on = true;
     B.field = FEM_VON_MISES;
     B.range_all = true;
     B.play_speed = 4.0;
@@ -1695,10 +1697,15 @@ void fem_set_surface_view(bool on) {
 }
 
 bool fem_peak_marker(float out[3]) {
-    if (!B.peak_valid || !B.surface_valid) return false;
+    if (!B.marker_on || !B.peak_valid || !B.surface_valid) return false;
     out[0] = B.peak_world.x, out[1] = B.peak_world.y, out[2] = B.peak_world.z;
     return true;
 }
+
+bool fem_marker_on(void) { return B.marker_on; }
+void fem_set_marker(bool on) { B.marker_on = on; }
+bool fem_outline_on(void) { return B.outline_on; }
+void fem_set_outline(bool on) { B.outline_on = on; }
 
 bool fem_section_on(void) { return B.section_on; }
 int fem_section_axis(void) { return B.section_axis; }
@@ -2226,7 +2233,7 @@ static void rebuild_outline(const SurfSrc *s, size_t nfaces) {
 }
 const float *fem_outline(int *vertices) {
     /* the ghost of the undeformed shape belongs where the piece was, so it is dropped while the pieces stand apart */
-    *vertices = B.visible && B.surface_valid && !(B.explode > 0 && B.npieces > 1) ? B.outline_vertices : 0;
+    *vertices = B.outline_on && B.visible && B.surface_valid && !(B.explode > 0 && B.npieces > 1) ? B.outline_vertices : 0;
     return B.outline;
 }
 

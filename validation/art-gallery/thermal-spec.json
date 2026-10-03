@@ -1,0 +1,393 @@
+{
+  "analysis": "transient_thermal",
+  "created": "2026-10-03T07:16:15Z",
+  "format": "navier-am-run-spec",
+  "format_version": 1,
+  "job_id": "job-20261003-071615-7f70-1",
+  "materials_resolved": [
+    {
+      "conductivity_w_per_mk": {
+        "value": 10
+      },
+      "density_kg_m3": {
+        "value": 7800
+      },
+      "family": "metal",
+      "id": "corolla_demo",
+      "name": "Thermal corolla demonstration",
+      "provenance": "Assumed constant properties for a numerical gallery demonstration",
+      "specific_heat_j_per_kgk": {
+        "value": 500
+      },
+      "status": "demonstration"
+    }
+  ],
+  "mesh": {
+    "elements": 11840,
+    "hash": "364431edbc286041f1a02ddfa418cd61b12b911b154667625173a7f98534ca19",
+    "nodes": 18650
+  },
+  "project": {
+    "assumptions": [
+      {
+        "revision": 2,
+        "source": "default",
+        "subject": "bodies/sculpture/up_axis",
+        "text": "file axis +Z of body 'sculpture' is taken as the build direction (+Z)"
+      },
+      {
+        "revision": 4,
+        "source": "inferred",
+        "subject": "materials/sculpture",
+        "text": "material 'corolla_demo' is used for sculpture"
+      },
+      {
+        "revision": 8,
+        "source": "default",
+        "subject": "boundary_conditions/bottom_pulse",
+        "text": "heat_flux condition 'bottom_pulse' on bottom"
+      },
+      {
+        "revision": 9,
+        "source": "default",
+        "subject": "boundary_conditions/ambient_convection",
+        "text": "convection condition 'ambient_convection' on outer"
+      },
+      {
+        "revision": 10,
+        "source": "default",
+        "subject": "boundary_conditions/ambient_radiation",
+        "text": "radiation condition 'ambient_radiation' on outer"
+      }
+    ],
+    "bodies": [
+      {
+        "name": "sculpture",
+        "placement": {
+          "position_mm": [0, 0],
+          "rotate_z_deg": 0,
+          "rotations": [],
+          "up_axis": "+Z",
+          "up_axis_source": "default",
+          "z_offset_mm": 0
+        },
+        "repair": {
+          "orient_outward": true,
+          "remove_degenerate": true,
+          "remove_duplicate_faces": true,
+          "weld_tolerance_rel": 1e-06
+        },
+        "role": "part",
+        "source": {
+          "bytes": 2558384,
+          "format": "binary",
+          "original_path": "/private/tmp/openphysics-art-gallery/thermal_corolla_mm.stl",
+          "sha256": "5c2e317dc13542f8ff43f7284fa368450147e76d6698b03e1d42c1f32e95ae96",
+          "stored_file": "inputs/sculpture-5c2e317dc135.stl"
+        },
+        "units": {
+          "note": "",
+          "source": "user",
+          "value": "mm"
+        }
+      }
+    ],
+    "boundary_conditions": [
+      {
+        "heat_flux_w_m2": 60000,
+        "kind": "heat_flux",
+        "name": "bottom_pulse",
+        "schedule": [
+          {
+            "factor": 1,
+            "time_s": 0
+          },
+          {
+            "factor": 0,
+            "time_s": 25
+          }
+        ],
+        "selection": "bottom",
+        "selection_hash": "7d09e25d02237575c05b6b7d53d81ab76ff4640d626fa2709de51880f5d35559",
+        "source": "default"
+      },
+      {
+        "ambient_c": 20,
+        "convection_w_m2k": 40,
+        "kind": "convection",
+        "name": "ambient_convection",
+        "selection": "outer",
+        "selection_hash": "392aa8b4eda1d82b69bf61de47a257e25f0d0a34e22fac6f6efed82972812ca6",
+        "source": "default"
+      },
+      {
+        "ambient_c": 20,
+        "emissivity": 0.7,
+        "kind": "radiation",
+        "name": "ambient_radiation",
+        "selection": "outer",
+        "selection_hash": "392aa8b4eda1d82b69bf61de47a257e25f0d0a34e22fac6f6efed82972812ca6",
+        "source": "default"
+      }
+    ],
+    "description": "Numerical demonstration with inferred inputs; no measurement comparison",
+    "format": "navier-am-project",
+    "format_version": 1,
+    "generator": "NAVIER-AM 0.3.0",
+    "id": "26750880afac6846b2f51e8a4e9a241a",
+    "materials": {
+      "assignments": [
+        {
+          "material": "corolla_demo",
+          "note": "",
+          "source": "inferred",
+          "target": "sculpture"
+        }
+      ],
+      "defined": [
+        {
+          "conductivity_w_per_mk": {
+            "value": 10
+          },
+          "density_kg_m3": {
+            "value": 7800
+          },
+          "family": "metal",
+          "id": "corolla_demo",
+          "name": "Thermal corolla demonstration",
+          "provenance": "Assumed constant properties for a numerical gallery demonstration",
+          "specific_heat_j_per_kgk": {
+            "value": 500
+          },
+          "status": "demonstration"
+        }
+      ]
+    },
+    "mesh": {
+      "element_size_mm": [0.75, 0.75, 0.75],
+      "include_build_plate": false,
+      "last_mesh_hash": "364431edbc286041f1a02ddfa418cd61b12b911b154667625173a7f98534ca19",
+      "method": "voxel_hex8",
+      "plate_margin_mm": 5,
+      "plate_thickness_mm": 10
+    },
+    "name": "Thermal_Corolla",
+    "selections": [
+      {
+        "area_mm2": 615.6422596086572,
+        "body": "sculpture",
+        "coverage": 0.5,
+        "description": "",
+        "keep_largest": 0,
+        "mode": "patch",
+        "name": "bottom",
+        "query": {
+          "plane": {
+            "at": "min",
+            "axis": "z",
+            "tolerance": 0.01
+          }
+        },
+        "set_hash": "7d09e25d02237575c05b6b7d53d81ab76ff4640d626fa2709de51880f5d35559",
+        "source": "default",
+        "triangles": 192
+      },
+      {
+        "area_mm2": 5889.892832288351,
+        "body": "sculpture",
+        "coverage": 0.5,
+        "description": "",
+        "keep_largest": 0,
+        "mode": "patch",
+        "name": "outer",
+        "query": {
+          "facing": {
+            "direction": "up",
+            "max_angle_deg": 180
+          }
+        },
+        "set_hash": "392aa8b4eda1d82b69bf61de47a257e25f0d0a34e22fac6f6efed82972812ca6",
+        "source": "default",
+        "triangles": 51166
+      }
+    ]
+  },
+  "project_revision": 11,
+  "request": {
+    "analysis": "transient_thermal",
+    "capacity": "lumped",
+    "capacity_model": "enthalpy_secant",
+    "end_time": "150 s",
+    "formulation": "incompatible_modes",
+    "initial_temperature": "20 degC",
+    "label": "",
+    "max_iterations": 50,
+    "max_rejections": 25,
+    "max_step_growth": 3,
+    "max_step_shrink": 0.2,
+    "max_steps": 1000000,
+    "output_every": 1,
+    "output_times": [
+      2.5,
+      5,
+      7.5,
+      10,
+      12.5,
+      15,
+      17.5,
+      20,
+      22.5,
+      25,
+      27.5,
+      30,
+      32.5,
+      35,
+      37.5,
+      40,
+      42.5,
+      45,
+      47.5,
+      50,
+      52.5,
+      55,
+      57.5,
+      60,
+      62.5,
+      65,
+      67.5,
+      70,
+      72.5,
+      75,
+      77.5,
+      80,
+      82.5,
+      85,
+      87.5,
+      90,
+      92.5,
+      95,
+      97.5,
+      100,
+      102.5,
+      105,
+      107.5,
+      110,
+      112.5,
+      115,
+      117.5,
+      120,
+      122.5,
+      125,
+      127.5,
+      130,
+      132.5,
+      135,
+      137.5,
+      140,
+      142.5,
+      145,
+      147.5,
+      150
+    ],
+    "phase_change": true,
+    "property_evaluation": "quadrature_point",
+    "reference_temperature": 20,
+    "solver": "auto",
+    "step_safety": 0.9,
+    "temperature_tolerance": 1e-06,
+    "temporal_error_measure": "temperature_and_enthalpy",
+    "theta": 1,
+    "time_step": "1.25 s",
+    "time_stepping": "fixed",
+    "tolerance": 1e-10
+  },
+  "resolved_hashes": {
+    "conditions": "f715c55ba924a4e3cebe695a2a1ee921cdf53fb8870693378f06e3943d6e21e7",
+    "materials": "19de10989bbd3e31aa07b8b40e9e4875c0f44291fcbd8cf8e45773ec083bd368",
+    "mesh": "738982e62d52f20b16e8d2ee374136995003579237a3cb3f3a8a0e20b79f6ea9",
+    "settings": "be9ec29597190660c2b75d1767725cfac59054f827a1fbc0d1f76e1187534175"
+  },
+  "settings": {
+    "capacity": "lumped",
+    "capacity_model": "enthalpy_secant",
+    "end_time_s": 150,
+    "initial_temperature_c": 20,
+    "output_every": 1,
+    "output_times_s": [
+      2.5,
+      5,
+      7.5,
+      10,
+      12.5,
+      15,
+      17.5,
+      20,
+      22.5,
+      25,
+      27.5,
+      30,
+      32.5,
+      35,
+      37.5,
+      40,
+      42.5,
+      45,
+      47.5,
+      50,
+      52.5,
+      55,
+      57.5,
+      60,
+      62.5,
+      65,
+      67.5,
+      70,
+      72.5,
+      75,
+      77.5,
+      80,
+      82.5,
+      85,
+      87.5,
+      90,
+      92.5,
+      95,
+      97.5,
+      100,
+      102.5,
+      105,
+      107.5,
+      110,
+      112.5,
+      115,
+      117.5,
+      120,
+      122.5,
+      125,
+      127.5,
+      130,
+      132.5,
+      135,
+      137.5,
+      140,
+      142.5,
+      145,
+      147.5,
+      150
+    ],
+    "phase_change": true,
+    "property_evaluation": "quadrature_point",
+    "temperature_tolerance_k": 1e-06,
+    "theta": 1,
+    "time_step_s": 1.25,
+    "time_stepping": "fixed"
+  },
+  "software": {
+    "compiler": "Apple LLVM 17.0.0 (clang-1700.0.13.5)",
+    "contract_version": "0.6.0",
+    "floating_point": "IEEE 754 double precision; no -ffast-math; no floating-point contraction",
+    "name": "NAVIER-AM",
+    "version": "0.3.0-rc2"
+  },
+  "spec_hash": "0f1e9513df802509a753824f1ac93b5a6d751746ea8aa88ca8f2d62684a13fb2"
+}

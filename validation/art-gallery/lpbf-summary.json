@@ -1,0 +1,70 @@
+{
+  "analysis": "lpbf_build",
+  "model": {
+    "analysis": "lpbf_build",
+    "mode": "layer_by_layer",
+    "nodes": 6805,
+    "elements": 3807,
+    "mesh_hash": "9167d167df5d34979cd5f307aa3b816b1c71cb311719787a27261b552c6be60a",
+    "element_size_mm": [0.75, 0.75, 0.75],
+    "body": "sculpture",
+    "layer_thickness_mm": 1.5,
+    "build_orientation": "X",
+    "inherent_strain": {
+      "exx": -0.0004,
+      "eyy": -0.0006,
+      "ezz": -0.002,
+      "frame": "machine frame, as given",
+      "applied_to_model_axes": [-0.0004, -0.0006, -0.002],
+      "source": "Demonstration eigenstrain tensor; not a calibrated machine or material",
+      "provenance": "inferred"
+    },
+    "material": {
+      "youngs_modulus_mpa": 215000,
+      "poissons_ratio": 0.3,
+      "provenance": "inferred",
+      "note": "a body loaded only by an eigenstrain has a displacement field that does not depend on the modulus; it sets the stresses"
+    },
+    "cut": {
+      "height_mm": 1.5,
+      "kerf_mm": 0.75,
+      "from_x_mm": 0,
+      "from_x_measured_from": "the part's own minimum x (its fixed end), not the build frame origin",
+      "elements_removed": 531,
+      "rule": "every element beyond from_x whose z extent crosses the kerf band is removed; what lies before it keeps the part on the plate",
+      "provenance": "assumed"
+    }
+  },
+  "temperature": "not modelled",
+  "results": {
+    "tip_uz_before_cut_mm": 0.00217857058120062,
+    "tip_uz_after_cut_mm": 0.0016867747134667915,
+    "springback_mm": -0.0004917958677338288,
+    "tip_definition": "max u_z over the nodes at the free end (largest x), +z up",
+    "free_end_x_mm": 8.25,
+    "peak_von_mises_before_cut_mpa": 198.39854643245178,
+    "peak_von_mises_after_cut_mpa": 156.2102596779047,
+    "stress_field_definition": "element mean of eight Gauss-point von Mises values, not a Gauss-point maximum",
+    "layers": 16,
+    "stored_times": 17,
+    "solves": 17,
+    "seconds": 5.7368780000833794,
+    "equilibrium_error_last_solve": 1.6132230259632974e-14,
+    "equilibrium_error_definition": "recovered linear free residual norm / (applied nodal load norm + individual constrained reaction norm + assembled free RHS norm including eigenstrain); absolute residual in N if scale is zero",
+    "max_displacement_before_cut_mm": 0.00764147451002763,
+    "max_displacement_after_cut_mm": 0.009012419072554423,
+    "max_displacement_definition": "largest total displacement over the nodes of the part (supports excluded), from the plate's reference",
+    "largest_plate_reaction_n": 46.7361746484258
+  },
+  "scope": {
+    "statement": "inherent-strain process simulation: the strain is a declared process input, not a material property. Predictive use requires calibration for the relevant process and geometry; inspect the recorded provenance, which may be inferred demonstration values",
+    "is_forecast": false,
+    "method": "layer-by-layer activation, each layer stress-free on the deformed part, then its eigenstrain, then equilibrium",
+    "plasticity": false,
+    "temperature_field": false,
+    "supports_modelled": false,
+    "compared_with_measurement": false,
+    "not_modelled": ["the thermal history and the melt pool", "plasticity and annealing", "powder conduction", "support structures other than the geometry itself", "contact after the cut", "residual stress from the cutting process"],
+    "use": "compare strategies, orientations and geometries; a number becomes a claim only against a measurement under a protocol written before the run"
+  }
+}

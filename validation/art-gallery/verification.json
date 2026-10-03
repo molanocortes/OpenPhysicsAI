@@ -1,0 +1,19 @@
+{
+  "source_sha256": {
+    "src/commands.c": "e6e3a7a04fb56dc7a24695150608f37d6fe0923e414b652de780850b7366469a",
+    "src/fembridge.c": "5f88b0855af705d920f44c737b9136a0a2e3f66471c85d28f4b3fb11614e8b8f",
+    "src/fembridge.h": "68b986fd160da6e76abb6399e75e65cdbb30c75db432ca756da37011679fee8f",
+    "src/hud.c": "297f433132b624aa34cb76b6f6b94465620b1907fdb756bec4f37880d49eb616",
+    "src/main.c": "0f29b92940eb4fa298e0c9b40d034c4f77d408a98002de85088e941cff08b172",
+    "tools/uicheck.py": "54ee0ad8cf3a4eef601359f5bcc5da48d645fafe19f2f882199dd932bfa14a8e"
+  },
+  "native_build": "pass",
+  "focused_checks": {
+    "palette": 31,
+    "overlays": 34,
+    "time_labels": 12
+  },
+  "test_fast": "running; see /private/tmp/openphysics-art-gallery/regression.log",
+  "physics": "No solver equations changed in this gallery follow-up",
+  "capture_note": "First thermal capture rendered all frames, then refused an unknown final panel query. Replaced with uitext and recaptured successfully. Original log retained locally under capture-history."
+}

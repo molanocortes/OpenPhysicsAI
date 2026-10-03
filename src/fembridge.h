@@ -324,6 +324,10 @@ bool fem_surface_view(void);
 void fem_set_surface_view(bool on);
 /* where the largest field value sits on the drawn surface, in viewer world coordinates */
 bool fem_peak_marker(float out[3]);
+bool fem_marker_on(void);
+void fem_set_marker(bool on);
+bool fem_outline_on(void);
+void fem_set_outline(bool on);
 bool fem_section_on(void);
 int fem_section_axis(void);
 double fem_section_position(void);
