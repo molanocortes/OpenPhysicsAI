@@ -229,3 +229,29 @@ extruded roads, contact resistance, or a toolpath.
 
 The result summary additionally reports supplied nozzle enthalpy above ambient, deposition correction, stored
 enthalpy above ambient, heat into the air, enthalpy removed with supports, and the resulting whole-print heat balance.
+
+## 9. Equilibrium diagnostic amendment, 2026-10-03
+
+Before the first new diagnostic run, F16 requires the FDM increment's reported equilibrium residual to match an
+independent direct structural solve of the same cooled bed-bonded hex to 1e-12 absolute, and to remain finite and
+below 1e-9. Skipping an unchanged thermal increment must preserve that exact value and the solve count. Release
+records its own successful solve residual; later solves or skips preserve that release value. F17 requires the
+end-to-end MCP summary to carry finite last-solve and bed-release residuals below 1e-6 with their definition.
+The first F16 harness incorrectly selected z=0 as the bed of a box centred on z=0, leaving no constrained nodes;
+the solver correctly refused its rigid-body singularity. The harness now selects the bottom face by connectivity.
+No acceptance tolerance or numerical solver changed for this fixture correction.
+
+Amendment to A7: its original support-reaction/bed-reaction ratio is not a meaningful normalization for these
+self-equilibrated thermal loads. `largest_bed_reaction_n` is the largest component of the net bed resultant, not
+the largest individual bed force. Opposite bed forces can cancel even while the part carries substantial stress.
+The first refinement study failed this ratio; its recorded failure is retained rather than labelled a physical
+regression. The new criterion uses the recovered free-equation residual norm divided by the sum of the applied
+nodal load norm, the individual prescribed-DOF reaction norm and the assembled free RHS norm including thermal
+eigenstrain. This is the structural solver's existing equilibrium diagnostic; no force or state computation is
+changed. With exactly zero force scale the solver reports its absolute residual, zero for an unloaded zero state.
+Reaction forces remain reported in newtons and are not divided by the near-zero net bed resultant.
+
+Observed after the fixture correction: F16's on-bed residual was 1.34e-16, bed-release 2.49e-16, and the later free
+solve 1.69e-16; the five diagnostic checks passed with the full printing suite, 40/40. The MCP wall's last and
+release residuals were both 6.29e-15, with 88/88 flow checks. These are last-increment equilibrium diagnostics,
+not a measurement-validation claim or an independent convergence proof for the accumulated stress history.

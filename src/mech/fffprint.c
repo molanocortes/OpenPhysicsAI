@@ -113,6 +113,7 @@ struct FffMech {
     double *escale; /* nelems: stiffness multiplier (homogenised supports), NULL: 1 */
     bool released;
     double release_reaction;
+    double equilibrium_error, release_equilibrium_error;
     int solves;
 };
 
@@ -286,6 +287,8 @@ static bool solve_increment(FffMech *m, const double *T, int mode, char *err, si
     if (getenv("NAVIER_PRINT_SOLVE_LOG")) fprintf(stderr, "  dT %8.3f K", worst_dt);
     if (!solid_solve(&hm, &L, &opt, &res, err, errlen)) goto done;
     m->solves++;
+    m->equilibrium_error = res.equilibrium_error;
+    if (mode == MODE_RELEASE) m->release_equilibrium_error = res.equilibrium_error;
     if (getenv("NAVIER_PRINT_SOLVE_LOG")) /* profiling: one line per stress increment */
         fprintf(stderr, "  solve %3d  mode %d  elements %6d  equations %7d  %-18s %6.3f s (assembly and recovery %5.3f s) factor %6.1f MB\n", m->solves,
                 mode, na, res.neq, res.stats.method, res.stats.seconds, now_s() - t_solve - res.stats.seconds, res.stats.factor_mb);
@@ -401,6 +404,8 @@ const double *fff_mech_u(const FffMech *m) { return m->u; }
 const double *fff_mech_stress(const FffMech *m) { return m->stress; }
 const unsigned char *fff_mech_active(const FffMech *m) { return m->active; }
 double fff_mech_release_reaction(const FffMech *m) { return m->release_reaction; }
+double fff_mech_equilibrium_error(const FffMech *m) { return m->equilibrium_error; }
+double fff_mech_release_equilibrium_error(const FffMech *m) { return m->release_equilibrium_error; }
 int fff_mech_solves(const FffMech *m) { return m->solves; }
 
 void fff_mech_von_mises(const FffMech *m, double *vm) {
@@ -820,6 +825,8 @@ bool fff_simulate(const FffMesh *M, const FffMaterial *mat, const FffProcess *P,
             if (node_on[n]) sum->warp_z_max = fmax(sum->warp_z_max, uu[3 * n + 2]), sum->warp_z_min = fmin(sum->warp_z_min, uu[3 * n + 2]);
     }
     sum->nlayers = nlayers, sum->frames = frame_index, sum->mech_solves = fff_mech_solves(mech);
+    sum->equilibrium_error_last_solve = fff_mech_equilibrium_error(mech);
+    sum->equilibrium_error_at_release = fff_mech_release_equilibrium_error(mech);
     sum->total_time = time, sum->seconds_thermal = t_therm, sum->seconds_mech = t_mech;
     sum->elements = M->nelems, sum->nodes = M->nnodes;
     for (size_t e = 0; e < ne; e++)

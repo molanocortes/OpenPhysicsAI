@@ -527,7 +527,14 @@ JsonValue *print_summary_json(const PrintCase *pc) {
     json_set_number(r, "worst_heat_balance_relative", pc->worst_balance);
     json_set_number(r, "largest_bed_reaction_n", pc->bed_reaction);
     json_set_number(r, "support_reaction_after_release_n", pc->release_reaction);
-    json_set_string(r, "release_check", "the support reaction after release is zero when the released part is self-equilibrated");
+    json_set_number(r, "equilibrium_error_last_solve", pc->equilibrium_error_last_solve);
+    json_set_number(r, "equilibrium_error_at_release", pc->equilibrium_error_at_release);
+    json_set_string(r, "equilibrium_error_definition", "recovered free-equation residual norm / (applied nodal load norm + individual prescribed-DOF "
+                                                      "reaction norm + assembled free RHS norm including eigenstrain); dimensionless for nonzero force "
+                                                      "scale; zero scale reports absolute residual in N, zero for an unloaded zero state");
+    json_set_string(r, "bed_reaction_definition", "largest absolute component of the NET bed resultant, not the largest individual bed reaction");
+    json_set_string(r, "release_check", "release equilibrium uses the normalized free-equation residual; support reactions remain in N and are not "
+                                       "divided by the net bed resultant, which can vanish for self-equilibrated thermal loads");
     json_set_number(r, "heat_into_bed_j", pc->bed_heat);
     json_set_number(r, "heat_into_bed_during_print_j", pc->bed_heat_print);
     json_set_number(r, "supplied_nozzle_enthalpy_above_ambient_j", pc->deposition_heat);
@@ -641,6 +648,8 @@ bool print_job_run(Job *job, void *data, char *code, size_t codelen, char *err, 
     pc->peak_bed = sum.peak_vm_bed, pc->peak_released = sum.peak_vm_released;
     pc->warp_min = sum.warp_z_min, pc->warp_max = sum.warp_z_max;
     pc->bed_reaction = sum.bed_reaction_total, pc->release_reaction = sum.release_support_reaction;
+    pc->equilibrium_error_last_solve = sum.equilibrium_error_last_solve;
+    pc->equilibrium_error_at_release = sum.equilibrium_error_at_release;
     pc->worst_balance = fmax(pc->worst_balance, sum.worst_energy_balance);
     pc->thermal_steps = sum.thermal_steps, pc->stress_increments = sum.mech_solves, pc->skipped_increments = sum.skipped_increments;
     pc->seconds_thermal = sum.seconds_thermal, pc->seconds_stress = sum.seconds_mech;

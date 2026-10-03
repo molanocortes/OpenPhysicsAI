@@ -4731,6 +4731,55 @@ static void test_printing_numerics(void) {
         free(held), free(b.xyz), free(b.rho), free(b.conn);
     }
     {
+        BoxMesh b = box_hex(1, 1, 1, 0.004, 0.003, 0.002, 1000);
+        FffMesh mesh = {b.nn, b.ne, b.xyz, b.conn};
+        FffMaterial mat = fff_const_material(3e9, 0.3, 7e-5);
+        unsigned char *bed = calloc((size_t)b.nn, 1), *fixed = calloc(3 * (size_t)b.nn, 1);
+        double *T = malloc((size_t)b.nn * sizeof(double));
+        for (int n = 0; n < b.nn; n++) T[n] = 300;
+        /* box_hex centres z on zero; the declared restrained bed is its bottom face, not the interior z=0 plane. */
+        for (int j = 0; j <= 1; j++) for (int i = 0; i <= 1; i++) {
+            int n = bnode(&b,i,j,0);
+            bed[n] = fixed[3*n] = fixed[3*n+1] = fixed[3*n+2] = 1;
+        }
+        FffMech *m = fff_mech_new(&mesh, &mat, bed, err, sizeof err);
+        bool ok = m != NULL;
+        if (ok) fff_mech_activate(m, 0, 400);
+        if (ok) ok = fff_mech_increment(m, T, err, sizeof err);
+        /* Independent direct FE formulation of the same single cooled hex. Constant alpha gives exactly -0.007
+         * thermal eigenstrain, with the entire bottom face restrained and no applied nodal load. */
+        SolidMaterial sm = {3e9, 0.3, 1000};
+        HexModel hm = {b.nn, b.ne, b.xyz, b.conn, NULL, 1, &sm, HEX8_INCOMPATIBLE, NULL};
+        double eps0[6] = {-0.007, -0.007, -0.007, 0, 0, 0};
+        SolidLoads loads = {fixed, NULL, NULL, eps0, {0,0,0}};
+        SolidResult ref = {0};
+        ok = ok && solid_solve(&hm, &loads, NULL, &ref, err, sizeof err);
+        double eq = ok ? fff_mech_equilibrium_error(m) : INFINITY;
+        CHECK(ok && isfinite(eq) && eq < 1e-9 && fabs(eq - ref.equilibrium_error) < 1e-12,
+              "F16: FDM equilibrium diagnostic equals the independent direct FE residual (%.2e versus %.2e): %s",
+              eq, ref.equilibrium_error, err);
+        int solved = ok ? fff_mech_solves(m) : 0;
+        bool skipped = false;
+        if (ok) ok = fff_mech_increment_opt(m, T, 1, &skipped, err, sizeof err);
+        CHECK(ok && skipped && fff_mech_solves(m) == solved && fff_mech_equilibrium_error(m) == eq,
+              "F16: skipping unchanged temperatures preserves the last actual residual and solve count");
+        if (ok) ok = fff_mech_release(m, T, err, sizeof err);
+        double rel = ok ? fff_mech_release_equilibrium_error(m) : INFINITY;
+        CHECK(ok && isfinite(rel) && rel < 1e-9 && fff_mech_equilibrium_error(m) == rel,
+              "F16: bed release stores its own normalized equilibrium residual (%.2e)", rel);
+        skipped = false;
+        if (ok) ok = fff_mech_increment_opt(m, T, 1, &skipped, err, sizeof err);
+        CHECK(ok && skipped && fff_mech_equilibrium_error(m) == rel && fff_mech_release_equilibrium_error(m) == rel,
+              "F16: skipping after release preserves both successful-solve diagnostics");
+        if (ok) { for (int n = 0; n < b.nn; n++) T[n] -= 1; ok = fff_mech_increment(m, T, err, sizeof err); }
+        CHECK(ok && fff_mech_solves(m) == solved + 2 && fff_mech_release_equilibrium_error(m) == rel,
+              "F16: a later free-body solve cannot overwrite the bed-release diagnostic");
+        REPORT("F16 normalized equilibrium: on-bed %.2e, released %.2e, later free solve %.2e",
+               eq, rel, ok ? fff_mech_equilibrium_error(m) : INFINITY);
+        solid_result_free(&ref); fff_mech_free(m);
+        free(T), free(bed), free(fixed), free(b.xyz), free(b.rho), free(b.conn);
+    }
+    {
         BoxMesh b = box_hex(1, 1, 3, 0.001, 0.001, 0.003, 1000);
         FffMesh mesh = {b.nn, b.ne, b.xyz, b.conn};
         FffProcess process = {0.001, 400, 300, 300, 0, false, 1e-5, 0.002, 0, 0, 3};

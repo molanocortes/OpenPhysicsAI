@@ -63,6 +63,7 @@ typedef struct PrintCase {
     double peak_bed, peak_released;                 /* Pa */
     double warp_min, warp_max;                      /* m */
     double bed_reaction, release_reaction;          /* N */
+    double equilibrium_error_last_solve, equilibrium_error_at_release;
     double worst_balance;                           /* relative */
     double seconds_thermal, seconds_stress, seconds_total;
     double volume;                                  /* m^3 of printed material */

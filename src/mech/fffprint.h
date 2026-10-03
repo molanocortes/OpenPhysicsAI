@@ -112,6 +112,8 @@ typedef struct FffSummary {
     double warp_z_max, warp_z_min;          /* m: vertical displacement range after release */
     double bed_reaction_total;              /* N: largest resultant component of the bed reactions before release */
     double release_support_reaction;        /* N: largest reaction on the isostatic support at release (self-equilibrated: ~0) */
+    double equilibrium_error_last_solve;     /* recovered free-equation residual / nodal load, reaction and RHS norms */
+    double equilibrium_error_at_release;     /* same diagnostic retained specifically for the bed-release solve */
     double worst_energy_balance;
     double seconds_thermal, seconds_mech;
     double printed_volume;    /* m^3 actually deposited */
@@ -170,4 +172,8 @@ const unsigned char *fff_mech_active(const FffMech *m);
 void fff_mech_von_mises(const FffMech *m, double *vm); /* nelems, Gauss-point mean */
 double fff_mech_bed_reaction(const FffMech *m, double resultant[3]); /* largest |component| of the resultant */
 double fff_mech_release_reaction(const FffMech *m);
+/* The structural solver's last successful equilibrium diagnostic, preserved across skipped increments. Its
+ * force scale includes individual constrained reactions and the eigenstrain RHS, not the net bed resultant. */
+double fff_mech_equilibrium_error(const FffMech *m);
+double fff_mech_release_equilibrium_error(const FffMech *m);
 int fff_mech_solves(const FffMech *m);

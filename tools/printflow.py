@@ -208,13 +208,20 @@ def main():
         check(res.get("deposition_enthalpy_correction_j", 0) > 0 and res.get("worst_deposition_balance_relative", 1) <= 1e-6,
               "shared-node deposition correction is accounted for and conserves heat")
         check("eight Gauss-point von Mises" in res.get("stress_field_definition", ""), "the summary states the actual stress scalar definition")
+        eq_last = res.get("equilibrium_error_last_solve", float('nan'))
+        eq_release = res.get("equilibrium_error_at_release", float('nan'))
+        check(math.isfinite(eq_last) and math.isfinite(eq_release) and 0 <= eq_last < 1e-6 and 0 <= eq_release < 1e-6,
+              f"F17: last-solve and release normalized free-equation residuals close ({eq_last:.2e}, {eq_release:.2e})")
+        definition = res.get("equilibrium_error_definition", "")
+        check("free-equation residual" in definition and "individual" in definition and "RHS" in definition,
+              "F17: the equilibrium definition states individual reactions and the eigenstrain RHS force scale")
         print(f"   nozzle enthalpy {supplied:.9g} J, shared-node correction {res.get('deposition_enthalpy_correction_j'):.9g} J, "
               f"whole-print closure {closure:.2e}")
         bed = abs(res.get("largest_bed_reaction_n", 0.0))
         rel = abs(res.get("support_reaction_after_release_n", 1.0))
-        check(rel <= 1e-6 * (1.0 + bed), f"the released part is self-equilibrated (support reaction {rel:.2e} N of bed reactions {bed:.2e} N)")
+        check(rel <= 1e-6 * (1.0 + bed), f"the released part has a small absolute support reaction ({rel:.2e} N; net bed resultant {bed:.2e} N)")
         print(f"   worst heat balance {res.get('worst_heat_balance_relative'):.2e}, support reaction after release {rel:.2e} N, "
-              f"largest bed reaction {bed:.2e} N")
+              f"net bed resultant {bed:.2e} N; normalized equilibrium last {eq_last:.2e}, release {eq_release:.2e}")
         stored = res.get("stored_times", 0)
         laid = dep.get("layers_deposited", 0)
         check(laid > 0 and stored == 2 * laid + 3,
