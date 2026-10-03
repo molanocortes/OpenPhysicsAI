@@ -54,5 +54,28 @@
     "fdm-final.log": "cca35804782b857ba442f0d53411bdfabdf5cbe1535ab1a69ecd918fefcb301b",
     "lpbf-final.log": "39f6607d7c46fddee28684f895e4a81637951e9ee45fbfcc4026680f5b85e76d"
   },
-  "known_open_validation": "Full fire V2/V3 retained failure; full room/FSI were not reached by that wrapper."
+  "known_open_validation": "Full fire V2/V3 retained failure; full room/FSI were not reached by that wrapper.",
+  "quality_gate": {
+    "command": "bash tools/check.sh a d e f g h",
+    "source_commit": "0eb7e7a",
+    "exit_code": 0,
+    "stages": {
+      "A": "PASS",
+      "D": "PASS",
+      "E": "PASS",
+      "F": "PASS",
+      "G": "PASS",
+      "H": "PASS"
+    },
+    "stage_a_seconds": 22.68,
+    "stage_a_peak_largest_process_mb": 105,
+    "total_wall_seconds": 25,
+    "project_compiler_warnings": 0,
+    "material_records": {
+      "total": 38,
+      "sourced": 34,
+      "demonstration_or_other": 4
+    },
+    "not_run": "Full sanitizer gate B; independent mesh ASan/UBSan passed separately."
+  }
 }

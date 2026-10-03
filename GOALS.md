@@ -598,6 +598,8 @@ Checkpoints completed on this branch:
 - The [final verification record](validation/printing-refinement/final-checks.json) pins the latest logs and warning
   source hashes. The complete [post-radiation session log](validation/printing-refinement/regression-after-radiation.log)
   is retained, including its historical recorded failures and explicit session-only scope.
+- Final quality gates A and D-H pass at `0eb7e7a`, recorded with source identity in the verification record: 25 s,
+  zero project compiler warnings, 105 MB largest compiler process, all links/boards/coverage/hygiene/provenance pass.
 
 Remaining research work: conforming printing meshes and documented spatial/time convergence; FDM bead/toolpath,
 raster anisotropy, interlayer bonding and viscoelastic constitutive laws with sourced parameters; connecting the
