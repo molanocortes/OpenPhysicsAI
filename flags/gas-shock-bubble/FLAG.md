@@ -40,7 +40,7 @@ The source is sealed until the flag is retired; its SHA-256 commitment is in fla
 
 <!-- board:begin -->
 
-**Attempts** 2 · **Challengers** 1 · **Record** 90 by @molanocortes · **First clear** @molanocortes, 2026-09-26
+**Attempts** 3 · **Challengers** 1 · **Record** 90 by @molanocortes · **First clear** @molanocortes, 2026-09-26
 
 | Rank | Challenger | Score | Date |
 | :---: | :--- | ---: | :--- |

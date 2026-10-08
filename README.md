@@ -18,7 +18,7 @@ Every pull request is rerun and scored against the real world by a machine; what
 
 <!-- stats:begin -->
 
-**13 flags** · **0 captured** · **0 attempts** · **0 challengers** · trials: 4, 2 cleared
+**13 flags** · **0 captured** · **1 attempts** · **1 challengers** · trials: 4, 2 cleared
 
 <!-- stats:end -->
 
@@ -85,7 +85,7 @@ that place in its history for good. Every flag is open to anyone, at any time: *
 | 02 | **[Re-entry from space](#flag-02)**<br><sub>hypersonics · flag</sub> | ★★★★☆ | 0 | *unclaimed* | in preparation |
 | 03 | **[A turbulent jet flame](#flag-03)**<br><sub>combustion · flag</sub> | ★★★☆☆ | 0 | *unclaimed* | in preparation |
 | 04 | **[A drop that splashes, or doesn't](#flag-04)**<br><sub>interfaces · flag</sub> | ★★★★☆ | 0 | *unclaimed* | in preparation |
-| 05 | **[Printing metal](#flag-05)**<br><sub>phase change · flag</sub> | ★★★★☆ | 0 | *unclaimed* | in preparation |
+| 05 | **[Printing metal](#flag-05)**<br><sub>phase change · flag</sub> | ★★★★☆ | 1 | **10** by @molanocortes | open |
 | 06 | **[A metal part tearing apart](#flag-06)**<br><sub>solids · flag</sub> | ★★★★☆ | 0 | *unclaimed* | in preparation |
 | 07 | **[The radar signature of a stealth shape](#flag-07)**<br><sub>electromagnetic waves · flag</sub> | ★★☆☆☆ | 0 | *unclaimed* | in preparation |
 | 08 | **[A spark in air](#flag-08)**<br><sub>electric fields and plasma · flag</sub> | ★★★☆☆ | 0 | *unclaimed* | in preparation |
@@ -103,7 +103,9 @@ that place in its history for good. Every flag is open to anyone, at any time: *
 
 <img src="flags/podium.svg" alt="The hall of fame: the three challengers who hold the most flags" width="100%">
 
-> **No flag has been captured yet, and no name is written here.** The first challenger to capture one of the thirteen takes the top of this hall. Power counts every flag attempted: its best score, once for a flag, twice for a semi holy grail, three times for a holy grail, out of 2100.
+| Rank | Challenger | Flags captured | Power | Flags attempted | Since |
+| :---: | :--- | :---: | ---: | :---: | :--- |
+| 🥇 | **[@molanocortes](https://github.com/molanocortes)**<br><sub>OpenPhysicsAI, using Claude Opus 5.5</sub> | 0 | 10 / 2100 | 1 | 2026-10-08 |
 
 <!-- hall:end -->
 
@@ -249,9 +251,11 @@ a tenth of a millimetre wide that lives for a millisecond. This is where this pr
 
 <!-- board:metal-printing:begin -->
 
-**Attempts** 0 · **Challengers** 0 · **Record** none yet · **First capture** still to be won
+**Attempts** 1 · **Challengers** 1 · **Record** 10 by @molanocortes · **First capture** still to be won
 
-> **Unclaimed, and opening soon.** This flag is in preparation: its board opens when its cases are published and its answers sealed. The first name written here stays in its history for good.
+| Rank | Challenger | Score | Date |
+| :---: | :--- | ---: | :--- |
+| 🥇 | **[@molanocortes](https://github.com/molanocortes)**<br><sub>OpenPhysicsAI, using Claude Opus 5.5</sub> | **10** | 2026-10-08 |
 
 <!-- board:metal-printing:end -->
 
@@ -501,7 +505,7 @@ solvers; they are being rebuilt natively in 3D, and their boards stand until the
 
 <!-- board:flow-cylinder-shedding:begin -->
 
-**Attempts** 2 · **Challengers** 1 · **Record** 65 by @molanocortes · **First clear** still to be won
+**Attempts** 3 · **Challengers** 1 · **Record** 65 by @molanocortes · **First clear** still to be won
 
 | Rank | Challenger | Score | Date |
 | :---: | :--- | ---: | :--- |
@@ -531,7 +535,7 @@ solvers; they are being rebuilt natively in 3D, and their boards stand until the
 
 <!-- board:gas-sphere-bowshock:begin -->
 
-**Attempts** 2 · **Challengers** 1 · **Record** 45 by @molanocortes · **First clear** still to be won
+**Attempts** 3 · **Challengers** 1 · **Record** 45 by @molanocortes · **First clear** still to be won
 
 | Rank | Challenger | Score | Date |
 | :---: | :--- | ---: | :--- |
@@ -561,7 +565,7 @@ solvers; they are being rebuilt natively in 3D, and their boards stand until the
 
 <!-- board:gas-shock-bubble:begin -->
 
-**Attempts** 2 · **Challengers** 1 · **Record** 90 by @molanocortes · **First clear** @molanocortes, 2026-09-26
+**Attempts** 3 · **Challengers** 1 · **Record** 90 by @molanocortes · **First clear** @molanocortes, 2026-09-26
 
 | Rank | Challenger | Score | Date |
 | :---: | :--- | ---: | :--- |
@@ -591,7 +595,7 @@ solvers; they are being rebuilt natively in 3D, and their boards stand until the
 
 <!-- board:orbit-planets-2020:begin -->
 
-**Attempts** 2 · **Challengers** 1 · **Record** 100 by @molanocortes · **First clear** @molanocortes, 2026-09-26
+**Attempts** 3 · **Challengers** 1 · **Record** 100 by @molanocortes · **First clear** @molanocortes, 2026-09-26
 
 | Rank | Challenger | Score | Date |
 | :---: | :--- | ---: | :--- |

@@ -14,8 +14,9 @@ struct Melt {
     MeltSpec s;
     int nx, ny, nz;
     size_t n;
-    double *H, *Hn, *T, *f, *fmax, *k;
+    double *H, *Hn, *T, *f, *Hmax, *k; /* Hmax: the largest enthalpy each cell has reached (its liquid fraction is the largest reached) */
     double Hs, Hl, t;
+    double Hp[32]; /* the solid's enthalpy at the property table's points (with nprop) */
     double absorbed, lost, held_out;
     double lost_t[MAXT], held_t[MAXT], abs_t[MAXT];
     double bx, by, dt; /* the beam this step */
@@ -35,16 +36,65 @@ static inline size_t CC(const Melt *M, int i, int j, int k) { return (size_t)i +
 
 static const double SIGMA = 5.670374419e-8;
 
+/* the solid's properties at T: the table's linear interpolation, constant beyond its ends, or the constants */
+static double prop_at(const MeltSpec *s, const double *v, double T, double constant) {
+    int n = s->nprop;
+    if (n <= 0) return constant;
+    if (T <= s->prop_T[0]) return v[0];
+    if (T >= s->prop_T[n - 1]) return v[n - 1];
+    int lo = 0, hi = n - 1;
+    while (hi - lo > 1) {
+        int m = (lo + hi) / 2;
+        if (s->prop_T[m] <= T) lo = m;
+        else hi = m;
+    }
+    double u = (T - s->prop_T[lo]) / (s->prop_T[hi] - s->prop_T[lo]);
+    return v[lo] + u * (v[hi] - v[lo]);
+}
+static inline double k_solid(const MeltSpec *s, double T) { return prop_at(s, s->prop_k, T, s->k_s); }
+static inline double c_solid(const MeltSpec *s, double T) { return prop_at(s, s->prop_c, T, s->c_s); }
+
+/* the solid's enthalpy, rho times the integral of c from 0 K to T (c constant below the table's first point) */
+static double H_solid(const Melt *M, double T) {
+    const MeltSpec *s = &M->s;
+    int n = s->nprop;
+    if (n <= 0) return s->rho * s->c_s * T;
+    if (T <= s->prop_T[0]) return s->rho * s->prop_c[0] * T;
+    if (T >= s->prop_T[n - 1]) return M->Hp[n - 1] + s->rho * s->prop_c[n - 1] * (T - s->prop_T[n - 1]);
+    int i = 0;
+    while (i + 2 < n && s->prop_T[i + 1] <= T) i++;
+    double d = T - s->prop_T[i], m = (s->prop_c[i + 1] - s->prop_c[i]) / (s->prop_T[i + 1] - s->prop_T[i]);
+    return M->Hp[i] + s->rho * (s->prop_c[i] * d + 0.5 * m * d * d);
+}
+
+/* its inverse: within a segment the enthalpy is quadratic in T */
+static double T_solid(const Melt *M, double H) {
+    const MeltSpec *s = &M->s;
+    int n = s->nprop;
+    if (n <= 0) return H / (s->rho * s->c_s);
+    if (H <= M->Hp[0]) return H / (s->rho * s->prop_c[0]);
+    if (H >= M->Hp[n - 1]) return s->prop_T[n - 1] + (H - M->Hp[n - 1]) / (s->rho * s->prop_c[n - 1]);
+    int lo = 0, hi = n - 1;
+    while (hi - lo > 1) {
+        int mid = (lo + hi) / 2;
+        if (M->Hp[mid] <= H) lo = mid;
+        else hi = mid;
+    }
+    double c0 = s->prop_c[lo], m = (s->prop_c[hi] - c0) / (s->prop_T[hi] - s->prop_T[lo]), e = (H - M->Hp[lo]) / s->rho;
+    double d = fabs(m) < 1e-15 ? e / c0 : 2 * e / (c0 + sqrt(c0 * c0 + 2 * m * e)); /* the root of m d^2 / 2 + c0 d = e, stable */
+    return s->prop_T[lo] + d;
+}
+
 double melt_T_of_H(const Melt *M, double H) {
     const MeltSpec *s = &M->s;
-    if (H <= M->Hs) return H / (s->rho * s->c_s);
+    if (H <= M->Hs) return T_solid(M, H);
     if (H >= M->Hl) return s->T_l + (H - M->Hl) / (s->rho * s->c_l);
     return s->T_s + (s->T_l - s->T_s) * (H - M->Hs) / (M->Hl - M->Hs);
 }
 
 double melt_H_of_T(const Melt *M, double T) {
     const MeltSpec *s = &M->s;
-    if (T <= s->T_s) return s->rho * s->c_s * T;
+    if (T <= s->T_s) return H_solid(M, T);
     if (T >= s->T_l && (T > s->T_l || s->T_l > s->T_s)) return M->Hl + s->rho * s->c_l * (T - s->T_l);
     return M->Hs + (M->Hl - M->Hs) * (s->T_l > s->T_s ? (T - s->T_s) / (s->T_l - s->T_s) : 0);
 }
@@ -55,6 +105,15 @@ Melt *melt_create(const MeltSpec *s, char *err, size_t errlen) {
         snprintf(err, errlen, "melt: need cells, a cell size, positive properties, liquidus at or above solidus, at most 16 tracks");
         return NULL;
     }
+    if (s->nprop < 0 || s->nprop > 32 || s->nprop == 1) {
+        snprintf(err, errlen, "melt: a property table needs 2 to 32 points");
+        return NULL;
+    }
+    for (int i = 0; i < s->nprop; i++)
+        if (!(s->prop_k[i] > 0) || !(s->prop_c[i] > 0) || (i > 0 && !(s->prop_T[i] > s->prop_T[i - 1])) || !(s->prop_T[i] > 0)) {
+            snprintf(err, errlen, "melt: the property table needs rising temperatures and positive conductivities and specific heats");
+            return NULL;
+        }
     double cells = (double)s->n[0] * s->n[1] * s->n[2];
     if (cells > 3e7) {
         snprintf(err, errlen, "melt: %.0f cells is more than this build runs (30 million)", cells);
@@ -63,17 +122,22 @@ Melt *melt_create(const MeltSpec *s, char *err, size_t errlen) {
     Melt *M = calloc(1, sizeof *M);
     if (!M) return NULL;
     M->s = *s, M->nx = s->n[0], M->ny = s->n[1], M->nz = s->n[2], M->n = (size_t)cells;
-    M->Hs = s->rho * s->c_s * s->T_s;
-    M->Hl = M->Hs + s->rho * (0.5 * (s->c_s + s->c_l) * (s->T_l - s->T_s) + s->L);
+    if (s->nprop > 0) { /* the enthalpy at each point of the table: the exact integral of the linear pieces */
+        M->Hp[0] = s->rho * s->prop_c[0] * s->prop_T[0];
+        for (int i = 1; i < s->nprop; i++)
+            M->Hp[i] = M->Hp[i - 1] + s->rho * 0.5 * (s->prop_c[i - 1] + s->prop_c[i]) * (s->prop_T[i] - s->prop_T[i - 1]);
+    }
+    M->Hs = H_solid(M, s->T_s);
+    M->Hl = M->Hs + s->rho * (0.5 * (c_solid(s, s->T_s) + s->c_l) * (s->T_l - s->T_s) + s->L);
     M->H = malloc(M->n * sizeof(double)), M->Hn = malloc(M->n * sizeof(double)), M->T = malloc(M->n * sizeof(double));
-    M->f = malloc(M->n * sizeof(double)), M->fmax = calloc(M->n, sizeof(double)), M->k = malloc(M->n * sizeof(double));
-    if (!M->H || !M->Hn || !M->T || !M->f || !M->fmax || !M->k) {
+    M->f = malloc(M->n * sizeof(double)), M->Hmax = malloc(M->n * sizeof(double)), M->k = malloc(M->n * sizeof(double));
+    if (!M->H || !M->Hn || !M->T || !M->f || !M->Hmax || !M->k) {
         melt_free(M);
         snprintf(err, errlen, "melt: out of memory");
         return NULL;
     }
     double H0 = melt_H_of_T(M, s->T0);
-    for (size_t i = 0; i < M->n; i++) M->H[i] = H0;
+    for (size_t i = 0; i < M->n; i++) M->H[i] = M->Hmax[i] = H0;
     if (s->flow) {
         if (!(s->mu > 0) || M->nx < 4 || M->ny < 1 || M->nz < 4) {
             melt_free(M);
@@ -97,7 +161,7 @@ Melt *melt_create(const MeltSpec *s, char *err, size_t errlen) {
 
 void melt_free(Melt *M) {
     if (!M) return;
-    free(M->H), free(M->Hn), free(M->T), free(M->f), free(M->fmax), free(M->k);
+    free(M->H), free(M->Hn), free(M->T), free(M->f), free(M->Hmax), free(M->k);
     free(M->u), free(M->v), free(M->w), free(M->us), free(M->vs), free(M->ws), free(M->cx), free(M->cy), free(M->cz), free(M->p), free(M->rhs);
     mg3d_free(M->mg);
     free(M->wcx), free(M->wcy), free(M->wcz), free(M->wp), free(M->wr);
@@ -106,7 +170,8 @@ void melt_free(Melt *M) {
 
 double melt_stable_dt(const Melt *M) {
     const MeltSpec *s = &M->s;
-    double a = fmax(s->k_s / (s->rho * s->c_s), s->k_l / (s->rho * s->c_l));
+    double a = fmax(s->nprop > 0 ? 0 : s->k_s / (s->rho * s->c_s), s->k_l / (s->rho * s->c_l));
+    for (int i = 0; i < s->nprop; i++) a = fmax(a, s->prop_k[i] / (s->rho * s->prop_c[i])); /* the fastest diffusion anywhere */
     int dims = (M->nx > 1) + (M->ny > 1) + (M->nz > 1);
     double dt = 0.9 * s->h * s->h / (2 * (dims ? dims : 1) * a);
     if (s->flow) { /* the viscous limit and the last step's fastest face (advection, first order, forward Euler) */
@@ -145,8 +210,9 @@ static void state(void *vc, int r0, int r1, int tid) {
         for (int i = 0; i < M->nx; i++) {
             size_t c = (size_t)r * M->nx + i;
             double H = M->H[c], f = H <= M->Hs ? 0 : H >= M->Hl ? 1 : (H - M->Hs) / (M->Hl - M->Hs);
-            M->T[c] = melt_T_of_H(M, H), M->f[c] = f, M->k[c] = s->k_s + f * (s->k_l - s->k_s);
-            if (f > M->fmax[c]) M->fmax[c] = f;
+            double T = melt_T_of_H(M, H), ks = k_solid(s, f > 0 ? s->T_s : T); /* the solid's own k(T); at the solidus in the mushy range */
+            M->T[c] = T, M->f[c] = f, M->k[c] = ks + f * (s->k_l - ks);
+            if (H > M->Hmax[c]) M->Hmax[c] = H;
         }
 }
 
@@ -457,7 +523,10 @@ void melt_fields(const Melt *M, float *T, float *f, float *fmx) {
         double H = M->H[c], fr = H <= M->Hs ? 0 : H >= M->Hl ? 1 : (H - M->Hs) / (M->Hl - M->Hs);
         if (T) T[c] = (float)melt_T_of_H(M, H);
         if (f) f[c] = (float)fr;
-        if (fmx) fmx[c] = (float)fmax(M->fmax[c], fr);
+        if (fmx) {
+            double Hm = fmax(M->Hmax[c], H);
+            fmx[c] = (float)(Hm <= M->Hs ? 0 : Hm >= M->Hl ? 1 : (Hm - M->Hs) / (M->Hl - M->Hs));
+        }
     }
 }
 
@@ -465,6 +534,74 @@ void melt_energy(const Melt *M, double *absorbed, double *surface_loss, double *
     if (absorbed) *absorbed = M->absorbed;
     if (surface_loss) *surface_loss = M->lost;
     if (held_out) *held_out = M->held_out;
+}
+
+bool melt_track_size(const Melt *M, double x0, double x1, double *width, double *depth) {
+    const double h = M->s.h;
+    double wmax = 0, dmax = 0;
+    for (int i = 0; i < M->nx; i++) {
+        double xc = M->s.origin[0] + (i + 0.5) * h;
+        if (xc < x0 || xc > x1) continue;
+        int jlo = M->ny, jhi = -1, klo = M->nz;
+        for (int k = 0; k < M->nz; k++)
+            for (int j = 0; j < M->ny; j++) {
+                size_t c = ((size_t)k * M->ny + j) * M->nx + i;
+                double H = fmax(M->Hmax[c], M->H[c]), fr = H <= M->Hs ? 0 : H >= M->Hl ? 1 : (H - M->Hs) / (M->Hl - M->Hs);
+                if (fr < 0.5) continue;
+                if (j < jlo) jlo = j;
+                if (j > jhi) jhi = j;
+                if (k < klo) klo = k;
+            }
+        if (jhi < 0) continue;
+        wmax = fmax(wmax, (jhi - jlo + 1) * h), dmax = fmax(dmax, (M->nz - klo) * h);
+    }
+    if (width) *width = wmax;
+    if (depth) *depth = dmax;
+    return wmax > 0;
+}
+
+bool melt_track_section(const Melt *M, double x0, double x1, bool mirror_y, double *width, double *depth, double *width_max, double *depth_max,
+                        bool *touches) {
+    const double h = M->s.h, Hh = 0.5 * (M->Hs + M->Hl), top = M->s.origin[2] + M->nz * h;
+    double wsum = 0, dsum = 0, wmax = 0, dmax = 0;
+    int nsec = 0;
+    bool edge = false;
+    for (int i = 0; i < M->nx; i++) {
+        double xc = M->s.origin[0] + (i + 0.5) * h;
+        if (xc < x0 || xc > x1) continue;
+        double ylo = INFINITY, yhi = -INFINITY, zlo = INFINITY;
+        for (int k = 0; k < M->nz; k++)
+            for (int j = 0; j < M->ny; j++) {
+                double Hc = fmax(M->Hmax[CC(M, i, j, k)], M->H[CC(M, i, j, k)]);
+                if (Hc < Hh) continue;
+                double yc = M->s.origin[1] + (j + 0.5) * h, zc = M->s.origin[2] + (k + 0.5) * h;
+                /* the boundary between this cell's centre and a neighbour's that stayed below: linear in between */
+                if (j + 1 < M->ny) {
+                    double Hn = fmax(M->Hmax[CC(M, i, j + 1, k)], M->H[CC(M, i, j + 1, k)]);
+                    if (Hn < Hh) yhi = fmax(yhi, yc + h * (Hc - Hh) / (Hc - Hn));
+                } else yhi = fmax(yhi, yc + 0.5 * h), edge = true;
+                if (j > 0) {
+                    double Hn = fmax(M->Hmax[CC(M, i, j - 1, k)], M->H[CC(M, i, j - 1, k)]);
+                    if (Hn < Hh) ylo = fmin(ylo, yc - h * (Hc - Hh) / (Hc - Hn));
+                } else {
+                    ylo = fmin(ylo, mirror_y ? M->s.origin[1] : yc - 0.5 * h);
+                    if (!mirror_y) edge = true;
+                }
+                if (k > 0) {
+                    double Hn = fmax(M->Hmax[CC(M, i, j, k - 1)], M->H[CC(M, i, j, k - 1)]);
+                    if (Hn < Hh) zlo = fmin(zlo, zc - h * (Hc - Hh) / (Hc - Hn));
+                } else zlo = fmin(zlo, zc - 0.5 * h), edge = true;
+            }
+        if (!(yhi > -INFINITY)) continue;
+        double w = mirror_y ? 2 * (yhi - M->s.origin[1]) : yhi - ylo, d = top - zlo;
+        wsum += w, dsum += d, wmax = fmax(wmax, w), dmax = fmax(dmax, d), nsec++;
+    }
+    if (width) *width = nsec ? wsum / nsec : 0;
+    if (depth) *depth = nsec ? dsum / nsec : 0;
+    if (width_max) *width_max = wmax;
+    if (depth_max) *depth_max = dmax;
+    if (touches) *touches = edge;
+    return nsec > 0;
 }
 
 void melt_pool_size(const Melt *M, double *length, double *width, double *depth) {

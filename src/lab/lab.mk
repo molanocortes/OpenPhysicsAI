@@ -28,7 +28,7 @@ LAB_SRC := $(filter-out $(MFEM_ONLY_C),$(wildcard src/lab/*.c) $(wildcard src/la
 CORE_SRC += $(LAB_SRC)
 CORE_OBJ += $(patsubst src/%.c,build/obj/%.o,$(LAB_SRC))
 LAB_TESTS := build/poissontest build/firetest build/roomtest build/battest build/fsitest build/melttest build/sheettest build/peritest build/euler3dtest build/lbm3dtest build/gas3dtest build/flow3dtest build/heat3dtest build/labwatertest build/labvoltest build/labscenetest build/labtest build/gastest build/actest build/imptest build/orbtest build/emtest build/flowtest build/sphtest build/hftest build/mgtest build/rttest build/wtest
-LAB_TOOLS := build/labfilm build/labprobe build/labrun
+LAB_TOOLS := build/labfilm build/labprobe build/labrun build/g20melt
 ifneq ($(wildcard $(MFEM_LIB)),)
 LAB3D_TESTS := build/magnet3dtest build/mag3dtest build/motor3dtest build/eddy3dtest
 endif
@@ -67,6 +67,9 @@ build/labfilm: tools/labfilm.c $(CORE_OBJ)
 	$(CC) $(LINK_CFLAGS) $^ -o $@ $(CORE_LDLIBS)
 
 build/labprobe: tools/labprobe.c $(CORE_OBJ)
+	$(CC) $(LINK_CFLAGS) $^ -o $@ $(CORE_LDLIBS)
+
+build/g20melt: tools/g20melt.c $(CORE_OBJ)
 	$(CC) $(LINK_CFLAGS) $^ -o $@ $(CORE_LDLIBS)
 
 build/labrun: tools/labrun.c $(CORE_OBJ)

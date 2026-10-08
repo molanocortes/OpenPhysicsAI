@@ -34,7 +34,25 @@
  *   melts the fastest face moves at 1e-16 to 1e-12 m/s, and round-off over that is of order one (the earlier runs
  *   passed only because the solid's creeping velocities kept the fastest speed finite); the divergence itself is
  *   round-off (3e-12 m/s at worst). AMENDED (2026-09-27, after this run, openly): M6 counts the steps from the first at
- *   which the fastest face exceeds 1 mm/s. Then all pass: M4 1.9e-3, M5 5.7e-15, M6 2.7e-12, M7 2.44 and 6.80. */
+ *   which the fastest face exceeds 1 mm/s. Then all pass: M4 1.9e-3, M5 5.7e-15, M6 2.7e-12, M7 2.44 and 6.80.
+ *   Added 2026-10-08 with the solid's property table (conductivity and specific heat against temperature, GOALS.md
+ *   G20), before its first run (`melttest table`):
+ *   M8 steady conduction in a bar 2 mm long (40 cells of 50 um) between faces held at 300 K and 1500 K, the conductivity
+ *      rising linearly from 10 to 28 W/(m K) over that range (a nickel alloy's trend, demonstration values), no melting:
+ *      after ten conduction times every cell's temperature within 0.2 % of the 1200 K span of Kirchhoff's closed form,
+ *      integral of k dT linear along the bar.
+ *   M9 a seven-point table of a nickel alloy's trend (demonstration values): temperature to enthalpy and back within
+ *      1e-9 K from 100 K to the solidus; and M3's block and two tracks with this table and melting: the enthalpy gained
+ *      equals the energy absorbed less the energy lost, to 1e-9 of the absorbed.
+ *   M10 a table whose two points hold the constants of a run reproduces that run (a track with melting) to 1e-9 of its
+ *      largest temperature rise.
+ *   Added 2026-10-08 with melt_track_section (GOALS.md G20 step 2), before its first run (`melttest track`):
+ *   M11 the trace of a melt isotherm: a Gaussian beam (1/e^2 radius 20 um, 40 W absorbed) crossing a block with M1's
+ *      constant properties at 0.5 m/s, melting at 1700 K with no latent heat and no mushy range (so the conduction is
+ *      Rosenthal's exactly), half the block on the track's plane of symmetry, 5 um cells: once steady, the width and
+ *      depth that melt_track_section measures within 2 % of the trace of Rosenthal's moving point source convolved
+ *      with the beam (the cross-section of the points whose largest temperature reached 1700 K, at the depth and
+ *      offset of the first cell centres). melt_track_size's whole cells are reported beside it. */
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -70,7 +88,8 @@ static double rosenthal_beam(double xi, double y, double z, double k, double a, 
 int main(int argc, char **argv) {
     ThreadPool *pool = pool_create(cpu_perf_count());
     char err[256];
-    const bool heat = argc < 2 || !strcmp(argv[1], "heat"), flow = argc < 2 || !strcmp(argv[1], "flow");
+    const bool heat = argc < 2 || !strcmp(argv[1], "heat"), flow = argc < 2 || !strcmp(argv[1], "flow"), table = argc < 2 || !strcmp(argv[1], "table");
+    const bool track = argc < 2 || !strcmp(argv[1], "track");
     if (heat) {
     printf("== M1: a beam crossing a block, against Rosenthal\n");
     {
@@ -177,7 +196,104 @@ int main(int argc, char **argv) {
             melt_free(M);
         }
     }
-    pool_destroy(pool);
+    }
+    if (table) {
+    printf("== M8: steady conduction with k(T), against Kirchhoff\n");
+    {
+        const double T1 = 300, T2 = 1500, h = 50e-6, L = 40 * h, kA = 10, b = (28.0 - 10.0) / (T2 - T1);
+        MeltSpec s = {.n = {40, 1, 1}, .h = h, .rho = 8440, .c_s = 500, .c_l = 700, .k_s = 15, .k_l = 30, .T_s = 1e6, .T_l = 1e6, .L = 0, .T0 = 900,
+                      .held_T = {T1, T2, -1, -1, -1, -1}, .nprop = 2, .prop_T = {T1, T2}, .prop_k = {10, 28}, .prop_c = {400, 700}};
+        Melt *M = melt_create(&s, err, sizeof err);
+        if (!M) {
+            printf("  %s\n", err);
+            verdict(false, "M8");
+        } else {
+            double tc = L * L / (kA / (8440.0 * 400)), tend = 10 * tc, dt = melt_stable_dt(M);
+            long steps = (long)ceil(tend / dt);
+            dt = tend / steps;
+            float *T = malloc(40 * sizeof(float)), *Tp = malloc(40 * sizeof(float));
+            for (long i = 0; i < steps; i++) {
+                melt_step(M, dt, pool);
+                if (i == steps - steps / 10) melt_fields(M, Tp, NULL, NULL);
+            }
+            melt_fields(M, T, NULL, NULL);
+            double U2 = kA * (T2 - T1) + 0.5 * b * (T2 - T1) * (T2 - T1), worst = 0, drift = 0;
+            for (int i = 0; i < 40; i++) {
+                double x = (i + 0.5) * h, U = U2 * x / L, d = (-kA + sqrt(kA * kA + 2 * b * U)) / b, ex = T1 + d;
+                worst = fmax(worst, fabs(T[i] - ex)), drift = fmax(drift, fabs(T[i] - Tp[i]));
+                if (i % 8 == 0 || i == 39) printf("  x %6.0f um: %.3f K against %.3f K\n", x * 1e6, T[i], ex);
+            }
+            printf("  %ld steps over %.2f s (10 conduction times); largest error %.4f K (%.4f %% of the span); change over the last tenth %.2e K\n",
+                   steps, tend, worst, 100 * worst / (T2 - T1), drift);
+            verdict(worst <= 0.002 * (T2 - T1), "M8");
+            free(T), free(Tp);
+            melt_free(M);
+        }
+    }
+    /* a nickel alloy's trend, demonstration values: conductivity and specific heat rise with temperature */
+    const double tT[7] = {300, 500, 700, 900, 1100, 1300, 1563}, tk[7] = {9.8, 12.5, 15.5, 18.5, 21.5, 24.5, 28}, tc7[7] = {410, 450, 490, 530, 570, 610, 650};
+    printf("== M9: enthalpy with a property table: round trips and the energy of two tracks\n");
+    {
+        MeltSpec s = {.n = {80, 50, 30}, .h = 10e-6, .origin = {0, 0, -0.3e-3}, .rho = 8440, .c_s = 500, .c_l = 720, .k_s = 20, .k_l = 30,
+                      .T_s = 1563, .T_l = 1623, .L = 2.9e5, .T0 = 300, .held_T = {-1, -1, -1, -1, -1, -1}, .h_conv = 50, .T_amb = 300,
+                      .emissivity = 0.4, .power = 150, .absorptivity = 0.35, .radius = 40e-6, .ntracks = 2,
+                      .track = {{0.1e-3, 0.18e-3, 0.7e-3, 0.18e-3, 0.8, 0}, {0.7e-3, 0.30e-3, 0.1e-3, 0.30e-3, 0.8, 1e-4}}, .nprop = 7};
+        memcpy(s.prop_T, tT, sizeof tT), memcpy(s.prop_k, tk, sizeof tk), memcpy(s.prop_c, tc7, sizeof tc7);
+        Melt *M = melt_create(&s, err, sizeof err);
+        if (!M) {
+            printf("  %s\n", err);
+            verdict(false, "M9");
+        } else {
+            double rt = 0;
+            for (int i = 0; i <= 2000; i++) {
+                double T = 100 + (s.T_s - 100) * i / 2000.0;
+                rt = fmax(rt, fabs(melt_T_of_H(M, melt_H_of_T(M, T)) - T));
+            }
+            double H0 = 0, H1 = 0, dt = melt_stable_dt(M), V = pow(s.h, 3);
+            for (size_t i = 0; i < melt_cells(M); i++) H0 += melt_enthalpy(M)[i] * V;
+            long steps = (long)ceil(2.4e-3 / dt);
+            for (long i = 0; i < steps; i++) melt_step(M, dt, pool);
+            for (size_t i = 0; i < melt_cells(M); i++) H1 += melt_enthalpy(M)[i] * V;
+            double ab, lo, ho;
+            melt_energy(M, &ab, &lo, &ho);
+            float *fm = malloc(melt_cells(M) * sizeof(float));
+            melt_fields(M, NULL, NULL, fm);
+            size_t melted = 0;
+            for (size_t c = 0; c < melt_cells(M); c++) melted += fm[c] >= 0.5;
+            double bal = (H1 - H0) - (ab - lo - ho);
+            printf("  round trip from 100 K to the solidus: worst %.2e K; absorbed %.6g J, lost %.4g J, stored %.6g J, imbalance %.2e of absorbed; %zu cells "
+                   "melted\n", rt, ab, lo, H1 - H0, fabs(bal) / ab, melted);
+            verdict(rt <= 1e-9 && fabs(bal) / ab <= 1e-9 && melted > 0, "M9");
+            free(fm);
+            melt_free(M);
+        }
+    }
+    printf("== M10: a table of constants reproduces the constants\n");
+    {
+        MeltSpec s = {.n = {80, 40, 30}, .h = 10e-6, .origin = {0, 0, -0.3e-3}, .rho = 7950, .c_s = 500, .c_l = 800, .k_s = 20, .k_l = 30,
+                      .T_s = 1658, .T_l = 1723, .L = 2.7e5, .T0 = 300, .held_T = {-1, -1, -1, -1, -1, -1}, .h_conv = 50, .T_amb = 300,
+                      .emissivity = 0.4, .power = 150, .absorptivity = 0.35, .radius = 40e-6, .ntracks = 1,
+                      .track = {{0.1e-3, 0.2e-3, 0.7e-3, 0.2e-3, 0.8, 0}}};
+        MeltSpec t = s;
+        t.nprop = 2, t.prop_T[0] = 200, t.prop_T[1] = 2500, t.prop_k[0] = t.prop_k[1] = s.k_s, t.prop_c[0] = t.prop_c[1] = s.c_s;
+        Melt *A = melt_create(&s, err, sizeof err), *B = melt_create(&t, err, sizeof err);
+        if (!A || !B) {
+            printf("  %s\n", err);
+            verdict(false, "M10");
+        } else {
+            double dt = melt_stable_dt(A);
+            long steps = (long)ceil(0.9e-3 / dt);
+            for (long i = 0; i < steps; i++) melt_step(A, dt, pool), melt_step(B, dt, pool);
+            float *Ta = malloc(melt_cells(A) * sizeof(float)), *Tb = malloc(melt_cells(B) * sizeof(float));
+            melt_fields(A, Ta, NULL, NULL), melt_fields(B, Tb, NULL, NULL);
+            double diff = 0, rise = 0;
+            for (size_t c = 0; c < melt_cells(A); c++) diff = fmax(diff, fabs((double)Ta[c] - Tb[c])), rise = fmax(rise, Ta[c] - 300.0);
+            printf("  %ld steps; largest difference %.3e K against a rise of %.1f K (%.1e)\n", steps, diff, rise, diff / rise);
+            verdict(diff <= 1e-9 * rise, "M10");
+            free(Ta), free(Tb);
+        }
+        melt_free(A), melt_free(B);
+    }
     }
     if (flow) {
     printf("== M4: the thermocapillary return flow in a liquid layer\n");
@@ -245,6 +361,59 @@ int main(int argc, char **argv) {
         verdict(ratio[1] > 1.1 * ratio[0], "M7");
     }
     }
+    if (track) {
+    printf("== M11: the trace a melt isotherm leaves, against Rosenthal\n");
+    {
+        const double h = 5e-6, w = 20e-6, k = 25, rho = 7800, c = 500, v = 0.5, P = 40, a = k / (rho * c), T0 = 300, Tm = 1700;
+        /* the reference: the steady field's largest temperature over the passage, at the first cell centres' depth (for
+         * the width) and offset from the plane of symmetry (for the depth), found by bisection on the boundary and a
+         * golden-section search for the peak along the track */
+        double zc = 0.5 * h, yc = 0.5 * h;
+        double ref[2];
+        for (int q = 0; q < 2; q++) {
+            double lo = 1e-6, hi = 400e-6;
+            for (int it = 0; it < 40; it++) {
+                double m = 0.5 * (lo + hi), y = q == 0 ? m : yc, z = q == 0 ? zc : m;
+                double xa = -600e-6, xb = 60e-6, g = 0.5 * (sqrt(5.0) - 1);
+                double x1 = xb - g * (xb - xa), x2 = xa + g * (xb - xa);
+                double f1 = rosenthal_beam(x1, y, z, k, a, v, w, P), f2 = rosenthal_beam(x2, y, z, k, a, v, w, P);
+                for (int s2 = 0; s2 < 40; s2++) {
+                    if (f1 > f2) xb = x2, x2 = x1, f2 = f1, x1 = xb - g * (xb - xa), f1 = rosenthal_beam(x1, y, z, k, a, v, w, P);
+                    else xa = x1, x1 = x2, f1 = f2, x2 = xa + g * (xb - xa), f2 = rosenthal_beam(x2, y, z, k, a, v, w, P);
+                }
+                *(T0 + fmax(f1, f2) >= Tm ? &lo : &hi) = m;
+            }
+            ref[q] = 0.5 * (lo + hi);
+        }
+        double ref_w = 2 * ref[0], ref_d = ref[1];
+        MeltSpec s = {.n = {330, 60, 60}, .h = h, .origin = {-1.5e-3, 0, -0.3e-3}, .rho = rho, .c_s = c, .c_l = c, .k_s = k, .k_l = k,
+                      .T_s = Tm, .T_l = Tm, .L = 0, .T0 = T0, .held_T = {T0, T0, -1, T0, T0, -1}, .power = P, .absorptivity = 1, .radius = w,
+                      .ntracks = 1, .track = {{-1.4e-3, 0, 0, 0, v, 0}}};
+        Melt *M = melt_create(&s, err, sizeof err);
+        if (!M) {
+            printf("  %s\n", err);
+            verdict(false, "M11");
+        } else {
+            double dt = melt_stable_dt(M), tend = 1.4e-3 / v * 0.9999;
+            long steps = (long)ceil(tend / dt);
+            dt = tend / steps;
+            for (long i = 0; i < steps; i++) melt_step(M, dt, pool);
+            double W, D, Wm, Dm, Wc, Dc;
+            bool touch = false, got = melt_track_section(M, -0.6e-3, -0.5e-3, true, &W, &D, &Wm, &Dm, &touch);
+            melt_track_size(M, -0.6e-3, -0.5e-3, &Wc, &Dc);
+            /* melt_track_size counts the whole half block's cells from y = 0: twice that is the full width */
+            printf("  Rosenthal's trace: width %.2f um, depth %.2f um\n", 1e6 * ref_w, 1e6 * ref_d);
+            printf("  melt_track_section: width %.2f um (%+.2f %%), depth %.2f um (%+.2f %%); the largest of the sections %.2f and %.2f%s\n",
+                   1e6 * W, 100 * (W / ref_w - 1), 1e6 * D, 100 * (D / ref_d - 1), 1e6 * Wm, 1e6 * Dm, touch ? "; the melt touched a face" : "");
+            printf("  melt_track_size's whole cells: width %.1f um (%+.1f %%), depth %.1f um (%+.1f %%)\n", 2e6 * Wc, 100 * (2 * Wc / ref_w - 1), 1e6 * Dc,
+                   100 * (Dc / ref_d - 1));
+            printf("  %ld steps of %.3g s, %zu cells\n", steps, dt, melt_cells(M));
+            verdict(got && !touch && fabs(W / ref_w - 1) < 0.02 && fabs(D / ref_d - 1) < 0.02, "M11");
+            melt_free(M);
+        }
+    }
+    }
+    pool_destroy(pool); /* at the end: the flow cases used to run after the heat cases had destroyed it */
     printf(failures ? "melttest: %d FAILED\n" : "melttest: all passed\n", failures);
     return failures ? 1 : 0;
 }

@@ -25,7 +25,7 @@ million, the planets perturb each other, and relativity is not optional.
 
 <!-- board:begin -->
 
-**Attempts** 2 · **Challengers** 1 · **Record** 100 by @molanocortes · **First clear** @molanocortes, 2026-09-26
+**Attempts** 3 · **Challengers** 1 · **Record** 100 by @molanocortes · **First clear** @molanocortes, 2026-09-26
 
 | Rank | Challenger | Score | Date |
 | :---: | :--- | ---: | :--- |

@@ -44,6 +44,12 @@ typedef struct MeltSpec {
     int flow;
     double mu, dsigma_dT, mushy_C;
     int slip_y;
+    /* the solid's conductivity and specific heat against temperature (optional, G20): nprop points, prop_T rising (K),
+     * prop_k W/(m K), prop_c J/(kg K), linear between points and constant beyond the ends; without them k_s and c_s
+     * hold. The enthalpy is the exact integral of the piecewise-linear specific heat. The liquid keeps k_l and c_l; the
+     * mushy range blends the solid's values at the solidus with the liquid's. */
+    int nprop;
+    double prop_T[32], prop_k[32], prop_c[32];
 } MeltSpec;
 
 typedef struct Melt Melt;
@@ -72,3 +78,14 @@ double melt_max_speed(const Melt *M);
 double melt_divergence_error(const Melt *M);
 /* the melt pool now: its length along the track, width, depth (m) from the cells with liquid fraction >= 1/2 */
 void melt_pool_size(const Melt *M, double *length, double *width, double *depth);
+/* the track the pool left between x0 and x1 (m, along x): the largest width (in y) and depth of the cross-sections of
+ * cells that reached a liquid fraction of 1/2, as a cut through the solidified track measures them; a cell counts its
+ * whole size, so each is within one cell of the truth. False when nothing melted there. */
+bool melt_track_size(const Melt *M, double x0, double x1, double *width, double *depth);
+/* the same to a fraction of a cell (GOALS.md G20): in each cross-section between x0 and x1 the largest enthalpy each
+ * cell reached is interpolated linearly between cell centres to the enthalpy of liquid fraction 1/2, sideways for the
+ * width and downward for the depth. With mirror_y the y- face is the track's plane of symmetry (half the block) and the
+ * width is twice the boundary's distance from it. The mean over the sections that melted, and the largest; touches
+ * when the melted metal reached a face of the block other than the top (and the mirror): the block was too small. */
+bool melt_track_section(const Melt *M, double x0, double x1, bool mirror_y, double *width, double *depth, double *width_max, double *depth_max,
+                        bool *touches);

@@ -15,8 +15,9 @@
 #include "../lab_domains.h"
 #include "../labio.h"
 #include "melt.h"
+#include "mt_scenario.h"
 
-bool lab_run_melt(const JsonValue *root, const char *out, bool quiet, LabRunInfo *info, char *err, size_t errlen) {
+bool melt_scenario_spec(const JsonValue *root, MeltSpec *sp, double *end_s, char *err, size_t errlen) {
     const JsonValue *mat = json_get(root, "metal"), *blk = json_get(root, "block"), *beam = json_get(root, "beam"), *run = json_get(root, "run");
     MeltSpec s = {0};
     double size[3], org[3] = {0, 0, 0};
@@ -25,14 +26,23 @@ bool lab_run_melt(const JsonValue *root, const char *out, bool quiet, LabRunInfo
     s.k_l = json_get_num(mat, "conductivity_liquid_w_mk", -1), s.T_s = json_get_num(mat, "solidus_k", -1);
     s.T_l = json_get_num(mat, "liquidus_k", -1), s.L = json_get_num(mat, "latent_heat_j_kg", -1);
     s.emissivity = json_get_num(mat, "emissivity", 0);
+    const JsonValue *tab = json_get(mat, "solid_table"); /* [{temperature_k, conductivity_w_mk, specific_heat_j_kgk}], rising */
+    if (tab) {
+        s.nprop = (int)json_len(tab);
+        if (s.nprop > 32) s.nprop = -1; /* refused by melt_create, with its reason */
+        for (int i = 0; i < s.nprop; i++) {
+            const JsonValue *e = json_at(tab, (size_t)i);
+            s.prop_T[i] = json_get_num(e, "temperature_k", -1), s.prop_k[i] = json_get_num(e, "conductivity_w_mk", -1);
+            s.prop_c[i] = json_get_num(e, "specific_heat_j_kgk", -1);
+        }
+    }
     s.h = json_get_num(blk, "cell_m", -1), s.T0 = json_get_num(root, "initial_temperature_k", 293.15);
     s.T_amb = json_get_num(root, "ambient_temperature_k", s.T0), s.h_conv = json_get_num(root, "convection_w_m2k", 0);
     s.power = json_get_num(beam, "power_w", -1), s.absorptivity = json_get_num(beam, "absorptivity", -1), s.radius = json_get_num(beam, "radius_m", -1);
     double end = json_get_num(run, "end_s", -1);
-    int frames = (int)json_get_int(run, "frames", 60), every = (int)json_get_int(blk, "output_every", 1);
     const JsonValue *tracks = json_get(beam, "tracks");
     if (!json_get_str(mat, "source", NULL) || !json_get_numbers(json_get(blk, "size_m"), size, 3) || !(s.h > 0) || !(s.power > 0) ||
-        !(s.absorptivity > 0) || !(s.radius > 0) || !tracks || !json_len(tracks) || !(end > 0) || frames < 1 || every < 1) {
+        !(s.absorptivity > 0) || !(s.radius > 0) || !tracks || !json_len(tracks) || !(end > 0)) {
         snprintf(err, errlen, "melt: metal {density_kg_m3, specific_heat_solid_j_kgk, specific_heat_liquid_j_kgk, conductivity_solid_w_mk, "
                               "conductivity_liquid_w_mk, solidus_k, liquidus_k, latent_heat_j_kg, source}, block {size_m, cell_m}, beam {power_w, "
                               "absorptivity, radius_m, tracks [{from_m, to_m, speed_m_s}]} and run {end_s, frames} are required");
@@ -40,9 +50,21 @@ bool lab_run_melt(const JsonValue *root, const char *out, bool quiet, LabRunInfo
     }
     json_get_numbers(json_get(blk, "origin_m"), org, 3);
     for (int a = 0; a < 3; a++) s.n[a] = (int)lround(size[a] / s.h), s.origin[a] = org[a];
-    s.n[0] -= s.n[0] % every, s.n[1] -= s.n[1] % every, s.n[2] -= s.n[2] % every;
     for (int d = 0; d < 6; d++) s.held_T[d] = -1;
     s.held_T[4] = json_get_num(blk, "bottom_held_k", -1); /* the plate on a thick base plate: its bottom may be held */
+    const JsonValue *hf = json_get(blk, "held_faces"); /* faces held at the initial temperature: "x-", "x+", "y-", "y+", "z-" */
+    for (size_t i = 0; i < json_len(hf); i++) {
+        static const char *const FN[5] = {"x-", "x+", "y-", "y+", "z-"};
+        const char *f = json_str(json_at(hf, i));
+        int d = -1;
+        for (int q = 0; q < 5; q++)
+            if (f && !strcmp(f, FN[q])) d = q;
+        if (d < 0) {
+            snprintf(err, errlen, "melt: block.held_faces takes x-, x+, y-, y+ and z- (the top carries the beam)");
+            return false;
+        }
+        s.held_T[d] = s.T0;
+    }
     s.ntracks = (int)json_len(tracks);
     if (s.ntracks > 16) {
         snprintf(err, errlen, "melt: at most 16 tracks");
@@ -62,11 +84,31 @@ bool lab_run_melt(const JsonValue *root, const char *out, bool quiet, LabRunInfo
     if (fl) {
         s.flow = 1, s.mu = json_get_num(fl, "viscosity_pa_s", -1), s.dsigma_dT = json_get_num(fl, "dsigma_dT_n_mk", 0);
         s.mushy_C = json_get_num(fl, "mushy_constant_kg_m3s", 0);
+        s.slip_y = json_get_bool(blk, "mirror_y", false); /* the y- face a plane of symmetry: free slip there */
         if (!(s.mu > 0) || !json_get_str(fl, "source", NULL)) {
             snprintf(err, errlen, "melt: melt_flow {viscosity_pa_s, dsigma_dT_n_mk, source} (mushy_constant_kg_m3s optional)");
             return false;
         }
     }
+    *sp = s;
+    if (end_s) *end_s = end;
+    return true;
+}
+
+bool lab_run_melt(const JsonValue *root, const char *out, bool quiet, LabRunInfo *info, char *err, size_t errlen) {
+    const JsonValue *blk = json_get(root, "block"), *run = json_get(root, "run");
+    const JsonValue *fl = json_get(root, "melt_flow");
+    MeltSpec s;
+    double end;
+    if (!melt_scenario_spec(root, &s, &end, err, errlen)) return false;
+    double size[3];
+    json_get_numbers(json_get(blk, "size_m"), size, 3);
+    int frames = (int)json_get_int(run, "frames", 60), every = (int)json_get_int(blk, "output_every", 1);
+    if (frames < 1 || every < 1) {
+        snprintf(err, errlen, "melt: run.frames and block.output_every must be at least 1");
+        return false;
+    }
+    s.n[0] -= s.n[0] % every, s.n[1] -= s.n[1] % every, s.n[2] -= s.n[2] % every;
     Melt *M = melt_create(&s, err, errlen);
     if (!M) return false;
     const int ox = s.n[0] / every, oy = s.n[1] / every, oz = s.n[2] / every;
@@ -75,7 +117,13 @@ bool lab_run_melt(const JsonValue *root, const char *out, bool quiet, LabRunInfo
     bool mok = meta && json_set_string(meta, "domain", "melt") && json_set_string(meta, "title", json_get_str(root, "title", "melt")) &&
                json_set_string(meta, "model", fl ? "3D conduction with melting and solidification (enthalpy method), Gaussian beam, Marangoni flow in the melt"
                                                  : "3D conduction with melting and solidification (enthalpy method), Gaussian beam; no flow in the melt") &&
-               json_set_string(meta, "volume_look", "solid") && json_set(meta, "scenario", json_clone(root));
+               json_set_string(meta, "volume_look", "solid") && json_set(meta, "scenario", json_clone(root)) &&
+               /* the solver's own blind record against measured tracks, not a statement about this run */
+               json_set_string(meta, "measured_accuracy",
+                               "blind against NIST AM-Bench single tracks in IN625 and IN718 (GOALS.md G20 step 2), conduction, the "
+                               "absorptivity fixed on one calibration track: the conduction-mode tracks within a median 11 % in width and "
+                               "depth; keyhole tracks' width within 12 % but their depth 42 to 76 % short, where NIST measured about twice "
+                               "the absorbed power the model uses");
     JsonValue *fields = mok ? json_set_object(meta, "fields") : NULL;
     mok = mok && fields && json_set_string(fields, "T", "K") && json_set_string(fields, "melted", "1");
     if (mok && fl) mok = json_set_string(fields, "speed", "m/s");

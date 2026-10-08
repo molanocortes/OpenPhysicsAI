@@ -99,8 +99,8 @@
 <text x="640" y="82" text-anchor="middle" fill="#8b97ab" font-size="14">Flags captured first, then power: a flag counts once, a semi holy grail twice, a holy grail three times</text>
 <rect x="515" y="190" width="250" height="188" rx="8" fill="url(#g1)"/>
 <text x="640" y="248" text-anchor="middle" fill="#10151f" fill-opacity="0.75" font-size="46" font-weight="800">1</text>
-<text x="640" y="152" text-anchor="middle" fill="#6c7890" font-size="20" font-style="italic">unclaimed</text>
-<text x="640" y="176" text-anchor="middle" fill="#4c5870" font-size="14">your name here<animate attributeName="opacity" values="0.35;1;0.35" dur="3.5s" begin="1s" repeatCount="indefinite"/></text>
+<text x="640" y="150" text-anchor="middle" fill="#f4f7fb" font-size="22.0" font-weight="700">@molanocortes</text>
+<text x="640" y="174" text-anchor="middle" fill="#f2c14e" font-size="15">0 captured · power 10</text>
 <rect x="250" y="238" width="250" height="140" rx="8" fill="url(#g2)"/>
 <text x="375" y="296" text-anchor="middle" fill="#10151f" fill-opacity="0.75" font-size="46" font-weight="800">2</text>
 <text x="375" y="200" text-anchor="middle" fill="#6c7890" font-size="20" font-style="italic">unclaimed</text>

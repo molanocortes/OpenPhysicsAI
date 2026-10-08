@@ -72,11 +72,23 @@ Criteria written on 2026-09-26 before the first run; all passed on it.
 | M5 a track with the flow, insulated block | energy balance | 1e-9 of absorbed | 5.7e-15 |
 | M6 the same run | the divergence left by each projection | 1e-8 of the fastest speed | 2.7e-12 |
 | M7 the same run against the same track without flow | the pool wider for its depth (Heiple and Roper), qualitative | 10 % | width over depth 2.44 to 6.80 |
+| M8 steady conduction in a bar between 300 K and 1500 K, the conductivity rising from 10 to 28 W/(m K) (added 2026-10-08 with the property table, GOALS.md G20) | Kirchhoff's closed form, the integral of k dT linear along the bar | 0.2 % of the span | 0.045 % |
+| M9 a seven-point table of a nickel alloy's trend (demonstration values) | temperature to enthalpy and back from 100 K to the solidus; the energy of two tracks with melting | 1e-9 K; 1e-9 of absorbed | 2.3e-13 K; 3.1e-12 |
+| M10 a table holding a run's constants | the same run with the constants | 1e-9 of the largest rise | identical |
+| M11 the trace a melt isotherm leaves: a beam crossing a block with no latent heat (added 2026-10-08 with `melt_track_section`, GOALS.md G20 step 2) | the cross-section of the points whose largest temperature reached the melting point, from Rosenthal's source convolved with the beam | 2 % on width and depth | +0.26 %, +0.23 % (whole cells: -0.1 %, +3.8 %) |
 
 M6 failed twice before passing, and the test's header has both runs. First, the projection solved to 1e-10, which left
 1e-7 of divergence against the solid's tiny coefficients; it now solves to 1e-12. Then, the steps just after the first
 cell melts have a fastest speed of 1e-16 m/s, where the ratio is round-off; M6 now counts from 1 mm/s, by an open
-amendment. `melttest heat` runs M1 to M3 and `melttest flow` runs M4 to M7 (together about 5 minutes).
+amendment. `melttest heat` runs M1 to M3, `melttest flow` runs M4 to M7 (together about 5 minutes) and `melttest table` M8 to M10
+(seconds), `melttest track` M11 (under a minute). `melt_track_size` reads a solidified track as a cross-section
+measures it: the widest and deepest section of the cells that reached a liquid fraction of one half, within one cell.
+`melt_track_section` reads it to a fraction of a cell: the solver keeps the largest enthalpy each cell has reached, and
+in each cross-section that is interpolated between cell centres to the enthalpy of liquid fraction one half, sideways
+for the width and downward for the depth; it returns the mean and the largest over the sections read.
+`tools/g20melt.c` (`build/g20melt CASE.json`) runs one scenario with a `measure` {`from_m`, `to_m`} stretch and prints
+that cross-section, the pool's length, the energy balance and the cost as one JSON line, without writing frames;
+`tools/g20_melt.py` drives it for the NIST AM-Bench single tracks of GOALS.md G20 step 2. Every melt record's header carries the result as `measured_accuracy` (since 2026-10-08, G20 step 6): the conduction-mode tracks within a median 11 % in width and depth, the keyhole tracks' depth 42 to 76 % short, where NIST's measured coupling on IN718 (mds2-3842) is about twice the calibrated absorptivity.
 
 ## Running it
 
@@ -89,8 +101,12 @@ make lab
 
 Keys ([laser_tracks.json](../../examples/lab/laser_tracks.json)): `metal` {`density_kg_m3`,
 `specific_heat_solid_j_kgk`, `specific_heat_liquid_j_kgk`, `conductivity_solid_w_mk`, `conductivity_liquid_w_mk`,
-`solidus_k`, `liquidus_k`, `latent_heat_j_kg`, `emissivity`, `source`}, `block` {`size_m`, `origin_m`, `cell_m`,
-`output_every` (cells averaged per output cell along each axis), `bottom_held_k`}, `beam` {`power_w`, `absorptivity`,
+`solidus_k`, `liquidus_k`, `latent_heat_j_kg`, `emissivity`, `source`, and optionally `solid_table` [{`temperature_k`,
+`conductivity_w_mk`, `specific_heat_j_kgk`}], 2 to 32 rising points: the solid's conductivity and specific heat against
+temperature, linear between points and constant beyond them, the enthalpy their exact integral}, `block` {`size_m`, `origin_m`, `cell_m`,
+`output_every` (cells averaged per output cell along each axis), `bottom_held_k`, `held_faces` (any of `x-`, `x+`,
+`y-`, `y+`, `z-`, held at the initial temperature), `mirror_y` (the y- face is the track's plane of symmetry: free slip
+there for the flow)}, `beam` {`power_w`, `absorptivity`,
 `radius_m`, `tracks` [{`from_m`, `to_m`, `speed_m_s`, `pause_s`}], `source`}, `initial_temperature_k`,
 `ambient_temperature_k`, `convection_w_m2k`, `run` {`end_s`, `frames`}. The result has a block part `plate` (fields
 `T` and `melted`, the largest liquid fraction each cell reached) and the beam as a line. In the app, `lab section x 0.5`,

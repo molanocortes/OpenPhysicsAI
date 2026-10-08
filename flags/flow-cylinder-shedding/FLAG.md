@@ -21,7 +21,7 @@ really two-dimensional sheds a little faster than one with oblique shedding.
 
 <!-- board:begin -->
 
-**Attempts** 2 · **Challengers** 1 · **Record** 65 by @molanocortes · **First clear** still to be won
+**Attempts** 3 · **Challengers** 1 · **Record** 65 by @molanocortes · **First clear** still to be won
 
 | Rank | Challenger | Score | Date |
 | :---: | :--- | ---: | :--- |

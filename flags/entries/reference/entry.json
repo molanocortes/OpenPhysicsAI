@@ -8,11 +8,12 @@
  "open": true,
  "baseline": false,
  "builds_on": "this repository",
- "description": "The solvers of this repository, run as they are at the named commit: src/lab/gas for compressible flow, src/lab/orbit for orbits, src/lbm.c through src/lab/flow for incompressible flow.",
+ "description": "The solvers of this repository, run as they are at the named commit: src/lab/gas for compressible flow, src/lab/orbit for orbits, src/lbm.c through src/lab/flow for incompressible flow, src/lab/melt for the melt pool of a laser track.",
  "commands": {
   "gas-sphere-bowshock": "python3 flags/gas-sphere-bowshock/reference_entry.py",
   "orbit-planets-2020": "python3 flags/orbit-planets-2020/reference_entry.py",
   "flow-cylinder-shedding": "python3 flags/flow-cylinder-shedding/reference_entry.py",
-  "gas-shock-bubble": "python3 flags/gas-shock-bubble/reference_entry.py"
+  "gas-shock-bubble": "python3 flags/gas-shock-bubble/reference_entry.py",
+  "metal-printing": "python3 flags/metal-printing/reference_entry.py"
  }
 }

@@ -32,7 +32,7 @@ The source is sealed until the flag is retired; its SHA-256 commitment is in fla
 
 <!-- board:begin -->
 
-**Attempts** 2 · **Challengers** 1 · **Record** 45 by @molanocortes · **First clear** still to be won
+**Attempts** 3 · **Challengers** 1 · **Record** 45 by @molanocortes · **First clear** still to be won
 
 | Rank | Challenger | Score | Date |
 | :---: | :--- | ---: | :--- |

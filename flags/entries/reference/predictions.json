@@ -1,7 +1,7 @@
 {
  "entry": "reference",
- "commit": "3c038b8 with local changes",
- "date": "2026-09-26",
+ "commit": "7797a13",
+ "date": "2026-10-08",
  "predictions": {
   "gas-sphere-bowshock": {
    "m117": {
@@ -74,6 +74,60 @@
     "v_refracted": 245.3,
     "v_transmitted": 525.62,
     "v_upstream_interface": 70.06
+   }
+  },
+  "metal-printing": {
+   "amb2018-cbm-a": {
+    "width": 136.452364,
+    "depth": 55.1247402
+   },
+   "amb2018-cbm-c": {
+    "width": 108.482558,
+    "depth": 34.9576106
+   },
+   "amb2018-ammt-a": {
+    "width": 152.600902,
+    "depth": 43.303936900000004
+   },
+   "amb2018-ammt-c": {
+    "width": 126.14140099999999,
+    "depth": 24.5399905
+   },
+   "amb2022-l0": {
+    "width": 120.062386,
+    "depth": 54.8193598
+   },
+   "amb2022-l1-1": {
+    "width": 116.73446600000001,
+    "depth": 55.0538735
+   },
+   "amb2022-l1-2": {
+    "width": 121.966879,
+    "depth": 54.032058899999996
+   },
+   "amb2022-l2-1": {
+    "width": 109.74358699999999,
+    "depth": 49.075588599999996
+   },
+   "amb2022-l2-2": {
+    "width": 129.93080999999998,
+    "depth": 59.9293408
+   },
+   "amb2022-l3-1": {
+    "width": 128.415823,
+    "depth": 58.8869458
+   },
+   "amb2022-l3-2": {
+    "width": 111.050527,
+    "depth": 50.0889692
+   },
+   "amb2018-cbm-b": {
+    "width": 119.804727,
+    "depth": 44.8617702
+   },
+   "amb2018-ammt-b": {
+    "width": 140.770431,
+    "depth": 33.7346978
    }
   }
  }

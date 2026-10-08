@@ -8,12 +8,255 @@
  "title": "Printing metal",
  "subtitle": "NIST AM-Bench: laser tracks on nickel alloy, the melt pool and the metal it leaves",
  "short": "Metal printing",
- "status": "preparing",
+ "status": "open",
  "hook": "A laser draws a line on a metal plate. Predict the pool it melts and the crystals it leaves behind.",
  "media": {
   "src": "docs/media/lab/melt-pool-flow.gif",
   "alt": "A laser crosses a steel plate; the melt pool, stirred by its surface, grows wide and shallow",
   "caption": "The lab today: a laser track in 316L with Marangoni flow in the melt; the pool grows wider and shallower than conduction alone makes it. The keyhole and the crystals are what this flag adds."
  },
- "note": "In preparation: the cases, the outputs and their units are written here when the flag opens, and the measured values are sealed at the same moment (tools/flags.py seal)."
+ "question": "A laser scans single straight lines across a bare plate of a nickel superalloy, in a laser powder-bed fusion machine with no powder on the plate. For each track, report the width and the depth of the melt pool as the transverse cross-sections through the middle of the track measure them, where the track is steady.",
+ "conditions": {
+  "experiment": "NIST AM-Bench single laser tracks: AMB2018-02, IN625 plates on two machines, and AMB2022-03, IN718 plates on the AMMT; the tracks are far enough apart and far enough apart in time not to heat one another",
+  "plates": "AMB2018-02: wrought IN625, 24.1 x 24.8 x 3.18 mm, bead blasted to a matte finish (or 320 grit polished, the sources differ), held by four aluminium pins, not heated, 25 C; ten tracks a plate 0.5 mm apart, at least 5 min between tracks, 14 mm long (16 mm on one NIST page for the AMMT plate). AMB2022-03: rolled and annealed IN718 sheet (vendor composition: Ni 51.5, Cr 18.3, Nb 5.15, Mo 2.9, Ti 1.04, Al 0.57, Co 0.79, Fe balance, mass per cent), 25.4 x 25.4 x 3.17 mm, polished with 320 grit, stress-relief annealed at 800 C, on a stainless steel baseplate in full contact, 23.5 C at the start of each track, tracks 10 mm long, three repeats a case",
+  "laser": "continuous-wave ytterbium fibre laser at 1070 nm, a nominally Gaussian spot, its size stated per case as the D4 sigma diameter (and the full width at half maximum where it was measured); the power stated per case is the power delivered (on the AMMT in 2018 a calibration error made it lower than programmed, both are given)",
+  "measurement": "polished and etched transverse cross-sections near the middle of each track: the width is the widest horizontal extent of the fused zone and the depth its largest distance below the original plate surface (bounding rectangle in 2018, ignoring any hump above the surface in 2022); each value is NIST's mean over its sections (three per case in 2018, six in 2022)"
+ },
+ "outputs": [
+  {
+   "name": "width",
+   "unit": "um",
+   "meaning": "melt pool width in the transverse cross-section, micrometres"
+  },
+  {
+   "name": "depth",
+   "unit": "um",
+   "meaning": "melt pool depth below the original plate surface, micrometres"
+  }
+ ],
+ "cases": [
+  {
+   "case": "amb2018-cbm-a",
+   "inputs": {
+    "series": "AMB2018-02",
+    "label": "AMB2018-02 case A on the CBM",
+    "alloy": "IN625",
+    "machine": "EOS M270, modified by NIST for in-situ thermography (the commercial build machine, CBM)",
+    "laser_power_w": 150,
+    "scan_speed_mm_per_s": 400,
+    "spot_d4sigma_diameter_um": 100,
+    "spot_fwhm_um": 59,
+    "wavelength_nm": 1070,
+    "plate_temperature_c": 25.0,
+    "atmosphere": "nitrogen, low-velocity flow, about 0.5 % oxygen by volume"
+   }
+  },
+  {
+   "case": "amb2018-cbm-c",
+   "inputs": {
+    "series": "AMB2018-02",
+    "label": "AMB2018-02 case C on the CBM",
+    "alloy": "IN625",
+    "machine": "EOS M270, modified by NIST for in-situ thermography (the commercial build machine, CBM)",
+    "laser_power_w": 195,
+    "scan_speed_mm_per_s": 1200,
+    "spot_d4sigma_diameter_um": 100,
+    "spot_fwhm_um": 59,
+    "wavelength_nm": 1070,
+    "plate_temperature_c": 25.0,
+    "atmosphere": "nitrogen, low-velocity flow, about 0.5 % oxygen by volume"
+   }
+  },
+  {
+   "case": "amb2018-ammt-a",
+   "inputs": {
+    "series": "AMB2018-02",
+    "label": "AMB2018-02 case A on the AMMT",
+    "alloy": "IN625",
+    "machine": "NIST Additive Manufacturing Metrology Testbed (AMMT)",
+    "laser_power_w": 137.9,
+    "laser_power_programmed_w": 150,
+    "scan_speed_mm_per_s": 400,
+    "spot_d4sigma_diameter_um": 170,
+    "spot_fwhm_um": 100,
+    "wavelength_nm": 1070,
+    "plate_temperature_c": 25.0,
+    "atmosphere": "argon, laminar flowing blanket, under 0.08 % oxygen by volume"
+   }
+  },
+  {
+   "case": "amb2018-ammt-c",
+   "inputs": {
+    "series": "AMB2018-02",
+    "label": "AMB2018-02 case C on the AMMT",
+    "alloy": "IN625",
+    "machine": "NIST Additive Manufacturing Metrology Testbed (AMMT)",
+    "laser_power_w": 179.2,
+    "laser_power_programmed_w": 195,
+    "scan_speed_mm_per_s": 1200,
+    "spot_d4sigma_diameter_um": 170,
+    "spot_fwhm_um": 100,
+    "wavelength_nm": 1070,
+    "plate_temperature_c": 25.0,
+    "atmosphere": "argon, laminar flowing blanket, under 0.08 % oxygen by volume"
+   }
+  },
+  {
+   "case": "amb2022-l0",
+   "inputs": {
+    "series": "AMB2022-03",
+    "label": "case number 0, sample AMB2022-718-SH1-BP1-L0",
+    "alloy": "IN718",
+    "machine": "NIST Additive Manufacturing Metrology Testbed (AMMT)",
+    "laser_power_w": 285,
+    "scan_speed_mm_per_s": 960,
+    "spot_d4sigma_diameter_um": 67,
+    "wavelength_nm": 1070,
+    "plate_temperature_c": 23.5,
+    "atmosphere": "argon cross-flow at 4.3 m/s across the track, at most 1000 ppm oxygen, chamber at 95 kPa"
+   }
+  },
+  {
+   "case": "amb2022-l1-1",
+   "inputs": {
+    "series": "AMB2022-03",
+    "label": "case number 1.1, sample AMB2022-718-SH1-BP1-L1.1",
+    "alloy": "IN718",
+    "machine": "NIST Additive Manufacturing Metrology Testbed (AMMT)",
+    "laser_power_w": 285,
+    "scan_speed_mm_per_s": 960,
+    "spot_d4sigma_diameter_um": 49,
+    "wavelength_nm": 1070,
+    "plate_temperature_c": 23.5,
+    "atmosphere": "argon cross-flow at 4.3 m/s across the track, at most 1000 ppm oxygen, chamber at 95 kPa"
+   }
+  },
+  {
+   "case": "amb2022-l1-2",
+   "inputs": {
+    "series": "AMB2022-03",
+    "label": "case number 1.2, sample AMB2022-718-SH1-BP1-L1.2",
+    "alloy": "IN718",
+    "machine": "NIST Additive Manufacturing Metrology Testbed (AMMT)",
+    "laser_power_w": 285,
+    "scan_speed_mm_per_s": 960,
+    "spot_d4sigma_diameter_um": 82,
+    "wavelength_nm": 1070,
+    "plate_temperature_c": 23.5,
+    "atmosphere": "argon cross-flow at 4.3 m/s across the track, at most 1000 ppm oxygen, chamber at 95 kPa"
+   }
+  },
+  {
+   "case": "amb2022-l2-1",
+   "inputs": {
+    "series": "AMB2022-03",
+    "label": "case number 2.1, sample AMB2022-718-SH1-BP1-L2.1",
+    "alloy": "IN718",
+    "machine": "NIST Additive Manufacturing Metrology Testbed (AMMT)",
+    "laser_power_w": 285,
+    "scan_speed_mm_per_s": 1200,
+    "spot_d4sigma_diameter_um": 67,
+    "wavelength_nm": 1070,
+    "plate_temperature_c": 23.5,
+    "atmosphere": "argon cross-flow at 4.3 m/s across the track, at most 1000 ppm oxygen, chamber at 95 kPa"
+   }
+  },
+  {
+   "case": "amb2022-l2-2",
+   "inputs": {
+    "series": "AMB2022-03",
+    "label": "case number 2.2, sample AMB2022-718-SH1-BP1-L2.2",
+    "alloy": "IN718",
+    "machine": "NIST Additive Manufacturing Metrology Testbed (AMMT)",
+    "laser_power_w": 285,
+    "scan_speed_mm_per_s": 800,
+    "spot_d4sigma_diameter_um": 67,
+    "wavelength_nm": 1070,
+    "plate_temperature_c": 23.5,
+    "atmosphere": "argon cross-flow at 4.3 m/s across the track, at most 1000 ppm oxygen, chamber at 95 kPa"
+   }
+  },
+  {
+   "case": "amb2022-l3-1",
+   "inputs": {
+    "series": "AMB2022-03",
+    "label": "case number 3.1, sample AMB2022-718-SH1-BP1-L3.1",
+    "alloy": "IN718",
+    "machine": "NIST Additive Manufacturing Metrology Testbed (AMMT)",
+    "laser_power_w": 325,
+    "scan_speed_mm_per_s": 960,
+    "spot_d4sigma_diameter_um": 67,
+    "wavelength_nm": 1070,
+    "plate_temperature_c": 23.5,
+    "atmosphere": "argon cross-flow at 4.3 m/s across the track, at most 1000 ppm oxygen, chamber at 95 kPa"
+   }
+  },
+  {
+   "case": "amb2022-l3-2",
+   "inputs": {
+    "series": "AMB2022-03",
+    "label": "case number 3.2, sample AMB2022-718-SH1-BP1-L3.2",
+    "alloy": "IN718",
+    "machine": "NIST Additive Manufacturing Metrology Testbed (AMMT)",
+    "laser_power_w": 245,
+    "scan_speed_mm_per_s": 960,
+    "spot_d4sigma_diameter_um": 67,
+    "wavelength_nm": 1070,
+    "plate_temperature_c": 23.5,
+    "atmosphere": "argon cross-flow at 4.3 m/s across the track, at most 1000 ppm oxygen, chamber at 95 kPa"
+   }
+  }
+ ],
+ "practice": [
+  {
+   "case": "amb2018-cbm-b",
+   "inputs": {
+    "series": "AMB2018-02",
+    "label": "AMB2018-02 case B on the CBM",
+    "alloy": "IN625",
+    "machine": "EOS M270, modified by NIST for in-situ thermography (the commercial build machine, CBM)",
+    "laser_power_w": 195,
+    "scan_speed_mm_per_s": 800,
+    "spot_d4sigma_diameter_um": 100,
+    "spot_fwhm_um": 59,
+    "wavelength_nm": 1070,
+    "plate_temperature_c": 25.0,
+    "atmosphere": "nitrogen, low-velocity flow, about 0.5 % oxygen by volume"
+   },
+   "answers": {
+    "width": 133,
+    "depth": 91
+   },
+   "note": "AM-Bench's released calibration case B, public: width 133 um and depth 91 um, combined standard uncertainty (k = 1) 2.78 um and 4.62 um"
+  },
+  {
+   "case": "amb2018-ammt-b",
+   "inputs": {
+    "series": "AMB2018-02",
+    "label": "AMB2018-02 case B on the AMMT",
+    "alloy": "IN625",
+    "machine": "NIST Additive Manufacturing Metrology Testbed (AMMT)",
+    "laser_power_w": 179.2,
+    "laser_power_programmed_w": 195,
+    "scan_speed_mm_per_s": 800,
+    "spot_d4sigma_diameter_um": 170,
+    "spot_fwhm_um": 100,
+    "wavelength_nm": 1070,
+    "plate_temperature_c": 25.0,
+    "atmosphere": "argon, laminar flowing blanket, under 0.08 % oxygen by volume"
+   },
+   "answers": {
+    "width": 123,
+    "depth": 36
+   },
+   "note": "AM-Bench's released calibration case B, public: width 123 um and depth 36 um, combined standard uncertainty (k = 1) 3.15 um and 1.99 um"
+  }
+ ],
+ "metric": "log_ratio",
+ "opened": "2026-10-08",
+ "scope_note": "Opened with the melt pool's width and depth. The cooling at solidification and the spacing of the solidification cells, which this flag also names, are not asked yet: their measurements are not yet curated into the same form, and NIST calls the 2018 cooling rates exemplar values not to be used to calibrate or check models.",
+ "sealed": {
+  "sha256": "e941cb95e71f12db95c3d00869599cb72a065a6fdae6c3249dc578e1138724aa",
+  "sealed_on": "2026-10-08"
+ }
 }

@@ -1,5 +1,5 @@
 {
- "scored_on": "2026-09-27",
+ "scored_on": "2026-10-08",
  "capture_at": 90,
  "band": 5,
  "entries": [
@@ -13,12 +13,13 @@
    "open": true,
    "entry": "reference",
    "title": "OpenPhysicsAI reference",
-   "commit": "3c038b8 with local changes",
-   "date": "2026-09-26",
+   "commit": "7797a13",
+   "date": "2026-10-08",
    "flags": {
     "flow-cylinder-shedding": 65,
     "gas-shock-bubble": 90,
     "gas-sphere-bowshock": 45,
+    "metal-printing": 10,
     "orbit-planets-2020": 100
    }
   },
