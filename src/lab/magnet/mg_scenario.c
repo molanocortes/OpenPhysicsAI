@@ -15,18 +15,23 @@ bool mg_run_drive(const JsonValue *root, const MgSpec *s, Magnet *m, const int *
                   double e0, const char *out, bool quiet, LabRunInfo *info, char *err, size_t errlen);
 
 /* the 3D motor (motor3d.c) links only where MFEM is built (src/lab/lab.mk) */
-bool lab_run_magnet3d(const JsonValue *root, const char *out, bool quiet, LabRunInfo *info, char *err, size_t errlen) __attribute__((weak));
-
-bool lab_run_induction(const JsonValue *root, const char *out, bool quiet, LabRunInfo *info, char *err, size_t errlen) __attribute__((weak));
+#if NAVIER_HAS_MFEM
+bool lab_run_magnet3d(const JsonValue *root, const char *out, bool quiet, LabRunInfo *info, char *err, size_t errlen);
+bool lab_run_induction(const JsonValue *root, const char *out, bool quiet, LabRunInfo *info, char *err, size_t errlen);
+#endif
 
 bool lab_run_magnet(const JsonValue *root, const char *out, bool quiet, LabRunInfo *info, char *err, size_t errlen) {
     if (json_get(root, "induction")) {
-        if (lab_run_induction) return lab_run_induction(root, out, quiet, info, err, errlen);
+#if NAVIER_HAS_MFEM
+        return lab_run_induction(root, out, quiet, info, err, errlen);
+#endif
         snprintf(err, errlen, "this build has no 3D magnetics: build MFEM first (make mfem), then rebuild");
         return false;
     }
     if (json_get(root, "three_d")) {
-        if (lab_run_magnet3d) return lab_run_magnet3d(root, out, quiet, info, err, errlen);
+#if NAVIER_HAS_MFEM
+        return lab_run_magnet3d(root, out, quiet, info, err, errlen);
+#endif
         snprintf(err, errlen, "this build has no 3D magnetics: build MFEM first (make mfem), then rebuild");
         return false;
     }

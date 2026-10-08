@@ -9,8 +9,10 @@
  * sigma_e += D (B du - eps0_e), so an element activated in step k carries no stress from before k: its reference
  * configuration is the deformed configuration at its birth. That is the whole method (docs/contracts/lpbf-build.md).
  *
- * Not modelled here: plasticity, temperature, powder conduction, supports other than the geometry itself, contact after
- * the cut. The eigenstrain is a calibrated input, not a material property. */
+ * Default mechanics is elastic; optional J2 plasticity is rate independent and isothermal. Not modelled here:
+ * temperature, powder conduction or melt flow, thermal laser tracks, or contact after the cut. Supports may carry
+ * stated isotropic fractions or homogenised anisotropic matrices. The eigenstrain is a calibrated input, not a material
+ * property. */
 #pragma once
 
 #include <stdbool.h>

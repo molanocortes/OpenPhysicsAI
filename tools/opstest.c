@@ -315,6 +315,30 @@ int main(void) {
     CHECK(fabs(json_get_num(json_get(checks, "wall_thickness"), "min_mm", 0) - 5) < 1e-6, "min wall 5 mm (got %g)", json_get_num(json_get(checks, "wall_thickness"), "min_mm", 0));
     op_result_free(&r);
 
+    /* Criterion declared 2026-10-03 before the first run: this measured 5 mm wall with hxy=4 mm and hz=0.5 mm
+     * gets a conservative largest-spacing warning despite its fine z layers; a uniform 0.5 mm mesh does not.
+     * Both API responses explicitly identify the boundary-distance mean as weighted by face area. */
+    printf("== anisotropic printing-mesh diagnostics\n");
+    for (int fine = 0; fine < 2; fine++) {
+        r = run(e, "mesh_generate", fine ? "{\"element_size\":\"0.5 mm\"}" :
+                                          "{\"element_size\":\"4 mm\",\"element_size_z\":\"0.5 mm\"}");
+        CHECK(r.ok, "printing mesh diagnostic operation: %s", err_msg(&r));
+        if (r.ok) {
+            bool warned = false;
+            const JsonValue *warnings = json_get(r.value, "warnings");
+            for (size_t i = 0; i < json_len(warnings); i++) {
+                const JsonValue *w = json_at(warnings, i);
+                if (w && w->type == JSON_STRING && strstr(w->u.string.ptr, "walls of 'box'") &&
+                    strstr(w->u.string.ptr, "largest element spacing")) warned = true;
+            }
+            CHECK(warned == !fine, "5 mm walls with %s XY spacing %s conservative warning", fine ? "0.5 mm" : "4 mm", warned ? "carry" : "omit");
+            const JsonValue *boundary = json_get(json_get(r.value, "mesh"), "boundary");
+            CHECK(!strcmp(json_get_str(boundary, "mean_distance_weighting", ""), "boundary-face area"),
+                  "mesh API labels area-weighted boundary distance");
+        }
+        op_result_free(&r);
+    }
+
     printf("== save, reopen, tamper\n");
     r = run(e, "project_save", "{}");
     CHECK(r.ok, "save: %s", err_msg(&r));

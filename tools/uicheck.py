@@ -241,6 +241,8 @@ def steps():
                               'uiclick "SOLVE"', "frames 10", "solid wait 240", "frames 20", "fem status", "fem step"],
         lambda t: check("succeeded" in t and "temperature" in t and _stored_times(t) and _stored_times(t) > 2,
                         f"the THERMAL run through the panel finishes with {_stored_times(t)} stored times", t))
+    add("solid_thermal_time_labels", ["hud clean", "frames 6", "uitext", "hud on", "frames 6"],
+        lambda t: check_result_time_labels(t, process=False))
     add("solid_speed_slider", ["uiclick \"6 RESULTS\"", "frames 4", "uiclick sl_rate 0.5", "frames 8", "fem speed"],
         lambda t: check(close(num(r"playback speed[: ]+([0-9.]+)", t), 3.87, rel=0.15),
                         "the playback-speed slider at 0.5 gives about 3.9 stored times per second (log 0.5..30)", t))
@@ -256,8 +258,10 @@ def steps():
     add("solid_grow", ["uiclick \"6 RESULTS\"", "frames 4", "uiclick VOXELS", "frames 4",
                        "fem grow z", "frames 6", "fem step 1", "frames 4", "fem status",
                        "fem step last", "frames 4", "fem status"],
-        lambda t: check(len(_tris(t)) >= 2 and _tris(t)[0] < _tris(t)[-1],
-                        f"the faked growing part draws fewer triangles at the first stored time than at the last {_tris(t)[:1]}->{_tris(t)[-1:]}", t))
+        # Only the two displayed result statuses count. The debug command also logs its current triangle count,
+        # which can be the last time before the script explicitly selects the first time.
+        lambda t: check(len(_result_tris(t)) >= 2 and _result_tris(t)[0] < _result_tris(t)[-1],
+                        f"the faked growing part draws fewer triangles at the first stored time than at the last {_result_tris(t)[:1]}->{_result_tris(t)[-1:]}", t))
     add("solid_grow_off", ["fem grow off", "frames 6", "fem status"],
         lambda t: check("growth off" in t and _tris(t) and _tris(t)[-1] > 0,
                         "growth off draws the whole mesh again", t))
@@ -294,7 +298,7 @@ def steps():
                         "answering the unit imports the waiting file into the analysis", t))
     add("solid_refusal_shown", ["uiclick \"6 RESULTS\"", "frames 4", "uiclick \"CHECK MESH\"", "frames 40",
                                "fem status"],
-        lambda t: check("last refusal shown in the panel" in t or "mesh check:" in t,
+        lambda t: check("last refusal shown in the panel" in t or "mesh check:" in t or "mesh change:" in t,
                         "a refusal from a panel button is kept for the panel to show, not swallowed", t))
     # ---- the build path: every control of step 4, on the part that is already open --------------------------
     add("build_path_chosen", ["uiclick \"1 PART\"", "frames 6", 'uiclick "SIMULATE THE BUILD"', "frames 8", "uilist"],
@@ -333,24 +337,24 @@ def steps():
     # ---- the three modes, the glossary and the results' own colour map ------------------------------------------
     add("results_viridis", ["uiclick \"6 RESULTS\"", "frames 4", "fem status"],
         lambda t: check("result colour map viridis" in t, "results are drawn in viridis by default (colour-blind safe)", t))
-    add("legend_turbo", ["uiclick legend", "frames 6", "fem status"],
-        lambda t: check("result colour map turbo" in t, "a click on the legend switches the results to turbo", t))
-    add("legend_back", ["uiclick legend", "frames 6", "fem status"],
-        lambda t: check("result colour map viridis" in t, "and back to viridis", t))
+    for name, cmds, fn in result_palette_steps():
+        add(name, cmds, fn)
+    for name, cmds, fn in result_overlay_steps():
+        add(name, cmds, fn)
     add("mode_simple", ["mode simple", "frames 10", "uitext", "mode", "uilist"],
         lambda t: check("mode simple" in t and ("Choose a part" in t or "Results" in t) and "Simple##mode" not in t,
-                        "two modes on the top bar (Advanced, Agent); the guided screens stay reachable by command", t))
+                        "two modes on the top bar (Manual, Agentic); the guided screens stay reachable by command", t))
     add("glossary_open", ["uiclick ?", "frames 8", "uilist"],
         lambda t: check("CLOSE##glossary" in t, "? opens the glossary of the words used", t))
     add("glossary_close", ["uiclick CLOSE", "frames 6", "uilist"],
         lambda t: check("CLOSE##glossary" not in t, "and CLOSE puts it away", t))
-    add("mode_agent", ["uiclick Agent", "frames 10", "uitext", "mode"],
+    add("mode_agent", ["uiclick Agentic", "frames 10", "uitext", "mode"],
         lambda t: check("mode agent" in t and "Ask the lab" in t, "the Agent switch shows the one question field", t))
     add("agent_settings", ["uiclick SETTINGS", "frames 8", "uitext"],
         lambda t: check("Found on this computer" in t, "the agent settings list the tools found on this computer", t))
     add("agent_settings_close", ["uiclick SETTINGS", "frames 6"],
         lambda t: check(True, "settings close again", t))
-    add("mode_advanced", ["uiclick Advanced", "frames 10", "mode", "uilist"],
+    add("mode_advanced", ["uiclick Manual", "frames 10", "mode", "uilist"],
         lambda t: check("mode advanced" in t and "6 RESULTS" in t, "Advanced brings the six-step strip back, with nothing lost", t))
     add("solid_unknown_job", ["fem job nosuchjob-1", "frames 8", "fem status"],
         lambda t: check("no run directory" in t and "no result displayed" in t,
@@ -378,6 +382,10 @@ def _deforms(t):
 def _box_faces(t):
     m = re.findall(r"box (?:took|dropped) (\d+) faces?", t)
     return [int(x) for x in m]
+
+
+def _result_tris(t):
+    return [int(n) for n in re.findall(r"\[info\] result [^\n]*? (\d+) triangles", t)]
 
 
 def _tris(t):
@@ -418,6 +426,76 @@ def _deform(t):
 def _cmap_changed(t):
     names = re.findall(r"([A-Za-z_]+)\*", t)
     return len(names) >= 2 and names[0] != names[-1]
+
+
+def result_palette_steps():
+    """Real legend clicks and terminal commands; each must preserve the field and range."""
+    actions = [(f"legend_{name}", "uiclick legend", name)
+               for name in ("inferno", "magma", "plasma", "turbo", "viridis")]
+    actions += [("fem_cmap_magma", "fem cmap magma", "magma"),
+                ("fem_cmap_invalid", "fem cmap no-such-palette", "magma"),
+                ("fem_cmap_gray", "fem cmap gray", "gray"),
+                ("legend_from_gray", "uiclick legend", "viridis")]
+    return [(tag, ["fem field", "fem range", action, "frames 6", "fem cmap", "fem status", "fem field", "fem range"],
+             lambda t, name=name, invalid=(tag == "fem_cmap_invalid"): _check_result_palette(t, name, invalid))
+            for tag, action, name in actions]
+
+
+def _check_result_palette(t, name, invalid):
+    maps = re.findall(r"result colour map (\w+)", t)
+    check(len(maps) >= 2 and maps[-2:] == [name, name],
+          f"result palette query and status agree on {name}", t)
+    _check_result_field_range(t)
+    if invalid:
+        check("unknown result colour map 'no-such-palette' - palette unchanged" in t,
+              "an unknown result palette is refused clearly", t)
+
+
+def result_overlay_steps():
+    """Presentation-only overlays accept on/off, refuse bad values, and restore their initial state."""
+    actions = [("overlays_default", "fem marker", "on", "on", None)]
+    for overlay in ("marker", "outline"):
+        marker, outline = ("off", "on") if overlay == "marker" else ("on", "off")
+        actions += [(f"{overlay}_off", f"fem {overlay} off", marker, outline, None),
+                    (f"{overlay}_invalid", f"fem {overlay} maybe", marker, outline, overlay),
+                    (f"{overlay}_extra_args", f"fem {overlay} on extra", marker, outline, overlay),
+                    (f"{overlay}_on", f"fem {overlay} on", "on", "on", None)]
+    return [(tag, ["fem field", "fem range", action, "frames 6", "fem marker", "fem outline", "fem field", "fem range"],
+             lambda t, marker=marker, outline=outline, invalid=invalid: _check_result_overlays(t, marker, outline, invalid))
+            for tag, action, marker, outline, invalid in actions]
+
+
+def _check_result_field_range(t):
+    fields = re.findall(r"showing ([^\n]+\[[^\n]+\])", t)
+    ranges = re.findall(r"colour range: ([^\n]+)", t)
+    check(len(fields) == 2 and fields[0] == fields[1] and len(ranges) == 2 and ranges[0] == ranges[1],
+          "presentation commands preserve the field and numerical range", t)
+
+
+def _check_result_overlays(t, marker, outline, invalid):
+    markers = re.findall(r"peak marker (on|off)", t)
+    outlines = re.findall(r"undeformed outline (on|off)", t)
+    check(markers and markers[-1] == marker and outlines and outlines[-1] == outline,
+          f"peak marker remains {marker} and undeformed outline remains {outline}", t)
+    _check_result_field_range(t)
+    if invalid:
+        check(f"usage: fem {invalid} on|off" in t, "invalid overlay arguments are refused clearly", t)
+
+
+def check_result_time_labels(t, process, expected_step=None):
+    """Clean-view progress distinguishes inherent-strain process indices from physical time."""
+    label = "process step" if process else "stored time"
+    match = re.search(rf"{label} (\d+)/(\d+)", t)
+    check(match is not None and (expected_step is None or tuple(map(int, match.groups())) == expected_step),
+          f"clean view identifies the current {label}", t)
+    if process:
+        check(re.search(r"\bt\s*=", t) is None and "stored time" not in t and "process step" in t,
+              "LPBF process indices are not labelled as seconds or stored time", t)
+        check("range: all process steps" in t or "range: this process step" in t,
+              "LPBF colour-range metadata uses process steps", t)
+    else:
+        check(re.search(r"\bt\s*=\s*[0-9.eE+-]+ s\b", t) is not None and "process step" not in t,
+              "transient FDM and thermal clean views retain physical seconds", t)
 
 
 def _step_delta(t):
@@ -621,13 +699,17 @@ def _silhouette(img, x1):
     return mask
 
 
-def _top_patch(img, x1):
+def _top_patch(img, x1, background=None):
     """the centre of the highest face drawn in the view: scan down for the first solid run of part pixels, then
     average a small box just below it. That face belongs to the piece standing highest, the cap of the stack."""
     w, h, ch, px = img
     def solid(x, y):
         i = (y * w + x) * ch
         r, g, b = px[i], px[i + 1], px[i + 2]
+        if background is not None:
+            # Compare the computed body with the same empty studio. A neutral
+            # backdrop can have r > b too; hue alone is not evidence of a face.
+            return max(abs(px[i + c] - background[3][i + c]) for c in range(3)) > 8
         return max(r, g, b) >= 75 or b < r
     for y in range(90, h):
         run = start = 0
@@ -866,6 +948,8 @@ def presentation():
               "fem explode 0", "frames 6", "fem status",
               "fem explode 0.7", "fem fit", "frames 8", "fem status", f"screenshot {shots}/explode.png",
               f"screenshot {images}/presentation-exploded.png",
+              "fem hide", "frames 6", f"screenshot {shots}/explode-empty.png",
+              "fem show", "frames 6",
               # probing and sectioning must still work while the pieces stand apart
               "uiclick \"4 HOLD & LOAD\"", "frames 6", "uiclickat 250 330", "frames 6",
               "fem section z 0.6", "frames 6", f"screenshot {images}/presentation-section-exploded.png",
@@ -914,7 +998,7 @@ def presentation():
     else:
         check(False, f"the drawn triangle count was not reported ({tris})")
     # the piece that stands highest is the cap: the centre of its top face carries the result, not the background
-    top = _top_patch(explode, 560)
+    top = _top_patch(explode, 560, _decode(shots / "explode-empty.png"))
     if top:
         (px_x, px_y), col = top
         bg = _mean_brightness(explode, 20, 100, 60, 140)
@@ -1005,14 +1089,15 @@ def walkthrough(tet=False):
     check(log.count("face ") >= 2, "two faces were picked by clicking on the part")
     check("typed 3 characters" in log, "the force was typed into the panel field")
     check(re.search(r"result surface built .*static_structural", log) is not None, "the solve produced a result")
-    mesh_check = re.search(r"mesh check: (not )?converged: displacement ([-+0-9.]+) %, stress ([-+0-9.]+) %", log)
+    mesh_check = re.search(r"mesh check: (small change|refine again): displacement ([-+0-9.]+) %, stress ([-+0-9.]+) %", log)
     check(mesh_check is not None, "CHECK MESH compared the two meshes")
     report = re.search(r"report written to (\S+)", log)
     check(report is not None, "REPORT wrote the folder")
     if report:
         md = Path(report.group(1)) / "report.md"
         text = md.read_text() if md.exists() else ""
-        for want_text in ("## The answer", "## The setup", "## Mesh convergence", "## What these numbers are not",
+        for want_text in ("## The answer", "## The setup", "## Two-mesh sensitivity", "## What these numbers are not",
+                          "Two meshes show sensitivity, not an accuracy bound or proof of convergence.",
                           "99th percentile", "demonstration"):
             check(want_text in text, f"the report says {want_text!r}")
         for f in ("stress.png", "displacement.png", "view.png", "summary.json"):
@@ -1453,7 +1538,7 @@ def labwalk():
         "uiclick speed", "frames 10", "lab info",
         "uiclick labctl0 0.9", "frames 6",
         "uiclick RUN WITH THESE", "frames 300", "lab info",
-        'uiclick "libdom relativity"', "frames 6", "uilist", "quit", ""]))
+        'uiclick LIBRARY', 'frames 4', 'uiclick "NEXT DOMAINS"', 'frames 4', 'uiclick "NEXT DOMAINS"', 'frames 4', 'uiclick "libdom relativity"', "frames 6", "uilist", "quit", ""]))
     env = dict(os.environ, HOME=str(tmp))
     run = subprocess.run([str(APP), "--headless", "--size", "1440x900", "--exec", f"exec {script}"], capture_output=True, text=True,
                          timeout=900, cwd=str(ROOT), env=env)
@@ -1470,6 +1555,104 @@ def labwalk():
     before, _, after = t.partition('[ >> ] uiclick "libdom relativity"')
     check("lib black_hole" not in before and "lib black_hole" in after,
           "the library shows one domain at a time: clicking a closed domain's heading lists its scenarios", after[-1500:])
+    # Acceptance criteria declared before the revised UI's first run: every shipped domain/scenario is reachable
+    # by real clicks; cached results restore their own controls; mode switches preserve paused frames; manual
+    # stepping and playback speed are reachable. Browsing alone must never launch a simulation.
+    catalog = sorted((json.loads(p.read_text())["domain"], p.stem) for p in (ROOT / "examples/lab").glob("*.json"))
+    domains = sorted(set(d for d, _ in catalog))
+    browse = ["mode agentic", "frames 4", "mode", "mode manual", "frames 6", "mode", "uiclick LIBRARY", "frames 4", "uilist"]
+    for page in range((len(domains) + 4) // 5):
+        for domain in domains[page * 5:(page + 1) * 5]:
+            browse += [f'uiclick "libdom {domain}"', "frames 4", "uilist"]
+            count = sum(d == domain for d, _ in catalog)
+            for _ in range((count + 5) // 6 - 1):
+                browse += ['uiclick "NEXT SCENARIOS"', "frames 4", "uilist"]
+        browse += ['uiclick "NEXT DOMAINS"', "frames 4"]
+    browse += ['uiclick "METAL / FDM PRINTING"', "frames 6", "uilist", 'uiclick "4 BUILD"', 'frames 4', 'uitext', 'uilist', 'uiclick "FDM / FFF PLASTIC"', 'frames 4', 'uitext', 'uilist', f'screenshot {tmp / "manual-printing.png"}', "quit", ""]
+    (tmp / "browse.nav").write_text("\n".join(browse))
+    run = subprocess.run([str(APP), "--headless", "--size", "1440x900", "--exec", f"exec {tmp / 'browse.nav'}"],
+                         capture_output=True, text=True, timeout=120, cwd=ROOT, env=env)
+    bt = run.stdout + run.stderr
+    check("usage: mode" not in bt and "mode advanced" in bt and "mode agent" in bt,
+          "manual and agentic commands switch the same persistent modes as the buttons", bt[-2000:])
+    missing = [base for _, base in catalog if not re.search(r"lib " + re.escape(base) + r"(?:\s|$)", bt)]
+    check(not missing, f"all {len(domains)} domains and {len(catalog)} shipped scenarios are reachable through library pages", str(missing))
+    check("lab: running" not in bt and "uiclick: no widget" not in bt, "browsing the library starts no solver and all clicks find a widget", bt[-2000:])
+    check("4 BUILD" in bt and "5 RUN" in bt, "the library's printing route reaches the existing manual build workflow", bt[-2000:])
+    # Manual defaults must be visibly examples and inferred, not automatically labelled calibrated.
+    check("Strain provenance: inferred" in bt and "Process provenance: inferred" in bt and "not a calibrated printer profile" in bt,
+          "LPBF and FDM starting values are shown as inferred examples, never automatically calibrated", bt[-2000:])
+    check("Review deposition and cooling settings" in bt and "5 PRINT" in bt,
+          "FDM instructions and workflow labels describe deposition and printing", bt[-2000:])
+    # Actual cheap print jobs, not synthetic fields: adopting a result must select its own workflow and fields.
+    _write_stl(tmp / "print-cube.stl", _cube_facets(4.0))
+    process = {"layer_height": "1 mm", "printed_layer_height": "0.2 mm", "nozzle_temperature": "210 degC",
+               "bed_temperature": "60 degC", "ambient_temperature": "30 degC", "deposition_rate": "8 mm^3/s",
+               "min_layer_time": "1 s", "cooldown_bed_on": "5 s", "cooldown_bed_off": "5 s",
+               "thermal_substeps": 2, "provenance": "inferred"}
+    metal = {"layer_thickness_sim": "1 mm", "inherent_strain": {"exx": -.001, "eyy": -.002, "ezz": -.01,
+             "provenance": "inferred", "source": "UI verification tensor, not a calibration"},
+             "material": {"youngs_modulus": "215000 MPa", "poissons_ratio": .3, "provenance": "inferred"}}
+    pc = ["lab close", "mode manual", "workspace solid", "am project_create name=print_ui overwrite=true",
+          f'am geometry_import path="{tmp / "print-cube.stl"}" units=mm name=cube',
+          "am material_assign body=cube material=pla_generic_demo source=user", 'am mesh_generate element_size="1 mm"',
+          "am mech_print_run '" + json.dumps({"process": process}) + "'", "frames 120", "fem follow last", "frames 30",
+          'uiclick "6 RESULTS"', "frames 4", "echo FDM_UI_FIELDS", "uilist", "uitext",
+          'uiclick "TERMINAL##output"', "frames 4", "echo TERMINAL_OPEN", "uitext",
+          'uiclick "TERMINAL##output"', "frames 4", "echo TERMINAL_CLOSED", "uitext",
+          "uikey t", "frames 4", "echo TERMINAL_KEYBOARD", "uitext", "uikey escape", "frames 4",
+          "am material_assign body=cube material=ss316l_lpbf_demo source=user",
+          "am lpbf_build_run '" + json.dumps(metal) + "'", "frames 120", "fem follow last", "frames 30",
+          'uiclick "6 RESULTS"', "frames 4", "echo LPBF_UI_FIELDS", "uilist", "uitext",
+          "uiclick VIEW", "frames 4", 'uiclick "CLEAN VIEW"', "frames 8", "echo CLEAN_UI", "uilist", "uitext",
+          f'screenshot {tmp / "clean-print.png"}', "uikey h", "frames 8", "echo RESTORED_UI", "uilist", "uitext", "quit", ""]
+    (tmp / "print-ui.nav").write_text("\n".join(pc))
+    pr = subprocess.run([str(APP), "--headless", "--size", "1440x900", "--exec", f"exec {tmp / 'print-ui.nav'}"],
+                        capture_output=True, text=True, timeout=90, cwd=ROOT, env=env)
+    pt = pr.stdout + pr.stderr
+    fdm_ui = pt.split('[ >> ] echo FDM_UI_FIELDS', 1)[-1].split('[ >> ] am material_assign', 1)[0]
+    lpbf_ui = pt.split('[ >> ] echo LPBF_UI_FIELDS', 1)[-1]
+    check(pr.returncode == 0 and "PLAY PRINT" in fdm_ui and "5 PRINT" in fdm_ui and "TEMPERATURE" in fdm_ui,
+          "adopting an actual FDM result selects the print workflow and exposes its temperature field", pt[-3500:])
+    check("PLAY BUILD" in lpbf_ui and "4 BUILD" in lpbf_ui and "5 RUN" in lpbf_ui and "TEMPERATURE" not in lpbf_ui,
+          "adopting an actual LPBF result selects the build workflow and omits absent temperature", lpbf_ui[-3000:])
+    check("BUILD COMPLETE" in lpbf_ui and "AFTER THE CUT" not in lpbf_ui and "tip, after the cut" not in lpbf_ui,
+          "a build without a cut does not claim a cut or release in the native result panel", lpbf_ui[-3000:])
+    opened = pt.split('[ >> ] echo TERMINAL_OPEN', 1)[-1].split('[ >> ] uiclick', 1)[0]
+    closed = pt.split('[ >> ] echo TERMINAL_CLOSED', 1)[-1].split('[ >> ] uikey', 1)[0]
+    keyboard = pt.split('[ >> ] echo TERMINAL_KEYBOARD', 1)[-1].split('[ >> ] uikey escape', 1)[0]
+    check('Terminal output: collapsed' in fdm_ui and 'Terminal output: expanded' in opened
+          and 'Terminal output: collapsed' in closed,
+          'Manual terminal output starts collapsed and the real toggle opens and closes it', pt[-3500:])
+    check('Terminal output: expanded' in keyboard,
+          'the real terminal keyboard shortcut opens visible command output in Manual', keyboard[-2000:])
+    clean = pt.split('[ >> ] echo CLEAN_UI', 1)[-1].split('[ >> ] uikey h', 1)[0]
+    restored = pt.split('[ >> ] echo RESTORED_UI', 1)[-1]
+    check('Clean view:' in clean and '[MPa]' in clean and 'stored time' in clean and 'deformation' in clean
+          and 'max displacement' in clean and '6 RESULTS' not in clean,
+          'CLEAN VIEW hides controls and preserves numerical field, time, deformation and displacement metadata', clean[-2500:])
+    check('elastic (no yielding)' in clean and 'input inferred' in clean and 'no measurement comparison' in clean
+          and 'process inferred' in fdm_ui and 'material demonstration' in fdm_ui,
+          'native print inspectors and clean view visibly identify model scope and input provenance', clean[-2500:])
+    check('6 RESULTS' in restored and 'CLEAN VIEW' in restored,
+          'H through the real input path restores the Manual inspector from clean view', restored[-2500:])
+    # Reopen a cached shipped scenario: the saved input snapshot survives mode switches and a process restart.
+    result_dir = tmp / "NAVIER-Projects/lab"
+    shutil.copyfile(result_dir / "tiny.lab", result_dir / "micro_mixer.lab")
+    cached_sc = json.loads((result_dir / "tiny.json").read_text())
+    (result_dir / "micro_mixer.json").write_text(json.dumps(cached_sc))
+    cached = ['mode manual', 'frames 6', 'uiclick LIBRARY', 'frames 4', 'uiclick "NEXT DOMAINS"', 'frames 4', 'uiclick "libdom heat"', 'frames 4',
+              'uiclick "lib micro_mixer"', 'frames 8', 'lab pause', 'lab frame 2', 'frames 4', 'uilist',
+              'uiclick Agentic', 'frames 8', 'uiclick Manual', 'frames 8', 'lab info',
+              'uiclick NEXT##labframe', 'frames 4', 'lab info', 'uiclick PREV##labframe', 'frames 4', 'lab info',
+              'uiclick 12 fps', 'frames 4', 'uilist', f'screenshot {tmp / "manual-after.png"}', 'quit', '']
+    (tmp / "cached.nav").write_text("\n".join(cached))
+    run = subprocess.run([str(APP), "--headless", "--size", "1440x900", "--exec", f"exec {tmp / 'cached.nav'}"],
+                         capture_output=True, text=True, timeout=120, cwd=ROOT, env=env)
+    ct = run.stdout + run.stderr
+    check("labctl0" in ct and "RUN WITH THESE" in ct, "a cached scenario restores its input controls in a new app process", ct[-2000:])
+    check("frame 3/5" in ct and "frame 4/5" in ct and "paused" in ct, "paused playback survives mode switches and PREV/NEXT change stored frames", ct[-2000:])
+    check("24 fps##labfps" in ct and "uiclick: no widget" not in ct, "playback speed and the two mode controls work through real clicks", ct[-2000:])
     # Retained 3D geometry: a verified two-hex fixture, real section controls, and camera-only reuse.
     subprocess.run(["make", "build/labscenetest"], cwd=ROOT, check=True, capture_output=True)
     subprocess.run([str(ROOT / "build/labscenetest")], cwd=ROOT, check=True, capture_output=True)
@@ -1499,6 +1682,30 @@ def labwalk():
         check(1000 < half < full * .85, f"section removes object pixels: {full} -> {half}", t)
     else:
         check(False, "native section captures exist", t)
+    # Criterion before this hotkey implementation's first run: window key events address the displayed lab result,
+    # preserve the hidden FEM field and tunnel settings, and never start the hidden tunnel.
+    keys = ['workspace solid', 'fem field displacement', 'view pressure', 'slice off', 'streamlines off', 'particles off',
+            'vortices off', 'volume off', f'lab open "{ROOT / "build/labscene.lab"}"', 'lab pause', 'lab frame 0', 'frames 6',
+            'uikey space', 'frames 4', 'lab info', 'uikey space', 'frames 4', 'lab info', 'lab frame 0',
+            'uikey right', 'frames 4', 'lab info', 'uikey left', 'frames 4', 'lab info', 'uikey 1', 'frames 4', 'lab info',
+            'uikey x', 'frames 4', 'lab info', 'uikey ]', 'frames 4', 'lab info',
+            'uikey s', 'uikey p', 'uikey v', 'uikey o', 'uikey l', 'uikey w', 'frames 6',
+            'echo KEYBOARD_STATE', 'status', 'view', 'fem field', 'workspace', 'slice', 'streamlines', 'particles',
+            'vortices', 'volume', 'quit', '']
+    (tmp / 'keyboard.nav').write_text("\n".join(keys))
+    kr = subprocess.run([str(APP), '--headless', '--size', '1440x900', '--exec', f'exec {tmp / "keyboard.nav"}'],
+                        capture_output=True, text=True, timeout=120, cwd=ROOT, env=env)
+    kt = kr.stdout + kr.stderr
+    check(kr.returncode == 0 and 'playing, playback' in kt and 'paused, playback' in kt,
+          'Space toggles replay through the real window keyboard path', kt[-2000:])
+    check('frame 2/2, paused' in kt and 'frame 1/2, paused' in kt and 'frames, field stress' in kt,
+          'arrow keys step stored frames and numeric keys select the displayed result field', kt[-2000:])
+    check('section axis 0 fraction 0.520' in kt,
+          'axis and bracket keys control the displayed result section', kt[-2000:])
+    state = kt.partition('KEYBOARD_STATE')[2]
+    check(re.search(r'state\s+paused', state) and 'showing displacement' in state and 'field = pressure' in state
+          and 'workspace: solid' in state and re.search(r'streamlines\s+off', state),
+          'lab shortcuts leave the hidden tunnel paused and its field and FEM field unchanged', state[-2000:])
     # Both volume and reconstruction tests create small, explicitly synthetic UI fixtures.
     for test in ("labvoltest", "labwatertest"):
         subprocess.run(["make", f"build/{test}"], cwd=ROOT, check=True, capture_output=True)
@@ -1529,7 +1736,215 @@ def labwalk():
     return 1 if FAIL else 0
 
 
+
+def solidkeys():
+    """Focused real-input regression for displayed Solid playback and quantitative section metadata.
+
+    Criteria before the first run: two Space play/pause cycles address an actual multi-state FDM result,
+    never start or advance the hidden tunnel, and Space in empty Solid setup has the same protection.
+    Clean views identify active section axis/fraction/flip, and OFF removes that active-section claim.
+    """
+    from mcptest import Client
+    from printflow import box_stl, PROCESS
+    tmp = Path(tempfile.mkdtemp(prefix="solidkeys-"))
+    ws = tmp / "projects"
+    ws.mkdir()
+    stl = tmp / "cube.stl"
+    box_stl(stl, (0, 0, 0), (2, 2, 2))
+    c = Client(["--embedded", "--workspace", str(ws), "--allow-read", str(tmp)])
+    c.initialize()
+
+    def call(name, args):
+        result = c.call(name, args)["result"]["structuredContent"]
+        if not result.get("ok"):
+            raise RuntimeError(f"{name}: {result}")
+        return result.get("value", {})
+
+    try:
+        call("project_create", {"name": "solid_keys"})
+        call("geometry_import", {"path": str(stl), "units": "mm", "name": "cube"})
+        call("material_assign", {"body": "cube", "material": "pla_generic_demo", "source": "inferred"})
+        call("mesh_generate", {"element_size": "1 mm"})
+        call("project_save", {})
+        process = dict(PROCESS, cooldown_bed_on="1 s", cooldown_bed_off="1 s", provenance="inferred")
+        job = call("mech_print_run", {"body": "cube", "process": process})
+        status = {}
+        for _ in range(6):
+            status = call("job_status", {"job_id": job["job_id"], "wait_seconds": 10})
+            if status.get("state") not in ("queued", "running"):
+                break
+        check(status.get("state") == "succeeded" and status.get("summary", {}).get("results", {}).get("stored_times", 0) > 1,
+              "Solid keyboard fixture is an actual multi-state FDM result", str(status))
+        if status.get("state") != "succeeded":
+            return 1
+    finally:
+        c.close()
+    # The existing two-hex native lab fixture is generated by its independent renderer test.
+    subprocess.run(["make", "build/labscenetest"], cwd=ROOT, check=True, capture_output=True)
+    subprocess.run([str(ROOT / "build/labscenetest")], cwd=ROOT, check=True, capture_output=True)
+    lines = ["mode manual", "workspace solid", "pause", "frames 4", "echo SOLIDKEYS empty_before", "status",
+             "uikey space", "frames 4", "echo SOLIDKEYS empty_after", "status",
+             f'solid open "{ws / "solid_keys"}"', "frames 8", "fem follow last", "frames 12", "fem pause",
+             "fem step 0", "fem speed 1", 'uiclick "6 RESULTS"', "frames 4", "uiclick VIEW", "frames 4"]
+    for tag in ("playing_1", "paused_1", "playing_2", "paused_2"):
+        lines += ["uikey space", "frames 4", f"echo SOLIDKEYS {tag}", "uilist", "status"]
+    lines += ["fem section y 0.25", "fem deform true", "fem fit", "backdrop neutral", "floorgrid off", "box off",
+              "hud clean", "frames 8", "echo SOLIDKEYS fem_normal", "uitext",
+              "fem section flip", "frames 8", "echo SOLIDKEYS fem_flipped", "uitext",
+              f'screenshot "{tmp / "section-clean.png"}"', "fem section off", "frames 4",
+              "echo SOLIDKEYS fem_off", "uitext", "uikey h", "frames 4",
+              f'lab open "{ROOT / "build/labscene.lab"}"', "lab pause", "lab section x 0.5", "lab section flip",
+              "hud clean", "frames 8", "echo SOLIDKEYS lab_flipped", "uitext", "quit", ""]
+    script = tmp / "solidkeys.nav"
+    script.write_text("\n".join(lines))
+    run = subprocess.run([str(APP), "--headless", "--size", "1440x900", "--workspace", str(ws), "--exec", f'exec "{script}"'],
+                         capture_output=True, text=True, timeout=90, cwd=ROOT, env=dict(os.environ, HOME=str(tmp)))
+    log = run.stdout + run.stderr
+    (tmp / "solidkeys.log").write_text(log)
+    chunks = dict((m.group(1), m.group(2)) for m in re.finditer(r"\[ >> \] echo SOLIDKEYS (\w+)\n(.*?)(?=\[ >> \] echo SOLIDKEYS |$)", log, re.S))
+    check(run.returncode == 0 and "[err!]" not in log, "the focused native input walkthrough completes without errors", log[-2500:])
+    check(all("PAUSE##play" in chunks.get(tag, "") for tag in ("playing_1", "playing_2"))
+          and all("PLAY##play" in chunks.get(tag, "") for tag in ("paused_1", "paused_2")),
+          "Space toggles displayed FEM playback twice through real key events", log[-3500:])
+    states = [re.search(r"state\s+(paused|running).*?step (\d+)", chunks.get(tag, "")) for tag in
+              ("empty_before", "empty_after", "playing_1", "paused_1", "playing_2", "paused_2")]
+    check(all(m and m.group(1) == "paused" for m in states) and len({m.group(2) for m in states if m}) == 1,
+          "Space in Solid setup and playback never starts or advances the hidden fluid simulation", log[-3500:])
+    check("SECTION Y at 25% - normal" in chunks.get("fem_normal", "")
+          and "SECTION Y at 25% - flipped" in chunks.get("fem_flipped", ""),
+          "FEM clean-view metadata identifies section axis, fraction and flip", log[-3500:])
+    check("SECTION OFF" in chunks.get("fem_off", "") and "SECTION Y" not in chunks.get("fem_off", ""),
+          "turning the section off removes the active-section label", log[-2000:])
+    check("SECTION X at 50% - flipped" in chunks.get("lab_flipped", ""),
+          "native lab clean-view metadata identifies its own section", log[-2000:])
+    check((tmp / "section-clean.png").exists(), "the quantitative native section capture exists")
+    print(f"SOLID KEYS: {PASS} passed, {FAIL} failed; capture {tmp / 'section-clean.png'}; log {tmp / 'solidkeys.log'}")
+    return 1 if FAIL else 0
+
+
+def printsurface():
+    """Actual printing jobs on a sparse-facet cube, through MCP and native clicks, not a physical validation.
+
+    Criteria declared in docs/analysis.md before execution: 192 early-layer triangles, 532 after the one-layer
+    LPBF kerf, twelve mapped facets for a fully born FDM cube; active SURFACE/VOXELS differ by fewer than 50
+    viewport pixels and early/final geometry differs by more than 500. No synthetic result fields are used.
+    """
+    from mcptest import Client
+    from printflow import box_stl, PROCESS
+    tmp = Path(tempfile.mkdtemp(prefix="printsurface-"))
+    ws = tmp / "projects"
+    ws.mkdir()
+    stl = tmp / "cube.stl"
+    box_stl(stl, (0, 0, 0), (6, 6, 6))
+    c = Client(["--embedded", "--workspace", str(ws), "--allow-read", str(tmp)])
+    c.initialize()
+    def call(name, args):
+        r = c.call(name, args)["result"]["structuredContent"]
+        if not r.get("ok"):
+            raise RuntimeError(f"{name}: {r}")
+        return r.get("value", {})
+    try:
+        for kind in ("lpbf", "fdm"):
+            call("project_create", {"name": kind, "description": "Presentation contract; demonstration material and inferred process"})
+            call("geometry_import", {"path": str(stl), "units": "mm", "name": "cube"})
+            call("material_assign", {"body": "cube", "material": "ss316l_lpbf_demo" if kind == "lpbf" else "pla_generic_demo", "source": "user"})
+            mesh = call("mesh_generate", {"element_size": "1 mm"})
+            check(mesh.get("mesh", {}).get("elements") == 216, f"{kind} fixture has exactly 216 computed cells", str(mesh))
+            call("project_save", {})
+            if kind == "lpbf":
+                run = call("lpbf_build_run", {"body": "cube", "build_orientation": "X", "layer_thickness_sim": "1 mm",
+                    "inherent_strain": {"exx": -0.001, "eyy": -0.001, "ezz": -0.001,
+                        "provenance": "inferred", "source": "Demonstration tensor for rendering contract, not a calibration"},
+                    "material": {"youngs_modulus": "200000 MPa", "poissons_ratio": 0.3, "provenance": "inferred"},
+                    "cut": {"height": "2.5 mm", "kerf": "1 mm", "from_x": "1 mm", "provenance": "assumed"}})
+            else:
+                process = dict(PROCESS, cooldown_bed_on="1 s", cooldown_bed_off="1 s", provenance="inferred")
+                run = call("mech_print_run", {"body": "cube", "process": process})
+            status = {}
+            for _ in range(12):
+                status = call("job_status", {"job_id": run["job_id"], "wait_seconds": 10})
+                if status.get("state") not in ("queued", "running"):
+                    break
+            check(status.get("state") == "succeeded", f"{kind} solver produced a saved result", str(status))
+            if status.get("state") != "succeeded":
+                return 1
+    finally:
+        c.close()
+    lines = ["mode manual", "workspace solid", "backdrop neutral", "floorgrid off", "box off"]
+    for kind in ("lpbf", "fdm"):
+        lines += [f'solid open "{ws / kind}"', "frames 8", "fem follow last", "frames 12", "fem pause",
+                  "fem deform true", "fem fit", "camera orbit 40 18", 'uiclick "6 RESULTS"', "frames 240"]
+        states = ("early", "late") if kind == "lpbf" else ("early", "whole")
+        for state in states:
+            lines += [f"fem step {'0' if state == 'early' else 'last'}", 'uiclick "SURFACE##draw"', "frames 60",
+                      f"echo PRINTSURFACE {kind}_{state}", "solid status", "uitext",
+                      f'screenshot "{tmp / (kind + "-" + state + "-surface.png")}"',
+                      'uiclick "VOXELS##draw"', "frames 60", "solid status",
+                      f'screenshot "{tmp / (kind + "-" + state + "-voxels.png")}"']
+            if state != "early":
+                lines += ["fem hide", "frames 60", f'screenshot "{tmp / (kind + "-fit-hidden.png")}"', "fem show", "frames 60"]
+        lines += ["hud clean", "frames 8", f"echo PRINTTIME {kind}", "uitext", "echo PRINTTIME end", "hud on", "frames 8"]
+    lines += ["echo PRINTSURFACE done", "quit", ""]
+    script = tmp / "printsurface.nav"
+    script.write_text("\n".join(lines))
+    r = subprocess.run([str(APP), "--headless", "--size", "1440x900", "--workspace", str(ws), "--exec", f"exec {script}"],
+                       capture_output=True, text=True, timeout=120, cwd=ROOT)
+    t = r.stdout + r.stderr
+    (tmp / "native.log").write_text(t)
+    check(r.returncode == 0 and "PRINTSURFACE done" in t, "native printing script reached its end", t)
+    for kind in ("lpbf", "fdm"):
+        clean = re.search(rf"\[ >> \] echo PRINTTIME {kind}\n(.*?)(?=\[ >> \] echo PRINTTIME end)", t, re.S)
+        check(clean is not None, f"{kind} clean-view time labels were read back", t[-1500:])
+        if clean:
+            check_result_time_labels(clean.group(1), process=(kind == "lpbf"))
+    stages = {}
+    for m in re.finditer(r"\[info\] PRINTSURFACE (lpbf_early|lpbf_late|fdm_early|fdm_whole)\s*\n", t):
+        tail = t[m.end():]
+        stages[m.group(1)] = tail.split("PRINTSURFACE ", 1)[0]
+    expected = {"lpbf_early": 192, "lpbf_late": 532, "fdm_early": 192, "fdm_whole": 12}
+    for key, count in expected.items():
+        stage = stages.get(key, "")
+        actual = _tris(stage)
+        check(bool(actual) and actual[0] == count, f"{key} SURFACE has exactly {count} triangles", stage)
+        kind, state = key.split("_", 1)
+        surface, voxels = tmp / f"{kind}-{state}-surface.png", tmp / f"{kind}-{state}-voxels.png"
+        if not surface.exists() or not voxels.exists():
+            check(False, f"{key} captures exist", t)
+            continue
+        if key != "fdm_whole":
+            diff = _differing(_decode(surface), _decode(voxels), x1=950)
+            check(diff < 50, f"{key} SURFACE matches visible FE boundary ({diff} differing viewport pixels)", stage)
+            check("Active element boundary" in stage, f"{key} explains why the original STL is not used", stage)
+    for kind, final in (("lpbf", "late"), ("fdm", "whole")):
+        early, late = tmp / f"{kind}-early-surface.png", tmp / f"{kind}-{final}-surface.png"
+        if early.exists() and late.exists():
+            diff = _differing(_decode(early), _decode(late), x1=950)
+            check(diff > 500, f"{kind} early/final geometry changes visible pixels ({diff})", t)
+    for kind, state in (("lpbf", "late"), ("fdm", "whole")):
+        final, hidden = tmp / f"{kind}-{state}-voxels.png", tmp / f"{kind}-fit-hidden.png"
+        if final.exists() and hidden.exists():
+            w, h, ch, px = _decode(final)
+            bg = _decode(hidden)[3]
+            xlo, ylo, xhi, yhi = w, h, -1, -1
+            for y in range(h):
+                for x in range(950):
+                    i = (y*w+x)*ch
+                    if max(abs(px[i+k]-bg[i+k]) for k in range(3)) > 24:
+                        xlo, ylo = min(xlo,x), min(ylo,y)
+                        xhi, yhi = max(xhi,x), max(yhi,y)
+            check(xhi >= xlo and xlo >= 20 and xhi < 930 and ylo >= 20 and yhi < h-20,
+                  f"{kind} FIT on first layer frames final shape with 20-pixel margins ({xlo},{ylo})..({xhi},{yhi})", t)
+        else:
+            check(False, f"{kind} first-layer FIT captures exist", t)
+    print(f"PRINT SURFACE: {PASS} passed, {FAIL} failed; native captures {tmp}")
+    return 1 if FAIL else 0
+
+
 def main():
+    if "--solidkeys" in sys.argv:
+        return solidkeys()
+    if "--printsurface" in sys.argv:
+        return printsurface()
     if "--lab" in sys.argv:
         rc = labwalk()
         print(f"\n{'LAB WALKTHROUGH FAILED' if FAIL else 'LAB WALKTHROUGH PASSED'}: {PASS} passed, {FAIL} failed")
@@ -1596,7 +2011,8 @@ def main():
             continue
         fn(text)
     # errors anywhere except in the steps that deliberately provoke one
-    expected_err = {"ambiguous_click", "missing_click", "solid_refusal_shown"}  # these provoke a refusal on purpose
+    expected_err = {"ambiguous_click", "missing_click", "solid_refusal_shown", "fem_cmap_invalid",
+                    "marker_invalid", "marker_extra_args", "outline_invalid", "outline_extra_args"}  # intentional refusals
     stray = [ln for name, sec in sections.items() if name not in expected_err for ln in sec.splitlines() if "[err!]" in ln]
     check(not stray, f"no errors logged ({len(stray)} found)", "\n".join(stray[:8]))
     pixel_checks(APP, tmp)

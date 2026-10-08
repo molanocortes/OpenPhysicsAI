@@ -10,6 +10,22 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* Printing-mesh criteria, declared 2026-10-03 before the first run:
+ * PM1: 20 x 10 x 5 mm box, h=(0.4,0.5,0.2) mm: exactly 25,000 cells, positive box Jacobians,
+ *      25 complete z layers, volume within 1e-12 relative, and face/centroid positions within 1e-12 m.
+ * PM2: three analytically intersecting boxes with part/support ownership: the last classified region wins;
+ *      only overlaps within that final region count, and all per-body volumes match exact cell counts.
+ *      Serial and 4-thread meshes, owners and uncertainty counters must be identical; a box missing its +x face
+ *      must report exactly 50 abstaining x columns at 1 mm, with the other two axes preserving its 1,000 cells.
+ * PM3: anisotropic boundary mean is AREA-weighted, against the exact distances of a rectangular solid,
+ *      within 1e-8 m (input STL helper stores floats). This is a diagnostic, not a convergence claim.
+ * PM4: nonfinite sizes/geometry/normals, empty bodies, negative indices and unrepresentable grids are refused
+ *      before allocation or conversion to integer grid dimensions.
+ * PM5: the source volume of the closed PM1 box is translation-invariant to 1e-9 relative after a 1 km x/y
+ *      translation in double precision (a numerical robustness fixture, not a physical build).
+ * --bench-ownership reports an eight-body 64,000-cell fixture: geometry/ownership checks are exact;
+ * timing is reported, with no acceptance threshold because the laptop is shared. */
+
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -260,9 +276,193 @@ static void test_hexmesh(void) {
     mesh_free(&m);
 }
 
-int main(void) {
+static void test_print_mesh(void) {
+    printf("== PM printing meshes: layer geometry, ownership and anisotropic boundary error\n");
+    Mesh src;
+    mesh_init(&src);
+    add_box(&src, 0, 0, 0, 20, 10, 5);
+    Body b;
+    HexMeshBody hb;
+    if (!mesh_body(&src, &b, &hb)) return;
+    HexMeshSettings st = {{0.4e-3, 0.5e-3, 0.2e-3}, false, 0, 0, 0, NULL};
+    HexMesh hm;
+    char err[256] = {0};
+    if (hexmesh_generate(&hb, 1, &st, &hm, err, sizeof err)) {
+        CHECK(hm.nelems == 25000 && hm.dims[2] == 25, "PM1 complete printing layers: %d cells, %d z layers", hm.nelems, hm.dims[2]);
+        CHECK(fabs(hm.body_volume_mesh[0] / (20e-3 * 10e-3 * 5e-3) - 1) < 1e-12, "PM1 exact box volume %.12g", hm.body_volume_mesh[0]);
+        int layer[25] = {0};
+        double maxzerr = 0, minjac = INFINITY;
+        for (int e = 0; e < hm.nelems; e++) {
+            int k = hm.ijk[3 * e + 2];
+            if (k >= 0 && k < 25) layer[k]++;
+            const double *a = hm.xyz + 3 * (size_t)hm.conn[8 * (size_t)e];
+            const double *x = hm.xyz + 3 * (size_t)hm.conn[8 * (size_t)e + 1];
+            const double *y = hm.xyz + 3 * (size_t)hm.conn[8 * (size_t)e + 3];
+            const double *z = hm.xyz + 3 * (size_t)hm.conn[8 * (size_t)e + 4];
+            maxzerr = fmax(maxzerr, fabs(a[2] - k * st.h[2]));
+            minjac = fmin(minjac, (x[0] - a[0]) * (y[1] - a[1]) * (z[2] - a[2]) / 8);
+        }
+        int complete = 0;
+        for (int k = 0; k < 25; k++) complete += layer[k] == 1000;
+        CHECK(complete == 25 && maxzerr < 1e-12 && minjac > 0, "PM1 %d complete layers, max z error %.3g m, min detJ %.3g m3", complete, maxzerr, minjac);
+        printf("  PM1 %d elements, %d nodes, 25 layers, min detJ %.9g mm3, %.4f s\n", hm.nelems, hm.nnodes, minjac * 1e9, hm.seconds);
+        hexmesh_free(&hm);
+    } else CHECK(false, "PM1 mesh: %s", err);
+
+    for (int n = 0; n < b.s.nv; n++) b.bv[3 * n] += 1000, b.bv[3 * n + 1] += 2000;
+    if (hexmesh_generate(&hb, 1, &st, &hm, err, sizeof err)) {
+        double rel = fabs(hm.body_volume_stl[0] / (20e-3 * 10e-3 * 5e-3) - 1);
+        CHECK(rel < 1e-9 && hm.nelems == 25000, "PM5 translated source volume relative error %.9g, %d cells", rel, hm.nelems);
+        printf("  PM5 closed source-volume translation error %.9g relative\n", rel);
+        hexmesh_free(&hm);
+    } else CHECK(false, "PM5 translated mesh: %s", err);
+    for (int n = 0; n < b.s.nv; n++) b.bv[3 * n] -= 1000, b.bv[3 * n + 1] -= 2000;
+
+    /* Invalid numeric inputs must fail without creating a partial mesh. */
+    HexMeshSettings bad = st;
+    bad.h[0] = NAN;
+    CHECK(!hexmesh_generate(&hb, 1, &bad, &hm, err, sizeof err) && strstr(err, "finite"), "PM4 NaN size refused: %s", err);
+    bad.h[0] = INFINITY;
+    CHECK(!hexmesh_generate(&hb, 1, &bad, &hm, err, sizeof err) && strstr(err, "finite"), "PM4 infinite size refused: %s", err);
+    bad = st, bad.h[0] = 1e-300;
+    CHECK(!hexmesh_generate(&hb, 1, &bad, &hm, err, sizeof err) && strstr(err, "grid"), "PM4 unrepresentable grid refused: %s", err);
+    bad = st;
+    bad.h[0] = bad.h[1] = bad.h[2] = 1e110;
+    CHECK(!hexmesh_generate(&hb, 1, &bad, &hm, err, sizeof err) && strstr(err, "grid"), "PM4 overflowing cell volume refused: %s", err);
+    bad.h[0] = bad.h[1] = bad.h[2] = 1e-110;
+    CHECK(!hexmesh_generate(&hb, 1, &bad, &hm, err, sizeof err) && strstr(err, "grid"), "PM4 underflowing cell volume refused: %s", err);
+    bad = st, bad.include_plate = true, bad.plate_thickness = INFINITY;
+    CHECK(!hexmesh_generate(&hb, 1, &bad, &hm, err, sizeof err) && strstr(err, "finite"), "PM4 infinite plate size refused: %s", err);
+    HexMeshBody empty = hb;
+    empty.nt = 0;
+    CHECK(!hexmesh_generate(&empty, 1, &st, &hm, err, sizeof err) && strstr(err, "triangle"), "PM4 empty body refused: %s", err);
+    int oldtri = b.s.tri[0];
+    b.s.tri[0] = -1;
+    CHECK(!hexmesh_generate(&hb, 1, &st, &hm, err, sizeof err) && strstr(err, "index"), "PM4 negative index refused: %s", err);
+    b.s.tri[0] = oldtri;
+    double old = b.bv[0];
+    b.bv[0] = NAN;
+    CHECK(!hexmesh_generate(&hb, 1, &st, &hm, err, sizeof err) && strstr(err, "finite"), "PM4 NaN vertex refused: %s", err);
+    b.bv[0] = old;
+    old = b.s.normal[0], b.s.normal[0] = INFINITY;
+    CHECK(!hexmesh_generate(&hb, 1, &st, &hm, err, sizeof err) && strstr(err, "finite"), "PM4 infinite normal refused: %s", err);
+    b.s.normal[0] = old;
+    body_free(&b), mesh_free(&src);
+
+    mesh_init(&src);
+    add_box(&src, 0.1, 0.2, 0, 3.9, 7.8, 0.8);
+    if (!mesh_body(&src, &b, &hb)) return;
+    st = (HexMeshSettings){{1e-3, 2e-3, 0.2e-3}, false, 0, 0, 0, NULL};
+    if (hexmesh_generate(&hb, 1, &st, &hm, err, sizeof err)) {
+        double exact = (2 * 8 * 0.8 * 0.1 + 2 * 4 * 0.8 * 0.2) / (2 * (8 * 0.8 + 4 * 0.8 + 4 * 8)) * 1e-3;
+        CHECK(fabs(hm.mean_face_distance - exact) < 1e-8, "PM3 area-weighted boundary mean %.9g mm vs %.9g", hm.mean_face_distance * 1e3, exact * 1e3);
+        printf("  PM3 mean surface offset %.9g mm (exact %.9g), maximum %.9g mm\n", hm.mean_face_distance * 1e3, exact * 1e3, hm.max_face_distance * 1e3);
+        hexmesh_free(&hm);
+    } else CHECK(false, "PM3 mesh: %s", err);
+    body_free(&b), mesh_free(&src);
+
+    /* Body 0: part x=[0,4]; 1: support x=[2,6]; 2: part x=[3,5], all y/z=[0,2] mm.
+     * Result owner counts are 8,8,8. Only x=[3,4] has a final part/part overlap (4 cells). */
+    Mesh ms[3];
+    Body bs[3];
+    HexMeshBody hbs[3];
+    for (int i = 0; i < 3; i++) {
+        mesh_init(&ms[i]);
+        add_box(&ms[i], i == 0 ? 0 : i == 1 ? 2 : 3, 0, 0, i == 0 ? 4 : i == 1 ? 6 : 5, 2, 2);
+        mesh_body(&ms[i], &bs[i], &hbs[i]);
+    }
+    hbs[1].region = HEX_REGION_SUPPORT;
+    st = (HexMeshSettings){{1e-3, 1e-3, 1e-3}, false, 0, 0, 0, NULL};
+    HexMesh serial = {0}, parallel = {0};
+    bool a = hexmesh_generate(hbs, 3, &st, &serial, err, sizeof err);
+    CHECK(a, "PM2 serial mesh: %s", err);
+    if (a) {
+        int counts[3] = {0}, wrong = 0;
+        for (int e = 0; e < serial.nelems; e++) {
+            int x = serial.ijk[3 * e];
+            int owner = x < 2 ? 0 : x == 2 || x == 5 ? 1 : 2;
+            wrong += serial.body[e] != owner || serial.region[e] != hbs[owner].region;
+            if (serial.body[e] >= 0 && serial.body[e] < 3) counts[(int)serial.body[e]]++;
+        }
+        CHECK(serial.nelems == 24 && !wrong && counts[0] == 8 && counts[1] == 8 && counts[2] == 8, "PM2 exact owners %d/%d/%d, %d wrong", counts[0], counts[1], counts[2], wrong);
+        CHECK(serial.overlap_cells == 4 && serial.overlap_pairs[2][0] == 4, "PM2 final-region overlaps %d, pair 2/0=%d", serial.overlap_cells, serial.overlap_pairs[2][0]);
+        ThreadPool *pool = pool_create(4);
+        st.pool = pool;
+        bool p = hexmesh_generate(hbs, 3, &st, &parallel, err, sizeof err);
+        CHECK(p, "PM2 threaded mesh: %s", err);
+        if (p) {
+            CHECK(serial.nelems == parallel.nelems && serial.nnodes == parallel.nnodes &&
+                  memcmp(serial.conn, parallel.conn, (size_t)serial.nelems * 8 * sizeof(int)) == 0 &&
+                  memcmp(serial.body, parallel.body, (size_t)serial.nelems) == 0 &&
+                  serial.uncertain_cells == parallel.uncertain_cells && serial.abstained_rays == parallel.abstained_rays,
+                  "PM2 serial/threaded mesh and classification identical");
+            hexmesh_free(&parallel);
+        }
+        pool_destroy(pool);
+        hexmesh_free(&serial);
+    }
+    for (int i = 0; i < 3; i++) body_free(&bs[i]), mesh_free(&ms[i]);
+
+    mesh_init(&src);
+    add_box(&src, 0, 0, 0, 20, 10, 5);
+    if (!mesh_body(&src, &b, &hb)) return;
+    int tri[36], nt = 0;
+    double normal[36];
+    for (int t = 0; t < hb.nt; t++) {
+        if (hb.normal[3 * t] > 0.99) continue;
+        memcpy(tri + 3 * nt, hb.tri + 3 * t, 3 * sizeof(int));
+        memcpy(normal + 3 * nt, hb.normal + 3 * t, 3 * sizeof(double));
+        nt++;
+    }
+    hb.nt = nt, hb.tri = tri, hb.normal = normal;
+    st = (HexMeshSettings){{1e-3, 1e-3, 1e-3}, false, 0, 0, 0, NULL};
+    if (hexmesh_generate(&hb, 1, &st, &serial, err, sizeof err)) {
+        CHECK(serial.nelems == 1000 && serial.abstained_rays == 50, "PM2 open +x face: %d cells, %lld abstained columns", serial.nelems, serial.abstained_rays);
+        ThreadPool *pool = pool_create(4);
+        st.pool = pool;
+        bool p = hexmesh_generate(&hb, 1, &st, &parallel, err, sizeof err);
+        CHECK(p, "PM2 threaded abstention mesh: %s", err);
+        if (p) {
+            CHECK(parallel.nelems == serial.nelems && parallel.abstained_rays == 50 && parallel.uncertain_cells == serial.uncertain_cells &&
+                  memcmp(serial.conn, parallel.conn, (size_t)serial.nelems * 8 * sizeof(int)) == 0,
+                  "PM2 deterministic threaded abstentions: %lld vs exact 50", parallel.abstained_rays);
+            hexmesh_free(&parallel);
+        }
+        pool_destroy(pool), hexmesh_free(&serial);
+    } else CHECK(false, "PM2 open-face classification: %s", err);
+    body_free(&b), mesh_free(&src);
+}
+
+static void benchmark_ownership(void) {
+    Mesh src;
+    mesh_init(&src);
+    add_box(&src, 0, 0, 0, 40, 20, 4);
+    Body b;
+    HexMeshBody hb[8];
+    if (!mesh_body(&src, &b, &hb[0])) return;
+    for (int i = 1; i < 8; i++) hb[i] = hb[0];
+    HexMeshSettings st = {{0.5e-3, 0.5e-3, 0.2e-3}, false, 0, 0, 0, NULL};
+    HexMesh hm;
+    char err[256];
+    if (hexmesh_generate(hb, 8, &st, &hm, err, sizeof err)) {
+        CHECK(hm.nelems == 64000 && hm.overlap_cells == 64000, "eight-body benchmark exact cells and overlaps %d/%d", hm.nelems, hm.overlap_cells);
+        int wrong = 0;
+        for (int e = 0; e < hm.nelems; e++) wrong += hm.body[e] != 7;
+        CHECK(!wrong, "eight-body benchmark: last body owns every cell (%d wrong)", wrong);
+        printf("  OWNERSHIP BENCHMARK: 8 bodies, %d elements, %d nodes, %d overlap cells, %.6f s\n", hm.nelems, hm.nnodes, hm.overlap_cells, hm.seconds);
+        hexmesh_free(&hm);
+    } else CHECK(false, "ownership benchmark: %s", err);
+    body_free(&b), mesh_free(&src);
+}
+
+int main(int argc, char **argv) {
+    if (argc > 1 && !strcmp(argv[1], "--bench-ownership")) {
+        benchmark_ownership();
+        return g_fail ? 1 : 0;
+    }
     test_patches();
     test_hexmesh();
+    test_print_mesh();
     printf("\n%s: %d passed, %d failed\n", g_fail ? "MESH TESTS FAILED" : "ALL MESH TESTS PASSED", g_pass, g_fail);
     return g_fail ? 1 : 0;
 }

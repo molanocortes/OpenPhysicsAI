@@ -62,6 +62,7 @@ typedef struct Bridge {
     double deform;          /* < 0 = automatic */
     double deform_used;
     bool visible;
+    bool marker_on, outline_on; /* presentation only; numerical fields are unchanged */
 
     /* what the surface was built from */
     bool surface_valid, surface_dirty;
@@ -107,6 +108,8 @@ typedef struct Bridge {
     const int *tri_patch;     /* triangle -> patch of the drawn geometry, for the highlight */
     int tri_patch_n;
     double deform_umax_all;   /* largest displacement over all stored times, so AUTO does not jump per step */
+    double print_fit_lo[3], print_fit_hi[3]; /* visible domain over all stored times, build frame */
+    bool print_fit_valid;                  /* cached with deform_job/deform_gen, not rescanned for each frame */
     uint64_t deform_gen;
     char deform_job[64];
     int deform_field_unused;
@@ -523,6 +526,7 @@ void fem_show_job(const char *id) {
 
 void fem_init(void) {
     memset(&B, 0, sizeof B);
+    B.marker_on = B.outline_on = true;
     B.field = FEM_VON_MISES;
     B.range_all = true;
     B.play_speed = 4.0;
@@ -1693,10 +1697,15 @@ void fem_set_surface_view(bool on) {
 }
 
 bool fem_peak_marker(float out[3]) {
-    if (!B.peak_valid || !B.surface_valid) return false;
+    if (!B.marker_on || !B.peak_valid || !B.surface_valid) return false;
     out[0] = B.peak_world.x, out[1] = B.peak_world.y, out[2] = B.peak_world.z;
     return true;
 }
+
+bool fem_marker_on(void) { return B.marker_on; }
+void fem_set_marker(bool on) { B.marker_on = on; }
+bool fem_outline_on(void) { return B.outline_on; }
+void fem_set_outline(bool on) { B.outline_on = on; }
 
 bool fem_section_on(void) { return B.section_on; }
 int fem_section_axis(void) { return B.section_axis; }
@@ -2224,7 +2233,7 @@ static void rebuild_outline(const SurfSrc *s, size_t nfaces) {
 }
 const float *fem_outline(int *vertices) {
     /* the ghost of the undeformed shape belongs where the piece was, so it is dropped while the pieces stand apart */
-    *vertices = B.visible && B.surface_valid && !(B.explode > 0 && B.npieces > 1) ? B.outline_vertices : 0;
+    *vertices = B.outline_on && B.visible && B.surface_valid && !(B.explode > 0 && B.npieces > 1) ? B.outline_vertices : 0;
     return B.outline;
 }
 
@@ -2346,7 +2355,9 @@ static void rebuild_edges(const SurfSrc *s, double deform) {
     B.edges = NULL;
     B.edge_vertices = 0;
     memset(B.edge_parts, 0, sizeof B.edge_parts);
-    if (!B.edges_on || !app.engine) return;
+    /* Original STL creases can span removed material too. The visibility mesh has its own undeformed crease
+     * outline, built from exactly the active element faces; never overlay the original skin's edges there. */
+    if (!B.edges_on || !app.engine || B.st.visibility_mesh) return;
     const double cosang = cos(35.0 * M_PI / 180.0);
     int cap = 4096, n = 0;
     float *v = malloc((size_t)cap * 6 * sizeof(float));
@@ -2668,8 +2679,8 @@ static void convergence_finish(void) {
     g_conv.stress_change_pct = g_conv.coarse_p99 > 0 ? (g_conv.fine_p99 - g_conv.coarse_p99) / g_conv.coarse_p99 * 100 : 0;
     g_conv.converged = fabs(g_conv.disp_change_pct) < 5 && fabs(g_conv.stress_change_pct) < 5;
     snprintf(g_conv.message, sizeof g_conv.message,
-             g_conv.converged ? "converged: displacement %+.1f %%, stress %+.1f %% from %d to %d elements"
-                              : "not converged: displacement %+.1f %%, stress %+.1f %% from %d to %d elements - refine again or accept",
+             g_conv.converged ? "small change: displacement %+.1f %%, stress %+.1f %% from %d to %d elements"
+                              : "refine again: displacement %+.1f %%, stress %+.1f %% from %d to %d elements",
              g_conv.disp_change_pct, g_conv.stress_change_pct, g_conv.coarse_elements, g_conv.fine_elements);
     g_conv.state = CONV_DONE;
     LOGOK("mesh check: %s", g_conv.message);
@@ -2789,7 +2800,7 @@ bool fem_write_report(char *dir_out, size_t cap) {
         } else {
             fprintf(f, "| Warp of the released part | %.4g to %.4g mm | vertical displacement after release from the bed |\n",
                     json_get_num(bres, "warp_z_min_mm", 0), json_get_num(bres, "warp_z_max_mm", 0));
-            fprintf(f, "| Peak von Mises, on the bed | %.4g MPa | an upper bound: creep is not modelled |\n",
+            fprintf(f, "| Peak von Mises, on the bed | %.4g MPa | creep omitted; no local stress bound established |\n",
                     json_get_num(bres, "peak_von_mises_on_bed_mpa", 0));
             fprintf(f, "| Peak von Mises, released | %.4g MPa | after release |\n",
                     json_get_num(bres, "peak_von_mises_released_mpa", 0));
@@ -2901,16 +2912,18 @@ bool fem_write_report(char *dir_out, size_t cap) {
         fprintf(f, "- Energy: %s (twice the strain energy equals the external work).\n",
                 json_get_bool(ck, "energy_ok", false) ? "consistent" : "OFF - do not use these numbers");
     }
-    fprintf(f, "\n## Mesh convergence\n\n");
+    fprintf(f, "\n## Two-mesh sensitivity\n\n");
     if (g_conv.state == CONV_DONE)
         fprintf(f, "%s. Element size %.3g mm (%d elements) against %.3g mm (%d elements): displacement %.4g -> %.4g mm "
                    "(%+.1f %%), 99th-percentile stress %.4g -> %.4g MPa (%+.1f %%).%s\n",
-                g_conv.converged ? "Converged" : "NOT converged", g_conv.coarse_mm, g_conv.coarse_elements,
+                g_conv.converged ? "Both changes below 5 percent" : "One or both changes at least 5 percent",
+                g_conv.coarse_mm, g_conv.coarse_elements,
                 g_conv.fine_mm, g_conv.fine_elements, g_conv.coarse_disp, g_conv.fine_disp, g_conv.disp_change_pct,
                 g_conv.coarse_p99, g_conv.fine_p99, g_conv.stress_change_pct,
                 g_conv.capped ? " The finer mesh was capped at about 60 000 elements." : "");
     else
         fprintf(f, "Not run. Press CHECK MESH in the application: an answer from a single mesh is not evidence.\n");
+    fprintf(f, "Two meshes show sensitivity, not an accuracy bound or proof of convergence.\n");
     fprintf(f, "\n## What these numbers are not\n\n");
     fprintf(f, "- Small-strain linear elasticity: no plasticity, no contact, no large deflection, no buckling.\n");
     fprintf(f, "- The mesh is a voxel mesh: the surface is a staircase, so stresses on inclined and curved faces are "
@@ -3313,6 +3326,7 @@ static void rebuild_surface(void) {
     B.st.surface_tris = 0;
     B.outline_vertices = 0;
     B.st.have_result = false;
+    B.st.on_surface = B.st.visibility_mesh = false;
     /* built even while hidden, so the result controls stay on the panel and SHOW brings it straight back */
     if (!app.engine || !B.st.result_job[0]) {
         B.st.showing_geometry = rebuild_geometry_surface();
@@ -3374,10 +3388,14 @@ static void rebuild_surface(void) {
             if (x[i] > bmax[i]) bmax[i] = x[i];
         }
     }
-    for (int e = 0; e < s.nelems; e++) if (element_shown(&s, e) && s.u) {
-        for (int k = 0; k < et_npe(s.elem_type); k++) {
-            const double *u = &s.u[3 * (size_t)s.conn[(size_t)et_npe(s.elem_type) * e + k]];
-            umax = MAXI(umax, u[0]*u[0]+u[1]*u[1]+u[2]*u[2]);
+    bool part_only = true;
+    for (int e = 0; e < s.nelems; e++) {
+        if (s.vis.group && s.vis.group[e] != 0) part_only = false;
+        if (element_shown(&s, e) && s.u) {
+            for (int k = 0; k < et_npe(s.elem_type); k++) {
+                const double *u = &s.u[3 * (size_t)s.conn[(size_t)et_npe(s.elem_type) * e + k]];
+                umax = MAXI(umax, u[0]*u[0]+u[1]*u[1]+u[2]*u[2]);
+            }
         }
     }
     umax = sqrt(umax);
@@ -3393,23 +3411,56 @@ static void rebuild_surface(void) {
     /* AUTO is sized from the largest displacement of the whole run, not of the stored time on screen: a step with
      * almost no movement would otherwise blow the exaggeration up to thousands and the part would jump. */
     double umax_scale = umax;
+    bool print_result = !strcmp(kind, "lpbf_build") || !strcmp(kind, "fff_print");
+    if (!print_result || !s.u) B.print_fit_valid = false;
     if (result_kind_of(kind) == RK_TRANSIENT && s.u) {
         const ThermalCase *tc = data;
         if (B.deform_gen != B.vis_gen || strcmp(B.deform_job, B.st.result_job) != 0) {
             double big = 0;
+            bool complete_in_run = false;
+            B.print_fit_valid = false;
+            for (int a = 0; a < 3; a++) B.print_fit_lo[a] = 1e300, B.print_fit_hi[a] = -1e300;
             for (int t = 0; t < tc->noutputs; t++) {
                 int saved = s.step;
                 s.step = t;
+                bool complete_at_time = true;
                 for (int e = 0; e < s.nelems; e++) {
-                    if (!element_shown(&s, e)) continue;
+                    if (!element_shown(&s, e)) { complete_at_time = false; continue; }
                     for (int k = 0; k < 8; k++) {
-                        const double *u = tc->mech_u + 3 * ((size_t)t * tc->nnodes + s.conn[8 * (size_t)e + k]);
+                        int n = s.conn[8 * (size_t)e + k];
+                        const double *u = tc->mech_u + 3 * ((size_t)t * tc->nnodes + n);
                         big = MAXI(big, u[0] * u[0] + u[1] * u[1] + u[2] * u[2]);
+                        if (print_result) for (int a = 0; a < 3; a++) {
+                            double x = s.xyz[3 * (size_t)n + a];
+                            B.print_fit_lo[a] = MINI(B.print_fit_lo[a], x);
+                            B.print_fit_hi[a] = MAXI(B.print_fit_hi[a], x);
+                        }
                     }
                 }
+                complete_in_run = complete_in_run || complete_at_time;
                 s.step = saved;
             }
+            /* A smooth mapped skin can extend beyond the staircase even with zero displacement. Include the
+             * source vertices in the cached envelope if any stored state can show that skin. Support and plate
+             * meshes have geometry absent from the source part, so they always use the FE boundary instead. */
+            if (print_result && part_only && complete_in_run && !s.elem_type) {
+                engine_lock(app.engine);
+                Project *pj = engine_project_locked(app.engine);
+                const Body *fit_body = pj ? project_body(pj, NULL) : NULL;
+                if (fit_body && build_surface_map(&s, fit_body)) {
+                    for (int v = 0; v < fit_body->surf.nv; v++) {
+                        if (B.map_elem[v] < 0) continue;
+                        for (int a = 0; a < 3; a++) {
+                            double x = fit_body->build_v[3 * (size_t)v + a];
+                            B.print_fit_lo[a] = MINI(B.print_fit_lo[a], x);
+                            B.print_fit_hi[a] = MAXI(B.print_fit_hi[a], x);
+                        }
+                    }
+                }
+                engine_unlock(app.engine);
+            }
             B.deform_umax_all = sqrt(big);
+            B.print_fit_valid = print_result && B.print_fit_lo[0] <= B.print_fit_hi[0];
             B.deform_gen = B.vis_gen;
             str_copy(B.deform_job, sizeof B.deform_job, B.st.result_job);
         }
@@ -3423,21 +3474,28 @@ static void rebuild_surface(void) {
     result_visibility(data, kind, s.nelems, &s.vis);
     s.adj = B.adj;
     size_t nvis = 0;
+    bool complete_topology = true;
     for (int e = 0; e < s.nelems; e++) {
-        if (!element_shown(&s, e)) continue;
+        if (!element_shown(&s, e)) { complete_topology = false; continue; }
         for (int lf = 0; lf < et_nfe(s.elem_type); lf++) {
             int nb = s.adj ? s.adj[6 * (size_t)e + lf] : -1;
             if (face_is_surface(&s, e, nb)) nvis++;
         }
     }
     rebuild_outline(&s, nvis);
+    /* A mapped STL facet may span many elements. Testing only its three corner elements cannot detect a kerf or
+     * unborn material inside that facet. Until the STL is clipped against the active mesh, only a complete topology
+     * can use the original skin; birth/death, sections, groups and topology cuts use the exact visible FE boundary.
+     * Generated supports and plates are not necessarily part of that skin, even when every element is shown. */
+    bool mapped_topology = complete_topology && part_only;
+    B.st.visibility_mesh = !s.elem_type && !mapped_topology;
     /* SURFACE draws the part the engineer drew; VOXELS draws the mesh the numbers came from. The surface needs the
-     * body the mesh was made from, so it falls back to the voxels whenever that body is not the one on screen. */
+     * body the mesh was made from, so it also falls back when that body is not the one on screen. */
     const Body *body = NULL;
     bool surfaced = false;
     size_t want_verts = nvis * 4, want_indices = nvis * 6;
     if (s.elem_type) want_verts = want_indices = nvis * 12; /* up to four triangles per curved face */
-    if (B.surface_view && !s.elem_type) {
+    if (B.surface_view && !s.elem_type && mapped_topology) {
         engine_lock(app.engine);
         Project *pj = engine_project_locked(app.engine);
         body = pj ? project_body(pj, NULL) : NULL;
@@ -3984,6 +4042,20 @@ bool fem_surface_range(float *lo, float *hi) {
 bool fem_world_bounds(vec3 *lo, vec3 *hi) {
     if (!B.surface_valid) return false;
     *lo = B.wlo, *hi = B.whi;
+    if (B.print_fit_valid && B.st.nsteps > 1 &&
+        (!strcmp(B.st.result_kind, "lpbf_build") || !strcmp(B.st.result_kind, "fff_print"))) {
+        /* FIT at a shallow birth step must still fit the later part. The maximum displacement norm bounds every
+         * component at every stored time; this changes camera framing only, never the computed surface. */
+        double pad = B.deform_umax_all * B.deform_used * B.to_world_scale;
+        const double *a = B.print_fit_lo, *b = B.print_fit_hi;
+        vec3 full_lo = v3((float)(B.world_centre.x + B.to_world_scale * (a[0] - B.centre_m[0]) - pad),
+                          (float)(B.world_centre.y + B.to_world_scale * (a[2] - B.centre_m[2]) - pad),
+                          (float)(B.world_centre.z - B.to_world_scale * (b[1] - B.centre_m[1]) - pad));
+        vec3 full_hi = v3((float)(B.world_centre.x + B.to_world_scale * (b[0] - B.centre_m[0]) + pad),
+                          (float)(B.world_centre.y + B.to_world_scale * (b[2] - B.centre_m[2]) + pad),
+                          (float)(B.world_centre.z - B.to_world_scale * (a[1] - B.centre_m[1]) + pad));
+        *lo = v3_min(*lo, full_lo), *hi = v3_max(*hi, full_hi);
+    }
     /* the exploded pieces stand outside the surface's own box: frame what is on screen, not where it came from */
     if (B.explode > 0 && B.npieces > 1)
         for (int i = 0; i < B.npieces; i++) {

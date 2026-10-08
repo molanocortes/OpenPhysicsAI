@@ -1,0 +1,869 @@
+{
+  "kind": "fdm",
+  "title": "Helical Flute",
+  "scope": "Numerical demonstration with inferred inputs; no measurement comparison",
+  "geometry": "helical_flute_vase_mm.stl",
+  "mesh_spacing_mm": 0.75,
+  "acceptance": {
+    "max_elements": 12000,
+    "residual_or_heat_balance": 1e-06,
+    "thermal_enthalpy_mismatch": 1e-09,
+    "finite_arrays": true,
+    "runtime_budget_seconds": 480
+  },
+  "project": {
+    "project": {
+      "id": "d1735c7f10b5e87c034ef97b2229030e",
+      "name": "Helical_Flute",
+      "description": "Numerical demonstration with inferred inputs; no measurement comparison",
+      "directory": "/private/tmp/openphysics-art-gallery/workspace/Helical_Flute",
+      "revision": 2,
+      "unsaved_changes": false,
+      "created": "2026-10-03T07:12:19Z",
+      "modified": "2026-10-03T07:12:19Z",
+      "bodies": 0,
+      "selections": 0,
+      "material_assignments": 0,
+      "boundary_conditions": 0,
+      "mesh_generated": false,
+      "assumptions": 0
+    },
+    "project_file": "/private/tmp/openphysics-art-gallery/workspace/Helical_Flute/project.json",
+    "next_steps": [
+      "geometry_import: load the part STL with an explicit unit"
+    ]
+  },
+  "import": {
+    "body": {
+      "name": "sculpture",
+      "role": "part",
+      "units": {
+        "value": "mm",
+        "source": "user"
+      },
+      "size_mm": [
+        17.81754207611084,
+        17.917052268981934,
+        24
+      ],
+      "bounds_mm": {
+        "min": [
+          -8.90877103805542,
+          -8.958526134490967,
+          0
+        ],
+        "max": [
+          8.90877103805542,
+          8.958526134490967,
+          24
+        ]
+      },
+      "volume_mm3": 2270.100463248976,
+      "surface_area_mm2": 2549.0397627285533,
+      "triangles": 72192,
+      "surface_patches": 5,
+      "closed_solid": true,
+      "geometry_revision": 1,
+      "source": {
+        "original_path": "/private/tmp/openphysics-art-gallery/helical_flute_vase_mm.stl",
+        "stored_file": "inputs/sculpture-96554cbfd88e.stl",
+        "sha256": "96554cbfd88ee6940fd256105b924c9bbc30897279d29248bb9218268dc5a235",
+        "bytes": 3609684,
+        "format": "binary",
+        "header": "OpenPhysicsAI designed geometry; units mm; helical_flute_vase_mm"
+      },
+      "placement": {
+        "up_axis": "+Z",
+        "up_axis_source": "default",
+        "rotate_z_deg": 0,
+        "rotations": [],
+        "position_mm": [
+          0,
+          0
+        ],
+        "z_offset_mm": 0,
+        "rotation_matrix": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "translation_mm": [
+          -0.11983251571655221,
+          0.020317554473877134,
+          0
+        ],
+        "transform": "x_build = R * (unit_scale * x_file) + t"
+      },
+      "repair_options": {
+        "remove_degenerate": true,
+        "remove_duplicate_faces": true,
+        "orient_outward": true
+      }
+    },
+    "diagnostics": {
+      "topology": {
+        "source_triangles": 72192,
+        "analysis_triangles": 72192,
+        "unique_vertices": 36098,
+        "merged_duplicate_vertices": 180478,
+        "weld_tolerance_mm": 3.484947011998046e-05,
+        "open_edges": 0,
+        "nonmanifold_edges": 0,
+        "boundary_loops": 0,
+        "watertight": true,
+        "consistently_oriented": true,
+        "closed_solid": true,
+        "components": 1,
+        "closed_components": 1,
+        "nested_shells": 0,
+        "surface_patches": 5
+      },
+      "repairs": {
+        "degenerate_faces_found": 0,
+        "degenerate_faces_removed": 0,
+        "duplicate_faces_found": 0,
+        "duplicate_faces_removed": 0,
+        "opposite_duplicate_faces": 0,
+        "inconsistent_edges_found": 0,
+        "faces_flipped_for_consistency": 0,
+        "shells_reoriented": 0,
+        "non_orientable_components": 0,
+        "holes_filled": "none (no automatic hole filling)"
+      },
+      "components": [
+        {
+          "id": 0,
+          "triangles": 72192,
+          "closed": true,
+          "area_mm2": 2549.0397627285533,
+          "enclosed_volume_mm3": 2270.100463248976,
+          "nesting_depth": 0
+        }
+      ],
+      "checks": {
+        "self_intersections": "not checked",
+        "wall_thickness": "not checked"
+      },
+      "issues": []
+    },
+    "units_check": {
+      "largest_extent_in_file_units": 24,
+      "declared_unit": "mm",
+      "largest_extent_mm": 24,
+      "plausible": true,
+      "criterion": "largest extent between 1 mm and 1000 mm (typical additive manufacturing parts)",
+      "if_unit_were": [
+        {
+          "unit": "mm",
+          "largest_extent_mm": 24,
+          "plausible": true
+        },
+        {
+          "unit": "cm",
+          "largest_extent_mm": 240,
+          "plausible": true
+        },
+        {
+          "unit": "m",
+          "largest_extent_mm": 24000,
+          "plausible": false
+        },
+        {
+          "unit": "in",
+          "largest_extent_mm": 609.5999999999999,
+          "plausible": true
+        },
+        {
+          "unit": "ft",
+          "largest_extent_mm": 7315.200000000001,
+          "plausible": false
+        },
+        {
+          "unit": "um",
+          "largest_extent_mm": 0.024,
+          "plausible": false
+        }
+      ],
+      "assessment": "plausible: with mm the part is 24 mm across its largest extent",
+      "header_text": "OpenPhysicsAI designed geometry; units mm; helical_flute_vase_mm",
+      "header_note": "the file header mentions units; headers are free text and not authoritative"
+    },
+    "warnings": [],
+    "assumptions": [
+      {
+        "subject": "bodies/sculpture/up_axis",
+        "text": "file axis +Z of body 'sculpture' is taken as the build direction (+Z)",
+        "source": "default",
+        "revision": 2
+      }
+    ]
+  },
+  "mesh": {
+    "mesh": {
+      "method": "voxel_hex8",
+      "description": "layer-aligned voxel mesh of 8-node hexahedra: undistorted boxes whose boundary is a staircase approximation of the STL surface",
+      "nodes": 8551,
+      "elements": 5385,
+      "dofs_structural": 25653,
+      "elements_by_region": {
+        "part": 5385,
+        "support": 0,
+        "build_plate": 0
+      },
+      "element_size_mm": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "grid_cells": [
+        24,
+        24,
+        32
+      ],
+      "quality": {
+        "jacobian": "constant and positive in every element (det J = hx hy hz / 8); no inverted or distorted elements",
+        "jacobian_determinant_mm3": 0.052734375,
+        "aspect_ratio": 1,
+        "face_connected_regions": 1,
+        "inside_test": {
+          "method": "parity of ray crossings along x, y and z through one sample point per cell, majority of three",
+          "uncertain_cells": 0,
+          "abstained_rays": 0,
+          "abstained_rays_meaning": "rays whose crossing count was odd: they went through a hole or a sheet of zero thickness, so that axis did not vote for that column",
+          "uncertain_fraction_of_elements": 0,
+          "refused_above_fraction": 0.05
+        },
+        "edge_or_vertex_contact_nodes": 0
+      },
+      "bodies": [
+        {
+          "name": "sculpture",
+          "volume_stl_mm3": 2270.1004632489976,
+          "volume_mesh_mm3": 2271.796875000043,
+          "volume_error_percent": 0.0747284879461793,
+          "area_stl_mm2": 2549.039762728584,
+          "area_mesh_mm2": 3515.6250000002296,
+          "area_ratio_mesh_to_stl": 1.3791958255829553
+        }
+      ],
+      "boundary": {
+        "faces": 6250,
+        "mean_distance_to_stl_mm": 0.12046186704800166,
+        "mean_distance_weighting": "boundary-face area",
+        "max_distance_to_stl_mm": 0.3809115441981703
+      },
+      "selections": [],
+      "hash": "7e3088ef3914267cac075ea3f99e0cf02603f97e342f6d8f85b1a11bdaba1546",
+      "generated_at_revision": 5,
+      "seconds": 0.027332000085152686
+    },
+    "element_size_source": "user",
+    "warnings": [
+      "wall thickness has not been measured: run geometry_diagnostics (thickness: run) to find walls thinner than two elements"
+    ],
+    "resolution_dependence": "Volume, surface area and stresses at inclined or curved faces change with the element size. Repeat the analysis with half the element size to check that the quantities of interest have converged."
+  },
+  "inspection": {
+    "generated": true,
+    "current": true,
+    "settings": {
+      "element_size_mm": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "include_build_plate": false,
+      "plate_thickness_mm": 10,
+      "plate_margin_mm": 5
+    },
+    "mesh": {
+      "method": "voxel_hex8",
+      "description": "layer-aligned voxel mesh of 8-node hexahedra: undistorted boxes whose boundary is a staircase approximation of the STL surface",
+      "nodes": 8551,
+      "elements": 5385,
+      "dofs_structural": 25653,
+      "elements_by_region": {
+        "part": 5385,
+        "support": 0,
+        "build_plate": 0
+      },
+      "element_size_mm": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "grid_cells": [
+        24,
+        24,
+        32
+      ],
+      "quality": {
+        "jacobian": "constant and positive in every element (det J = hx hy hz / 8); no inverted or distorted elements",
+        "jacobian_determinant_mm3": 0.052734375,
+        "aspect_ratio": 1,
+        "face_connected_regions": 1,
+        "inside_test": {
+          "method": "parity of ray crossings along x, y and z through one sample point per cell, majority of three",
+          "uncertain_cells": 0,
+          "abstained_rays": 0,
+          "abstained_rays_meaning": "rays whose crossing count was odd: they went through a hole or a sheet of zero thickness, so that axis did not vote for that column",
+          "uncertain_fraction_of_elements": 0,
+          "refused_above_fraction": 0.05
+        },
+        "edge_or_vertex_contact_nodes": 0
+      },
+      "bodies": [
+        {
+          "name": "sculpture",
+          "volume_stl_mm3": 2270.1004632489976,
+          "volume_mesh_mm3": 2271.796875000043,
+          "volume_error_percent": 0.0747284879461793,
+          "area_stl_mm2": 2549.039762728584,
+          "area_mesh_mm2": 3515.6250000002296,
+          "area_ratio_mesh_to_stl": 1.3791958255829553
+        }
+      ],
+      "boundary": {
+        "faces": 6250,
+        "mean_distance_to_stl_mm": 0.12046186704800166,
+        "mean_distance_weighting": "boundary-face area",
+        "max_distance_to_stl_mm": 0.3809115441981703
+      },
+      "selections": [],
+      "hash": "7e3088ef3914267cac075ea3f99e0cf02603f97e342f6d8f85b1a11bdaba1546",
+      "generated_at_revision": 5,
+      "seconds": 0.027332000085152686
+    },
+    "warnings": [
+      "wall thickness has not been measured: run geometry_diagnostics (thickness: run) to find walls thinner than two elements"
+    ]
+  },
+  "inputs": {
+    "body": "sculpture",
+    "label": "Helical Flute: FDM numerical demonstration",
+    "process": {
+      "layer_height": "1.5 mm",
+      "printed_layer_height": ".2 mm",
+      "nozzle_temperature": "210 degC",
+      "bed_temperature": "60 degC",
+      "ambient_temperature": "25 degC",
+      "deposition_rate": "8 mm^3/s",
+      "min_layer_time": "8 s",
+      "cooldown_bed_on": "120 s",
+      "cooldown_bed_off": "240 s",
+      "thermal_substeps": 4,
+      "provenance": "inferred"
+    }
+  },
+  "run": {
+    "job_id": "job-20261003-071219-7e8c-1",
+    "state": "queued",
+    "analysis": "fff_print",
+    "run_directory": "/private/tmp/openphysics-art-gallery/workspace/Helical_Flute/runs/job-20261003-071219-7e8c-1",
+    "spec_file": "/private/tmp/openphysics-art-gallery/workspace/Helical_Flute/runs/job-20261003-071219-7e8c-1/spec.json",
+    "spec_hash": "c3b44e344f6378a0077c50e3e931ea09618ace453737d226218de841f9eaf653",
+    "model": {
+      "analysis": "fff_print",
+      "nodes": 8551,
+      "elements": 5385,
+      "mesh_hash": "7e3088ef3914267cac075ea3f99e0cf02603f97e342f6d8f85b1a11bdaba1546",
+      "element_size_mm": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "body": "sculpture",
+      "material": {
+        "id": "pla_generic_demo",
+        "name": "PLA, generic FFF filament (demonstration values)",
+        "status": "demonstration",
+        "glass_transition_c": 60,
+        "relaxation_c": 70
+      },
+      "process": {
+        "simulation_layer_mm": 1.5,
+        "nozzle_c": 210,
+        "bed_c": 60,
+        "ambient_c": 25,
+        "convection_w_m2k": 15,
+        "radiation": true,
+        "deposition_rate_mm3_s": 8,
+        "min_layer_time_s": 8,
+        "cooldown_bed_on_s": 120,
+        "cooldown_bed_off_s": 240,
+        "thermal_substeps_per_layer": 4,
+        "provenance": "inferred",
+        "store": "key_times"
+      },
+      "numerics": {
+        "solver": "auto",
+        "tolerance": 1e-10,
+        "skip_increment_below_k": 0,
+        "note": "auto factorises directly while the factor fits and falls back to the iterative solver when it does not; the iterative solver is faster on smaller models (measured on the truss bridge at 4 mm elements: 220 s automatic against 98 s iterative at a tolerance of 1e-8, peak stress within 2.6e-8 and warp within 3.7e-6 relative)"
+      },
+      "defaults_used": [
+        "convection",
+        "relaxation_offset"
+      ]
+    },
+    "warnings": [
+      {
+        "code": "DEMONSTRATION_MATERIAL",
+        "message": "material 'pla_generic_demo' holds demonstration values that are not calibrated: displacement and stress magnitudes are indicative only"
+      },
+      {
+        "code": "NO_LOADS",
+        "message": "there are no external mechanical loads, gravity or nonzero prescribed displacements; without additional thermal or eigenstrain loading, displacement and stress are zero"
+      },
+      {
+        "code": "STAIRCASE_BOUNDARY",
+        "message": "the voxel mesh approximates inclined and curved surfaces by steps (boundary faces lie up to 0.381 mm from the STL surface); stresses at those surfaces and at re-entrant steps depend on the mesh"
+      }
+    ],
+    "scope": "process simulation on library material data: the summary's scope block states what these numbers are not",
+    "next_step": "poll job_status with {\"job_id\": \"...\", \"wait_seconds\": 30}; then results_query, results_probe, results_render and results_export read the print with time_index or time_s, the last stored time being the state after release from the bed"
+  },
+  "status": {
+    "job_id": "job-20261003-071219-7e8c-1",
+    "kind": "fff_print",
+    "label": "Helical Flute: FDM numerical demonstration",
+    "state": "succeeded",
+    "progress": 1,
+    "stage": "done",
+    "created": "2026-10-03T07:12:19Z",
+    "started": "2026-10-03T07:12:19Z",
+    "finished": "2026-10-03T07:12:50Z",
+    "elapsed_s": 30.911,
+    "run_directory": "/private/tmp/openphysics-art-gallery/workspace/Helical_Flute/runs/job-20261003-071219-7e8c-1",
+    "spec_hash": "c3b44e344f6378a0077c50e3e931ea09618ace453737d226218de841f9eaf653",
+    "project": {
+      "id": "d1735c7f10b5e87c034ef97b2229030e",
+      "name": "Helical_Flute",
+      "revision": 5
+    },
+    "cancel_requested": false,
+    "summary": {
+      "analysis": "fff_print",
+      "model": {
+        "analysis": "fff_print",
+        "nodes": 8551,
+        "elements": 5385,
+        "mesh_hash": "7e3088ef3914267cac075ea3f99e0cf02603f97e342f6d8f85b1a11bdaba1546",
+        "element_size_mm": [
+          0.75,
+          0.75,
+          0.75
+        ],
+        "body": "sculpture",
+        "material": {
+          "id": "pla_generic_demo",
+          "name": "PLA, generic FFF filament (demonstration values)",
+          "status": "demonstration",
+          "glass_transition_c": 60,
+          "relaxation_c": 70
+        },
+        "process": {
+          "simulation_layer_mm": 1.5,
+          "nozzle_c": 210,
+          "bed_c": 60,
+          "ambient_c": 25,
+          "convection_w_m2k": 15,
+          "radiation": true,
+          "deposition_rate_mm3_s": 8,
+          "min_layer_time_s": 8,
+          "cooldown_bed_on_s": 120,
+          "cooldown_bed_off_s": 240,
+          "thermal_substeps_per_layer": 4,
+          "provenance": "inferred",
+          "store": "key_times"
+        },
+        "numerics": {
+          "solver": "auto",
+          "tolerance": 1e-10,
+          "skip_increment_below_k": 0,
+          "note": "auto factorises directly while the factor fits and falls back to the iterative solver when it does not; the iterative solver is faster on smaller models (measured on the truss bridge at 4 mm elements: 220 s automatic against 98 s iterative at a tolerance of 1e-8, peak stress within 2.6e-8 and warp within 3.7e-6 relative)"
+        }
+      },
+      "deposition": {
+        "simulation_layers": 16,
+        "layers_deposited": 16,
+        "elements_printed": 5385,
+        "elements_deposited_late": 0,
+        "elements_never_deposited": 0,
+        "rule": "material is deposited where it has a whole face on the bed or shares a face with printed material; an overhang waits for the layer that carries it, and a fragment that never connects is not printed",
+        "printed_volume_cm3": 2.2717968749999944
+      },
+      "timing": {
+        "print_time_h": 0.07888183593749978,
+        "total_machine_time_h": 0.17888183593749973,
+        "compute_seconds": 30.892136999987997,
+        "compute_seconds_heat": 2.74446600000374,
+        "compute_seconds_stress": 28.118891000165604,
+        "thermal_steps": 72,
+        "stress_increments": 35,
+        "increments_skipped": 0
+      },
+      "results": {
+        "peak_von_mises_on_bed_mpa": 13.057291436951665,
+        "peak_von_mises_released_mpa": 3.3081463013268797,
+        "warp_z_min_mm": -0.0605775664400139,
+        "warp_z_max_mm": 0.0019515454363321352,
+        "worst_heat_balance_relative": 1.7301424868777662e-10,
+        "largest_bed_reaction_n": 2.9399149781283995e-11,
+        "support_reaction_after_release_n": 3.425171257731563e-11,
+        "equilibrium_error_last_solve": 5.2504208645933985e-14,
+        "equilibrium_error_at_release": 5.2504208645933985e-14,
+        "equilibrium_error_definition": "recovered free-equation residual norm / (applied nodal load norm + individual prescribed-DOF reaction norm + assembled free RHS norm including eigenstrain); dimensionless for nonzero force scale; zero scale reports absolute residual in N, zero for an unloaded zero state",
+        "bed_reaction_definition": "largest absolute component of the NET bed resultant, not the largest individual bed reaction",
+        "release_check": "release equilibrium uses the normalized free-equation residual; support reactions remain in N and are not divided by the net bed resultant, which can vanish for self-equilibrated thermal loads",
+        "heat_into_bed_j": 37.55117307991433,
+        "heat_into_bed_during_print_j": 48.799829096064784,
+        "supplied_nozzle_enthalpy_above_ambient_j": 925.0667625837087,
+        "deposition_enthalpy_correction_j": 109.23098605963735,
+        "stored_enthalpy_above_ambient_j": 3.2320732082083943,
+        "heat_into_air_j": 884.2835163185578,
+        "enthalpy_removed_with_supports_j": 0,
+        "worst_deposition_balance_relative": 5.7813850888718e-15,
+        "whole_print_heat_balance_relative": 2.4832452149407718e-11,
+        "stress_field_definition": "element mean of eight Gauss-point von Mises values, not a Gauss-point maximum",
+        "stored_times": 35,
+        "last_stored_time": "the state after release from the bed"
+      },
+      "scope": {
+        "statement": "process simulation on demonstration material data; not a forecast for a particular printer or filament",
+        "is_forecast": false,
+        "layer_lumping": {
+          "simulation_layer_mm": 1.5,
+          "printed_layer_mm": 0.2,
+          "printed_layers_per_simulation_layer": 7.5,
+          "toolpath_within_a_layer": "not modelled: a simulation layer is activated at once with nozzle enthalpy; missing energy at conforming nodes is delivered in the first thermal substep",
+          "deposition_timing": "the enthalpy correction is a finite heat pulse during the first substep; local deposition temperatures require time refinement"
+        },
+        "creep_below_relaxation_temperature": "not modelled",
+        "constitutive_law": "temperature-dependent incremental stress accumulation (hypoelastic approximation); old stress is not rescaled when the modulus changes, and stress is reset above the relaxation temperature; no time-dependent viscoelastic law",
+        "bed_stresses_are_upper_bound": false,
+        "bed_stresses_note": "creep below the relaxation temperature is omitted; temperature-dependent stiffness and stress redistribution mean this approximation establishes no general local stress bound",
+        "material": {
+          "id": "pla_generic_demo",
+          "status": "demonstration",
+          "measured": false
+        },
+        "compared_with_measurement": false,
+        "not_modelled": [
+          "toolpath within a layer",
+          "creep below the relaxation temperature",
+          "plasticity",
+          "raster anisotropy and interlayer strength",
+          "crystallisation shrinkage",
+          "resolved roads and inter-road thermal contact resistance",
+          "gravity",
+          "adhesion failure during the print"
+        ],
+        "use": "compare designs, process settings and trends; do not certify a part with these numbers"
+      }
+    },
+    "results_in_memory": true
+  },
+  "elapsed_seconds": 30.913803667062894,
+  "result_header": {
+    "format": "navier-am-thermal-results",
+    "version": 4,
+    "has_elem_birth": true,
+    "has_elem_death": false,
+    "has_elem_group": false,
+    "has_temperature": true,
+    "nhistory": 0,
+    "nmesh_nodes": 8551,
+    "has_node_map": false,
+    "ninterface": 0,
+    "contacts": [],
+    "kind": "thermomechanical",
+    "byte_order": "little",
+    "job_id": "job-20261003-071219-7e8c-1",
+    "nnodes": 8551,
+    "nelems": 5385,
+    "nfaces": 6250,
+    "noutputs": 35,
+    "nsteps": 72,
+    "has_mechanical": true,
+    "h_m": [
+      0.00075,
+      0.00075,
+      0.00075
+    ],
+    "mesh_hash": "7e3088ef3914267cac075ea3f99e0cf02603f97e342f6d8f85b1a11bdaba1546",
+    "bodies": [
+      "sculpture"
+    ],
+    "settings": {
+      "end_time": 643.9746093749991,
+      "time_step": 0,
+      "theta": 1,
+      "consistent_capacity": false,
+      "initial_temperature": 298.15,
+      "reference_temperature": 298.15,
+      "output_every": 1,
+      "mechanical": true,
+      "time_stepping": "fixed"
+    },
+    "conditions": [],
+    "sets": [],
+    "energy": {
+      "source": 0,
+      "boundary": 0,
+      "prescribed": 0,
+      "stored": 0,
+      "worst_balance": 1.7301424868777662e-10,
+      "picard_max": 0,
+      "cg_total": 0
+    },
+    "summary": {
+      "analysis": "fff_print",
+      "model": {
+        "analysis": "fff_print",
+        "nodes": 8551,
+        "elements": 5385,
+        "mesh_hash": "7e3088ef3914267cac075ea3f99e0cf02603f97e342f6d8f85b1a11bdaba1546",
+        "element_size_mm": [
+          0.75,
+          0.75,
+          0.75
+        ],
+        "body": "sculpture",
+        "material": {
+          "id": "pla_generic_demo",
+          "name": "PLA, generic FFF filament (demonstration values)",
+          "status": "demonstration",
+          "glass_transition_c": 60,
+          "relaxation_c": 70
+        },
+        "process": {
+          "simulation_layer_mm": 1.5,
+          "nozzle_c": 210,
+          "bed_c": 60,
+          "ambient_c": 25,
+          "convection_w_m2k": 15,
+          "radiation": true,
+          "deposition_rate_mm3_s": 8,
+          "min_layer_time_s": 8,
+          "cooldown_bed_on_s": 120,
+          "cooldown_bed_off_s": 240,
+          "thermal_substeps_per_layer": 4,
+          "provenance": "inferred",
+          "store": "key_times"
+        },
+        "numerics": {
+          "solver": "auto",
+          "tolerance": 1e-10,
+          "skip_increment_below_k": 0,
+          "note": "auto factorises directly while the factor fits and falls back to the iterative solver when it does not; the iterative solver is faster on smaller models (measured on the truss bridge at 4 mm elements: 220 s automatic against 98 s iterative at a tolerance of 1e-8, peak stress within 2.6e-8 and warp within 3.7e-6 relative)"
+        }
+      },
+      "deposition": {
+        "simulation_layers": 16,
+        "layers_deposited": 16,
+        "elements_printed": 5385,
+        "elements_deposited_late": 0,
+        "elements_never_deposited": 0,
+        "rule": "material is deposited where it has a whole face on the bed or shares a face with printed material; an overhang waits for the layer that carries it, and a fragment that never connects is not printed",
+        "printed_volume_cm3": 2.2717968749999944
+      },
+      "timing": {
+        "print_time_h": 0.07888183593749978,
+        "total_machine_time_h": 0.17888183593749973,
+        "compute_seconds": 30.892136999987997,
+        "compute_seconds_heat": 2.74446600000374,
+        "compute_seconds_stress": 28.118891000165604,
+        "thermal_steps": 72,
+        "stress_increments": 35,
+        "increments_skipped": 0
+      },
+      "results": {
+        "peak_von_mises_on_bed_mpa": 13.057291436951665,
+        "peak_von_mises_released_mpa": 3.3081463013268797,
+        "warp_z_min_mm": -0.0605775664400139,
+        "warp_z_max_mm": 0.0019515454363321352,
+        "worst_heat_balance_relative": 1.7301424868777662e-10,
+        "largest_bed_reaction_n": 2.9399149781283995e-11,
+        "support_reaction_after_release_n": 3.425171257731563e-11,
+        "equilibrium_error_last_solve": 5.2504208645933985e-14,
+        "equilibrium_error_at_release": 5.2504208645933985e-14,
+        "equilibrium_error_definition": "recovered free-equation residual norm / (applied nodal load norm + individual prescribed-DOF reaction norm + assembled free RHS norm including eigenstrain); dimensionless for nonzero force scale; zero scale reports absolute residual in N, zero for an unloaded zero state",
+        "bed_reaction_definition": "largest absolute component of the NET bed resultant, not the largest individual bed reaction",
+        "release_check": "release equilibrium uses the normalized free-equation residual; support reactions remain in N and are not divided by the net bed resultant, which can vanish for self-equilibrated thermal loads",
+        "heat_into_bed_j": 37.55117307991433,
+        "heat_into_bed_during_print_j": 48.799829096064784,
+        "supplied_nozzle_enthalpy_above_ambient_j": 925.0667625837087,
+        "deposition_enthalpy_correction_j": 109.23098605963735,
+        "stored_enthalpy_above_ambient_j": 3.2320732082083943,
+        "heat_into_air_j": 884.2835163185578,
+        "enthalpy_removed_with_supports_j": 0,
+        "worst_deposition_balance_relative": 5.7813850888718e-15,
+        "whole_print_heat_balance_relative": 2.4832452149407718e-11,
+        "stress_field_definition": "element mean of eight Gauss-point von Mises values, not a Gauss-point maximum",
+        "stored_times": 35,
+        "last_stored_time": "the state after release from the bed"
+      },
+      "scope": {
+        "statement": "process simulation on demonstration material data; not a forecast for a particular printer or filament",
+        "is_forecast": false,
+        "layer_lumping": {
+          "simulation_layer_mm": 1.5,
+          "printed_layer_mm": 0.2,
+          "printed_layers_per_simulation_layer": 7.5,
+          "toolpath_within_a_layer": "not modelled: a simulation layer is activated at once with nozzle enthalpy; missing energy at conforming nodes is delivered in the first thermal substep",
+          "deposition_timing": "the enthalpy correction is a finite heat pulse during the first substep; local deposition temperatures require time refinement"
+        },
+        "creep_below_relaxation_temperature": "not modelled",
+        "constitutive_law": "temperature-dependent incremental stress accumulation (hypoelastic approximation); old stress is not rescaled when the modulus changes, and stress is reset above the relaxation temperature; no time-dependent viscoelastic law",
+        "bed_stresses_are_upper_bound": false,
+        "bed_stresses_note": "creep below the relaxation temperature is omitted; temperature-dependent stiffness and stress redistribution mean this approximation establishes no general local stress bound",
+        "material": {
+          "id": "pla_generic_demo",
+          "status": "demonstration",
+          "measured": false
+        },
+        "compared_with_measurement": false,
+        "not_modelled": [
+          "toolpath within a layer",
+          "creep below the relaxation temperature",
+          "plasticity",
+          "raster anisotropy and interlayer strength",
+          "crystallisation shrinkage",
+          "resolved roads and inter-road thermal contact resistance",
+          "gravity",
+          "adhesion failure during the print"
+        ],
+        "use": "compare designs, process settings and trends; do not certify a part with these numbers"
+      }
+    },
+    "arrays": [
+      {
+        "name": "xyz",
+        "type": "d",
+        "count": 25653
+      },
+      {
+        "name": "conn",
+        "type": "i",
+        "count": 43080
+      },
+      {
+        "name": "elem_mat",
+        "type": "i",
+        "count": 5385
+      },
+      {
+        "name": "elem_body",
+        "type": "c",
+        "count": 5385
+      },
+      {
+        "name": "face_elem",
+        "type": "i",
+        "count": 6250
+      },
+      {
+        "name": "face_local",
+        "type": "b",
+        "count": 6250
+      },
+      {
+        "name": "fixed",
+        "type": "b",
+        "count": 8551
+      },
+      {
+        "name": "fixed_T",
+        "type": "d",
+        "count": 8551
+      },
+      {
+        "name": "elem_source",
+        "type": "d",
+        "count": 5385
+      },
+      {
+        "name": "times",
+        "type": "d",
+        "count": 35
+      },
+      {
+        "name": "T",
+        "type": "d",
+        "count": 299285
+      },
+      {
+        "name": "tmin",
+        "type": "d",
+        "count": 35
+      },
+      {
+        "name": "tmax",
+        "type": "d",
+        "count": 35
+      },
+      {
+        "name": "elem_birth",
+        "type": "i",
+        "count": 5385
+      },
+      {
+        "name": "mech_u",
+        "type": "d",
+        "count": 897855
+      },
+      {
+        "name": "mech_vm",
+        "type": "d",
+        "count": 299285
+      },
+      {
+        "name": "mech_peak",
+        "type": "d",
+        "count": 35
+      },
+      {
+        "name": "mech_umax",
+        "type": "d",
+        "count": 35
+      }
+    ]
+  },
+  "finite_arrays": {
+    "times": {
+      "count": 35,
+      "min": 0.5621484374999983,
+      "max": 643.9746093749991
+    },
+    "T": {
+      "count": 299285,
+      "min": 298.15,
+      "max": 482.43035741480395
+    },
+    "mech_u": {
+      "count": 897855,
+      "min": -6.519448499739866e-05,
+      "max": 5.2145533363579956e-05
+    },
+    "mech_vm": {
+      "count": 299285,
+      "min": 0.0,
+      "max": 13057291.0
+    }
+  },
+  "results_sha256": "d962fccd437d9dc073d3efa2228a41bf747fed6504f3f05c6e02471bed3ed711",
+  "acceptance_passed": true
+}

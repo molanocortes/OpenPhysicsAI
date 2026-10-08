@@ -17,6 +17,7 @@ Run from the repository root after `make`:
     python3 tools/printflow.py
 """
 import json
+import math
 import shutil
 import struct
 import sys
@@ -165,6 +166,10 @@ def main():
         run_dir = v.get("run_directory", "")
         check(v.get("analysis") == "fff_print", "the job is an fff_print analysis")
         check(bool(job) and bool(run_dir), "the print returns a job id and a run directory")
+        # Thermal process strains can create stress without external mechanical loads.
+        load_warnings = [w.get("message", "").lower() for w in v.get("warnings", []) if w.get("code") == "NO_LOADS"]
+        check(bool(load_warnings) and all("without additional thermal or eigenstrain loading" in w for w in load_warnings),
+              "the absent-mechanical-load warning qualifies its zero-state claim for process loading")
         spec_hash = v.get("spec_hash", "")
         dup = call_ok(c, "mech_print_run", {"process": PROCESS, "probes": probes}, "identical print")
         check(dup.get("deduplicated") is True and dup.get("job_id") == job, "an identical print returns the running job instead of a second one")
@@ -183,8 +188,17 @@ def main():
               f"warp {summary.get('results', {}).get('warp_z_min_mm', float('nan')):.4f} to {summary.get('results', {}).get('warp_z_max_mm', float('nan')):.4f} mm")
         check(scope.get("is_forecast") is False, "the summary says the result is not a forecast")
         check(scope.get("compared_with_measurement") is False, "the summary says nothing was compared with a measurement")
-        check(scope.get("bed_stresses_are_upper_bound") is True, "the summary says the stresses on the bed are an upper bound")
+        # Model-scope acceptance, declared before this correction's first run:
+        # neglecting creep does not establish a local stress bound when stiffness
+        # and strain redistribute through a heterogeneous printing temperature field.
+        check(scope.get("bed_stresses_are_upper_bound") is False,
+              "the summary does not assert an unproved bound on local bed stresses")
+        check("no general local stress bound" in scope.get("bed_stresses_note", ""),
+              "the summary explains why the approximation supplies no stress bound")
         check(scope.get("creep_below_relaxation_temperature") == "not modelled", "the summary says creep is not modelled")
+        law = scope.get("constitutive_law", "")
+        check("hypoelastic" in law and "no time-dependent viscoelastic law" in law,
+              "the summary identifies the implemented incremental stress law and its polymer relaxation limit")
         check((scope.get("material") or {}).get("status") == "demonstration" and (scope.get("material") or {}).get("measured") is False,
               "the summary carries the material's own status")
         lump = scope.get("layer_lumping") or {}
@@ -194,11 +208,33 @@ def main():
         dep = summary.get("deposition") or {}
         check(dep.get("elements_never_deposited") == 0, "every element of the wall is printable")
         check(res.get("worst_heat_balance_relative", 1) <= 1e-6, f"every thermal step conserves energy ({res.get('worst_heat_balance_relative')})")
+        # Criterion before first run: the independently reconstructed full-print
+        # heat ledger must close within 1e-6, including physical deposited enthalpy.
+        heat_keys = ("supplied_nozzle_enthalpy_above_ambient_j", "stored_enthalpy_above_ambient_j",
+                     "heat_into_bed_j", "heat_into_air_j", "enthalpy_removed_with_supports_j")
+        heat = [res.get(key, float('nan')) for key in heat_keys]
+        check(all(math.isfinite(v) for v in heat), "the native summary exports every term of the physical heat ledger")
+        supplied, stored_heat, bed_heat, air_heat, removed_heat = heat
+        closure = abs(stored_heat + bed_heat + air_heat + removed_heat - supplied) / max(abs(v) for v in heat)
+        check(closure <= 1e-6 and res.get("whole_print_heat_balance_relative", 1) <= 1e-6,
+              f"the full print conserves deposited nozzle enthalpy (independent relative error {closure:.2e})")
+        check(res.get("deposition_enthalpy_correction_j", 0) > 0 and res.get("worst_deposition_balance_relative", 1) <= 1e-6,
+              "shared-node deposition correction is accounted for and conserves heat")
+        check("eight Gauss-point von Mises" in res.get("stress_field_definition", ""), "the summary states the actual stress scalar definition")
+        eq_last = res.get("equilibrium_error_last_solve", float('nan'))
+        eq_release = res.get("equilibrium_error_at_release", float('nan'))
+        check(math.isfinite(eq_last) and math.isfinite(eq_release) and 0 <= eq_last < 1e-6 and 0 <= eq_release < 1e-6,
+              f"F17: last-solve and release normalized free-equation residuals close ({eq_last:.2e}, {eq_release:.2e})")
+        definition = res.get("equilibrium_error_definition", "")
+        check("free-equation residual" in definition and "individual" in definition and "RHS" in definition,
+              "F17: the equilibrium definition states individual reactions and the eigenstrain RHS force scale")
+        print(f"   nozzle enthalpy {supplied:.9g} J, shared-node correction {res.get('deposition_enthalpy_correction_j'):.9g} J, "
+              f"whole-print closure {closure:.2e}")
         bed = abs(res.get("largest_bed_reaction_n", 0.0))
         rel = abs(res.get("support_reaction_after_release_n", 1.0))
-        check(rel <= 1e-6 * (1.0 + bed), f"the released part is self-equilibrated (support reaction {rel:.2e} N of bed reactions {bed:.2e} N)")
+        check(rel <= 1e-6 * (1.0 + bed), f"the released part has a small absolute support reaction ({rel:.2e} N; net bed resultant {bed:.2e} N)")
         print(f"   worst heat balance {res.get('worst_heat_balance_relative'):.2e}, support reaction after release {rel:.2e} N, "
-              f"largest bed reaction {bed:.2e} N")
+              f"net bed resultant {bed:.2e} N; normalized equilibrium last {eq_last:.2e}, release {eq_release:.2e}")
         stored = res.get("stored_times", 0)
         laid = dep.get("layers_deposited", 0)
         check(laid > 0 and stored == 2 * laid + 3,

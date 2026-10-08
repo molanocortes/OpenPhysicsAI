@@ -43,6 +43,29 @@ static void panel_say(const char *fmt, ...) {
 
 const char *hud_panel_text(void) { return panel_text; }
 
+/* Manual keeps the command line within reach while giving the numerical inspector the visual emphasis. */
+static bool manual_terminal_open;
+static void manual_terminal(Ui *ui, float x, float y, float w, float bottom, double time) {
+    const float input_h = ui_line_height(ui, FONT_MONO) + 14;
+    if (bottom - y < input_h + 24) {
+        if (!console_focused()) return;
+        y = MAXI(80.0f, bottom - 180.0f);
+        ui_rect(ui, x - 6, y - 6, w + 12, bottom - y + 12, 0x08101AF8u, 7);
+    }
+    bool expanded = manual_terminal_open || console_focused();
+    if (ui_button(ui, "TERMINAL##output", x, y, 94, 22, expanded)) {
+        manual_terminal_open = !expanded;
+        if (expanded) console_set_focus(false);
+    }
+    ui_text_right(ui, FONT_SMALL, x + w, y + 5, UI_DIM,
+                  console_focused() ? "Esc to leave" : expanded ? "click to collapse" : "click to expand / ` to type");
+    panel_say("Terminal output: %s\n", expanded ? "expanded" : "collapsed");
+    y += 26;
+    float th = expanded ? bottom - y : input_h;
+    if (ui_clickable(ui, "terminal", x, y, w, th)) console_set_focus(true);
+    console_draw(ui, x, y, w, th, time);
+}
+
 static void kv(Ui *ui, float x, float y, float w, const char *k, const char *v, uint32_t vcol) {
     panel_say("%s: %s\n", k, v);
     ui_text(ui, FONT_SMALL, x, y + 1, UI_DIM, k);
@@ -74,7 +97,9 @@ static bool slider_row(Ui *ui, const char *id, const char *label, const char *va
 
 /* the pill at the right end of the toolbar; computed early so the layer buttons know how much room is left */
 static void perf_text(char *buf, size_t cap) {
-    if (app.workspace == WS_SOLID) {
+    if (labapp_active()) {
+        snprintf(buf, cap, "%s replay \xC2\xB7 %.0f FPS", labapp_native3d() ? "3D" : "result", app.fps);
+    } else if (app.workspace == WS_SOLID) {
         const FemState *fs = fem_state();
         if (fs->job_active) snprintf(buf, cap, "SOLVING %.0f%% \xC2\xB7 %.0f FPS", fs->job_progress * 100, app.fps);
         else if (fs->nelems > 0) snprintf(buf, cap, "%d elements \xC2\xB7 %.0f FPS", fs->nelems, app.fps);
@@ -85,9 +110,12 @@ static void perf_text(char *buf, size_t cap) {
 }
 
 static bool glossary_open;
-/* two modes (owner, 2026-09-26): Advanced, where people play with the world themselves, and Agent, where they ask */
+static bool lab_library_open;
+static bool clean_view;
+void hud_set_clean_view(bool enabled) { clean_view = enabled; }
+/* Manual and Agentic use the same result, camera and playback state. */
 static float mode_switch_width(Ui *ui) {
-    return ui_text_width(ui, FONT_SMALL, "Advanced") + ui_text_width(ui, FONT_SMALL, "Agent") + 2 * 20 + 2 + 36;
+    return ui_text_width(ui, FONT_SMALL, "Manual") + ui_text_width(ui, FONT_SMALL, "Agentic") + 2 * 20 + 2 + 36;
 }
 
 static float toolbar(float W) {
@@ -98,7 +126,18 @@ static float toolbar(float W) {
     perf_text(perf, sizeof perf);
 
     #define BTN(label, w, active) (ui_block_mouse(ui, x, y, w, h), ui_button(ui, label, x, y, w, h, active))
-    if (app.ui_mode != UI_ADVANCED || labapp_active()) goto perf_pill; /* an agent, or a lab simulation, needs no tunnel tabs */
+    ui_block_mouse(ui, 12, 3, 82, 24);
+    if (ui_button(ui, "LIBRARY##labnav", 12, 3, 82, 24, lab_library_open)) {
+        app_set_ui_mode(UI_ADVANCED);
+        lab_library_open = !lab_library_open;
+    }
+    if (app.ui_mode != UI_ADVANCED) goto perf_pill;
+    if (labapp_active() || lab_library_open || labapp_running()) {
+        if (BTN("FLUID##labnav", 66, false)) { labapp_close(); lab_library_open=false; exec_cmd("workspace fluid"); }
+        x += 70;
+        if (BTN("SOLID##labnav", 66, false)) { labapp_close(); lab_library_open=false; exec_cmd("workspace solid"); }
+        goto perf_pill;
+    }
     /* The tunnel's own actions belong to the tunnel. In the analysis workspace START, RESET and LOAD STL are not
      * dim, they are absent: the water tunnel is a different instrument and its verbs mean nothing to a part. */
     if (app.workspace == WS_FLUID) {
@@ -145,6 +184,7 @@ static float toolbar(float W) {
         ui_rect(ui, x - 6, y + 4, 1, h - 8, 0x2A4A6280u, 0);
         static const char *const FL[FEM_FIELD_COUNT] = {"STRESS", "DISPLACEMENT", "TEMPERATURE"};
         for (int i = 0; i < FEM_FIELD_COUNT; i++) {
+            if (fs->have_result && !fem_field_available(i)) continue;
             float fw = MAXI(ui_text_width(ui, FONT_SMALL, FL[i]) + 18, 30.0f);
             if (BTN(FL[i], fw, fem_field() == i)) {
                 char cmd[64];
@@ -211,8 +251,8 @@ perf_pill:;
      * the title row at the top right, where it never competes with the tunnel's crowded toolbar. */
     {
         float mx = W - 12 - mode_switch_width(ui), y = 3, h = 24;
-        static const char *const ML[UI_MODE_COUNT] = {"Simple##mode", "Advanced##mode", "Agent##mode"};
-        static const char *const MV[UI_MODE_COUNT] = {"Simple", "Advanced", "Agent"};
+        static const char *const ML[UI_MODE_COUNT] = {"Simple##mode", "Manual##mode", "Agentic##mode"};
+        static const char *const MV[UI_MODE_COUNT] = {"Simple", "Manual", "Agentic"};
         for (int i = UI_ADVANCED; i < UI_MODE_COUNT; i++) {
             float bw = ui_text_width(ui, FONT_SMALL, MV[i]) + 20;
             ui_block_mouse(ui, mx, y, bw, h);
@@ -241,23 +281,23 @@ static void title_strip(float W) {
     char t[256];
     const char *name, *kind;
     if (labapp_active()) {
-        name = "NAVIER";
+        name = "OpenPhysicsAI";
         kind = "  physics lab \xC2\xB7 ";
         snprintf(t, sizeof t, "%s", labapp_title());
     } else if (app.workspace == WS_SOLID) {
         const FemState *fs = fem_state();
-        name = "NAVIER-AM";
+        name = "OpenPhysicsAI";
         kind = app.ui_mode == UI_ADVANCED ? (fs->meshed && fs->mesh_method == 1 ? (fs->tet_order == 2 ? "  additive-manufacturing analysis \xC2\xB7 tet10 FEM \xC2\xB7 "
                                                                                                  : "  additive-manufacturing analysis \xC2\xB7 tet4 FEM \xC2\xB7 ")
                                                                                : "  additive-manufacturing analysis \xC2\xB7 hex8 FEM \xC2\xB7 ")
                                           : "  print simulation \xC2\xB7 ";
         snprintf(t, sizeof t, "%s", fs->have_project ? (fs->body[0] ? fs->body : fs->project) : "");
     } else if (labapp_active()) {
-        name = "NAVIER";
+        name = "OpenPhysicsAI";
         kind = "  physics lab \xC2\xB7 ";
         snprintf(t, sizeof t, "%s", labapp_title());
     } else {
-        name = "NAVIER";
+        name = "OpenPhysicsAI";
         kind = "  lattice-Boltzmann water tunnel \xC2\xB7 D3Q19 \xC2\xB7 ";
         snprintf(t, sizeof t, "%s", app.has_model ? app.model_name : "empty tunnel");
     }
@@ -272,10 +312,13 @@ static void title_strip(float W) {
     float w1 = ui_text_width(ui, FONT_BOLD, name);
     float w2 = ui_text_width(ui, FONT_SMALL, kind);
     float w3 = ui_text_width(ui, FONT_SMALL, t);
-    float x = (W - (w1 + w2 + w3)) * 0.5f, y = 7;
+    float right = W - mode_switch_width(ui) - 24;
+    float x = MAXI(106, (W - (w1 + w2 + w3)) * 0.5f), y = 7;
+    ui_push_clip(ui, 106, 0, MAXI(right - 106, 0), 30);
     x += ui_text(ui, FONT_BOLD, x, y, 0xE8FBFFFFu, name);
     x += ui_text(ui, FONT_SMALL, x, y + 1, UI_DIM, kind);
     ui_text(ui, FONT_SMALL, x, y + 1, UI_ACCENT2, t);
+    ui_pop_clip(ui);
 }
 
 /* CONTROLS header with FLOW / MODEL / TIME tabs on the right */
@@ -485,7 +528,8 @@ static bool solid_box_pick;     /* BOX armed: a drag in the view collects faces 
 static bool solid_box_front;    /* the box takes only the faces turned towards the camera */
 static int build_kind;          /* 0 lpbf_build (metal powder bed), 1 fff_print (plastic filament) */
 static int build_orient;        /* 0 the part's long axis lay along machine X, 1 along Y */
-static int build_prov = 2;      /* provenance of a typed strain: user, inferred, calibrated */
+static int build_prov = 1;      /* example strain is inferred until the user states otherwise */
+static int fdm_prov = 1;        /* example printer settings are inferred, never automatically calibrated */
 static bool build_cut = true;   /* the wire cut that releases the part from the plate */
 
 static const char *const BUILD_PROV[3] = {"user", "inferred", "calibrated"};
@@ -873,17 +917,19 @@ static const char *solid_hint(const StepInfo info[STEP_COUNT], int step) {
         return solid_build_path ? "Material assigned. Set the build up next." : "Material assigned. Hold a face next.";
     case STEP_HOLD:
         if (solid_build_path)
-            return "Choose the machine, the inherent strain and the cut. Every value shows its unit; RUN BUILD is in step 5.";
+            return build_kind == 1 ? "Review deposition and cooling settings. Every value shows its unit; RUN PRINT is in step 5."
+                                   : "Choose the machine, the inherent strain and the cut. Every value shows its unit; RUN BUILD is in step 5.";
         if (info[STEP_HOLD].state == ST_DONE) return "Held and loaded. Press SOLVE.";
         return "Click a face on the part, then press HOLD; click another face, type a force and press LOAD.";
     case STEP_SOLVE:
-        if (s->job_active) return solid_build_path ? "Building. The window stays live; the part appears layer by layer."
+        if (s->job_active) return solid_build_path ? "Printing. The window stays live; the part appears layer by layer."
                                                    : "Solving. The window stays live; the result appears by itself.";
-        if (solid_build_path) return info[STEP_HOLD].state == ST_DONE ? "Press RUN BUILD." : "Mesh the part first.";
+        if (solid_build_path) return info[STEP_HOLD].state == ST_DONE ? (build_kind == 1 ? "Press RUN PRINT." : "Press RUN BUILD.") : "Mesh the part first.";
         return info[STEP_HOLD].state == ST_DONE ? "Press SOLVE." : "Hold and load the part first.";
     default:
         if (!s->have_result) return solid_build_path ? "Run the build first." : "Solve first.";
-        return solid_build_path ? "Press PLAY BUILD to watch it grow; the deflections are at true scale."
+        return solid_build_path ? (build_kind == 1 ? "Press PLAY PRINT to watch it grow; the deflections are at true scale."
+                                                  : "Press PLAY BUILD to watch it grow; the deflections are at true scale.")
                                 : "Read the numbers, then press CHECK MESH and REPORT.";
     }
 }
@@ -1272,7 +1318,7 @@ static bool build_run_now(double layer_mm) {
         char strain[300];
         snprintf(strain, sizeof strain,
                  "\"exx\": %.10g, \"eyy\": %.10g, \"ezz\": %.10g, \"provenance\": \"%s\", "
-                 "\"source\": \"typed into the NAVIER interface\"",
+                 "\"source\": \"manual inputs; provenance explicitly selected in the interface\"",
                  field_num("exx", 0), field_num("eyy", 0), field_num("ezz", -0.03), BUILD_PROV[build_prov]);
         char cut[220] = "";
         if (build_cut)
@@ -1294,9 +1340,9 @@ static bool build_run_now(double layer_mm) {
              "{\"body\": \"%s\", \"process\": {\"layer_height\": \"%.10g mm\", \"printed_layer_height\": \"%.10g mm\", "
              "\"nozzle_temperature\": \"%.10g degC\", \"bed_temperature\": \"%.10g degC\", "
              "\"ambient_temperature\": \"%.10g degC\", \"deposition_rate\": \"%.10g mm^3/s\", "
-             "\"provenance\": \"user\"}, \"label\": \"print from the NAVIER interface\"}",
+             "\"provenance\": \"%s\"}, \"label\": \"print from the NAVIER interface\"}",
              s->body, layer_mm, field_num("printed layer", 0.2), field_num("nozzle", 210.0),
-             field_num("bed", 60.0), field_num("ambient", 30.0), field_num("rate", 8.0));
+             field_num("bed", 60.0), field_num("ambient", 30.0), field_num("rate", 8.0), BUILD_PROV[fdm_prov]);
     return build_follow(fem_op("mech_print_run", "%s", params));
 }
 
@@ -1316,14 +1362,16 @@ static float step_build(Ui *ui, float x, float y, float w) {
     /* the two job kinds the engine has, named by what the machine is */
     float bw = (w - gap) / 2;
     if (ui_button(ui, "LPBF METAL##bk", x, y, bw, bh, build_kind == 0)) build_kind = 0;
-    if (ui_button(ui, "FFF PLASTIC##bk", x + bw + gap, y, bw, bh, build_kind == 1)) build_kind = 1;
+    if (ui_button(ui, "FDM / FFF PLASTIC##bk", x + bw + gap, y, bw, bh, build_kind == 1)) build_kind = 1;
     y += bh + 8;
 
     if (build_kind == 0) {
+        panel_say("Strain provenance: %s\n", BUILD_PROV[build_prov]);
         y = wrap_text(ui, x, y, w, UI_DIM,
                       "Every simulation layer is laid stress-free on the part that has already distorted below it, "
-                      "then contracts by the inherent strain. The strain is a calibrated input, not a material "
-                      "property.", 4) + 4;
+                      "then contracts by the inherent strain. This is a declared process input; predictive use "
+                      "requires calibration for the process and geometry.", 4) + 4;
+        y = wrap_text(ui, x, y, w, UI_ACCENT2, "The starting strain is an example, not a fit to this printer. Review it before running.", 2) + 4;
         ui_text(ui, FONT_SMALL, x, y + 5, UI_DIM, "orientation");
         if (ui_button(ui, "X##ori", x + 80, y, 44, bh, build_orient == 0)) build_orient = 0;
         if (ui_button(ui, "Y##ori", x + 80 + 48, y, 44, bh, build_orient == 1)) build_orient = 1;
@@ -1375,9 +1423,10 @@ static float step_build(Ui *ui, float x, float y, float w) {
         build_field(ui, x + 190, y, 20, 80, "\xCE\xBD", "poisson", nudef, "");
         y += bh + 6;
     } else {
+        panel_say("Process provenance: %s\n", BUILD_PROV[fdm_prov]);
         y = wrap_text(ui, x, y, w, UI_DIM,
                       "Each layer is deposited hot on the layers below and cools; the part distorts as it cools. "
-                      "Every printer setting is stated with its unit, and nothing is guessed.", 3) + 4;
+                      "The starting settings are examples, not a calibrated printer profile. Review every value before running.", 4) + 4;
         float lw = 92, fw = 76;
         build_field(ui, x, y, lw, fw, "layer", "layer", "1", "mm (simulation)");
         y += bh + 4;
@@ -1391,11 +1440,18 @@ static float step_build(Ui *ui, float x, float y, float w) {
         y += bh + 4;
         build_field(ui, x, y, lw, fw, "rate", "rate", "8", "mm\xC2\xB3/s");
         y += bh + 6;
-        y = wrap_text(ui, x, y, w, UI_DIM, "Provenance: user. These are the values you typed, not a machine profile.", 2) + 2;
+        ui_text(ui, FONT_SMALL, x, y + 5, UI_DIM, "provenance");
+        float pw = (w - 80 - 2 * gap) / 3;
+        for (int i = 0; i < 3; i++) {
+            char label[48];
+            snprintf(label, sizeof label, "%c%s##fdmprov", (char)toupper((unsigned char)BUILD_PROV[i][0]), BUILD_PROV[i] + 1);
+            if (ui_button(ui, label, x + 80 + i * (pw + gap), y, pw, bh, fdm_prov == i)) fdm_prov = i;
+        }
+        y += bh + 6;
     }
 
     /* where the defaults on this page come from */
-    snprintf(a, sizeof a, "The defaults come from the assigned material: %s.",
+    snprintf(a, sizeof a, "Material properties use the assigned material: %s. Process settings are examples until reviewed.",
              s->material_name[0] ? s->material_name : "none assigned yet");
     y = wrap_text(ui, x, y, w, s->material[0] ? UI_DIM : UI_ACCENT2, a, 3);
     return y + 4;
@@ -1433,7 +1489,7 @@ static float step_solve(Ui *ui, float x, float y, float w) {
     if (busy) {
         if (fem_job_stopping()) step_button(ui, "STOPPING...##run", x, y, w, 26, false, "it ends at the next layer or iteration");
         else if (ui_button(ui, "STOP##run", x, y, w, 26, false)) fem_stop_job(s->job_id);
-    } else if (step_button(ui, solid_build_path ? "RUN BUILD##run" : "SOLVE##run", x, y, w, 26, false, why)) {
+    } else if (step_button(ui, solid_build_path ? (build_kind == 1 ? "RUN PRINT##run" : "RUN BUILD##run") : "SOLVE##run", x, y, w, 26, false, why)) {
         if (solid_build_path) build_run_now(field_num("layer", 1.0));
         else solid_run_now();
     }
@@ -1693,6 +1749,27 @@ static float solid_summary(Ui *ui, float x, float y, float w) {
 
 /* ---- 6 RESULTS ---------------------------------------------------------------------------------------------- */
 
+/* These are the declared model and input provenance, not a confidence claim inferred from the picture. */
+static void printing_model_note(char *note, size_t cap) {
+    note[0] = 0;
+    const JsonValue *sum = fem_job_summary();
+    if (!sum) return;
+    const char *analysis = json_get_str(sum, "analysis", "");
+    const JsonValue *model = json_get(sum, "model"), *results = json_get(sum, "results");
+    const JsonValue *scope = json_get(sum, "scope");
+    const char *comparison = json_get_bool(scope, "compared_with_measurement", false) ? "measurement compared" : "no measurement comparison";
+    if (!strcmp(analysis, "lpbf_build")) {
+        const char *prov = json_get_str(json_get(model, "inherent_strain"), "provenance", "unspecified");
+        bool plastic = json_get(results, "plasticity") != NULL;
+        snprintf(note, cap, "LPBF: %s inherent strain; input %s; %s.",
+                 plastic ? "J2 plastic" : "elastic (no yielding)", prov, comparison);
+    } else if (!strcmp(analysis, "fff_print")) {
+        const char *prov = json_get_str(json_get(model, "process"), "provenance", "unspecified");
+        const char *status = json_get_str(json_get(model, "material"), "status", "unspecified");
+        snprintf(note, cap, "FDM: deposition, heat and stress; process %s; material %s; %s.", prov, status, comparison);
+    }
+}
+
 /* the viewer tools: everything that changes how the result is drawn, out of the way until asked for */
 static float view_tools(Ui *ui, float x, float y, float w) {
     const FemState *s = fem_state();
@@ -1701,7 +1778,7 @@ static float view_tools(Ui *ui, float x, float y, float w) {
     if (s->nsteps > 1) {
         double v = fem_step();
         snprintf(a, sizeof a, "%d / %d", fem_step() + 1, s->nsteps);
-        if (slider_row(ui, "sl_step", "stored time", a, x, y, w, &v, 0, s->nsteps - 1, false)) {
+        if (slider_row(ui, "sl_step", !strcmp(s->result_kind, "lpbf_build") ? "process step" : "stored time", a, x, y, w, &v, 0, s->nsteps - 1, false)) {
             if (fem_playing()) exec_cmd("fem pause");
             fem_set_step((int)lround(v));
         }
@@ -1730,6 +1807,9 @@ static float view_tools(Ui *ui, float x, float y, float w) {
         if (ui_button(ui, "TRUE##def", x + w - 112, y + 4, 54, 22, fem_deform_scale() == 1)) exec_cmd("fem deform true");
         if (ui_button(ui, "AUTO##def", x + w - 54, y + 4, 54, 22, fem_deform_auto())) fem_set_deform_scale(-1);
         y += 32;
+        snprintf(a, sizeof a, "%.5g mm", s->max_displacement_mm);
+        kv(ui, x, y, w, "max displacement, this time", a, UI_ACCENT);
+        y += 20;
     }
     if (ui_button(ui, "SECTION", x, y, 78, 22, fem_section_on()))
         fem_section(fem_section_on() ? -1 : fem_section_axis(), fem_section_position());
@@ -1764,6 +1844,8 @@ static float view_tools(Ui *ui, float x, float y, float w) {
         snprintf(path, sizeof path, "%s/view-3x.png", dir);
         fem_export_image(path, 3);
     }
+    y += 26;
+    if (ui_button(ui, "CLEAN VIEW##pres", x, y, w, 22, false)) exec_cmd("hud clean");
     y += 26;
     if (fem_pieces() > 1) {
         double ex = fem_explode();
@@ -1833,6 +1915,10 @@ static float step_results(Ui *ui, float x, float y, float w) {
                               "Largest snap onto the mesh %.3g mm%s.",
                  s->snap_max_mm, s->unmapped_vertices ? ", some vertices too far out to draw" : "");
         y = wrap_text(ui, x, y, w, UI_DIM, a, 3) + 3;
+    } else if (fem_surface_view() && s->visibility_mesh) {
+        y = wrap_text(ui, x, y, w, UI_ACCENT2,
+                      "Active element boundary: only printed, uncut and visible elements. "
+                      "The original STL cannot represent this topology.", 3) + 3;
     } else if (fem_surface_view()) {
         y = wrap_text(ui, x, y, w, UI_ACCENT2,
                       "The voxel mesh is drawn: the part this result was solved on is not the one open.", 2) + 3;
@@ -1845,30 +1931,44 @@ static float step_results(Ui *ui, float x, float y, float w) {
     const JsonValue *bres = bsum ? json_get(bsum, "results") : NULL;
     const char *bana = bsum ? json_get_str(bsum, "analysis", "") : "";
     bool is_lpbf = !strcmp(bana, "lpbf_build"), is_fff = !strcmp(bana, "fff_print");
+    const JsonValue *cut = bsum ? json_get(json_get(bsum, "model"), "cut") : NULL;
+    const JsonValue *supports = bres ? json_get(bres, "supports") : NULL;
+    bool supports_removed = supports && json_get_bool(supports, "removed", false);
     if (bres && (is_lpbf || is_fff)) {
+        char note[260];
+        printing_model_note(note, sizeof note);
+        y = wrap_text(ui, x, y, w, UI_ACCENT2, note, 3) + 4;
         const float bh2 = 24;
         if (is_lpbf) {
             snprintf(a, sizeof a, "%.4g mm", json_get_num(bres, "tip_uz_before_cut_mm", 0));
             kv(ui, x, y, w, "tip, still on the plate", a, UI_TEXT);
             y += 17;
-            snprintf(a, sizeof a, "%.4g mm", json_get_num(bres, "tip_uz_after_cut_mm", 0));
-            kv(ui, x, y, w, "tip, after the cut", a, UI_ACCENT);
-            y += 17;
-            snprintf(a, sizeof a, "%.4g mm", json_get_num(bres, "springback_mm", 0));
-            kv(ui, x, y, w, "springback", a, UI_TEXT);
-            y += 17;
+            if (cut) {
+                snprintf(a, sizeof a, "%.4g mm", json_get_num(bres, "tip_uz_after_cut_mm", 0));
+                kv(ui, x, y, w, "tip, after the cut", a, UI_ACCENT);
+                y += 17;
+                snprintf(a, sizeof a, "%.4g mm", json_get_num(bres, "springback_mm", 0));
+                kv(ui, x, y, w, "springback", a, UI_TEXT);
+                y += 17;
+            } else if (supports_removed) {
+                snprintf(a, sizeof a, "%.4g mm", json_get_num(supports, "tip_uz_after_support_removal_mm", 0));
+                kv(ui, x, y, w, "tip, supports removed", a, UI_ACCENT);
+                y += 17;
+            }
             y = wrap_text(ui, x, y, w, UI_DIM, json_get_str(bres, "tip_definition", ""), 2) + 3;
-            snprintf(a, sizeof a, "%.4g MPa on the plate \xC2\xB7 %.4g MPa released",
-                     json_get_num(bres, "peak_von_mises_before_cut_mpa", 0),
-                     json_get_num(bres, "peak_von_mises_after_cut_mpa", 0));
+            if (cut)
+                snprintf(a, sizeof a, "%.4g MPa on the plate \xC2\xB7 %.4g MPa cut",
+                         json_get_num(bres, "peak_von_mises_before_cut_mpa", 0), json_get_num(bres, "peak_von_mises_after_cut_mpa", 0));
+            else snprintf(a, sizeof a, "%.4g MPa on the plate", json_get_num(bres, "peak_von_mises_before_cut_mpa", 0));
             kv(ui, x, y, w, "peak stress", a, UI_TEXT);
             y += 17;
-            const JsonValue *cut = json_get(json_get(bsum, "model"), "cut");
             if (cut) {
+                char label[64];
+                snprintf(label, sizeof label, "cut (%.42s)", json_get_str(cut, "provenance", "unspecified"));
                 snprintf(a, sizeof a, "%.4g mm high \xC2\xB7 %.4g kerf \xC2\xB7 %lld removed",
                          json_get_num(cut, "height_mm", 0), json_get_num(cut, "kerf_mm", 0),
                          json_get_int(cut, "elements_removed", 0));
-                kv(ui, x, y, w, "cut (assumed)", a, UI_TEXT);
+                kv(ui, x, y, w, label, a, UI_TEXT);
                 y += 17;
             }
         } else {
@@ -1882,8 +1982,8 @@ static float step_results(Ui *ui, float x, float y, float w) {
             kv(ui, x, y, w, "peak stress", a, UI_TEXT);
             y += 17;
             y = wrap_text(ui, x, y, w, UI_DIM,
-                          "The stress on the bed is an upper bound: creep below the relaxation temperature is not "
-                          "modelled.", 3) + 3;
+                          "Creep below the relaxation temperature is not modelled. No local stress bound is "
+                          "established.", 3) + 3;
         }
         /* the two analyses count their layers and their compute time in their own summaries */
         long long layers = is_lpbf ? json_get_int(bres, "layers", 0)
@@ -1896,23 +1996,26 @@ static float step_results(Ui *ui, float x, float y, float w) {
 
         /* watching it happen: true scale, from the first layer, with the part growing as it was deposited */
         float half = (w - gap) / 2;
-        if (ui_button(ui, "PLAY BUILD##bplay", x, y, half, bh2, false)) {
+        if (ui_button(ui, is_lpbf ? "PLAY BUILD##bplay" : "PLAY PRINT##bplay", x, y, half, bh2, false)) {
             exec_cmd("fem field displacement");
             exec_cmd("fem deform true");
             exec_cmd("fem range all");
             exec_cmd("fem step 1"); /* the stored-time index the panel speaks is 1-based */
             exec_cmd("fem play");
         }
-        if (ui_button(ui, is_lpbf ? "AFTER THE CUT##bcut" : "AFTER RELEASE##bcut", x + half + gap, y, half, bh2, false)) {
+        const char *last_label = !is_lpbf ? "AFTER RELEASE##bcut" : cut ? "AFTER THE CUT##bcut"
+                                : supports_removed ? "SUPPORTS REMOVED##bcut" : "BUILD COMPLETE##bcut";
+        if (ui_button(ui, last_label, x + half + gap, y, half, bh2, false)) {
             exec_cmd("fem pause");
             exec_cmd("fem step last");
         }
         y += bh2 + 4;
         y = wrap_text(ui, x, y, w, UI_DIM,
-                      is_lpbf ? "PLAY BUILD shows the part growing layer by layer and opening at the cut, with the "
+                      is_lpbf ? (cut ? "PLAY BUILD shows the part growing layer by layer and opening at the cut, with the "
                                 "shape drawn at true scale: what you see is the distortion, not a magnified picture "
                                 "of it."
-                              : "PLAY BUILD shows the part growing layer by layer, with the shape drawn at true "
+                                : "PLAY BUILD shows the deposited layers and their computed distortion at true scale.")
+                              : "PLAY PRINT shows the part growing layer by layer, with the shape drawn at true "
                                 "scale: what you see is the distortion, not a magnified picture of it. The last "
                                 "stored time is the part after release from the bed.", 4) + 4;
         const LayerStudy *ls = fem_layer_study();
@@ -1979,12 +2082,14 @@ static float step_results(Ui *ui, float x, float y, float w) {
     y += bh + 6;
     if (cv->state == CONV_DONE) {
         snprintf(a, sizeof a, "%.3g mm -> %.3g mm", cv->coarse_mm, cv->fine_mm);
-        kv(ui, x, y, w, cv->converged ? "mesh check: converged" : "mesh check: not converged", a,
+        kv(ui, x, y, w, cv->converged ? "mesh change: below 5%" : "mesh change: refine again", a,
            cv->converged ? UI_GOOD : UI_ACCENT2);
         y += 17;
         snprintf(a, sizeof a, "displacement %+.1f %% \xC2\xB7 stress %+.1f %% \xC2\xB7 %d \xE2\x86\x92 %d elements",
                  cv->disp_change_pct, cv->stress_change_pct, cv->coarse_elements, cv->fine_elements);
         y = wrap_text(ui, x, y, w, UI_DIM, a, 2) + 4;
+        y = wrap_text(ui, x, y, w, UI_DIM,
+                      "Two meshes show sensitivity, not an accuracy bound or proof of convergence.", 3) + 4;
         if (cv->capped) y = wrap_text(ui, x, y, w, UI_DIM, "The finer mesh was capped at about 60 000 elements.", 2) + 2;
     } else if (cv->state == CONV_FAILED) {
         y = wrap_text(ui, x, y, w, UI_BAD, cv->message, 2) + 4;
@@ -3180,6 +3285,15 @@ bool hud_box_front_only(void) { return solid_box_front; }
 static void analysis_panel(float px, float py, float pw, float ph, double time) {
     Ui *ui = app.ui;
     const FemState *s = fem_state();
+    /* A reopened or agent-produced result selects its own workflow once, while later manual choices stay put. */
+    static char adopted_job[64];
+    if (!s->have_result) adopted_job[0] = 0;
+    else if (strcmp(adopted_job, s->result_job)) {
+        str_copy(adopted_job, sizeof adopted_job, s->result_job);
+        bool metal = !strcmp(s->result_kind, "lpbf_build"), plastic = !strcmp(s->result_kind, "fff_print");
+        solid_build_path = metal || plastic;
+        if (solid_build_path) build_kind = plastic ? 1 : 0;
+    }
     ui_block_mouse(ui, px, py, pw, ph);
     ui_rect_grad(ui, px, py, pw, ph, 0x0B131DEEu, 0x070C13F2u, 10);
     ui_rect_outline(ui, px, py, pw, ph, 0x2A4A6270u, 10, 1);
@@ -3209,8 +3323,8 @@ static void analysis_panel(float px, float py, float pw, float ph, double time) 
 
     /* the strip: six steps, two rows, each showing where it stands */
     const char *CHIP[STEP_COUNT] = {"1 PART", "2 MESH", "3 MATERIAL",
-                                    solid_build_path ? "4 BUILD" : "4 HOLD & LOAD",
-                                    solid_build_path ? "5 RUN" : "5 SOLVE", "6 RESULTS"};
+                                    solid_build_path ? (build_kind == 1 ? "4 PROCESS" : "4 BUILD") : "4 HOLD & LOAD",
+                                    solid_build_path ? (build_kind == 1 ? "5 PRINT" : "5 RUN") : "5 SOLVE", "6 RESULTS"};
     const float cgap = 4, cw = (w - 2 * cgap) / 3, chh = 34;
     for (int i = 0; i < STEP_COUNT; i++) {
         float cx = x + (i % 3) * (cw + cgap), cy = y + (i / 3) * (chh + cgap);
@@ -3255,14 +3369,7 @@ static void analysis_panel(float px, float py, float pw, float ph, double time) 
     }
     y += 2;
 
-    /* the terminal is shared with the fluid workspace: one log, one history, one set of commands */
-    section(ui, x, y, w, "TERMINAL", console_focused() ? "Esc to leave" : "\xE2\x8F\x8E / ` to type");
-    y += 18;
-    float th = py + ph - y - 6;
-    if (th > 60) {
-        if (app.ui && ui_clickable(ui, "terminal", px, y, pw, th)) console_set_focus(true);
-        console_draw(ui, px + 4, y, pw - 8, th, time);
-    }
+    manual_terminal(ui, x, y, w, py + ph - 6, time);
 }
 
 /* ---- the lab in Advanced mode: a minimal panel to play with the world by hand ------------------------------------ */
@@ -3316,15 +3423,85 @@ static const char *lib_domain_name(const char *d) {
     return d;
 }
 
-/* opens the scenario's last result if there is one, runs it otherwise */
+/* Library navigation has bounded pages, so every shipped domain and scenario stays reachable at small heights. */
 static void lib_open(const LibEntry *L) {
-    const char *home = getenv("HOME");
-    char res[1200], cmd[1300];
-    snprintf(res, sizeof res, "%s/NAVIER-Projects/lab/%s.lab", home ? home : "/tmp", L->base);
-    struct stat st;
-    if (stat(res, &st) == 0) snprintf(cmd, sizeof cmd, "lab open %s", res);
-    else snprintf(cmd, sizeof cmd, "lab run %s", L->path);
-    exec_cmd(cmd);
+    labapp_select(L->path);
+    lab_library_open = false;
+}
+
+static bool library_choice(Ui *ui, const char *id, const char *title, float x, float y, float w, bool selected) {
+    bool hover = ui_hover(ui, x, y, w, 26);
+    ui_rect(ui, x, y, w, 26, selected ? 0x1B4A5EFFu : hover ? 0x16222EFFu : 0x0F1822FFu, 5);
+    ui_rect_outline(ui, x, y, w, 26, selected ? 0x38E1FFB0u : 0x243A4C90u, 5, 1);
+    ui_text(ui, FONT_SMALL, x + 8, y + 6, selected ? UI_ACCENT : UI_TEXT, title);
+    return ui_clickable(ui, id, x, y, w, 26);
+}
+
+static void lab_library(Ui *ui, float x, float y, float w, float ph) {
+    static int domain_page, scenario_page;
+    static char open_dom[32];
+    if (lib_n < 0) lib_load();
+    if (ui_button(ui, "METAL / FDM PRINTING##library", x, y, w, 28, false)) {
+        labapp_close(); lab_library_open = false;
+        app_set_ui_mode(UI_ADVANCED);
+        app_set_workspace(WS_SOLID);
+        solid_build_path = true;
+        solid_step = STEP_PART;
+    }
+    y += 36;
+    const char *domains[96];
+    int counts[96], nd = 0;
+    for (int i = 0; i < lib_n; i++) {
+        if (!nd || strcmp(domains[nd - 1], lib[i].domain)) domains[nd] = lib[i].domain, counts[nd++] = 0;
+        counts[nd - 1]++;
+    }
+    int rows = ph > 550 ? 5 : 3;
+    int pages = MAXI(1, (nd + rows - 1) / rows);
+    domain_page = CLAMP(domain_page, 0, pages - 1);
+    char page[64];
+    snprintf(page, sizeof page, "%d domains - %d / %d", nd, domain_page + 1, pages);
+    section(ui, x, y, w, "PHYSICS", page); y += 20;
+    for (int i = domain_page * rows; i < nd && i < (domain_page + 1) * rows; i++) {
+        char id[64];
+        snprintf(id, sizeof id, "libdom %s", domains[i]);
+        bool selected = !strcmp(open_dom, domains[i]);
+        if (library_choice(ui, id, lib_domain_name(domains[i]), x, y, w - 36, selected)) {
+            snprintf(open_dom, sizeof open_dom, "%s", domains[i]); scenario_page = 0;
+        }
+        char n[16]; snprintf(n, sizeof n, "%d", counts[i]);
+        ui_text_right(ui, FONT_MONO, x + w - 4, y + 6, UI_DIM, n);
+        panel_say("%s: %d scenarios\n", lib_domain_name(domains[i]), counts[i]);
+        y += 30;
+    }
+    float half = (w - 6) / 2;
+    if (ui_button(ui, "PREV DOMAINS##library", x, y, half, 24, false)) domain_page = (domain_page + pages - 1) % pages;
+    if (ui_button(ui, "NEXT DOMAINS##library", x + half + 6, y, half, 24, false)) domain_page = (domain_page + 1) % pages;
+    y += 36;
+    if (!open_dom[0]) {
+        say(ui, FONT_SMALL, x, y, w, UI_DIM, "Choose a physics domain. A saved result opens immediately; a new simulation runs in the background.", 3);
+        return;
+    }
+    int selected[96], ns = 0;
+    for (int i = 0; i < lib_n; i++) if (!strcmp(lib[i].domain, open_dom)) selected[ns++] = i;
+    int srows = ph > 550 ? 6 : 3, spages = MAXI(1, (ns + srows - 1) / srows);
+    scenario_page = CLAMP(scenario_page, 0, spages - 1);
+    snprintf(page, sizeof page, "%d / %d", scenario_page + 1, spages);
+    section(ui, x, y, w, "SCENARIOS", page); y += 20;
+    panel_say("Selected domain: %s\n", open_dom);
+    for (int i = scenario_page * srows; i < ns && i < (scenario_page + 1) * srows; i++) {
+        const LibEntry *L = &lib[selected[i]];
+        char shown[140], id[128];
+        snprintf(shown, sizeof shown, "%s", L->title);
+        while (ui_text_width(ui, FONT_SMALL, shown) > w - 16 && strlen(shown) > 4)
+            shown[strlen(shown) - 4] = 0, strcat(shown, "...");
+        snprintf(id, sizeof id, "lib %s", L->base);
+        if (library_choice(ui, id, shown, x, y, w, false)) lib_open(L);
+        y += 30;
+    }
+    if (spages > 1) {
+        if (ui_button(ui, "PREV SCENARIOS##library", x, y, half, 24, false)) scenario_page = (scenario_page + spages - 1) % spages;
+        if (ui_button(ui, "NEXT SCENARIOS##library", x + half + 6, y, half, 24, false)) scenario_page = (scenario_page + 1) % spages;
+    }
 }
 
 static void lab_panel(float px, float py, float pw, float ph, double time) {
@@ -3340,15 +3517,24 @@ static void lab_panel(float px, float py, float pw, float ph, double time) {
     uint32_t led = running ? UI_ACCENT2 : playing ? UI_GOOD : UI_DIM;
     float pulse = (running || playing) ? 0.6f + 0.4f * (float)sin(time * 5.0) : 1.0f;
     ui_rect(ui, x, y + 4, 9, 9, (led & 0xFFFFFF00u) | (uint32_t)(255 * pulse), 4.5f);
-    ui_text(ui, FONT_BOLD, x + 16, y, led, running ? "COMPUTING" : playing ? "PLAYING" : "PAUSED");
+    ui_text(ui, FONT_BOLD, x + 16, y, led, running ? "COMPUTING" : !labapp_active() ? "READY" : playing ? "PLAYING" : "PAUSED");
     if (labapp_active()) {
         snprintf(a, sizeof a, "%s \xC2\xB7 frame %d of %d", labapp_domain(), labapp_frame() + 1, labapp_nframes());
         ui_text_right(ui, FONT_SMALL, x + w, y + 1, UI_DIM, a);
     }
     y += 24;
+    float half = (w - 6) / 2;
+    if (ui_button(ui, "RESULT##labtab", x, y, half, 26, !lab_library_open) && labapp_active()) lab_library_open = false;
+    if (ui_button(ui, "LIBRARY##labtab", x + half + 6, y, half, 26, lab_library_open)) lab_library_open = true;
+    y += 36;
+    if (labapp_run_error()[0]) y = say(ui, FONT_SMALL, x, y, w, UI_BAD, labapp_run_error(), 3) + 8;
     if (running) {
         snprintf(a, sizeof a, "Running %s. It opens here when it is done.", labapp_run_name());
         y = say(ui, FONT_SMALL, x, y, w, UI_ACCENT2, a, 3) + 8;
+    }
+    if (lab_library_open || !labapp_active()) {
+        lab_library(ui, x, y, w, ph);
+        return;
     }
     if (labapp_active()) {
         y = say(ui, FONT_TITLE, x, y, w, 0xE8FBFFFFu, labapp_title(), 2) + 10;
@@ -3418,49 +3604,12 @@ static void lab_panel(float px, float py, float pw, float ph, double time) {
             y += 38;
         }
     }
-    /* switch simulations: the lab's library */
-    if (lib_n < 0) lib_load();
-    section(ui, x, y, w, "LIBRARY", "open or run");
-    y += 20;
-    float bottom = py + ph - 44;
-    ui_push_clip(ui, x - 2, y, w + 4, bottom - y);
-    /* one domain open at a time, the open result's own by default, so the list always fits */
-    static char open_dom[16] = "";
-    static char seen_dom[32] = "";
-    if (strcmp(seen_dom, labapp_domain())) snprintf(seen_dom, sizeof seen_dom, "%s", labapp_domain()), snprintf(open_dom, sizeof open_dom, "%s", seen_dom);
-    const char *last = "";
-    for (int i = 0; i < lib_n && y < bottom - 18; i++) {
-        if (strcmp(last, lib[i].domain)) {
-            last = lib[i].domain;
-            int cnt = 0;
-            for (int k = i; k < lib_n && !strcmp(lib[k].domain, last); k++) cnt++;
-            bool open = !strcmp(open_dom, last), hov = ui_hover(ui, x, y - 1, w, 18);
-            if (hov) ui_rect(ui, x - 2, y - 1, w + 4, 18, 0x1C3448A0u, 4);
-            char head[80];
-            snprintf(head, sizeof head, "%s %s", open ? "-" : "+", lib_domain_name(last));
-            ui_text(ui, FONT_SMALL, x, y, open ? UI_ACCENT2 : (hov ? UI_TEXT : UI_DIM), head);
-            char nb[16];
-            snprintf(nb, sizeof nb, "%d", cnt);
-            ui_text_right(ui, FONT_SMALL, x + w - 4, y, UI_DIM, nb);
-            char id[64];
-            snprintf(id, sizeof id, "libdom %s", last);
-            if (ui_clickable(ui, id, x, y - 1, w, 18)) snprintf(open_dom, sizeof open_dom, "%s", open ? "" : last);
-            y += 19;
-        }
-        if (strcmp(open_dom, lib[i].domain)) continue;
-        bool hov = ui_hover(ui, x, y - 1, w, 17);
-        if (hov) ui_rect(ui, x - 2, y - 1, w + 4, 17, 0x1C3448A0u, 4);
-        char shown[140];
-        snprintf(shown, sizeof shown, "%s", lib[i].title);
-        while (ui_text_width(ui, FONT_SMALL, shown) > w - 16 && strlen(shown) > 4) shown[strlen(shown) - 4] = 0, strcat(shown, "...");
-        ui_text(ui, FONT_SMALL, x + 14, y, hov ? UI_TEXT : UI_DIM, shown);
-        char id[120];
-        snprintf(id, sizeof id, "lib %s", lib[i].base);
-        if (ui_clickable(ui, id, x, y - 1, w, 17)) lib_open(&lib[i]);
-        y += 17;
-    }
-    ui_pop_clip(ui);
-    if (labapp_active() && ui_button(ui, "BACK TO THE TUNNEL##labclose", x, py + ph - 36, w, 26, false)) exec_cmd("lab close");
+    if (ui_button(ui, "CHOOSE ANOTHER SIMULATION##library", x, y, w, 26, false)) lab_library_open = true;
+    y += 32;
+    if (ui_button(ui, "CLEAN VIEW##labclean", x, y, w, 22, false)) exec_cmd("hud clean");
+    manual_terminal(ui, x, y + 30, w, py + ph - 44, time);
+    if (labapp_active() && ui_button(ui, "CLOSE RESULT##labclose", x, py + ph - 36, w, 26, false)) { labapp_close(); lab_library_open = true; }
+
 }
 
 /* play, pause and scrub the open lab result */
@@ -3472,6 +3621,19 @@ static void playback_bar(float x, float y, float w) {
     ui_rect(ui, x, y - 4, w, 30, 0x08101AD0u, 8);
     if (ui_button(ui, labapp_playing() ? "PAUSE##labplay" : "PLAY##labplay", x + 6, y, 64, 22, labapp_playing()))
         exec_cmd(labapp_playing() ? "lab pause" : "lab play");
+    if (ui_button(ui, "PREV##labframe", x + 74, y, 42, 22, false)) {
+        labapp_set_playing(false); labapp_set_frame(labapp_frame() - 1);
+    }
+    if (ui_button(ui, "NEXT##labframe", x + 120, y, 42, 22, false)) {
+        labapp_set_playing(false); labapp_set_frame(labapp_frame() + 1);
+    }
+    char speed[48];
+    snprintf(speed, sizeof speed, "%.0f fps##labfps", labapp_fps());
+    if (ui_button(ui, speed, x + 166, y, 62, 22, false)) {
+        char cmd[48];
+        snprintf(cmd, sizeof cmd, "lab fps %.0f", labapp_fps() < 12 ? 12.0 : labapp_fps() < 24 ? 24.0 : 6.0);
+        exec_cmd(cmd);
+    }
     double f = labapp_frame();
     char t[48];
     double tm = labapp_frame_time(labapp_frame());
@@ -3481,7 +3643,7 @@ static void playback_bar(float x, float y, float w) {
     else if (fabs(tm) < 1 && tm != 0) snprintf(t, sizeof t, "%.3g ms", tm * 1e3);
     else snprintf(t, sizeof t, "%.4g s", tm);
     float tw = ui_text_width(ui, FONT_MONO, t) + 16;
-    if (n > 1 && ui_slider(ui, "labscrub", x + 80, y + 6, w - 92 - tw, 10, &f, 0, n - 1, false)) {
+    if (n > 1 && w > 250 + tw && ui_slider(ui, "labscrub", x + 240, y + 6, w - 252 - tw, 10, &f, 0, n - 1, false)) {
         labapp_set_playing(false);
         labapp_set_frame((int)lround(f));
     }
@@ -3681,14 +3843,7 @@ static void experiment_panel(float px, float py, float pw, float ph, double time
     kv_cmd(ui, x2, y, cw, "operator", b, UI_TEXT, "collision ");
     y += 22;
 
-    /* terminal */
-    section(ui, x, y, w, "TERMINAL", console_focused() ? "Esc to leave" : "\xE2\x8F\x8E / ` to type");
-    y += 18;
-    float th = py + ph - y - 6;
-    if (th > 60) {
-        if (app.ui && ui_clickable(ui, "terminal", px, y, pw, th)) console_set_focus(true);
-        console_draw(ui, px + 4, y, pw - 8, th, time);
-    }
+    manual_terminal(ui, x, y, w, py + ph - 6, time);
 }
 
 /* integer exponent as UTF-8 superscript digits, e.g. -3 -> "⁻³" */
@@ -3824,16 +3979,20 @@ static void solid_legend(float x, float bottom) {
     else
         snprintf(title, sizeof title, "%s  [%s]", fem_field_label(fem_field()), fem_field_unit(fem_field()));
     ui_text(ui, FONT_SMALL, x + 10, y + 7, UI_TEXT, title);
-    /* results keep their own colour map: viridis, readable with the common colour-vision deficiencies; a click on
-     * the legend switches to turbo and back */
+    /* Results and the legend share one texture; clicks cycle the presentation palettes. */
     int rc = render_result_colormap(app.renderer);
     /* a clipped bar has to say so, or the top colour reads as the peak */
     char cmlbl[48];
     snprintf(cmlbl, sizeof cmlbl, "%s%s", fem_range_p99() ? "99th pct \xC2\xB7 " : "", colormap_name(rc));
     ui_text_right(ui, FONT_SMALL, x + w - 10, y + 7, UI_FAINT, cmlbl);
     ui_colormap_bar(ui, x + 10, y + 26, w - 20, 10, render_result_colormap_texture(app.renderer), 3);
-    if (ui_clickable(ui, "legend", x, y, w, h))
-        render_set_result_colormap(app.renderer, rc == CMAP_VIRIDIS ? CMAP_TURBO : CMAP_VIRIDIS);
+    if (ui_clickable(ui, "legend", x, y, w, h)) {
+        static const int cycle[] = {CMAP_VIRIDIS, CMAP_INFERNO, CMAP_MAGMA, CMAP_PLASMA, CMAP_TURBO};
+        int next = CMAP_VIRIDIS;
+        for (int i = 0; i < (int)(sizeof cycle / sizeof cycle[0]); i++)
+            if (rc == cycle[i]) next = cycle[(i + 1) % (sizeof cycle / sizeof cycle[0])];
+        render_set_result_colormap(app.renderer, next);
+    }
     char lo[32], hi[32];
     if (s->have_result) {
         snprintf(lo, sizeof lo, "%.4g", s->range_lo);
@@ -3845,7 +4004,9 @@ static void solid_legend(float x, float bottom) {
     ui_text_right(ui, FONT_SMALL, x + w - 10, y + 42, UI_DIM, hi);
     if (s->have_result && s->nsteps > 1) {
         char t[64];
-        snprintf(t, sizeof t, "t = %.4g s   step %d/%d", s->time_s, fem_step() + 1, s->nsteps);
+        if (!strcmp(s->result_kind, "lpbf_build"))
+            snprintf(t, sizeof t, "process step %d/%d", fem_step() + 1, s->nsteps);
+        else snprintf(t, sizeof t, "t = %.4g s   step %d/%d", s->time_s, fem_step() + 1, s->nsteps);
         float tw = ui_text_width(ui, FONT_SMALL, t);
         ui_text(ui, FONT_SMALL, x + (w - tw) * 0.5f, y + 42, UI_ACCENT2, t);
     }
@@ -3924,6 +4085,49 @@ void hud_draw(void) {
         ui_text(ui, FONT_SMALL, dx + 9, dy + 4, UI_TEXT, d);
     }
     if (!app.hud_on) {
+        if (clean_view) {
+            char title[240], meta[360], note[260] = {0}, section_meta[80] = {0};
+            if (labapp_active()) {
+                snprintf(title, sizeof title, "%s", labapp_title());
+                snprintf(meta, sizeof meta, "%s", labapp_status());
+                if (strcmp(labapp_domain(), "relativity")) lab_legend(16, H - 46);
+                if (labapp_native3d()) {
+                    int axis = labapp_section_axis();
+                    if (axis >= 0) snprintf(section_meta, sizeof section_meta, "SECTION %c at %.3g%% - %s", "XYZ"[axis],
+                                             100 * labapp_section_fraction(), labapp_section_flipped() ? "flipped" : "normal");
+                    else snprintf(section_meta, sizeof section_meta, "SECTION OFF");
+                }
+            } else if (app.workspace == WS_SOLID && fem_state()->have_result) {
+                const FemState *s = fem_state();
+                snprintf(title, sizeof title, "%s \xC2\xB7 %s [%s]", s->project, fem_field_label(fem_field()), fem_field_unit(fem_field()));
+                char progress[80];
+                bool process = !strcmp(s->result_kind, "lpbf_build");
+                if (process) snprintf(progress, sizeof progress, "process step %d/%d", fem_step() + 1, fem_step_count());
+                else snprintf(progress, sizeof progress, "t = %.5g s \xC2\xB7 stored time %d/%d", s->time_s, fem_step() + 1, fem_step_count());
+                snprintf(meta, sizeof meta, "%s \xC2\xB7 deformation \xC3\x97%.4g \xC2\xB7 max displacement %.5g mm \xC2\xB7 range: %s",
+                         progress, fem_deform_applied(), s->max_displacement_mm,
+                         fem_range_all() ? (process ? "all process steps" : "all stored times") : (process ? "this process step" : "this stored time"));
+                solid_legend(14, H - 14);
+                printing_model_note(note, sizeof note);
+                if (fem_section_on()) snprintf(section_meta, sizeof section_meta, "SECTION %c at %.3g%% - %s", "XYZ"[fem_section_axis()],
+                                               100 * fem_section_position(), fem_section_flipped() ? "flipped" : "normal");
+                else snprintf(section_meta, sizeof section_meta, "SECTION OFF");
+            } else {
+                snprintf(title, sizeof title, "%s \xC2\xB7 %s", app.scene, display_field_label(app.display_field));
+                snprintf(meta, sizeof meta, "t = %.5g s \xC2\xB7 step %llu", st->sim_time, (unsigned long long)st->step);
+                legend(14, H - 14);
+            }
+            float tw = MAXI(ui_text_width(ui, FONT_BOLD, title), ui_text_width(ui, FONT_SMALL, meta));
+            tw = MAXI(tw, ui_text_width(ui, FONT_SMALL, note));
+            tw = MAXI(tw, ui_text_width(ui, FONT_SMALL, section_meta));
+            ui_rect(ui, 10, 10, MINI(tw + 20, W - 20), 52 + (note[0] ? 20 : 0) + (section_meta[0] ? 20 : 0), 0x08101AD0u, 7);
+            ui_text(ui, FONT_BOLD, 20, 18, UI_TEXT, title);
+            ui_text(ui, FONT_SMALL, 20, 38, UI_DIM, meta);
+            if (note[0]) ui_text(ui, FONT_SMALL, 20, 58, UI_ACCENT2, note);
+            if (section_meta[0]) ui_text(ui, FONT_SMALL, 20, note[0] ? 78 : 58, UI_DIM, section_meta);
+            panel_text[0] = 0, panel_text_len = 0;
+            panel_say("Clean view: %s\n%s\n%s\n%s\n", title, meta, note, section_meta);
+        }
         if (!app.headless) ui_text(ui, FONT_SMALL, 12, H - 20, 0x6F869960u, "H \xE2\x80\x94 show interface"); /* a capture carries no hint */
         return;
     }
@@ -3934,7 +4138,7 @@ void hud_draw(void) {
         simple_panel(px, py, app.panel_w, H - py - 10, time);
     else if (app.ui_mode == UI_AGENT)
         agent_panel(px, py, app.panel_w, H - py - 10, time);
-    else if (labapp_active() || labapp_running())
+    else if (lab_library_open || labapp_active() || labapp_running())
         lab_panel(px, py, app.panel_w, H - py - 10, time);
     else if (app.workspace == WS_SOLID)
         analysis_panel(px, py, app.panel_w, H - py - 10, time);

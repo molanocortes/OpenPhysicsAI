@@ -1,0 +1,20 @@
+== refusals before any solve
+== a part that does not rest on the build plate
+== a stale mesh
+== a material whose provenance is a default
+== the print
+   stored times 9, peak on bed 8.505 MPa, released 0.772 MPa, warp -0.0223 to 0.0028 mm
+  FAIL: the summary does not assert an unproved bound on local bed stresses
+  FAIL: the summary explains why the approximation supplies no stress bound
+   nozzle enthalpy 344.970746 J, shared-node correction 115.843999 J, whole-print closure 1.09e-11
+   worst heat balance 1.74e-10, support reaction after release 1.50e-12 N, net bed resultant 7.19e-13 N; normalized equilibrium last 6.29e-15, release 6.29e-15
+== the print through the ordinary result operations
+== a second session reads the same print from its run directory
+== storing every thermal substep instead of the key times
+   substeps: 21 stored times, peak on bed 9.028 MPa against 8.505 MPa at the key times
+== the iterative solver, chosen explicitly
+== cancelling a print
+[info] navier-mcp: embedded engine, workspace /var/folders/x4/xsz53mxd3j9f9txp7wy8_bdc0000gn/T/nvprintflow7qyn4pon/ws
+
+
+PRINT FLOW TESTS FAILED: 88 passed, 2 failed

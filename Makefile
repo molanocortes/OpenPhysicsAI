@@ -193,9 +193,10 @@ test: $(TESTS) $(AM_BINS)
 	python3 tools/studyflow.py
 	./navier-ctl doctor
 
-# the tier a session runs after each step (AGENTS.md rule 8): every C suite plus the MCP protocol test, no flow
-# script, no doctor. Under three minutes on the development laptop; `make test` stays the full suite and is run
-# detached with a log before a wave's final report and in CI.
+# the tier a session runs after each step (AGENTS.md rule 8): C verification plus MCP transport checks, no physics
+# flow scripts or doctor. Long reactive-plume, room steady-state and FSI statistical cases retain their complete
+# coverage in test-lab-validation; explicit session subsets below check conservative laws with unchanged thresholds.
+# `make test` runs the engineering workflow tier detached before a wave's final report and in CI.
 .PHONY: test-fast
 test-fast: $(TESTS) $(MECH_TESTS) $(LAB_TESTS) $(AM_BINS)
 	./build/coretest
@@ -208,6 +209,7 @@ test-fast: $(TESTS) $(MECH_TESTS) $(LAB_TESTS) $(AM_BINS)
 	./build/advtest
 	./build/evaltest
 	./build/tettest
+	./build/topotest
 	./build/rendertest build/rendertest_out
 	python3 tools/pngcheck.py build/rendertest_out
 	./build/opstest
@@ -215,6 +217,15 @@ test-fast: $(TESTS) $(MECH_TESTS) $(LAB_TESTS) $(AM_BINS)
 	./build/amtest
 	./build/mechtest
 	./build/dyntest
+	./build/poissontest
+	./build/firetest --fast
+	./build/roomtest D
+	./build/fsitest --fast
+	./build/battest
+	./build/melttest
+	./build/sheettest
+	./build/peritest
+	./build/euler3dtest
 	./build/labtest
 	./build/labscenetest
 	./build/lbm3dtest --fast
@@ -235,6 +246,16 @@ test-fast: $(TESTS) $(MECH_TESTS) $(LAB_TESTS) $(AM_BINS)
 	./build/rttest
 	./build/wtest --fast
 	python3 tools/mcptest.py
+	python3 tools/mcp_http_test.py
+
+# Complete original fire, room and FSI validations. Fire alone is about 25 minutes on this fanless shared laptop;
+# launch detached, for example: nohup make test-lab-validation > /tmp/navier-lab-validation.log 2>&1 &
+# The session subsets above do not establish these steady-state/statistical validation results.
+.PHONY: test-lab-validation
+test-lab-validation: build/firetest build/roomtest build/fsitest
+	./build/firetest
+	./build/roomtest
+	./build/fsitest
 
 # adds the interface checks: builds the app (Cocoa/OpenGL) and clicks every control off-screen
 .PHONY: test-ui
@@ -274,3 +295,14 @@ leaderboard:
 .PHONY: matcheck
 matcheck:
 	@python3 tools/matcheck.py
+
+.PHONY: test-plugin test-printing
+test-plugin: $(AM_BINS)
+	python3 tools/mcptest.py
+	python3 tools/mcp_http_test.py
+
+test-printing: build/mechtest build/meshtest $(AM_BINS)
+	./build/mechtest --printing
+	./build/meshtest
+	python3 tools/printflow.py
+	python3 tools/lpbfflow.py

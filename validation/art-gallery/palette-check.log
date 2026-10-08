@@ -1,0 +1,329 @@
+[ ok ] lattice 192x64x224  (2.75M cells, 488 MB)
+[ ok ] NAVIER — real-time lattice-Boltzmann water tunnel
+[info] GPU Apple M2 · OpenGL 4.1 Metal - 89.4 · 8 CPU threads
+[info] type 'help' for commands, 'scene' for experiments, drop an .stl onto the window to test your own shape
+[ ok ] model 'glider': 18932 triangles, extent 0.459 x 0.115 x 1, watertight
+[ ok ] scene 'glider': sailplane at 4 deg AoA - wingtip vortices
+[ >> ] exec /private/tmp/openphysics-art-gallery/palette-check.nav
+[info] script /private/tmp/openphysics-art-gallery/palette-check.nav: 139 commands queued
+[ ok ] geometry: 6810 solid cells, 32690 boundary links (curved, 82% on the surface), frontal 578 cells  (36 ms, walls 21 ms)
+[data]   walls: bvh 3.1 ms, 32690 rays 18.1 ms, rest 0.1 ms
+[ >> ] mode manual
+[ ok ] mode advanced
+[ >> ] workspace solid
+[ ok ] SOLID workspace - finite-element analysis (the same operations as 'am' and the control socket)
+[ >> ] pause
+[info] paused at step 0 (t = 0 s)
+[ >> ] frames 6
+[ >> ] solid open /private/tmp/openphysics-art-gallery/workspace/Helical_Flute
+[ ok ] opened /private/tmp/openphysics-art-gallery/workspace/Helical_Flute
+[ >> ] frames 8
+[ >> ] fem follow last
+[ ok ] following job-20261003-071219-7e8c-1
+[ >> ] frames 10
+[ ok ] analysis finished (job-20261003-071219-7e8c-1)
+[info] surface map: 36098 vertices onto 5385 elements in 6 ms; 16660 snapped (mean 0.136 mm, largest 0.425 mm), 0 not drawn
+[ ok ] result surface built for job-20261003-071219-7e8c-1 (fff_print): 1428 triangles, von Mises stress
+[ >> ] fem pause
+[ ok ] playback paused at stored time 1 of 35
+[ >> ] fem step last
+[ ok ] stored time 35 of 35 (t = 643.975 s)
+[ >> ] fem field displacement
+[ ok ] showing displacement [mm]
+[ >> ] fem deform true
+[ ok ] deformation scale ×1
+[ >> ] fem range all
+[ ok ] colour range over all stored times: 0 to 0.0820785 mm
+[ >> ] fem surface off
+[info] drawing the voxel mesh: 12500 triangles, largest snap 0.4253 mm, 16660 vertices snapped, 0 not drawn, mapping 6 ms
+[ >> ] uiclick "6 RESULTS"
+[info] click '6 RESULTS' at (1350, 157), held 4 frames
+[ >> ] frames 6
+[ >> ] camera orbit 36 24
+[ >> ] fem fit
+[ ok ] framed the analysed part
+[ >> ] floorgrid off
+[info] floor grid off
+[ >> ] box off
+[info] tunnel box off
+[ >> ] frames 360
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-warmup.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-warmup.png (1440x900)
+[ >> ] frames 6
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-warmup.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-warmup.png (1440x900)
+[ >> ] frames 6
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-warmup.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-warmup.png (1440x900)
+[ >> ] frames 6
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-warmup.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-warmup.png (1440x900)
+[ >> ] frames 6
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-warmup.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-warmup.png (1440x900)
+[ >> ] frames 6
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-warmup.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-warmup.png (1440x900)
+[ >> ] frames 6
+[ >> ] echo PALETTECHECK initial
+[info] PALETTECHECK initial 
+[ >> ] fem status
+[info] project Helical_Flute · 1 bodies · 0 elements · 0 conditions · material pla_generic_demo
+[info] result job-20261003-071219-7e8c-1: fff_print, built on body 'sculpture'
+[info] job job-20261003-071219-7e8c-1: succeeded 100% 
+[info] result job-20261003-071219-7e8c-1 · displacement · 0 to 0.0820785 mm · 12500 triangles · rebuild 5.78 ms
+[info] shown displacement max 0.0820784753 mm; deformation scale 1; stored index 34
+[info] result colour map viridis
+[info] groups part 1 support 1 plate 1
+[info] usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>
+[ >> ] fem cmap
+[info] result colour map viridis (usage: fem cmap <name>)
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-initial.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-initial.png (1440x900)
+[ >> ] frames 8
+[ >> ] echo PALETTECHECK legend_inferno
+[info] PALETTECHECK legend_inferno 
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] uiclick legend
+[info] click 'legend' at (164, 854), held 4 frames
+[ >> ] frames 6
+[ >> ] fem cmap
+[info] result colour map inferno (usage: fem cmap <name>)
+[ >> ] fem status
+[info] project Helical_Flute · 1 bodies · 0 elements · 0 conditions · material pla_generic_demo
+[info] result job-20261003-071219-7e8c-1: fff_print, built on body 'sculpture'
+[info] job job-20261003-071219-7e8c-1: succeeded 100% 
+[info] result job-20261003-071219-7e8c-1 · displacement · 0 to 0.0820785 mm · 12500 triangles · rebuild 5.78 ms
+[info] shown displacement max 0.0820784753 mm; deformation scale 1; stored index 34
+[info] result colour map inferno
+[info] groups part 1 support 1 plate 1
+[info] usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-legend_inferno.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-legend_inferno.png (1440x900)
+[ >> ] frames 8
+[ >> ] echo PALETTECHECK legend_magma
+[info] PALETTECHECK legend_magma 
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] uiclick legend
+[info] click 'legend' at (164, 854), held 4 frames
+[ >> ] frames 6
+[ >> ] fem cmap
+[info] result colour map magma (usage: fem cmap <name>)
+[ >> ] fem status
+[info] project Helical_Flute · 1 bodies · 0 elements · 0 conditions · material pla_generic_demo
+[info] result job-20261003-071219-7e8c-1: fff_print, built on body 'sculpture'
+[info] job job-20261003-071219-7e8c-1: succeeded 100% 
+[info] result job-20261003-071219-7e8c-1 · displacement · 0 to 0.0820785 mm · 12500 triangles · rebuild 5.78 ms
+[info] shown displacement max 0.0820784753 mm; deformation scale 1; stored index 34
+[info] result colour map magma
+[info] groups part 1 support 1 plate 1
+[info] usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-legend_magma.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-legend_magma.png (1440x900)
+[ >> ] frames 8
+[ >> ] echo PALETTECHECK legend_plasma
+[info] PALETTECHECK legend_plasma 
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] uiclick legend
+[info] click 'legend' at (164, 854), held 4 frames
+[ >> ] frames 6
+[ >> ] fem cmap
+[info] result colour map plasma (usage: fem cmap <name>)
+[ >> ] fem status
+[info] project Helical_Flute · 1 bodies · 0 elements · 0 conditions · material pla_generic_demo
+[info] result job-20261003-071219-7e8c-1: fff_print, built on body 'sculpture'
+[info] job job-20261003-071219-7e8c-1: succeeded 100% 
+[info] result job-20261003-071219-7e8c-1 · displacement · 0 to 0.0820785 mm · 12500 triangles · rebuild 5.78 ms
+[info] shown displacement max 0.0820784753 mm; deformation scale 1; stored index 34
+[info] result colour map plasma
+[info] groups part 1 support 1 plate 1
+[info] usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-legend_plasma.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-legend_plasma.png (1440x900)
+[ >> ] frames 8
+[ >> ] echo PALETTECHECK legend_turbo
+[info] PALETTECHECK legend_turbo 
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] uiclick legend
+[info] click 'legend' at (164, 854), held 4 frames
+[ >> ] frames 6
+[ >> ] fem cmap
+[info] result colour map turbo (usage: fem cmap <name>)
+[ >> ] fem status
+[info] project Helical_Flute · 1 bodies · 0 elements · 0 conditions · material pla_generic_demo
+[info] result job-20261003-071219-7e8c-1: fff_print, built on body 'sculpture'
+[info] job job-20261003-071219-7e8c-1: succeeded 100% 
+[info] result job-20261003-071219-7e8c-1 · displacement · 0 to 0.0820785 mm · 12500 triangles · rebuild 5.78 ms
+[info] shown displacement max 0.0820784753 mm; deformation scale 1; stored index 34
+[info] result colour map turbo
+[info] groups part 1 support 1 plate 1
+[info] usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-legend_turbo.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-legend_turbo.png (1440x900)
+[ >> ] frames 8
+[ >> ] echo PALETTECHECK legend_viridis
+[info] PALETTECHECK legend_viridis 
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] uiclick legend
+[info] click 'legend' at (164, 854), held 4 frames
+[ >> ] frames 6
+[ >> ] fem cmap
+[info] result colour map viridis (usage: fem cmap <name>)
+[ >> ] fem status
+[info] project Helical_Flute · 1 bodies · 0 elements · 0 conditions · material pla_generic_demo
+[info] result job-20261003-071219-7e8c-1: fff_print, built on body 'sculpture'
+[info] job job-20261003-071219-7e8c-1: succeeded 100% 
+[info] result job-20261003-071219-7e8c-1 · displacement · 0 to 0.0820785 mm · 12500 triangles · rebuild 5.78 ms
+[info] shown displacement max 0.0820784753 mm; deformation scale 1; stored index 34
+[info] result colour map viridis
+[info] groups part 1 support 1 plate 1
+[info] usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-legend_viridis.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-legend_viridis.png (1440x900)
+[ >> ] frames 8
+[ >> ] echo PALETTECHECK fem_cmap_magma
+[info] PALETTECHECK fem_cmap_magma 
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem cmap magma
+[ ok ] result colour map magma
+[ >> ] frames 6
+[ >> ] fem cmap
+[info] result colour map magma (usage: fem cmap <name>)
+[ >> ] fem status
+[info] project Helical_Flute · 1 bodies · 0 elements · 0 conditions · material pla_generic_demo
+[info] result job-20261003-071219-7e8c-1: fff_print, built on body 'sculpture'
+[info] job job-20261003-071219-7e8c-1: succeeded 100% 
+[info] result job-20261003-071219-7e8c-1 · displacement · 0 to 0.0820785 mm · 12500 triangles · rebuild 5.78 ms
+[info] shown displacement max 0.0820784753 mm; deformation scale 1; stored index 34
+[info] result colour map magma
+[info] groups part 1 support 1 plate 1
+[info] usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-fem_cmap_magma.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-fem_cmap_magma.png (1440x900)
+[ >> ] frames 8
+[ >> ] echo PALETTECHECK fem_cmap_invalid
+[info] PALETTECHECK fem_cmap_invalid 
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem cmap no-such-palette
+[err!] unknown result colour map 'no-such-palette' - palette unchanged
+[ >> ] frames 6
+[ >> ] fem cmap
+[info] result colour map magma (usage: fem cmap <name>)
+[ >> ] fem status
+[info] project Helical_Flute · 1 bodies · 0 elements · 0 conditions · material pla_generic_demo
+[info] result job-20261003-071219-7e8c-1: fff_print, built on body 'sculpture'
+[info] job job-20261003-071219-7e8c-1: succeeded 100% 
+[info] result job-20261003-071219-7e8c-1 · displacement · 0 to 0.0820785 mm · 12500 triangles · rebuild 5.78 ms
+[info] shown displacement max 0.0820784753 mm; deformation scale 1; stored index 34
+[info] result colour map magma
+[info] groups part 1 support 1 plate 1
+[info] usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-fem_cmap_invalid.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-fem_cmap_invalid.png (1440x900)
+[ >> ] frames 8
+[ >> ] echo PALETTECHECK fem_cmap_gray
+[info] PALETTECHECK fem_cmap_gray 
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem cmap gray
+[ ok ] result colour map gray
+[ >> ] frames 6
+[ >> ] fem cmap
+[info] result colour map gray (usage: fem cmap <name>)
+[ >> ] fem status
+[info] project Helical_Flute · 1 bodies · 0 elements · 0 conditions · material pla_generic_demo
+[info] result job-20261003-071219-7e8c-1: fff_print, built on body 'sculpture'
+[info] job job-20261003-071219-7e8c-1: succeeded 100% 
+[info] result job-20261003-071219-7e8c-1 · displacement · 0 to 0.0820785 mm · 12500 triangles · rebuild 5.78 ms
+[info] shown displacement max 0.0820784753 mm; deformation scale 1; stored index 34
+[info] result colour map gray
+[info] groups part 1 support 1 plate 1
+[info] usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-fem_cmap_gray.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-fem_cmap_gray.png (1440x900)
+[ >> ] frames 8
+[ >> ] echo PALETTECHECK legend_from_gray
+[info] PALETTECHECK legend_from_gray 
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] uiclick legend
+[info] click 'legend' at (164, 854), held 4 frames
+[ >> ] frames 6
+[ >> ] fem cmap
+[info] result colour map viridis (usage: fem cmap <name>)
+[ >> ] fem status
+[info] project Helical_Flute · 1 bodies · 0 elements · 0 conditions · material pla_generic_demo
+[info] result job-20261003-071219-7e8c-1: fff_print, built on body 'sculpture'
+[info] job job-20261003-071219-7e8c-1: succeeded 100% 
+[info] result job-20261003-071219-7e8c-1 · displacement · 0 to 0.0820785 mm · 12500 triangles · rebuild 5.78 ms
+[info] shown displacement max 0.0820784753 mm; deformation scale 1; stored index 34
+[info] result colour map viridis
+[info] groups part 1 support 1 plate 1
+[info] usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-legend_from_gray.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-legend_from_gray.png (1440x900)
+[ >> ] frames 8
+[ >> ] echo PALETTECHECK end
+[info] PALETTECHECK end 
+[ >> ] quit

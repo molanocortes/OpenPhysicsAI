@@ -92,20 +92,46 @@ a CSV time series with the temperature range, the energies and, for a thermomech
 
 ## In the application
 
-A page for a manual review, one line per control with the screenshot that shows it, is
-[`docs/app/REVIEW.md`](app/REVIEW.md). The design the three modes are held to is [`docs/app/DESIGN.md`](app/DESIGN.md).
+Earlier interface review and design references are [`docs/app/REVIEW.md`](app/REVIEW.md) and
+[`docs/app/DESIGN.md`](app/DESIGN.md). The current two-mode workflow is described below.
 
-A switch at the top right chooses how much of this the window shows, and remembers it. **Simple** is five screens
-(choose a part, how it will be printed, simulate, results, report) that run the LPBF build or the plastic print with a
-named print preset from `src/ctl/print_profiles.json`. A metal preset names the library record
-`alsi10mg_lpbf` and takes its elastic constants from it; when the record has a yield value with a source the
-build runs with J2 plasticity and the strain fitted with plasticity on (1 mm layers and detail), otherwise with the
-elastic fit (0.5 mm), each only at the layer and detail it was fitted at. Its results screen states what the
-simulation is and is not before any number. Sample parts ship in `samples/`. **Advanced** is everything described
-below. **Agent** starts the user's own command line tool (for example `claude -p`) with an MCP configuration pointing
-at this window's engine through a private control socket, passes the question as `$NAVIER_PROMPT`, shows the tool's
-words and the engine's journal as a transcript, and follows every job it starts; the window holds no key. A headless
-run defaults to Advanced; `--first-run` starts as a new user would.
+The top-right switch selects **Manual** or **Agentic** and remembers the choice. Manual provides a paged physics
+library with scenario inputs, RUN and playback; FLUID and SOLID remain reachable from the same window. The SOLID
+inspector keeps the six-step analysis workflow, with explicit METAL (LPBF) and PLASTIC (FDM/FFF) choices. FDM uses
+PROCESS, RUN PRINT and PLAY PRINT instructions. Loading a printing result adopts its workflow, and a result only
+offers the fields it contains. Manual collapses the terminal output until requested; typed commands remain available.
+
+Agentic connects the user's external command-line agent to this window's engine through its private control socket.
+It passes the question as `$NAVIER_PROMPT`, shows the agent's transcript and engine journal, and follows the jobs it
+starts. Both modes operate on the same projects and results. Legacy Advanced/Agent command aliases remain accepted;
+they do not add another physics engine. The retained library inputs and real keyboard playback/section paths are
+checked by `python3 tools/uicheck.py --lab`.
+
+CLEAN VIEW (`hud clean`, H to restore the interface) gives the result the full viewport while retaining its field,
+units, stored time, range policy, deformation scale, maximum displacement, section setting and model/provenance notice. Printing
+examples say when inputs are inferred, material values are demonstrations, yielding is absent or no measurement
+comparison was made. A polished image must not imply a more complete model than the one that computed it.
+
+Compute the open-cell example, wait for the actual jobs, and capture its native views and every FDM stored state:
+
+```bash
+make
+python3 tools/demo_printing.py --capture --film
+```
+
+The script saves inputs, summaries, native results, `capture.nav`, views and raw PNG frames below
+`build/demo-printing`. It does not resolve individual deposited roads or a metal melt pool. The saved
+[evidence record](media/foundation/evidence.json) includes exact inputs, model scope, hashes and playback timing.
+
+![Computed FDM deposition, cooling and release](media/foundation/fdm-replay.gif)
+
+This replay uses 27 computed states and one temperature range. Playback is accelerated, with a one-second final
+hold; lighting and the neutral studio are presentation aids. [The clean FDM view](media/foundation/fdm-clean.png)
+and [the metal section](media/foundation/lpbf-section.png) use the same renderer and visual language.
+[Before](media/foundation/ui-before.png) and [after](media/foundation/ui-after.png) show the interface on the same
+synthetic two-element fixture. [The old LPBF cut](media/foundation/lpbf-cut-before.png) and
+[corrected cut](media/foundation/lpbf-cut-after.png) show why the visible FE boundary matters: the old STL spanned
+material that the solver had removed.
 
 The SOLID workspace (`W`, or the SOLID button) drives the same operations from the interface: import, element size
 and GENERATE, a material, FIX BASE and the conditions list, the analysis kind and RUN ANALYSIS, then the result on
@@ -128,9 +154,10 @@ lights up, a click collects it, shift-click drops it, and HOLD or LOAD (force ty
 and where, peak stress with its singularity flag beside the 99th percentile to design with, safety factor against
 yield shown only next to what the material values are worth, applied load against the reactions with the residual,
 mass, and the mesh the numbers came from. CHECK MESH solves the same case again at 0.7 of the element size (capped
-near 60 000 elements) and says how far the answer moved, "converged" under 5 %. REPORT writes
+near 60 000 elements) and says how far the answer moved, with both changes below 5 % labelled a small change.
+Two meshes show sensitivity, not an accuracy bound or proof of convergence. REPORT writes
 <project>/report/<date>-<time>/ - one folder per report, so a second report never overwrites the first - with the
-summary, the setup, the checks, the convergence and three images, and says what the numbers are not.
+summary, the setup, the checks, the mesh sensitivity and three images, and says what the numbers are not.
 
 BUILD is the same six steps asked of the printer instead of the part, for the two job kinds the engine has. LPBF
 METAL sets the build orientation (the machine axis the long side lay along), the simulation layer thickness, the
@@ -171,9 +198,56 @@ such distance, and a vertex further out than that is not drawn. Normals are the 
 except where a facet turns away from that average by more than 45 degrees, so creases stay sharp. The mapping is
 built once per geometry and mesh (12 018 vertices onto 20 080 elements in 3 ms) and cached. SURFACE and VOXELS
 switch between the part and the mesh the numbers came from (`fem surface on|off|toggle`), and a marker sits on the
-largest value of what is drawn. With a section on, the STL is clipped by the same plane and the faces the section
-opens are drawn as voxel faces, because that is what they are; the undeformed white outline is the voxel boundary
-and belongs to the VOXELS view.
+largest value of what is drawn. Whenever any element is hidden by growth, a cut, a section, groups or topology,
+SURFACE uses the visible finite-element boundary and labels that fallback: a long original STL facet can otherwise
+bridge absent material even when all its corner elements exist. This boundary closes the newly exposed interior
+faces and keeps the original STL feature edges out of the gap. The undeformed white outline follows the same
+visible element boundary. Generated support and plate groups keep this boundary even when all elements exist,
+because that extra geometry need not be in the original part STL. An intact part-only result can return to the
+smooth mapped STL.
+
+Rendering regression criteria (2026-10-03, declared before execution): a cube represented by only twelve STL facets
+must use its finite-element boundary whenever birth, death, a section or a hidden group removes any element. The
+intact six-cell cube remains twelve mapped facets; a one-cell interior cut has exactly 528 FE triangles, first-third
+growth has 240, and a half section has 288. No filled STL facet or feature edge may span the removed material.
+Native before/after captures of the same saved LPBF build must show a changed cut silhouette (at least 500 changed
+pixels in the 3D view), while SURFACE and VOXELS show the same filled boundary at the released time. These are
+presentation contract checks, not physical validation.
+
+`python3 tools/uicheck.py --printsurface` additionally solves real demonstration LPBF and FDM jobs through MCP on a
+216-cell cube and clicks SURFACE/VOXELS in the native app: the first layer is exactly 192 triangles, the LPBF kerf
+cut is 532, and the fully born FDM skin is twelve. In active states, their viewport pictures must differ by fewer
+than 50 pixels; early/final pictures must differ by more than 500.
+
+The result studio uses artificial key/fill lighting and a quiet reference floor, solely for shape readability. Its
+scalar texture, numerical range, geometry and legend are unchanged. Before execution, the presentation check
+requires identical legend pixels and triangle counts across the change, plus at least 500 changed body pixels; the
+result shader multiplies all colour channels by one bounded factor (0.52 to 0.98), with no white specular term.
+Fluid shading retains its original path. The SOLID workspace keeps this studio while its result is hidden, so
+SHOW/HIDE comparisons use the same room instead of confusing a background change with computed material.
+
+Observed in the native checks: the sparse-STL regression failed four cases before the fix; the completed renderer
+suite passed 69/69, including three additional review cases which failed before their fixes. `--printsurface`
+passed 19/19 (LPBF early/released: zero differing pixels against VOXELS, FDM early: zero). The same
+saved wall cut changed 61,677 view pixels, first birth 38,010; the studio changed 244,359. The opaque colour-bar
+interior had zero changed RGB pixels; its translucent frame edges changed with the background. The fluid viewport
+differed by two pixels. These checks establish display consistency, not measured-print accuracy.
+
+
+Print FIT criterion (2026-10-03, declared before execution): fitting the first shallow stored layer must frame every
+later visible computed vertex at deformation scales 1, 10 and AUTO. Camera bounds use the complete time-indexed
+visible domain and a conservative displacement bound, cached with the existing all-times deformation scan. Native
+LPBF and FDM playback, fitted at their first layer, must keep the final geometry at least 20 pixels from the viewport
+edges. Eligible mapped STL vertices join the envelope because they can extend outside a coarse staircase even
+at zero deformation. Orbiting or stepping does not reset the user's camera.
+
+Review regression criteria (2026-10-03, before their first run): fully visible support and plate elements must
+remain on the finite-element boundary even if the original part STL is intact; plate vertices keep their grey
+sentinel. A zero-displacement print whose mapped STL extends 0.25 mm outside its FE nodes must fit that final
+smooth surface inside the camera bounds chosen at the first shallow layer.
+
+The final 24,389-element section/AUTO/outline check took a mean 2.554 ms, maximum 5.288 ms over twelve cached
+rebuilds. This is viewer rebuild time on this machine, not a solver timing or a guaranteed frame rate.
 
 BOX in HOLD & LOAD arms a rectangle: drag it and every face whose centre falls inside is taken, shift-drag drops
 them, and a selection carries up to 512 faces. There is no occlusion test, so a box takes the faces behind the part
@@ -239,6 +313,16 @@ reporting iterations, residuals and the recomputed true residual.
 
 ## Reading results
 
+In the native result view, click the colour legend to cycle viridis, inferno, magma, plasma and turbo, or use
+`fem cmap <name>` to select any existing colour map (`fem cmap` reports the current choice). The surface and legend
+share the selected palette; changing it preserves the field and its numerical range. An unknown name is refused
+without changing the palette.
+
+`fem marker off` hides the peak cross; `fem outline off` hides the undeformed reference lines. Both default to on,
+can be restored with `on`, and leave the solved fields and colour range unchanged. The LPBF legend and clean view
+say **process step**, because its inherent-strain sequence does not carry physical printing times.
+The [computed art gallery](art-gallery.md) demonstrates these controls on reproducible curved printing and thermal cases.
+
 - Check `summary.checks` first: `equilibrium_ok` (applied loads plus reactions vanish) and `energy_ok` (twice the strain
   energy equals the external work, as it must for linear statics).
 - Nodal averages smooth Gauss-point stresses over the elements around a node; Gauss-point values are the raw element
@@ -281,5 +365,7 @@ and carries no plasticity or deposition history, so it does not predict residual
 same staircase mesh, so convection and radiation areas are the mesh areas, not the STL areas (both are reported).
 Static jobs do not checkpoint: a cancelled or interrupted static run is lost and has to be repeated. Transient jobs write checkpoints and can be paused and resumed (`job_pause`, `job_resume`; see `Thermal Sim/STATUS.md`).
 
-All library materials are demonstration values: they are not traceable to a grade, supplier or test and are not
-calibrated, so magnitudes are indicative and only trends should be read from them.
+The library distinguishes demonstration records from published records with property sources. Demonstration
+values support examples, not calibrated predictions. Published properties still require a match to the actual grade,
+processing state, temperature range and loading direction; a material citation alone is not print validation.
+Inspect the resolved record and per-property provenance in `spec.json` before using a magnitude.

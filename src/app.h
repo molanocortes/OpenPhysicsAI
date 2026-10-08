@@ -174,6 +174,7 @@ bool app_probe_sample(vec3 p, float *rho, float u[3]);
 int app_inject_click(float x, float y, int hold_frames);
 int app_inject_drag(float x0, float y0, float x1, float y1, uint32_t mods, int frames); /* UI testing */
 int app_inject_scroll(float x, float y, float dy);                                     /* UI testing */
+int app_inject_key(int key);                                                         /* UI testing */
 bool app_rake_handle(float *px, float *py); /* streamline rake handle in window points, if shown */
 bool app_pick(double mx, double my, vec3 *hit);
 
@@ -184,6 +185,7 @@ void register_commands(void);
 void commands_update(void); /* advances queued script commands; call once per frame */
 bool commands_pending(void); /* script commands still queued or waiting */
 void hud_draw(void);
+void hud_set_clean_view(bool enabled); /* a full viewport with the result's numerical metadata and legend */
 bool hud_pick_mode(void); /* the HOLD & LOAD step is open: a click on the part picks a face */
 bool hud_box_mode(void);  /* BOX is armed: a drag collects every face whose centre falls inside the rectangle */
 bool hud_simple_face_mode(void);                /* Simple mode is asking which face sits on the plate */

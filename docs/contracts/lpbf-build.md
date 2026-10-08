@@ -191,8 +191,9 @@ trial stress subtracts.
 
 **Solution of a step.** A **modified Newton** loop: the elastic stiffness is kept as the operator (it is the same
 matrix the elastic build already assembles and factorises, so a plastic step costs one extra solve per iteration and
-nothing extra to build), and the residual is `f_released + f_eigenstrain - integral B^T (sigma - sigma_at_step_start)`
-with `sigma` from the radial return. **Convergence:** the residual norm over the free equations falls below `1e-8` of
+nothing extra to build), and the residual is `f_released - integral B^T (sigma - sigma_at_step_start)` with `sigma`
+from the radial return of the eigenstrain-adjusted trial stress. The eigenstrain load is already in that stress
+increment, not added a second time. **Convergence:** the residual norm over the free equations falls below `1e-8` of
 the first residual of that step, or below `1e-9 N` absolute; the iteration count and the final residual are reported
 per step, and a step that does not converge fails the job rather than returning a number.
 
@@ -334,6 +335,47 @@ states (for example: part-to-part supports allowed outside the port volumes).
 **Amendment, 2026-09-27: the cylinder head removed.** The part and its run records were removed from the repository
 for copyright, by the owner's decision. The numbers on the head in this section stay as the record of the runs of
 2026-09-19; they can no longer be rerun from this repository.
+
+## 13. Numerical amendments, 2026-10-03
+
+These criteria are fixed before the new checks run. They verify the inherent-strain mechanics; they do not add
+a resolved laser, melt-pool flow or thermal cycle to this reduced-order process model.
+
+- V8: for a fully restrained unit hex receiving the same eigenstrain in two increments, the final plate nodal reaction
+  is twice the one-increment reaction to 1e-10 relative and equals the closed-form face traction. A following zero-strain
+  equilibration preserves it to the same tolerance. Reactions must represent accumulated stress, rather than only the
+  last elastic increment; plastic and elastic runs share that definition.
+- V9: on a bent two-layer specimen the reported element von Mises equals the mean of the eight Gauss-point von Mises
+  values within 1e-12 relative. Uniform stress is unchanged. This scalar is an element mean, not the maximum of the
+  integration-point stress and not a guarantee of mesh convergence.
+- V10: a freely contracting unit hex on 3-2-1 isostatic constraints, with isotropic eigenstrain -0.001, reports the
+  last elastic solve's equilibrium error below 1e-9. That diagnostic retains the solid solver's eigenstrain-load
+  normalisation; dividing by the nearly zero final stress would incorrectly amplify harmless roundoff.
+- V11, fixed before its first run: the same freely contracting hex, with J2 enabled at E = 100 GPa, nu = 0.3 and
+  yield stress = 250 MPa, has affine displacement `u = -0.001 (x - x_anchor)` within 1e-10 relative, stress magnitude
+  below 1e-10 of `E * 0.001`, zero plastic strain and a last nonlinear equilibrium error below 1e-9. The existing
+  P1/P2 perfect-plastic and hardening bar load/unload checks additionally require that error below 1e-6 after every
+  accepted increment, without changing their stress, plastic-strain or Newton convergence criteria. A fresh unloaded
+  J2 hex must report zero residual.
+
+The elastic diagnostic is the shared solid solver's recovered free-equation residual norm divided by the sum of
+the applied nodal load norm, individual prescribed-DOF reaction norm and assembled free RHS norm (which includes
+eigenstrain). The J2 diagnostic uses the accepted nonlinear free residual of the last step, divided by the sum of
+the reduced applied/release nodal load norm, individual prescribed-DOF **incremental** reaction norm and first
+nonlinear free residual norm (the returned-stress predictor with the step's eigenstrain). Both loads and increment
+internal forces transfer hanging-node shares to their active masters before the force scale is evaluated. It is
+not the residual of the last inner linear correction, nor a ratio to the almost-zero final total stress. Both
+diagnostics are dimensionless when their force scale is nonzero; with zero scale they retain the absolute residual
+in N. Zero load and zero residual therefore report zero. This reporting amendment does not change any Newton
+threshold, accepted stress, reaction or displacement.
+
+Before the reporting fix, V11 failed at 0.854 nonlinear equilibrium error despite a 1.95e-15 affine displacement
+error, 2.63e-15 stress/(E eps) and exactly zero plastic strain: 43 printing checks passed, one failed. The criterion
+and Newton thresholds were retained. After the fix, 44 printing checks passed: the free J2 residual was 6.06e-16,
+with those physical errors unchanged; the largest load/unload residuals were 4.49e-12 for perfect plasticity and
+3.31e-12 with hardening. The printed P1/P2/P4, P3, cut and layer-built cantilever physical results were identical
+before and after this diagnostic-only change. The full MCP LPBF workflow passed 239/239 checks, including export
+of the different elastic and nonlinear diagnostic definitions and their zero-scale units.
 
 ## 12. A cut that frees a part standing on supports (wave 5, 2026-09-19)
 

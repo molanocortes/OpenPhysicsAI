@@ -1,0 +1,22 @@
+{
+  "kind": "thermal",
+  "result_sha256": "a76868c2cce894c4efd5a759b624ded17f6f2db91ebc6adeb6a0bcb141badedc",
+  "artifacts": {
+    "thermal.png": "b2a1a83544831036456e04902e2d63f044dd00b2b4aaecbbcbd19226a82cfddb",
+    "thermal-art.png": "887587ba242c3dd8eebdafcdf2e83f67c68cfebd28abc76fdbd0d6d84b10bd47"
+  },
+  "renderer_sha256": "13c899b512baefb8e7baa784f44f179905d6d6bfe896602286868e2ae537c9b9",
+  "pixels": "Native OpenGL output; no painted fields or fabricated time interpolation",
+  "deformation_scale": 0,
+  "range": "all stored states, full peak (not percentile clipped)",
+  "presentation": "Designed geometry; artificial studio lighting, ambient occlusion, bloom and backdrop",
+  "preset": {
+    "field": "temperature",
+    "cmap": "inferno",
+    "elevation": 42,
+    "hero": 11,
+    "frames": 122
+  },
+  "fps": 20,
+  "frames": []
+}

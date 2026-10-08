@@ -19,7 +19,11 @@
  *   First run: F1 +1.31 % and -0.01 %, F2 -3.78 % (it ran the full 60 000 steps: the steadiness test was too strict for
  *   single precision), F3 unstable: the sheet, as heavy as one cell of fluid per node, took the whole direct-forcing
  *   force explicitly (the added-mass instability of partitioned coupling). The forcing now accounts for each point's
- *   mass, so that fluid and sheet end the step at one velocity. Criteria unchanged. */
+ *   mass, so that fluid and sheet end the step at one velocity. Criteria unchanged.
+ *
+ * Session subset, declared before its first run, 2026-10-03: --fast selects the existing F3 free-sheet momentum
+ * case only, with the SAME 2000 flow steps and original 1 percent momentum criterion. F1/F1R steady Couette and F2
+ * periodic-array drag are explicitly not exercised. The default full test and all its criteria remain unchanged. */
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -45,9 +49,15 @@ static Lbm3DGpu *gpu(Lbm3DSpec s, Lbm3D **L, char *err, size_t el) {
     return G;
 }
 
-int main(void) {
+int main(int argc, char **argv) {
+    bool fast = argc == 2 && !strcmp(argv[1], "--fast");
+    if (argc > 1 && !fast) {
+        fprintf(stderr, "usage: fsitest [--fast]\n");
+        return 2;
+    }
     char err[256];
     ThreadPool *pool = pool_create(cpu_perf_count());
+    if (!fast) {
     for (int reg = 0; reg < 2; reg++) {
     printf(reg ? "== F1R: the same with the regularised collision\n" : "== F1: Couette flow made by an immersed plane\n");
     {
@@ -171,6 +181,12 @@ int main(void) {
         free(V), free(T);
         lbm3d_gpu_free(G), lbm3d_free(L);
     }
+    } else {
+        printf("== session subset: existing F3 two-way momentum, 2000 steps\n"
+               "  NOT EXERCISED: F1/F1R steady Couette; F2 periodic-array sphere drag\n"
+               "  Run default fsitest detached for those full validations.\n");
+        fflush(stdout);
+    }
     printf("== F3: a free sheet coasting through still fluid, momentum\n");
     {
         const int N = 48, ns = 17; /* 17 x 17 nodes a cell apart */
@@ -215,6 +231,7 @@ int main(void) {
         lbm3d_gpu_free(G), lbm3d_free(L);
     }
     pool_destroy(pool);
-    printf(failures ? "fsitest: %d FAILED\n" : "fsitest: all passed\n", failures);
+    if (fast) printf(failures ? "fsitest --fast: %d FAILED\n" : "fsitest --fast: F3 passed; full validation not run\n", failures);
+    else printf(failures ? "fsitest: %d FAILED\n" : "fsitest: all passed\n", failures);
     return failures ? 1 : 0;
 }

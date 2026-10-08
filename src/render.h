@@ -65,6 +65,7 @@ typedef struct RenderFrame {
     float dt;              /* seconds since previous frame */
     int nx, ny, nz;        /* lattice */
     bool has_model;
+    bool solid_workspace; /* result studio is a workspace, independent of result visibility */
     mat4 model;            /* mesh space -> lattice */
     float field_lo, field_hi;  /* lattice-unit range mapped to the colour map */
     float speed_hi;            /* lattice speed mapped to the top of the colour map for particles */

@@ -269,7 +269,7 @@ for op, calls in sorted(indirect.items()):
     print(f'  indirect: {op:24s} {p}:{n}')
 # Operations that no test exercises today. They are reported on every run and must reach zero; an operation that
 # falls off a test and is NOT on this list is a regression and fails the gate.
-KNOWN_UNEXERCISED = {'mesh_inspect'}
+KNOWN_UNEXERCISED = set()
 for op in missing:
     tag = 'known, must reach zero' if op in KNOWN_UNEXERCISED else 'NEW - a test was lost'
     print(f'  NOT EXERCISED: {op:24s} {tag}')

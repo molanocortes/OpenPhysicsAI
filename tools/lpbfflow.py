@@ -18,6 +18,7 @@ import shutil
 import struct
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -161,8 +162,9 @@ def main():
     ws = tmp / "ws"
     common = ["--workspace", str(ws), "--allow-read", str(tmp)]
     c = Client(["--embedded"] + common)
-    c.initialize()
+    completed = False
     try:
+        c.initialize()
         tools = {t["name"] for t in c.request("tools/list")["result"]["tools"]}
         check("lpbf_build_run" in tools, "lpbf_build_run is listed as a tool")
 
@@ -218,6 +220,11 @@ def main():
         v = call_ok(c, "lpbf_build_run", args, "lpbf_build_run")
         job, run_dir = v.get("job_id", ""), v.get("run_directory", "")
         check(v.get("analysis") == "lpbf_build", "the job is an lpbf_build analysis")
+        check("declared process input" in v.get("scope", ""), "the operation does not assert that every supplied strain is calibrated")
+        # Inherent strains can create stress without external mechanical loads.
+        load_warnings = [w.get("message", "").lower() for w in v.get("warnings", []) if w.get("code") == "NO_LOADS"]
+        check(bool(load_warnings) and all("without additional thermal or eigenstrain loading" in w for w in load_warnings),
+              "the absent-mechanical-load warning qualifies its zero-state claim for process loading")
         dup = call_ok(c, "lpbf_build_run", args, "an identical build")
         check(dup.get("deduplicated") is True and dup.get("job_id") == job, "an identical build returns the running job")
         st = wait_job(c, job)
@@ -234,6 +241,12 @@ def main():
         check(model.get("inherent_strain", {}).get("provenance") == "user", "the strain's provenance is recorded")
         check(model.get("cut", {}).get("provenance") == "assumed", "the cut's provenance is recorded literally")
         check(abs(res.get("largest_plate_reaction_n", 1e9)) < 1e9, "the plate reactions are reported")
+        check("eight Gauss-point von Mises" in res.get("stress_field_definition", ""),
+              "the build summary states the actual stress scalar definition")
+        eqdef = res.get("equilibrium_error_definition", "")
+        check("recovered linear free residual" in eqdef and "eigenstrain" in eqdef and
+              "absolute residual in N if scale is zero" in eqdef,
+              "the elastic summary defines its linear equilibrium diagnostic and zero-scale units")
 
         print("== the build through the ordinary result operations")
         err = call_err(c, "results_query", {"job_id": job, "quantity": "temperature"}, "UNSUPPORTED", "a temperature query on a build is refused")
@@ -294,6 +307,10 @@ def main():
               f"a yield stress nothing reaches gives the elastic answer to the last digit "
               f"({r5.get('tip_uz_after_cut_mm')} against {res.get('tip_uz_after_cut_mm')})")
         check((r5.get("plasticity") or {}).get("yielded") is False, "and reports that nothing yielded")
+        eqdef = r5.get("equilibrium_error_definition", "")
+        check("accepted nonlinear free residual" in eqdef and "incremental reaction" in eqdef and
+              "initial nonlinear predictor" in eqdef and "absolute residual in N if scale is zero" in eqdef,
+              "the J2 summary defines accepted nonlinear balance rather than the last linear correction")
         v = call_ok(c, "lpbf_build_run", dict(args, plasticity=dict(yield_ok, yield_strength="60 MPa",
                                                                     hardening_modulus="2 GPa"),
                                               label="low yield, hardening"), "plastic build that yields")
@@ -450,7 +467,12 @@ def main():
         call_err(c, "lpbf_supports_generate", dict(gen, supports={"type": "block", "wall_thickness": "3 mm", "provenance": "user",
                  "source": "flow test"}), "PRECONDITION_FAILED", "S8: a wall thicker than its pitch is refused")
         for t in ("thin_wall", "cone", "tree", "lattice"):
-            gt = call_ok(c, "lpbf_supports_generate", dict(gen, supports={"type": t}), f"{t} supports generated")
+            print(f"   generating {t} supports", flush=True)
+            started = time.monotonic()
+            try:
+                gt = call_ok(c, "lpbf_supports_generate", dict(gen, supports={"type": t}), f"{t} supports generated")
+            finally:
+                print(f"   {t} supports request elapsed {time.monotonic() - started:.3f} s", flush=True)
             bt = ((gt.get("supports") or {}).get("homogenised") or {}).get("bands") or [{}]
             check(gt.get("support_elements") == 96 and 0 < bt[0].get("stiffness_vertical", 0) < 1,
                   f"S7: {t} supports on the span, homogenised stiffness {bt[0].get('stiffness_vertical')}")
@@ -667,11 +689,19 @@ def main():
         r4 = (st4.get("summary") or {}).get("results") or {}
         check(abs(r4.get("tip_uz_after_cut_mm", 0) - 0.02) < 2e-4,
               f"the rebuild at the fitted strain gives the target deflection ({r4.get('tip_uz_after_cut_mm'):.5f} mm against 0.02)")
+        completed = True
     finally:
-        code, stderr = c.close()
-        if FAIL:
-            print(stderr[-3000:])
-        shutil.rmtree(tmp, ignore_errors=True)
+        closed, stderr = False, ""
+        try:
+            code, stderr = c.close()
+            closed = True
+        finally:
+            if completed and closed and not FAIL:
+                shutil.rmtree(tmp, ignore_errors=True)
+            else:
+                (tmp / "mcp-stderr.log").write_text(stderr, encoding="utf-8")
+                print(stderr[-3000:])
+                print(f"LPBF workflow evidence preserved at {tmp}", flush=True)
     if FAIL:
         print(f"\nLPBF FLOW TESTS FAILED: {PASS} passed, {FAIL} failed")
         return 1

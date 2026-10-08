@@ -1,0 +1,107 @@
+{
+  "analysis": "fff_print",
+  "model": {
+    "analysis": "fff_print",
+    "nodes": 8551,
+    "elements": 5385,
+    "mesh_hash": "7e3088ef3914267cac075ea3f99e0cf02603f97e342f6d8f85b1a11bdaba1546",
+    "element_size_mm": [0.75, 0.75, 0.75],
+    "body": "sculpture",
+    "material": {
+      "id": "pla_generic_demo",
+      "name": "PLA, generic FFF filament (demonstration values)",
+      "status": "demonstration",
+      "glass_transition_c": 60,
+      "relaxation_c": 70
+    },
+    "process": {
+      "simulation_layer_mm": 1.5,
+      "nozzle_c": 210,
+      "bed_c": 60,
+      "ambient_c": 25,
+      "convection_w_m2k": 15,
+      "radiation": true,
+      "deposition_rate_mm3_s": 8,
+      "min_layer_time_s": 8,
+      "cooldown_bed_on_s": 120,
+      "cooldown_bed_off_s": 240,
+      "thermal_substeps_per_layer": 4,
+      "provenance": "inferred",
+      "store": "key_times"
+    },
+    "numerics": {
+      "solver": "auto",
+      "tolerance": 1e-10,
+      "skip_increment_below_k": 0,
+      "note": "auto factorises directly while the factor fits and falls back to the iterative solver when it does not; the iterative solver is faster on smaller models (measured on the truss bridge at 4 mm elements: 220 s automatic against 98 s iterative at a tolerance of 1e-8, peak stress within 2.6e-8 and warp within 3.7e-6 relative)"
+    }
+  },
+  "deposition": {
+    "simulation_layers": 16,
+    "layers_deposited": 16,
+    "elements_printed": 5385,
+    "elements_deposited_late": 0,
+    "elements_never_deposited": 0,
+    "rule": "material is deposited where it has a whole face on the bed or shares a face with printed material; an overhang waits for the layer that carries it, and a fragment that never connects is not printed",
+    "printed_volume_cm3": 2.2717968749999944
+  },
+  "timing": {
+    "print_time_h": 0.07888183593749978,
+    "total_machine_time_h": 0.17888183593749973,
+    "compute_seconds": 30.892136999987997,
+    "compute_seconds_heat": 2.74446600000374,
+    "compute_seconds_stress": 28.118891000165604,
+    "thermal_steps": 72,
+    "stress_increments": 35,
+    "increments_skipped": 0
+  },
+  "results": {
+    "peak_von_mises_on_bed_mpa": 13.057291436951665,
+    "peak_von_mises_released_mpa": 3.3081463013268797,
+    "warp_z_min_mm": -0.0605775664400139,
+    "warp_z_max_mm": 0.0019515454363321352,
+    "worst_heat_balance_relative": 1.7301424868777662e-10,
+    "largest_bed_reaction_n": 2.9399149781283995e-11,
+    "support_reaction_after_release_n": 3.425171257731563e-11,
+    "equilibrium_error_last_solve": 5.2504208645933985e-14,
+    "equilibrium_error_at_release": 5.2504208645933985e-14,
+    "equilibrium_error_definition": "recovered free-equation residual norm / (applied nodal load norm + individual prescribed-DOF reaction norm + assembled free RHS norm including eigenstrain); dimensionless for nonzero force scale; zero scale reports absolute residual in N, zero for an unloaded zero state",
+    "bed_reaction_definition": "largest absolute component of the NET bed resultant, not the largest individual bed reaction",
+    "release_check": "release equilibrium uses the normalized free-equation residual; support reactions remain in N and are not divided by the net bed resultant, which can vanish for self-equilibrated thermal loads",
+    "heat_into_bed_j": 37.55117307991433,
+    "heat_into_bed_during_print_j": 48.799829096064784,
+    "supplied_nozzle_enthalpy_above_ambient_j": 925.0667625837087,
+    "deposition_enthalpy_correction_j": 109.23098605963735,
+    "stored_enthalpy_above_ambient_j": 3.2320732082083943,
+    "heat_into_air_j": 884.2835163185578,
+    "enthalpy_removed_with_supports_j": 0,
+    "worst_deposition_balance_relative": 5.7813850888718e-15,
+    "whole_print_heat_balance_relative": 2.4832452149407718e-11,
+    "stress_field_definition": "element mean of eight Gauss-point von Mises values, not a Gauss-point maximum",
+    "stored_times": 35,
+    "last_stored_time": "the state after release from the bed"
+  },
+  "scope": {
+    "statement": "process simulation on demonstration material data; not a forecast for a particular printer or filament",
+    "is_forecast": false,
+    "layer_lumping": {
+      "simulation_layer_mm": 1.5,
+      "printed_layer_mm": 0.2,
+      "printed_layers_per_simulation_layer": 7.5,
+      "toolpath_within_a_layer": "not modelled: a simulation layer is activated at once with nozzle enthalpy; missing energy at conforming nodes is delivered in the first thermal substep",
+      "deposition_timing": "the enthalpy correction is a finite heat pulse during the first substep; local deposition temperatures require time refinement"
+    },
+    "creep_below_relaxation_temperature": "not modelled",
+    "constitutive_law": "temperature-dependent incremental stress accumulation (hypoelastic approximation); old stress is not rescaled when the modulus changes, and stress is reset above the relaxation temperature; no time-dependent viscoelastic law",
+    "bed_stresses_are_upper_bound": false,
+    "bed_stresses_note": "creep below the relaxation temperature is omitted; temperature-dependent stiffness and stress redistribution mean this approximation establishes no general local stress bound",
+    "material": {
+      "id": "pla_generic_demo",
+      "status": "demonstration",
+      "measured": false
+    },
+    "compared_with_measurement": false,
+    "not_modelled": ["toolpath within a layer", "creep below the relaxation temperature", "plasticity", "raster anisotropy and interlayer strength", "crystallisation shrinkage", "resolved roads and inter-road thermal contact resistance", "gravity", "adhesion failure during the print"],
+    "use": "compare designs, process settings and trends; do not certify a part with these numbers"
+  }
+}

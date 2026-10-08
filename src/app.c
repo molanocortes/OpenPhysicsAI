@@ -278,6 +278,8 @@ const char *ui_mode_name(int mode) { return mode >= 0 && mode < UI_MODE_COUNT ? 
 int app_remembered_ui_mode(void) {
     char v[64];
     if (app.first_run || !app_ui_state_get("mode", v, sizeof v)) return -1;
+    if (!strcmp(v, "manual")) return UI_ADVANCED;
+    if (!strcmp(v, "agentic")) return UI_AGENT;
     for (int i = 0; i < UI_MODE_COUNT; i++)
         if (!strcmp(v, UI_MODE_NAMES[i])) return i;
     return -1;

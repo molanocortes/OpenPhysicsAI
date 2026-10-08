@@ -1,0 +1,16 @@
+== refusals before any solve
+== a part that does not rest on the build plate
+== a stale mesh
+== a material whose provenance is a default
+== the print
+   stored times 9, peak on bed 8.506 MPa, released 0.773 MPa, warp -0.0223 to 0.0028 mm
+   nozzle enthalpy 344.970746 J, shared-node correction 115.86505 J, whole-print closure 1.06e-11
+   worst heat balance 1.76e-10, support reaction after release 2.27e-12 N, net bed resultant 1.28e-12 N; normalized equilibrium last 6.76e-15, release 6.76e-15
+== the print through the ordinary result operations
+== a second session reads the same print from its run directory
+== storing every thermal substep instead of the key times
+   substeps: 21 stored times, peak on bed 9.028 MPa against 8.506 MPa at the key times
+== the iterative solver, chosen explicitly
+== cancelling a print
+
+ALL PRINT FLOW TESTS PASSED: 91 passed, 0 failed

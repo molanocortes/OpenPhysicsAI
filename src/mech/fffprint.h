@@ -7,11 +7,15 @@
  *
  * Process model
  *   Layers. The voxel mesh is cut into simulation layers by element centroid height. A simulation layer lumps several
- *   printed layers and is deposited at once at the nozzle temperature (flash deposition); it then cools for the time the
+ *   printed layers and is deposited at once with the nozzle enthalpy; it then cools for the time the
  *   printer needs to lay it down: its volume over the volumetric deposition rate. Material is deposited only where it
  *   rests on the bed (a whole face on it) or shares a face with printed material; an element that does not yet (an
  *   overhang on the voxel staircase) waits for a later layer, and fragments that never connect are not printed (both
  *   are counted in the summary). This also keeps every printed region free of hinges and rigid-body motions.
+ *   Conforming interface nodes retain their previous temperature. The missing nozzle enthalpy is integrated at the
+ *   new elements' Gauss points and supplied as a nodal heat pulse in the first thermal substep. The pulse on prescribed
+ *   bed nodes goes straight into the bed heat ledger. Its finite duration follows the numerical first substep, so local
+ *   deposition histories still require time refinement; it does not resolve extruded roads or thermal contact resistance.
  *   Heat. Conduction in the part with k(T), rho(T) cp(T); convection h and grey radiation to the chamber air from every
  *   exposed face of the printed region; the heated bed as a prescribed temperature at the bottom nodes. After the last
  *   layer the part cools with the bed on, then with the bed switched off (the bed follows the ambient temperature).
@@ -30,7 +34,8 @@
  *   takes its free, warped shape and keeps the residual stresses that shape cannot relieve.
  *
  * Not modelled: the toolpath inside a simulation layer, creep below the relaxation temperature, plasticity, interlayer
- * bond strength and anisotropy, crystallisation shrinkage, supports, adhesion failure during the print, gravity. */
+ * bond strength and anisotropy, crystallisation shrinkage, adhesion failure during the print, gravity. Supports can be
+ * supplied as homogenised bands, with conductivity, density, stiffness and exposed pattern area stated by the caller. */
 #pragma once
 
 #include <stdbool.h>
@@ -84,7 +89,7 @@ typedef struct FffFrame {
     const unsigned char *active;  /* nelems */
     const double *T;              /* nnodes, K */
     const double *u;              /* 3 * nnodes, m, accumulated */
-    const double *vm;             /* nelems, Pa: von Mises of the Gauss-point mean of the accumulated stress */
+    const double *vm;             /* nelems, Pa: mean of the eight Gauss-point von Mises values */
     double T_max, vm_max, u_max;
     double energy_balance;        /* worst relative thermal energy balance since the previous frame */
 } FffFrame;
@@ -107,6 +112,8 @@ typedef struct FffSummary {
     double warp_z_max, warp_z_min;          /* m: vertical displacement range after release */
     double bed_reaction_total;              /* N: largest resultant component of the bed reactions before release */
     double release_support_reaction;        /* N: largest reaction on the isostatic support at release (self-equilibrated: ~0) */
+    double equilibrium_error_last_solve;     /* recovered free-equation residual / nodal load, reaction and RHS norms */
+    double equilibrium_error_at_release;     /* same diagnostic retained specifically for the bed-release solve */
     double worst_energy_balance;
     double seconds_thermal, seconds_mech;
     double printed_volume;    /* m^3 actually deposited */
@@ -115,6 +122,13 @@ typedef struct FffSummary {
     int late_elements;        /* deposited after their own layer, when they first rested on printed material (overhangs) */
     double bed_heat;          /* J: heat into the bed (the prescribed-temperature nodes) over the whole simulation */
     double bed_heat_print;    /* J: the same until the last layer has cooled */
+    double deposition_heat;  /* J: supplied nozzle enthalpy of all deposited material, relative to ambient */
+    double deposition_correction; /* J: missing enthalpy at conforming nodes, supplied in first substeps or to the bed */
+    double stored_heat;      /* J: final active part/support enthalpy relative to ambient, Gauss integrated */
+    double air_heat;         /* J: net heat from material into chamber air */
+    double removed_heat;     /* J: enthalpy removed with supports, relative to ambient */
+    double deposition_balance; /* worst relative identity error of supplied = initial + correction */
+    double global_heat_balance; /* |stored + air + bed + removed - deposition| / largest magnitude */
     int support_elements;     /* removed after the release */
     double tearoff_max, tearoff_sum; /* N: the supports' forces on the part just before removal */
 } FffSummary;
@@ -158,4 +172,8 @@ const unsigned char *fff_mech_active(const FffMech *m);
 void fff_mech_von_mises(const FffMech *m, double *vm); /* nelems, Gauss-point mean */
 double fff_mech_bed_reaction(const FffMech *m, double resultant[3]); /* largest |component| of the resultant */
 double fff_mech_release_reaction(const FffMech *m);
+/* The structural solver's last successful equilibrium diagnostic, preserved across skipped increments. Its
+ * force scale includes individual constrained reactions and the eigenstrain RHS, not the net bed resultant. */
+double fff_mech_equilibrium_error(const FffMech *m);
+double fff_mech_release_equilibrium_error(const FffMech *m);
 int fff_mech_solves(const FffMech *m);

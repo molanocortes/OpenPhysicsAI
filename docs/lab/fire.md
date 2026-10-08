@@ -94,11 +94,18 @@ thing back:
 | after, with the old upwind band next to open faces | -18.7 % | -28.2 % +- 13 % | -30.4 % | -45.3 % |
 | the old solver with the new pressure solve | -20.1 % | -40.2 % +- 30 % | -56.5 % | -63.8 % |
 
-Every run's projection is exact, so the pressure solve is not wrong; but the three runs before the change all came out
+Every run meets the discrete projection criterion. This does not rule out a pressure-coupling or boundary-condition
+error. The three runs before the change all came out
 hot and the three after it all cold, and the block errors of a 30 s average (as large as 30 % within one run) say the
 average itself is far from converged. Which of the two, a real shift or an unconverged average, is decided by averaging
 much longer (two minutes of fire or more, an overnight run: `FIRE_T_END=128 ./build/firetest`, queued in
 [validation/QUEUE.md](../../validation/QUEUE.md)); until then V2 and V3 are open ([GOALS.md](../../GOALS.md) G13).
+
+The [full rerun on 2026-10-03](../../validation/lab/fire-2026-10-03.log) reproduces the post-change values above:
+F1/F2/F3/V1 pass, V2 at 2.6 m is -27.5 percent and V3 is -20.2/-38.4 percent, outside the unchanged 25 percent
+criterion at the upper height. The test exits 1; V2 remains separately recorded open. Its historical generic V2
+message describes the earlier hot plume, so use the height-specific numbers printed above it. The run took 3178 s
+on the shared laptop while other checks ran. Fire solver physics and validation thresholds were not changed in this wave.
 
 ## Running it
 

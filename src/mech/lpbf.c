@@ -206,6 +206,22 @@ static void internal_force(const LpbfMesh *M, int e, const double *sig, double *
     }
 }
 
+/* The plate carries total accumulated stress, including layers strained in earlier steps. Recovering the reaction
+ * from just the most recent linear solve loses that history (and reports zero after a zero-strain equilibration). */
+static void accumulated_reaction(LpbfModel *m, const HexModel *hm, const int *map, int na,
+                                 const unsigned char *used, double *fint) {
+    int nn = m->mesh.nnodes;
+    memset(fint, 0, 3 * (size_t)nn * sizeof(double));
+    for (int a = 0; a < na; a++) internal_force(&m->mesh, map[a], m->stress + 48 * (size_t)map[a], fint);
+    push_hanging(hm, fint);
+    memset(m->reaction, 0, 3 * (size_t)nn * sizeof(double));
+    for (int n = 0; n < nn; n++)
+        for (int k = 0; k < 3; k++) {
+            if (!used[n]) continue;
+            if (m->fixed[3 * n + k]) m->reaction[3 * n + k] = fint[3 * n + k];
+        }
+}
+
 /* The stress of one element at the current step displacement, returned onto the yield surface from the state at the
  * start of the step. `u_step` is the displacement increment of this step, `eps0e` its eigenstrain (may be NULL). */
 static void element_stress(const LpbfModel *m, int e, const double D[6][6], const double *u_step, const double *eps0e,
@@ -314,6 +330,25 @@ static bool plastic_step(LpbfModel *m, const HexModel *hm, const SolidLoads *L, 
                 for (int k = 0; k < 3; k++) u_step[3 * n + k] += res.u[3 * n + k];
         solid_result_free(&res);
     }
+    /* The accepted nonlinear residual needs a force scale that includes the step's eigenstrain predictor, even
+     * when free contraction leaves almost no final stress. Reduce applied and increment internal forces with the
+     * same active hanging constraints as the residual. This is reporting only, after Newton has converged. */
+    memcpy(R, force, 3 * (size_t)nn * sizeof(double));
+    push_hanging(hm, R);
+    push_hanging(hm, fint);
+    double applied2 = 0, reaction2 = 0;
+    for (int n = 0; n < nn; n++)
+        for (int k = 0; k < 3; k++) {
+            if (!used[n]) continue;
+            double f = R[3 * n + k];
+            applied2 += f * f;
+            if (L->fixed[3 * n + k]) {
+                double r = fint[3 * n + k] - f;
+                reaction2 += r * r;
+            }
+        }
+    double force_scale = sqrt(applied2) + sqrt(reaction2) + r0;
+    double equilibrium = force_scale > 0 ? m->last_residual / force_scale : m->last_residual;
     /* accept the step */
     for (int n = 0; n < nn; n++)
         if (used[n])
@@ -322,21 +357,10 @@ static bool plastic_step(LpbfModel *m, const HexModel *hm, const SolidLoads *L, 
         memcpy(m->stress + 48 * (size_t)map[a], sig_new + 48 * (size_t)a, 48 * sizeof(double));
         memcpy(m->alpha + 8 * (size_t)map[a], alpha_new + 8 * (size_t)a, 8 * sizeof(double));
     }
-    /* at equilibrium the internal force of the total stress is carried by the plate; what is left at a free node is
-     * the error. fint above is the increment, so the total is recomputed from the accepted stresses. */
-    memset(fint, 0, 3 * (size_t)nn * sizeof(double));
-    for (int a = 0; a < na; a++) internal_force(M, map[a], m->stress + 48 * (size_t)map[a], fint);
-    push_hanging(hm, fint);
-    double free_norm = 0, total = 0;
-    memset(m->reaction, 0, 3 * (size_t)nn * sizeof(double));
-    for (int n = 0; n < nn; n++)
-        for (int k = 0; k < 3; k++) {
-            if (!used[n]) continue;
-            total += fint[3 * n + k] * fint[3 * n + k];
-            if (m->fixed[3 * n + k]) m->reaction[3 * n + k] = fint[3 * n + k];
-            else free_norm += fint[3 * n + k] * fint[3 * n + k];
-        }
-    m->equilibrium_error = total > 0 ? sqrt(free_norm / total) : 0;
+    /* Plate reactions carry total accumulated stress; the last solve diagnostic instead describes the nonlinear
+     * step just accepted, not total-stress roundoff and not the last inner linear correction. */
+    accumulated_reaction(m, hm, map, na, used, fint);
+    m->equilibrium_error = equilibrium;
     ok = true;
 done:
     free(u_step), free(R), free(fint), free(sig_start), free(alpha_start), free(sig_new), free(alpha_new);
@@ -472,16 +496,15 @@ static bool step(LpbfModel *m, const unsigned char *strained, const double eps[3
     if (!solid_solve(&hm, &L, &opt, &res, err, errlen)) goto done;
     m->seconds += now_s() - t0;
     m->solves++;
-    m->equilibrium_error = res.equilibrium_error;
     for (int n = 0; n < nn; n++)
         if (used[n])
             for (int k = 0; k < 3; k++) m->u[3 * n + k] += res.u[3 * n + k];
     for (int a = 0; a < na; a++)
         for (int k = 0; k < 48; k++) m->stress[48 * (size_t)map[a] + (size_t)k] += res.gp_stress[48 * (size_t)a + (size_t)k];
-    memset(m->reaction, 0, 3 * (size_t)nn * sizeof(double));
-    for (int n = 0; n < nn; n++)
-        for (int k = 0; k < 3; k++)
-            if (used[n] && m->fixed[3 * n + k]) m->reaction[3 * n + k] = res.reaction[3 * n + k];
+    accumulated_reaction(m, &hm, map, na, used, force);
+    /* Last elastic solve residual uses its eigenstrain right-hand side as well as reactions. Normalising by only
+     * recovered stress would turn harmless roundoff in a freely contracted, stress-free part into an O(1) error. */
+    m->equilibrium_error = res.equilibrium_error;
     ok = true;
 done:
     solid_result_free(&res);
@@ -535,10 +558,7 @@ void lpbf_von_mises(const LpbfModel *m, double *vm) {
     for (int e = 0; e < m->mesh.nelems; e++) {
         vm[e] = 0;
         if (!m->active[e]) continue;
-        double s[6] = {0};
-        for (int g = 0; g < 8; g++)
-            for (int k = 0; k < 6; k++) s[k] += m->stress[48 * (size_t)e + 6 * (size_t)g + (size_t)k] / 8;
-        vm[e] = von_mises(s);
+        for (int g = 0; g < 8; g++) vm[e] += von_mises(m->stress + 48 * (size_t)e + 6 * (size_t)g) / 8;
     }
 }
 

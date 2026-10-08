@@ -1,0 +1,24 @@
+{
+  "kind": "lpbf",
+  "result_sha256": "f1fc8dd11f12e34d4876ec5e80052ec7eb2ff97da2717aca325b707ae7a50f0f",
+  "artifacts": {
+    "lpbf.png": "4b7b18c5e507753d2710496212225dda25e8fc2fc53488ede91bb0ee6ea1ca3e",
+    "lpbf-art.png": "63784914186e8a9e933a4d23c55ce06f40c6ea9517fe1b836a511511ade627a0",
+    "lpbf-section.png": "c858e02da379cf8f05f6cdfa8abd51a859d0f9a54c46583d0896cb958a735dc4",
+    "lpbf-cut.png": "d7da59ad3efa06af6c93b699902fc842768f3e1801df0ebe0e543487c2987b90"
+  },
+  "renderer_sha256": "13c899b512baefb8e7baa784f44f179905d6d6bfe896602286868e2ae537c9b9",
+  "pixels": "Native OpenGL output; no painted fields or fabricated time interpolation",
+  "deformation_scale": 1,
+  "range": "all stored states, full peak (not percentile clipped)",
+  "presentation": "Designed geometry; artificial studio lighting, ambient occlusion, bloom and backdrop",
+  "preset": {
+    "field": "von_mises",
+    "cmap": "viridis",
+    "elevation": 28,
+    "hero": 16,
+    "frames": 144
+  },
+  "fps": 20,
+  "frames": []
+}

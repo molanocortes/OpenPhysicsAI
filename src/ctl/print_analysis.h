@@ -63,12 +63,15 @@ typedef struct PrintCase {
     double peak_bed, peak_released;                 /* Pa */
     double warp_min, warp_max;                      /* m */
     double bed_reaction, release_reaction;          /* N */
+    double equilibrium_error_last_solve, equilibrium_error_at_release;
     double worst_balance;                           /* relative */
     double seconds_thermal, seconds_stress, seconds_total;
     double volume;                                  /* m^3 of printed material */
     JsonValue *probes;                              /* histories, attached to the summary */
     LpbfCase *sup_stats;                            /* the supports as generated (NULL without) */
     double bed_heat, bed_heat_print;                /* J into the bed: whole run, and until the last layer cooled */
+    double deposition_heat, deposition_correction, stored_heat, air_heat, removed_heat;
+    double deposition_balance, global_heat_balance;
     double tearoff_max, tearoff_sum;                /* N: the supports' forces on the part before removal */
     int supports_removed;
 } PrintCase;

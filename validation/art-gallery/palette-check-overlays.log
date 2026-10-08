@@ -1,0 +1,382 @@
+[ ok ] lattice 192x64x224  (2.75M cells, 488 MB)
+[ ok ] NAVIER — real-time lattice-Boltzmann water tunnel
+[info] GPU Apple M2 · OpenGL 4.1 Metal - 89.4 · 8 CPU threads
+[info] type 'help' for commands, 'scene' for experiments, drop an .stl onto the window to test your own shape
+[ ok ] model 'glider': 18932 triangles, extent 0.459 x 0.115 x 1, watertight
+[ ok ] scene 'glider': sailplane at 4 deg AoA - wingtip vortices
+[ >> ] exec /private/tmp/openphysics-art-gallery/palette-check-overlays.nav
+[info] script /private/tmp/openphysics-art-gallery/palette-check-overlays.nav: 169 commands queued
+[ ok ] geometry: 6810 solid cells, 32690 boundary links (curved, 82% on the surface), frontal 578 cells  (28 ms, walls 12 ms)
+[data]   walls: bvh 3.2 ms, 32690 rays 8.5 ms, rest 0.1 ms
+[ >> ] mode manual
+[ ok ] mode advanced
+[ >> ] workspace solid
+[ ok ] SOLID workspace - finite-element analysis (the same operations as 'am' and the control socket)
+[ >> ] pause
+[info] paused at step 0 (t = 0 s)
+[ >> ] frames 6
+[ >> ] solid open /private/tmp/openphysics-art-gallery/workspace/Helical_Flute
+[ ok ] opened /private/tmp/openphysics-art-gallery/workspace/Helical_Flute
+[ >> ] frames 8
+[ >> ] fem follow last
+[ ok ] following job-20261003-071219-7e8c-1
+[ >> ] frames 10
+[ ok ] analysis finished (job-20261003-071219-7e8c-1)
+[info] surface map: 36098 vertices onto 5385 elements in 6 ms; 16660 snapped (mean 0.136 mm, largest 0.425 mm), 0 not drawn
+[ ok ] result surface built for job-20261003-071219-7e8c-1 (fff_print): 1428 triangles, von Mises stress
+[ >> ] fem pause
+[ ok ] playback paused at stored time 1 of 35
+[ >> ] fem step last
+[ ok ] stored time 35 of 35 (t = 643.975 s)
+[ >> ] fem field displacement
+[ ok ] showing displacement [mm]
+[ >> ] fem deform true
+[ ok ] deformation scale ×1
+[ >> ] fem range all
+[ ok ] colour range over all stored times: 0 to 0.0820785 mm
+[ >> ] fem surface on
+[info] drawing the part surface: 72192 triangles, largest snap 0.4253 mm, 16660 vertices snapped, 0 not drawn, mapping 6 ms
+[ >> ] uiclick "6 RESULTS"
+[info] click '6 RESULTS' at (1350, 157), held 4 frames
+[ >> ] frames 6
+[ >> ] camera orbit 36 24
+[ >> ] fem fit
+[ ok ] framed the analysed part
+[ >> ] floorgrid off
+[info] floor grid off
+[ >> ] box off
+[info] tunnel box off
+[ >> ] fem cmap viridis
+[ ok ] result colour map viridis
+[ >> ] frames 360
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png (1440x900)
+[ >> ] frames 6
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png (1440x900)
+[ >> ] frames 6
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png (1440x900)
+[ >> ] frames 6
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png (1440x900)
+[ >> ] frames 6
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png (1440x900)
+[ >> ] frames 6
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png (1440x900)
+[ >> ] frames 6
+[ >> ] echo OVERLAYCHECK overlays_default
+[info] OVERLAYCHECK overlays_default 
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem marker
+[info] peak marker on
+[ >> ] frames 6
+[ >> ] fem marker
+[info] peak marker on
+[ >> ] fem outline
+[info] undeformed outline on
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem status
+[info] project Helical_Flute · 1 bodies · 0 elements · 0 conditions · material pla_generic_demo
+[info] result job-20261003-071219-7e8c-1: fff_print, built on body 'sculpture'
+[info] job job-20261003-071219-7e8c-1: succeeded 100% 
+[info] result job-20261003-071219-7e8c-1 · displacement · 0 to 0.0820785 mm · 72192 triangles · rebuild 7.30 ms
+[info] shown displacement max 0.0820784753 mm; deformation scale 1; stored index 34
+[info] result colour map viridis
+[info] groups part 1 support 1 plate 1
+[info] usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | marker on|off | outline on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-overlay-overlays_default.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-overlay-overlays_default.png (1440x900)
+[ >> ] frames 8
+[ >> ] echo OVERLAYCHECK marker_off
+[info] OVERLAYCHECK marker_off 
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem marker off
+[info] peak marker off
+[ >> ] frames 6
+[ >> ] fem marker
+[info] peak marker off
+[ >> ] fem outline
+[info] undeformed outline on
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem status
+[info] project Helical_Flute · 1 bodies · 0 elements · 0 conditions · material pla_generic_demo
+[info] result job-20261003-071219-7e8c-1: fff_print, built on body 'sculpture'
+[info] job job-20261003-071219-7e8c-1: succeeded 100% 
+[info] result job-20261003-071219-7e8c-1 · displacement · 0 to 0.0820785 mm · 72192 triangles · rebuild 7.30 ms
+[info] shown displacement max 0.0820784753 mm; deformation scale 1; stored index 34
+[info] result colour map viridis
+[info] groups part 1 support 1 plate 1
+[info] usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | marker on|off | outline on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-overlay-marker_off.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-overlay-marker_off.png (1440x900)
+[ >> ] frames 8
+[ >> ] echo OVERLAYCHECK marker_invalid
+[info] OVERLAYCHECK marker_invalid 
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem marker maybe
+[err!] usage: fem marker on|off
+[ >> ] frames 6
+[ >> ] fem marker
+[info] peak marker off
+[ >> ] fem outline
+[info] undeformed outline on
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem status
+[info] project Helical_Flute · 1 bodies · 0 elements · 0 conditions · material pla_generic_demo
+[info] result job-20261003-071219-7e8c-1: fff_print, built on body 'sculpture'
+[info] job job-20261003-071219-7e8c-1: succeeded 100% 
+[info] result job-20261003-071219-7e8c-1 · displacement · 0 to 0.0820785 mm · 72192 triangles · rebuild 7.30 ms
+[info] shown displacement max 0.0820784753 mm; deformation scale 1; stored index 34
+[info] result colour map viridis
+[info] groups part 1 support 1 plate 1
+[info] usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | marker on|off | outline on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-overlay-marker_invalid.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-overlay-marker_invalid.png (1440x900)
+[ >> ] frames 8
+[ >> ] echo OVERLAYCHECK marker_extra_args
+[info] OVERLAYCHECK marker_extra_args 
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem marker on extra
+[err!] usage: fem marker on|off
+[ >> ] frames 6
+[ >> ] fem marker
+[info] peak marker off
+[ >> ] fem outline
+[info] undeformed outline on
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem status
+[info] project Helical_Flute · 1 bodies · 0 elements · 0 conditions · material pla_generic_demo
+[info] result job-20261003-071219-7e8c-1: fff_print, built on body 'sculpture'
+[info] job job-20261003-071219-7e8c-1: succeeded 100% 
+[info] result job-20261003-071219-7e8c-1 · displacement · 0 to 0.0820785 mm · 72192 triangles · rebuild 7.30 ms
+[info] shown displacement max 0.0820784753 mm; deformation scale 1; stored index 34
+[info] result colour map viridis
+[info] groups part 1 support 1 plate 1
+[info] usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | marker on|off | outline on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-overlay-marker_extra_args.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-overlay-marker_extra_args.png (1440x900)
+[ >> ] frames 8
+[ >> ] echo OVERLAYCHECK marker_on
+[info] OVERLAYCHECK marker_on 
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem marker on
+[info] peak marker on
+[ >> ] frames 6
+[ >> ] fem marker
+[info] peak marker on
+[ >> ] fem outline
+[info] undeformed outline on
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem status
+[info] project Helical_Flute · 1 bodies · 0 elements · 0 conditions · material pla_generic_demo
+[info] result job-20261003-071219-7e8c-1: fff_print, built on body 'sculpture'
+[info] job job-20261003-071219-7e8c-1: succeeded 100% 
+[info] result job-20261003-071219-7e8c-1 · displacement · 0 to 0.0820785 mm · 72192 triangles · rebuild 7.30 ms
+[info] shown displacement max 0.0820784753 mm; deformation scale 1; stored index 34
+[info] result colour map viridis
+[info] groups part 1 support 1 plate 1
+[info] usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | marker on|off | outline on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-overlay-marker_on.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-overlay-marker_on.png (1440x900)
+[ >> ] frames 8
+[ >> ] fem step 23
+[ ok ] stored time 23 of 35 (t = 201.735 s)
+[ >> ] fem surface off
+[info] drawing the voxel mesh: 9704 triangles, largest snap 0.4253 mm, 16660 vertices snapped, 0 not drawn, mapping 6 ms
+[ >> ] frames 60
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png (1440x900)
+[ >> ] frames 6
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png (1440x900)
+[ >> ] frames 6
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png (1440x900)
+[ >> ] frames 6
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png (1440x900)
+[ >> ] frames 6
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png (1440x900)
+[ >> ] frames 6
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-overlay-warmup.png (1440x900)
+[ >> ] frames 6
+[ >> ] echo OVERLAYCHECK outline_baseline
+[info] OVERLAYCHECK outline_baseline 
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem marker
+[info] peak marker on
+[ >> ] fem outline
+[info] undeformed outline on
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem status
+[info] project Helical_Flute · 1 bodies · 0 elements · 0 conditions · material pla_generic_demo
+[info] result job-20261003-071219-7e8c-1: fff_print, built on body 'sculpture'
+[info] job job-20261003-071219-7e8c-1: succeeded 100% 
+[info] result job-20261003-071219-7e8c-1 · displacement · 0 to 0.0820785 mm · 9704 triangles · rebuild 5.54 ms
+[info] shown displacement max 0.0251690219 mm; deformation scale 1; stored index 22
+[info] result colour map viridis
+[info] groups part 1 support 1 plate 1
+[info] usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | marker on|off | outline on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-overlay-outline_baseline.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-overlay-outline_baseline.png (1440x900)
+[ >> ] frames 8
+[ >> ] echo OVERLAYCHECK outline_off
+[info] OVERLAYCHECK outline_off 
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem outline off
+[info] undeformed outline off
+[ >> ] frames 6
+[ >> ] fem marker
+[info] peak marker on
+[ >> ] fem outline
+[info] undeformed outline off
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem status
+[info] project Helical_Flute · 1 bodies · 0 elements · 0 conditions · material pla_generic_demo
+[info] result job-20261003-071219-7e8c-1: fff_print, built on body 'sculpture'
+[info] job job-20261003-071219-7e8c-1: succeeded 100% 
+[info] result job-20261003-071219-7e8c-1 · displacement · 0 to 0.0820785 mm · 9704 triangles · rebuild 5.54 ms
+[info] shown displacement max 0.0251690219 mm; deformation scale 1; stored index 22
+[info] result colour map viridis
+[info] groups part 1 support 1 plate 1
+[info] usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | marker on|off | outline on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-overlay-outline_off.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-overlay-outline_off.png (1440x900)
+[ >> ] frames 8
+[ >> ] echo OVERLAYCHECK outline_invalid
+[info] OVERLAYCHECK outline_invalid 
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem outline maybe
+[err!] usage: fem outline on|off
+[ >> ] frames 6
+[ >> ] fem marker
+[info] peak marker on
+[ >> ] fem outline
+[info] undeformed outline off
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem status
+[info] project Helical_Flute · 1 bodies · 0 elements · 0 conditions · material pla_generic_demo
+[info] result job-20261003-071219-7e8c-1: fff_print, built on body 'sculpture'
+[info] job job-20261003-071219-7e8c-1: succeeded 100% 
+[info] result job-20261003-071219-7e8c-1 · displacement · 0 to 0.0820785 mm · 9704 triangles · rebuild 5.54 ms
+[info] shown displacement max 0.0251690219 mm; deformation scale 1; stored index 22
+[info] result colour map viridis
+[info] groups part 1 support 1 plate 1
+[info] usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | marker on|off | outline on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-overlay-outline_invalid.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-overlay-outline_invalid.png (1440x900)
+[ >> ] frames 8
+[ >> ] echo OVERLAYCHECK outline_extra_args
+[info] OVERLAYCHECK outline_extra_args 
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem outline on extra
+[err!] usage: fem outline on|off
+[ >> ] frames 6
+[ >> ] fem marker
+[info] peak marker on
+[ >> ] fem outline
+[info] undeformed outline off
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem status
+[info] project Helical_Flute · 1 bodies · 0 elements · 0 conditions · material pla_generic_demo
+[info] result job-20261003-071219-7e8c-1: fff_print, built on body 'sculpture'
+[info] job job-20261003-071219-7e8c-1: succeeded 100% 
+[info] result job-20261003-071219-7e8c-1 · displacement · 0 to 0.0820785 mm · 9704 triangles · rebuild 5.54 ms
+[info] shown displacement max 0.0251690219 mm; deformation scale 1; stored index 22
+[info] result colour map viridis
+[info] groups part 1 support 1 plate 1
+[info] usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | marker on|off | outline on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-overlay-outline_extra_args.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-overlay-outline_extra_args.png (1440x900)
+[ >> ] frames 8
+[ >> ] echo OVERLAYCHECK outline_on
+[info] OVERLAYCHECK outline_on 
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem outline on
+[info] undeformed outline on
+[ >> ] frames 6
+[ >> ] fem marker
+[info] peak marker on
+[ >> ] fem outline
+[info] undeformed outline on
+[ >> ] fem field
+[info] showing displacement [mm]
+[ >> ] fem range
+[info] colour range: all stored times (0 to 0.0820785 mm)
+[ >> ] fem status
+[info] project Helical_Flute · 1 bodies · 0 elements · 0 conditions · material pla_generic_demo
+[info] result job-20261003-071219-7e8c-1: fff_print, built on body 'sculpture'
+[info] job job-20261003-071219-7e8c-1: succeeded 100% 
+[info] result job-20261003-071219-7e8c-1 · displacement · 0 to 0.0820785 mm · 9704 triangles · rebuild 5.54 ms
+[info] shown displacement max 0.0251690219 mm; deformation scale 1; stored index 22
+[info] result colour map viridis
+[info] groups part 1 support 1 plate 1
+[info] usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | marker on|off | outline on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/palette-check-overlay-outline_on.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/palette-check-overlay-outline_on.png (1440x900)
+[ >> ] frames 8
+[ >> ] echo OVERLAYCHECK end
+[info] OVERLAYCHECK end 
+[ >> ] quit

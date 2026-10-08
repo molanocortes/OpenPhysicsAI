@@ -183,6 +183,7 @@ static void fill_render_frame(RenderFrame *f, RenderSettings *rs_frame, double n
     f->dt = (float)app.dt;
     f->nx = app.nx, f->ny = app.ny, f->nz = app.nz;
     f->has_model = app.has_model;
+    f->solid_workspace = app.workspace == WS_SOLID;
     f->model = app.model_M;
     f->field_lo = app.lat_lo, f->field_hi = app.lat_hi;
     f->speed_hi = app.speed_hi;
@@ -277,15 +278,57 @@ static void hotkey(const PlatformEvent *e) {
         switch (e->key) {
         case 'o': console_exec("open", true); break;
         case 's': console_exec("screenshot", true); break;
-        case 'r': console_exec("reset", true); break;
+        case 'r': console_exec(labapp_active() ? "lab frame 0" : "reset", true); break;
         case 'k': console_clear(); break;
         default: break;
         }
         return;
     }
     char cmd[64];
+    /* The displayed result owns keyboard navigation. Never send a lab shortcut to a hidden tunnel or FEM result. */
+    if (labapp_active() && e->key != KEY_ENTER && e->key != '`' && e->key != 't' && e->key != 'h') {
+        switch (e->key) {
+        case ' ': console_exec(labapp_playing() ? "lab pause" : "lab play", true); break;
+        case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': {
+            char names[8][48]; int n = labapp_field_names(names, 8), i = e->key - '1';
+            if (i < n) labapp_set_field(names[i]);
+            break;
+        }
+        case 'x': case 'y': case 'z':
+            if (labapp_native3d()) labapp_section_set(e->key == 'x' ? 0 : e->key == 'y' ? 1 : 2, labapp_section_fraction());
+            break;
+        case '[': case ']':
+            if (labapp_section_axis() >= 0)
+                labapp_section_set(labapp_section_axis(), CLAMP(labapp_section_fraction() + (e->key == '[' ? -0.02 : 0.02), 0, 1));
+            break;
+        case KEY_LEFT: case KEY_RIGHT:
+            labapp_set_playing(false);
+            labapp_set_frame(labapp_frame() + (e->key == KEY_LEFT ? -1 : 1));
+            break;
+        case KEY_UP: case KEY_DOWN: labapp_orbit(0, e->key == KEY_UP ? 30 : -30); break;
+        case '=': case '+': labapp_zoom(1.18f); break;
+        case '-': labapp_zoom(0.85f); break;
+        case 'f': console_exec("lab fit", true); break;
+        case '0': console_exec("lab view iso", true); break;
+        case 'r': console_exec("lab frame 0", true); break;
+        case 'm': case 'g': console_exec("lab mesh", true); break;
+        case ',': case '.':
+            snprintf(cmd, sizeof cmd, "lab fps %.6g", CLAMP(labapp_fps() * (e->key == ',' ? 0.5 : 2), 0.5, 60));
+            console_exec(cmd, true); break;
+        case 'p': if (labapp_is_water()) console_exec("lab surface off", true); break;
+        case 's': if (labapp_is_water()) console_exec("lab surface on", true); break;
+        default: break;
+        }
+        return;
+    }
     switch (e->key) {
-    case ' ': console_exec(app.status.running ? "pause" : "start", true); break;
+    case ' ':
+        if (app.workspace == WS_SOLID) {
+            /* Solid owns the input even before it has a result; never start a hidden fluid run. */
+            if (fem_visible() && fem_state()->have_result)
+                console_exec(fem_playing() ? "fem pause" : "fem play", true);
+        } else console_exec(app.status.running ? "pause" : "start", true);
+        break;
     /* only when the interface is visible: a focused terminal that is not drawn would swallow the key that shows it again */
     case KEY_ENTER: case '`': case 't':
         if (app.hud_on) {
@@ -672,6 +715,20 @@ int app_inject_scroll(float x, float y, float dy) {
     return (int)(g_synth_until - g_frame) + 1;
 }
 
+/* A key press traverses handle_event, exactly like the platform's keyboard events. */
+int app_inject_key(int key) {
+    if (g_nsynth + 2 > (int)ARRAY_LEN(g_synth)) return 0;
+    uint64_t base = g_frame + 1;
+    if (g_synth_until >= base) base = g_synth_until + 1;
+    PlatformEvent e = {0};
+    e.type = EV_KEY_DOWN; e.key = key;
+    g_synth[g_nsynth++] = (SyntheticEvent){base, e};
+    e.type = EV_KEY_UP;
+    g_synth_until = base + 1;
+    g_synth[g_nsynth++] = (SyntheticEvent){g_synth_until, e};
+    return (int)(g_synth_until - g_frame) + 1;
+}
+
 /* deliver synthetic events that are due, in order, through the normal event path */
 static void inject_due_events(void) {
     int kept = 0;
@@ -838,7 +895,7 @@ int main(int argc, char **argv) {
         fem_set_supports_neutral(app.ui_mode == UI_SIMPLE);
     }
     camera_snap(&app.cam);
-    render_set_result_colormap(app.renderer, CMAP_VIRIDIS); /* colour-blind safe; turbo is one click on the legend */
+    render_set_result_colormap(app.renderer, CMAP_VIRIDIS); /* colour-blind safe; click the legend to cycle palettes */
     if (exec) console_exec(exec, true);
     if (run || (app.headless && steps > 0)) sim_run(app.sim, true);
     if (shot && !(quit_after > 0 && !app.headless)) app_request_screenshot(shot), app.shot_countdown = 0;

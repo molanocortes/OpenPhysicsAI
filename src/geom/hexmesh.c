@@ -4,6 +4,7 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <stdatomic.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -63,8 +64,8 @@ typedef struct {
     unsigned char *votes; /* cells: bit a set when the ray along axis a found the cell inside */
     int axis;             /* 0 x, 1 y, 2 z: the axis this sweep casts along */
     int u0, u1, v0, v1;   /* column range in the two transverse axes */
-    long long abstained;  /* rays whose crossing count was odd, so their parity means nothing */
-    bool oom;
+    atomic_llong abstained;  /* shared across column chunks */
+    atomic_bool oom;
 } SweepCtx;
 
 /* The point a cell is judged by: its centre, moved by this fraction of the cell in each direction. All three rays
@@ -92,9 +93,10 @@ static void sweep(void *vctx, int begin, int end, int tid) {
     Hits hs = {NULL, 0, 0, false};
     unsigned char *inside = calloc((size_t)na, 1);
     if (!inside) {
-        c->oom = true;
+        atomic_store_explicit(&c->oom, true, memory_order_relaxed);
         return;
     }
+    long long abstained = 0;
     double dir[3] = {0, 0, 0};
     dir[a] = 1;
     const double low = m->origin[a] - 1.0;
@@ -109,7 +111,7 @@ static void sweep(void *vctx, int begin, int end, int tid) {
             hs.n = 0;
             bvh_ray_all(c->bvh, o, dir, 0.0, on_hit, &hs);
             if (hs.oom) {
-                c->oom = true;
+                atomic_store_explicit(&c->oom, true, memory_order_relaxed);
                 break;
             }
             bool reliable = true;
@@ -137,7 +139,7 @@ static void sweep(void *vctx, int begin, int end, int tid) {
             size_t base = (size_t)iu * stride[u] + (size_t)iv * stride[v];
             if (!reliable) {
                 for (int k = 0; k < na; k++) c->votes[base + (size_t)k * stride[a]] |= (unsigned char)(8u << a);
-                c->abstained++;
+                abstained++;
             } else {
                 for (int k = 0; k < na; k++)
                     if (inside[k]) c->votes[base + (size_t)k * stride[a]] |= (unsigned char)(1u << a);
@@ -146,37 +148,7 @@ static void sweep(void *vctx, int begin, int end, int tid) {
     }
     free(inside);
     free(hs.t);
-}
-
-/* Is this point inside the body? The same question the sweep asks, asked one point at a time: parity along each
- * axis, a ray with an odd crossing count abstaining, and the majority of those that could vote. */
-static bool point_inside_body(const Bvh *bvh, const double p[3], const double h[3]) {
-    int yes = 0, reliable = 0;
-    for (int a = 0; a < 3; a++) {
-        Hits hs = {NULL, 0, 0, false};
-        double dir[3] = {0, 0, 0};
-        dir[a] = 1;
-        bvh_ray_all(bvh, p, dir, 0.0, on_hit, &hs);
-        if (hs.oom) {
-            free(hs.t);
-            continue;
-        }
-        int n = hs.n;
-        if (n > 1) { /* merge coincident hits, as the sweep does */
-            qsort(hs.t, (size_t)n, sizeof(double), cmp_d);
-            int w = 1;
-            double tol = 1e-9 * (h[a] > 0 ? h[a] : 1);
-            for (int k = 1; k < n; k++)
-                if (hs.t[k] - hs.t[w - 1] > tol) hs.t[w++] = hs.t[k];
-            n = w;
-        }
-        free(hs.t);
-        /* the ray starts at the point and leaves the part: an odd count means it is inside, but only if the ray is
-         * trustworthy, and a ray that started outside would have crossed an even number of times to get here */
-        reliable++;
-        if (n & 1) yes++;
-    }
-    return reliable > 0 && 2 * yes > reliable;
+    atomic_fetch_add_explicit(&c->abstained, abstained, memory_order_relaxed);
 }
 
 /* ---- faces ------------------------------------------------------------------------------------- */
@@ -254,10 +226,19 @@ static double tri_area(const double *v, const int *tri, int t) {
 }
 
 static double signed_volume(const double *v, const int *tri, int nt) {
-    double vol = 0;
+    /* Translate before the triple product: a millimetre-sized body must not lose volume precision merely because
+     * its build-frame coordinates are far from the origin. Translation preserves volume on a closed surface. */
+    const double *ref = v + 3 * (size_t)tri[0];
+    double vol = 0, correction = 0;
     for (int t = 0; t < nt; t++) {
         const double *a = v + 3 * (size_t)tri[3 * t], *b = v + 3 * (size_t)tri[3 * t + 1], *c = v + 3 * (size_t)tri[3 * t + 2];
-        vol += a[0] * (b[1] * c[2] - b[2] * c[1]) + a[1] * (b[2] * c[0] - b[0] * c[2]) + a[2] * (b[0] * c[1] - b[1] * c[0]);
+        double A[3], B[3], C[3];
+        for (int k = 0; k < 3; k++) A[k] = a[k] - ref[k], B[k] = b[k] - ref[k], C[k] = c[k] - ref[k];
+        double term = A[0] * (B[1] * C[2] - B[2] * C[1]) + A[1] * (B[2] * C[0] - B[0] * C[2]) +
+                      A[2] * (B[0] * C[1] - B[1] * C[0]);
+        double y = term - correction, sum = vol + y;
+        correction = (sum - vol) - y;
+        vol = sum;
     }
     return vol / 6.0;
 }
@@ -270,46 +251,99 @@ bool hexmesh_generate(const HexMeshBody *bodies, int nbodies, const HexMeshSetti
         snprintf(err, errlen, "between 1 and 16 bodies can be meshed (got %d)", nbodies);
         return false;
     }
+    if (!bodies || !s) {
+        snprintf(err, errlen, "mesh bodies and settings are required");
+        return false;
+    }
     for (int k = 0; k < 3; k++)
-        if (!(s->h[k] > 0)) {
-            snprintf(err, errlen, "element size must be positive");
+        if (!(s->h[k] > 0) || !isfinite(s->h[k])) {
+            snprintf(err, errlen, "element size must be finite and positive");
             return false;
         }
+    double cell_volume = s->h[0] * s->h[1] * s->h[2];
+    if (!(cell_volume > 0) || !isfinite(cell_volume)) {
+        snprintf(err, errlen, "the grid cell volume is not representable; change the element sizes");
+        return false;
+    }
+    if (s->include_plate && (!isfinite(s->plate_thickness) || !isfinite(s->plate_margin) ||
+                            s->plate_thickness < 0 || s->plate_margin < 0)) {
+        snprintf(err, errlen, "plate thickness and margin must be finite and nonnegative");
+        return false;
+    }
     double lo[3] = {INFINITY, INFINITY, INFINITY}, hi[3] = {-INFINITY, -INFINITY, -INFINITY};
-    for (int b = 0; b < nbodies; b++)
+    for (int b = 0; b < nbodies; b++) {
+        if (bodies[b].nt <= 0 || !bodies[b].v || !bodies[b].tri || !bodies[b].normal) {
+            snprintf(err, errlen, "body %d requires triangles, vertices and normals", b);
+            return false;
+        }
+        if (bodies[b].region != HEX_REGION_PART && bodies[b].region != HEX_REGION_SUPPORT) {
+            snprintf(err, errlen, "body %d must be a part or support region", b);
+            return false;
+        }
         for (int t = 0; t < bodies[b].nt; t++)
             for (int q = 0; q < 3; q++) {
+                if (bodies[b].tri[3 * (size_t)t + q] < 0) {
+                    snprintf(err, errlen, "body %d has a negative triangle vertex index", b);
+                    return false;
+                }
                 const double *p = bodies[b].v + 3 * (size_t)bodies[b].tri[3 * t + q];
-                for (int k = 0; k < 3; k++) lo[k] = fmin(lo[k], p[k]), hi[k] = fmax(hi[k], p[k]);
+                for (int k = 0; k < 3; k++) {
+                    if (!isfinite(p[k]) || !isfinite(bodies[b].normal[3 * (size_t)t + k])) {
+                        snprintf(err, errlen, "body %d geometry and normals must be finite", b);
+                        return false;
+                    }
+                    lo[k] = fmin(lo[k], p[k]), hi[k] = fmax(hi[k], p[k]);
+                }
             }
+    }
     if (lo[2] < -1e-9) {
         snprintf(err, errlen, "geometry extends %.4g mm below the build plate top (z = 0); place it with geometry_place", -1e3 * lo[2]);
         return false;
     }
     memcpy(m->h, s->h, sizeof m->h);
     double margin = s->include_plate ? fmax(s->plate_margin, 0) : 0;
+    const size_t grid_limit = 300000000;
     /* x/y cells snap to multiples of h so repeated meshing of the same placement is identical */
     for (int k = 0; k < 2; k++) {
         double o = floor((lo[k] - margin) / s->h[k]) * s->h[k];
+        double dim = ceil((hi[k] + margin - o) / s->h[k] - 1e-9);
+        if (!isfinite(o) || !isfinite(dim) || dim > (double)grid_limit) {
+            snprintf(err, errlen, "the grid axis %d exceeds the cell limit; increase the element size", k);
+            return false;
+        }
         m->origin[k] = o;
-        m->dims[k] = (int)ceil((hi[k] + margin - o) / s->h[k] - 1e-9);
+        m->dims[k] = (int)dim;
         if (m->dims[k] < 1) m->dims[k] = 1;
     }
-    m->plate_layers = s->include_plate ? (int)ceil(fmax(s->plate_thickness, 0) / s->h[2] - 1e-9) : 0;
-    m->origin[2] = -m->plate_layers * s->h[2];
-    m->dims[2] = m->plate_layers + (int)ceil(hi[2] / s->h[2] - 1e-9);
-    if (m->dims[2] < 1) m->dims[2] = 1;
-    size_t ncells = (size_t)m->dims[0] * (size_t)m->dims[1] * (size_t)m->dims[2];
-    size_t npts = (size_t)(m->dims[0] + 1) * (size_t)(m->dims[1] + 1) * (size_t)(m->dims[2] + 1);
-    if (ncells > (size_t)300000000 || npts > (size_t)300000000) {
-        snprintf(err, errlen, "the grid would have %zu cells (%d x %d x %d); increase the element size", ncells, m->dims[0], m->dims[1], m->dims[2]);
+    double layers = s->include_plate ? ceil(s->plate_thickness / s->h[2] - 1e-9) : 0;
+    double top_layers = ceil(hi[2] / s->h[2] - 1e-9);
+    if (!isfinite(layers) || !isfinite(top_layers) || layers < 0 || top_layers < 0 || layers + top_layers > (double)grid_limit) {
+        snprintf(err, errlen, "the grid z axis exceeds the cell limit; increase the element size");
         return false;
+    }
+    m->plate_layers = (int)layers;
+    m->origin[2] = -m->plate_layers * s->h[2];
+    m->dims[2] = m->plate_layers + (int)top_layers;
+    if (m->dims[2] < 1) m->dims[2] = 1;
+    size_t ncells = 1, npts = 1;
+    for (int k = 0; k < 3; k++) {
+        /* Bound each multiplication before doing it, including node dimensions, so a tiny requested spacing never
+         * wraps size_t or invokes an out-of-range floating-to-integer conversion. */
+        if (ncells > grid_limit / (size_t)m->dims[k] || npts > grid_limit / (size_t)(m->dims[k] + 1)) {
+            snprintf(err, errlen, "the grid exceeds the cell limit (%d x %d x %d); increase the element size", m->dims[0], m->dims[1], m->dims[2]);
+            return false;
+        }
+        ncells *= (size_t)m->dims[k];
+        npts *= (size_t)(m->dims[k] + 1);
     }
     unsigned char *mask = calloc(ncells, 1);
     unsigned char *votes = calloc(ncells, 1); /* one body at a time: bits 0..2, one per axis */
+    /* Preserve the actual majority vote of each body, including abstentions. Recasting rays from element centres
+     * both cost O(elements * bodies) ray queries and could disagree with the original outside-to-outside vote. */
+    uint16_t *membership = nbodies > 1 ? calloc(ncells, sizeof(uint16_t)) : NULL;
     Bvh *bvhs = calloc((size_t)nbodies, sizeof(Bvh));
-    if (!mask || !votes || !bvhs) {
-        free(mask), free(votes), free(bvhs);
+    if (!mask || !votes || !bvhs || (nbodies > 1 && !membership)) {
+        free(mask), free(votes), free(bvhs), free(membership);
         snprintf(err, errlen, "out of memory for a %zu-cell grid", ncells);
         return false;
     }
@@ -343,8 +377,8 @@ bool hexmesh_generate(const HexMeshBody *bodies, int nbodies, const HexMeshSetti
             if (nv <= 0) continue;
             if (s->pool && nv > 4) pool_for(s->pool, nv, 1, sweep, &sc);
             else sweep(&sc, 0, nv, 0);
-            m->abstained_rays += sc.abstained;
-            if (sc.oom) {
+            m->abstained_rays += atomic_load_explicit(&sc.abstained, memory_order_relaxed);
+            if (atomic_load_explicit(&sc.oom, memory_order_relaxed)) {
                 snprintf(err, errlen, "out of memory while classifying cells");
                 ok = false;
             }
@@ -358,7 +392,10 @@ bool hexmesh_generate(const HexMeshBody *bodies, int nbodies, const HexMeshSetti
             int yes = (v8 & 1) + ((v8 >> 1) & 1) + ((v8 >> 2) & 1);
             int out = ((v8 >> 3) & 1) + ((v8 >> 4) & 1) + ((v8 >> 5) & 1);
             int reliable = 3 - out;
-            if (reliable > 0 && 2 * yes > reliable) mask[cix] = (unsigned char)(bodies[b].region + 1);
+            if (reliable > 0 && 2 * yes > reliable) {
+                mask[cix] = (unsigned char)(bodies[b].region + 1);
+                if (membership) membership[cix] |= (uint16_t)(1u << b);
+            }
             /* uncertain: the rays that could vote did not agree, or none of them could vote at all */
             if (reliable == 0 || (yes > 0 && yes < reliable)) {
                 m->uncertain_cells++;
@@ -434,6 +471,20 @@ bool hexmesh_generate(const HexMeshBody *bodies, int nbodies, const HexMeshSetti
                 }
                 m->region[e] = (unsigned char)(mask[c] - 1);
                 m->body[e] = -1;
+                if (m->region[e] != HEX_REGION_PLATE) {
+                    int owner = -1;
+                    bool overlap = false;
+                    for (int b = nbodies - 1; b >= 0; b--) {
+                        if ((int)bodies[b].region != m->region[e] || (membership && !(membership[c] & (1u << b)))) continue;
+                        if (owner < 0) owner = b;
+                        else {
+                            m->overlap_pairs[owner][b]++;
+                            overlap = true;
+                        }
+                    }
+                    m->body[e] = (signed char)owner;
+                    m->overlap_cells += overlap;
+                }
                 m->ijk[3 * e] = i, m->ijk[3 * e + 1] = j, m->ijk[3 * e + 2] = k;
                 e++;
             }
@@ -455,32 +506,6 @@ bool hexmesh_generate(const HexMeshBody *bodies, int nbodies, const HexMeshSetti
             }
     free(pt);
     #undef PT
-    /* which body owns each non-plate element: the first body whose surface contains the centre (bodies were
-     * classified in order, later bodies overwrote earlier ones; re-test with the owning body's code) */
-    for (int ee = 0; ee < m->nelems; ee++) {
-        if (m->region[ee] == HEX_REGION_PLATE) continue;
-        double c[3];
-        /* the same point the cell was classified by, so ownership and existence cannot disagree */
-        for (int k = 0; k < 3; k++) c[k] = m->origin[k] + (m->ijk[3 * ee + k] + 0.5 + SAMPLE_OFFSET[k]) * s->h[k];
-        int owner = -1;
-        bool overlap_counted = false;
-        for (int b = nbodies - 1; b >= 0; b--) {
-            if ((int)bodies[b].region != m->region[ee]) continue;
-            if (nbodies == 1) {
-                owner = b;
-                break;
-            }
-            if (!point_inside_body(&bvhs[b], c, s->h)) continue;
-            if (owner < 0) {
-                owner = b;
-                continue; /* keep testing the earlier bodies only to detect overlapping geometry */
-            }
-            if (owner < 16 && b < 16) m->overlap_pairs[owner][b]++;
-            if (!overlap_counted) m->overlap_cells++, overlap_counted = true;
-        }
-        m->body[ee] = (signed char)(owner >= 0 ? owner : 0);
-    }
-
     /* boundary faces */
     int cap = 1024;
     m->face_elem = malloc((size_t)cap * sizeof(int));
@@ -512,11 +537,10 @@ bool hexmesh_generate(const HexMeshBody *bodies, int nbodies, const HexMeshSetti
 
     /* staircase statistics */
     m->nbodies = nbodies;
-    double cellv = s->h[0] * s->h[1] * s->h[2];
+    double cellv = cell_volume;
     for (int ee = 0; ee < m->nelems; ee++)
         if (m->body[ee] >= 0 && m->region[ee] != HEX_REGION_PLATE) m->body_volume_mesh[(int)m->body[ee]] += cellv;
-    double dsum = 0;
-    int dcount = 0;
+    double dsum = 0, distance_area = 0;
     for (int f = 0; f < m->nfaces; f++) {
         int ee = m->face_elem[f];
         if (m->region[ee] == HEX_REGION_PLATE) continue;
@@ -525,12 +549,12 @@ bool hexmesh_generate(const HexMeshBody *bodies, int nbodies, const HexMeshSetti
         /* the bottom of a part resting on the plate is not a free surface when the plate is meshed */
         m->body_area_mesh[(int)m->body[ee]] += area;
         if (m->face_dist[f] >= 0) {
-            dsum += m->face_dist[f];
-            dcount++;
+            dsum += area * m->face_dist[f];
+            distance_area += area;
             if (m->face_dist[f] > m->max_face_distance) m->max_face_distance = m->face_dist[f];
         }
     }
-    m->mean_face_distance = dcount ? dsum / dcount : 0;
+    m->mean_face_distance = distance_area > 0 ? dsum / distance_area : 0;
     for (int b = 0; b < nbodies; b++) {
         m->body_volume_stl[b] = signed_volume(bodies[b].v, bodies[b].tri, bodies[b].nt);
         for (int t = 0; t < bodies[b].nt; t++) m->body_area_stl[b] += tri_area(bodies[b].v, bodies[b].tri, t);
@@ -581,7 +605,7 @@ bool hexmesh_generate(const HexMeshBody *bodies, int nbodies, const HexMeshSetti
 
     for (int b = 0; b < nbodies; b++) bvh_free(&bvhs[b]);
     free(bvhs);
-    free(mask), free(votes);
+    free(mask), free(votes), free(membership);
     m->seconds = wall() - t0;
     return true;
 oom:
@@ -589,7 +613,7 @@ oom:
 fail:
     for (int b = 0; b < nbodies; b++) bvh_free(&bvhs[b]);
     free(bvhs);
-    free(mask), free(votes);
+    free(mask), free(votes), free(membership);
     hexmesh_free(m);
     return false;
 }

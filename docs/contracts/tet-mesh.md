@@ -203,3 +203,21 @@ pass are accepted, and the rule is not to be chased.
 
 The cylinder head of M5 was removed from the repository for copyright, by the owner's decision, so M5 can no longer
 be run from it. What sections 5 and 7 record about it stays as the record; M4, on the owner's assembly, remains.
+
+## 11. Amendment 2026-10-03: printing-mesh diagnostics and robustness
+
+Printing remains on layer-aligned HEX8, with the staircase limitations described in
+[src/geom/README.md](../../src/geom/README.md). This change does not extend TET4/TET10 to printing or alter their
+acceptance criteria. `tools/meshtest.c` declares PM1 to PM5 before their first run: exact anisotropic box geometry and
+25 printing layers; analytic multi-body ownership and overlap counts; deterministic threaded abstention counts;
+an area-weighted boundary-distance check; refusal of nonfinite or unrepresentable grids; translation-invariant closed
+source volume. All 52 mesh assertions pass, including the existing cylinder and topology cases. Address and undefined
+behaviour sanitizers pass the same suite.
+
+The original three-axis inside vote is now retained for body ownership, so an abstaining ray cannot be ignored by a
+later, different inside test. Shared sweep counters use atomic reductions. Closed source volume is evaluated about a
+local reference with compensated summation. The 25,000-element anisotropic fixture has 25 complete layers and minimum
+det J 0.005 mm3; the translated closed-source volume differs from the exact box by 1.82e-12 relative. The boundary mean
+offset fixture reports 0.0307692211 mm against the analytic area-weighted 0.0307692308 mm. Largest-spacing thickness
+warnings explicitly depend on wall orientation. These checks verify mesh construction and diagnostics; they do not
+establish printed-part convergence or experimental validation.

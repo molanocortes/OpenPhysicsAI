@@ -1,0 +1,81 @@
+{
+  "date": "2026-10-03",
+  "complete_radiation_regression": {
+    "command": "make test-fast",
+    "exit_code": 0,
+    "physics_commit": "bcf25da",
+    "log": "regression-after-radiation.log",
+    "start_utc": "2026-10-03T05:16:35.288990+00:00",
+    "last_output_utc": "2026-10-03T06:13:25.974655+00:00",
+    "wall_seconds_log_creation_to_final_output": 3410.6856651306152,
+    "conditions": "Shared fanless M2; other desktop/Blender work observed. This is not an isolated performance benchmark.",
+    "scope": "The complete session recipe, including explicit lab subsets. Not the full fire/room/FSI validation tier.",
+    "warning_wording_changed_after_run": true
+  },
+  "warning_correction_verification": {
+    "physical_equations_changed": false,
+    "before": "load-warning-before.log",
+    "before_passed": 0,
+    "before_failed": 2,
+    "fdm": {
+      "command": "python3 tools/printflow.py",
+      "exit_code": 0,
+      "passed": 91,
+      "failed": 0,
+      "log": "fdm-final.log"
+    },
+    "lpbf": {
+      "command": "python3 tools/lpbfflow.py",
+      "exit_code": 0,
+      "passed": 239,
+      "failed": 0,
+      "log": "lpbf-final.log"
+    },
+    "build_exit_code": 0,
+    "source_sha256": {
+      "src/ctl/static_model.c": "a0ac86d668d8d2cc587e47d857e5349de1dd6571eb245f8e138ca86d670e2a38",
+      "tools/printflow.py": "a6aa140398a7e71c6386a59322aa680fa3ecda22f4327fa071d33edb62289d3a",
+      "tools/lpbfflow.py": "1e988a0af32e282df0e3839144b962cd6f0598b4f402e2036bb9b3761e1472a1"
+    }
+  },
+  "support_generation_serial": {
+    "request_deadline_seconds": 20,
+    "deadline_unchanged": true,
+    "elapsed_seconds": {
+      "thin_wall": 1.454,
+      "cone": 0.221,
+      "tree": 6.029,
+      "lattice": 3.738
+    },
+    "interpretation": "Complete serial workflow passes; this does not prove the cause of the two retained earlier timeouts."
+  },
+  "log_sha256": {
+    "regression-after-radiation.log": "6d4d27db9813f1a105928848ea0a31376683f495bd1b29662ebd2b5ef0d92854",
+    "fdm-final.log": "cca35804782b857ba442f0d53411bdfabdf5cbe1535ab1a69ecd918fefcb301b",
+    "lpbf-final.log": "39f6607d7c46fddee28684f895e4a81637951e9ee45fbfcc4026680f5b85e76d"
+  },
+  "known_open_validation": "Full fire V2/V3 retained failure; full room/FSI were not reached by that wrapper.",
+  "quality_gate": {
+    "command": "bash tools/check.sh a d e f g h",
+    "source_commit": "0eb7e7a",
+    "exit_code": 0,
+    "stages": {
+      "A": "PASS",
+      "D": "PASS",
+      "E": "PASS",
+      "F": "PASS",
+      "G": "PASS",
+      "H": "PASS"
+    },
+    "stage_a_seconds": 22.68,
+    "stage_a_peak_largest_process_mb": 105,
+    "total_wall_seconds": 25,
+    "project_compiler_warnings": 0,
+    "material_records": {
+      "total": 38,
+      "sourced": 34,
+      "demonstration_or_other": 4
+    },
+    "not_run": "Full sanitizer gate B; independent mesh ASan/UBSan passed separately."
+  }
+}

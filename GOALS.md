@@ -466,3 +466,180 @@ page: [README.md](README.md); rules: [flags/README.md](flags/README.md).
   fusion shot, Hurricane Otis, a human heartbeat), each with its page, card and board; the hall of fame; credit to the
   person, the libraries and the AI model; the front page, AGENTS.md, llms.txt and the physics map tell people and
   agents to use the repository rather than rebuild the physics.
+
+### G16. Printing foundation and consolidated app (owner, 2026-10-03)
+
+- Current checkout has independent nozzle work in progress. Changes for this goal use the isolated
+  `improvement/printing-foundation` branch and do not overwrite that work.
+- Printing priority: improve numerical correctness of LPBF and FDM/FFF before extending claims; keep material and
+  process provenance, verify against independent analytic answers, and preserve explicit model limitations.
+- Mesh priority: retain deterministic body classification, protect finite/grid bounds, report geometry fidelity for
+  anisotropic layer meshes, and measure optimization on unchanged geometry.
+- App priority: one native application, clear Manual and Agentic modes, all-domain scenario navigation, restored
+  scenario controls and usable playback, verified through real clicks and before/after screenshots.
+- Plugin priority: transport the existing C MCP operations over bounded local Streamable HTTP, with explicit impact
+  hints and structured output schemas. Public deployment and ChatGPT model integration are separate acceptance steps.
+- Research-quality evidence requires spatial/time refinement and independent physical measurements for the stated
+  process. Passing analytic regressions is numerical verification, not new experimental validation.
+- Visual quality is an acceptance requirement: clear shape, consistent result lighting, readable quantitative
+  legends and smooth exploration. Decorative lighting is documented; no generated image substitutes for a result.
+- Refinement must hold the physical setup and simulation layer thickness fixed. A separate three-mesh and
+  three-time-step study reports solution changes and conservation, without treating self-convergence as physical
+  validation or a bound on constitutive-model error. Criteria are recorded before the first run.
+
+Checkpoints completed on this branch:
+
+- `973ef54`: mesh ownership and diagnostics. Mesh suite 52/52, operations 279/279, independent ASan/UBSan 52/52.
+  Eight coincident bodies, unchanged 64,000 elements: median construction 0.224780 to 0.012112 s (18.6 times faster).
+  The 25,000-element anisotropic fixture has 25 complete layers and minimum det J 0.005 mm3.
+- `9bf44fd`: conservative FDM deposition and explicit full-print heat ledger; exact piecewise thermal eigenstress integration for the incremental law;
+  mean Gauss-point von Mises; accumulated LPBF reactions; active-node extrema after support removal. Printing 35/35.
+  Independent constant/table-capacity/support-removal energy errors: 1.85e-16, 4.93e-16, 3.08e-15 relative.
+  The demonstration wall accounts for 1500.57176 J previously omitted and closes its full heat ledger to 1.63e-11.
+- `0047162`: Manual/Agentic navigation, separate paged library, scenario control restoration and result playback.
+  A further real-key-path check covers playback and section shortcuts without mutating the hidden tunnel/FEM state.
+- Local HTTP transport: 190 assertions passed, including a real FDM job retained after session deletion.
+  Native stdio MCP: 518 assertions passed. Actual ChatGPT use and public hosting have not been tested.
+- A fresh build without optional MFEM now reports missing 3D magnetics instead of failing to link. Generated backend
+  configuration rebuilds the dispatcher when the dependency is added or removed.
+
+- `82a03b8`, `460fcde`: active-result keyboard routing, Manual terminal collapse, quantitative CLEAN VIEW and honest
+  printing workflow labels. Final lab controls: 38/38 through real input.
+- `e14aefc`: active FE boundaries prevent smooth STL facets from spanning missing material or hiding generated
+  supports/plates. FIT spans all stored times and eligible source geometry. Renderer 69/69, default UI 132/132,
+  real printing view 19/19. Final 24,389-element rebuild mean 2.554 ms, maximum 5.288 ms over twelve rebuilds.
+- `7f359e1`, `e7436a6`: [portable native demo](tools/demo_printing.py) and
+  [view evidence](docs/media/foundation/evidence.json), including [FDM replay](docs/media/foundation/fdm-replay.gif),
+  [plastic view](docs/media/foundation/fdm-clean.png) and [metal section](docs/media/foundation/lpbf-section.png).
+  Both demonstrations have 1,124 elements; process/material inputs are inferred/demonstration, no measurements.
+- `dabec98`: export FDM residuals at release and the last actual solve, using the existing eigenstrain RHS force scale.
+  Printing checks 40/40, complete FDM workflow 88/88. Independent hex: residuals 1.34e-16 on bed, 2.49e-16 released.
+- `71f5d0c`: [independent mesh/time study](tools/printing_refinement.py), eight real MCP jobs on a fixed 8 x 2 x 4 mm wall
+  and fixed 1 mm simulation layers. Finest changes: LPBF 2.4583%, FDM mesh 2.5468%, FDM thermal substeps 0.38339%.
+  LPBF is nonmonotone; no order or experimental accuracy is claimed. Maximum residual 8.93e-11, independently
+  reconstructed FDM whole heat closure 1.53e-11. The
+  [initial invalid zero-net-reaction normalization](validation/printing-refinement/initial-invalid-normalization.json)
+  and [explicitly amended PASS](validation/printing-refinement/amended.json) are retained without erasing history.
+- `e410df9`: eight real `mesh_inspect` calls passed 40 independent checks of current/generated state, exact box
+  element/node counts and det J in mm3. The complete [inspector follow-up run](validation/printing-refinement/inspected.json)
+  is retained separately from the original and amended studies. This removes the known unexercised operation
+  from the coverage baseline.
+- Both the app and engine link with the existing cached MFEM 4.8 backend as well as without it. The cache was copied
+  into the isolated worktree; the original dependency and checkout were not changed. Fresh MFEM download/build and
+  the complete 3D magnetic numerical suite were not rerun here.
+- Complete engineering `make test` finished detached with exit 0; base `make test-fast` finished with exit 0.
+  The fire/room/FSI executables now enter that recipe through the explicit session cases recorded below. Topology
+  checks also enter the recipe (25/25 in the completed full suite). The runtime remains above the three-minute goal.
+- Quality gates A and D-H passed: zero warnings under the project compiler flags, links/flag boards, operation
+  coverage, portable paths, commit hygiene and material provenance (34 sourced records, four demonstration/other
+  records). Final HTTP client checks remain 190/190. The full sanitizer gate was not run; the independent mesh
+  ASan/UBSan run above passed.
+- Presentation 14/14 and topology UI 18/18. The cap-colour check now compares with a matched empty studio instead of
+  misclassifying neutral background pixels as a simulated face; its original contrast criterion is unchanged.
+- `9947599`: final scientific review caught the same near-zero-force normalization defect in the optional J2 path. A freely
+  contracting hex reported 0.854 despite matching its affine closed form. The accepted nonlinear residual now uses
+  applied/release forces, individual incremental reactions and the initial nonlinear predictor as its force scale.
+  It reports 6.06e-16 with unchanged displacement/stress/strain; printing checks pass 44/44 and LPBF MCP 239/239. The exported result
+  names the elastic or J2 definition, and both retain an explicit absolute-N fallback for a zero force scale.
+- FDM scope now explicitly names its incremental (hypoelastic) approximation: old stress is not rescaled as E(T)
+  changes, with an instantaneous reset above T_relax. The exact thermal integral verifies that implemented law;
+  time-dependent polymer viscoelasticity remains a separate, required constitutive upgrade. FDM MCP checks pass 89/89.
+- `86f0701`: real Solid keyboard checks fail before the routing fix (3 passed, five failed) and pass afterwards (8/8); Space
+  controls visible stored-time FEM playback without starting hidden fluid. CLEAN VIEW labels section axis, position
+  and flip. The two-mesh interface and report say sensitivity, not proof of convergence or an accuracy bound.
+- `2bd014b`: long lab validation retains its original cases and thresholds in `make test-lab-validation`, run detached.
+  Session subsets explicitly omit statistical/steady validations: fire F1/F2 (36.29 s, relative projection 1.15e-10,
+  mass 1.45e-13), room D (7.42 s, pressure error -0.411%, relative mass 2.00e-15), FSI F3 (14.40 s with native GPU,
+  unchanged 2000 steps, momentum change +0.002%). The [full fire run](validation/lab/fire-2026-10-03.log) confirms
+  the existing open plume issue: F1/F2/F3/V1 pass, V2 at 2.6 m is -27.5 percent and V3 at 2.6 m is -38.4 percent
+  against the unchanged 25 percent criterion. It exits 1 after 3178 s under concurrent load. Room/FSI full cases
+  were not reached by that failing wrapper; their session subsets above are the only new results claimed here.
+- A further independent review exposed face-mean radiation cooling errors of 8.16 and 9.75 percent on nonuniform
+  temperatures. Radiation now integrates its nonlinear flux, Newton tangent and ledger with 3 x 3 face quadrature.
+  [Before](validation/printing-refinement/radiation-before.log): three pass, six fail; [after](validation/printing-refinement/radiation-after.log):
+  ten pass. Flux errors are at most 1.20e-15, tangent finite-difference error 3.47e-10, manufactured temperature
+  error 1.14e-13 K. Theta = 0.5 gives 0.719781097868 J against the independent polynomial integral; the complete
+  thermal suite passes 82/82. These are planar-face integration checks, not a cure for staircase STL boundary area.
+- Removed the unproved general local stress upper bound from the FDM summary, schema, panel and report. Neglecting
+  creep alone does not prove a bound under temperature-dependent stiffness and heterogeneous stress redistribution.
+  The new scope regressions [fail before](validation/printing-refinement/stress-scope-before.log) (88 pass, two fail)
+  and [pass after](validation/printing-refinement/stress-scope-after.log) (90/90); historical results retain a correction note.
+- [Post-radiation refinement](validation/printing-refinement/post-radiation.json): the same eight real jobs and all
+  40 mesh-inspector checks pass without altered inputs or criteria. Finest changes: LPBF 2.4583153 percent,
+  FDM space 2.5474215 percent, FDM time 0.3831007 percent. LPBF remains nonmonotone; these are sensitivities.
+- Recomputed and captured both native open-cell demonstrations after that cooling correction, retaining the
+  [previous numerical capture](validation/printing-refinement/native-before-radiation.json). Current FDM has 27
+  stored states, released peak 1.54044 MPa and z warp [-0.0507017, 0.00107592] mm; LPBF has 12 states and its
+  elastic 690.734 MPa peak is unchanged. [Current evidence](docs/media/foundation/evidence.json) records source,
+  engine, renderer, result and media hashes. The 27-frame 960 x 600 native film is 5680 ms. No new measurement validation.
+- Complete post-radiation `make test-fast` finished with `POST_RADIATION_TEST_FAST_EXIT=0`: thermal 82/82,
+  mechanics 288/288, native MCP 518/518 and HTTP 190/190. Log creation to last output was 3410.686 s (57 min 11 s),
+  under concurrent desktop/Blender load. The final warning-only wording change is checked separately through the
+  printing response regressions; physical equations are unchanged. Existing recorded numerical shortfalls remain
+  visible in the suite output; exit 0 does not erase them or the full-fire failure above.
+- Latest LPBF workflow retries hit the inherited 20-second client deadline during synchronous typed-support
+  generation: [initial](validation/printing-refinement/support-timeout-initial.log) and
+  [retry](validation/printing-refinement/support-timeout-retry.log). An identical [isolated bridge probe](validation/printing-refinement/support-timings.json)
+  completed block/thin-wall/cone/tree/lattice in 6.782/3.059/0.435/16.348/9.869 s, all with the expected 96 elements.
+  That probe's 97-byte stderr did not block its pipe. Load sensitivity is plausible, not proved by the failed logs.
+  The workflow now names and times each type and preserves failed workspaces/stderr; numerical criteria and the
+  20-second deadline are unchanged. The [serial complete rerun](validation/printing-refinement/lpbf-final.log) now
+  passes 239/239; thin-wall/cone/tree/lattice took 1.454/0.221/6.029/3.738 s. This records a passing serial run,
+  not a proof of the earlier timeout cause.
+
+- Final review found an inherited static warning that asserted all stresses were zero in process results with
+  nonzero thermal/inherent-strain stresses. The shared warning now qualifies the zero-state claim by absence of
+  thermal or eigenstrain loading. Two response regressions [fail before](validation/printing-refinement/load-warning-before.log);
+  no physical equation or result-view pixel changes. The native capture keeps its original warnings and hashes,
+  with a correction note in its evidence record. Complete response checks pass: [FDM 91/91](validation/printing-refinement/fdm-final.log)
+  and LPBF 239/239, including the two warning regressions. Workflow assertion counts can vary with job-status polling.
+  The current FDM fixture has 8.506 MPa at key times and 9.028 MPa at substeps; its contract now retains the earlier
+  numbers as historical and does not assert a guaranteed direction of stress change.
+- The [final verification record](validation/printing-refinement/final-checks.json) pins the latest logs and warning
+  source hashes. The complete [post-radiation session log](validation/printing-refinement/regression-after-radiation.log)
+  is retained, including its historical recorded failures and explicit session-only scope.
+- Final quality gates A and D-H pass at `0eb7e7a`, recorded with source identity in the verification record: 25 s,
+  zero project compiler warnings, 105 MB largest compiler process, all links/boards/coverage/hygiene/provenance pass.
+
+Remaining research work: conforming printing meshes and documented spatial/time convergence; FDM bead/toolpath,
+raster anisotropy, interlayer bonding and viscoelastic constitutive laws with sourced parameters; connecting the
+separate laser/melt model to part-scale mechanical response for LPBF. Measurements and independent print validation
+are still required. The manual app exposes the existing scenario/setup controls, not every conceivable solver parameter.
+The plugin adapter is local development transport; lab scenarios do not yet have typed MCP job operations, and public
+deployment still needs authorization, user/workspace isolation and a real ChatGPT session.
+
+The next mesh acceptance case must include rotated walls: the current aligned box study does not measure staircase
+surface-area bias, which also biases convection. Use the same 8 x 2 x 4 mm wall at 0, 30 and 45 degrees and h = 1,
+0.5, 0.25 mm, with z-aligned layers. Before running, require positive J, one face-connected part and report volume,
+surface area and uniform-convection flux against independent 64 mm3, 112 mm2 and h_film A delta T. A boundary
+treatment improvement must bring the finest flux within 2 percent; do not infer that from an aligned-wall PASS.
+
+The next FDM constitutive acceptance starts with a synthetic single-Maxwell-branch material, before fitting any
+polymer: E_infinity = 1 GPa, E_1 = 2 GPa, tau = 10 s, held strain 0.001. The material-point response must match
+sigma(t) = 0.001 [E_infinity + E_1 exp(-t/tau)] to 1e-10 relative; stored energy plus nonnegative dissipation must
+close to 1e-8 relative. Then verify a 3D held coupon and the elastic limit before using sourced polymer parameters.
+
+### 2026-10-03 computed gallery follow-up (G12, G14)
+
+- Added the [computed sculpture gallery](docs/art-gallery.md): a helical FDM shell, a windowed LPBF column and a
+  curved-fin thermal sink. All three are real native MCP solves, with saved fields, input records, hashes and
+  [independent finite-array checks](validation/art-gallery/independent-audit.json). They passed criteria fixed before
+  the first run. Designed geometry and artificial studio lighting are explicitly distinguished from computed fields.
+- Captured 105 FDM, 144 LPBF-orbit and 122 thermal frames, plus 17 LPBF build/cut states, using the native app.
+  Films use fixed full-range colour maps. Saved projects remain replayable; reproducible geometry, solve and capture
+  tools avoid storing large solver results in Git. Native H.264 encoding verifies frame count, order, size and timing.
+- Native result palettes now support five choices by clicking the legend and all existing maps through `fem cmap`.
+  Optional peak-marker and undeformed-outline controls make the field easier to see. LPBF clean-view and legend
+  labels now correctly identify process steps, because the inherent-strain writer does not store physical times.
+- Focused native checks passed: palettes 31/31, overlays 34/34, time labels 12/12. These include actual image changes,
+  exact overlay restoration and unchanged numerical fields/ranges. Python syntax, native build and link checks pass.
+  The repository session regression completed with exit 0; its [full log](validation/art-gallery/regression.log)
+  retains historical shortfalls and the stated session-only scope. Native MCP passed 518 checks and HTTP passed 190.
+  No solver equation was changed by this gallery follow-up.
+- Limits stay visible: curved voxel surface-area bias is 29.43 to 37.92 percent, no convergence study or measurement
+  comparison, FDM layers aggregate roads, and metal printing uses assumed elastic inherent strain. Attractive surface
+  interpolation does not remove those limitations or turn demonstration material parameters into calibrated data.
+
+- Final gallery review keeps the active finite-element boundary throughout both growth movies. Completion no longer
+  switches to a smoother STL mid-film, which could be mistaken for physical deformation. Complete-part artwork stills
+  retain explicit interpolation onto the designed STL.

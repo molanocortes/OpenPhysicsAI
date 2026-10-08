@@ -18,8 +18,8 @@ static void op_capabilities_get(Engine *e, JsonValue *params, OpResult *out) {
                     "on rendered views); material library and project materials; voxel hex8 volume meshes; static linear-elastic structural "
                     "analysis as background jobs with result queries, engineering quantities, probes, images and VTU/CSV export; comparison "
                     "studies of two to four designs under equivalent mounting and load with a refinement study, sensitivities and an "
-                    "Engineering Evidence Record; transient thermal, one-way thermomechanical and conjugate heat transfer analyses. FFF and "
-                    "LPBF process simulation are not available.");
+                    "Engineering Evidence Record; transient thermal, one-way thermomechanical and conjugate heat transfer analyses; FDM/FFF layer-deposition "
+                    "thermal stress and release (mech_print_run); calibrated inherent-strain LPBF builds (lpbf_build_run).");
 
     JsonValue *ops = json_set_array(v, "operations");
     for (int i = 0; i < ops_count(); i++) {
@@ -242,13 +242,21 @@ static void op_capabilities_get(Engine *e, JsonValue *params, OpResult *out) {
                     "strength margins or safety statements, fatigue, fasteners and contact, buckling and geometric nonlinearity, printed-material "
                     "anisotropy, dynamic loads; no validation against measurements");
     json_push(analyses, cs);
-    static const char *const PLANNED[] = {"fff_process", "lpbf_process", NULL};
-    for (int i = 0; PLANNED[i]; i++) {
-        JsonValue *pl = json_object();
-        json_set_string(pl, "name", PLANNED[i]);
-        json_set_string(pl, "status", "planned, not available");
-        json_push(analyses, pl);
-    }
+    /* Printing is implemented; expose its actual scope rather than the old planned placeholders. */
+    JsonValue *fff = json_object();
+    json_set_string(fff, "name", "fff_print");
+    json_set_string(fff, "status", "available");
+    json_set_string(fff, "operation", "mech_print_run");
+    json_set_string(fff, "physics", "layer deposition, temperature-dependent conduction and cooling, incremental thermal stress, bed release and support removal");
+    json_set_string(fff, "not_included", "within-layer toolpath, raster anisotropy, interlayer bond strength, crystallisation, creep below relaxation temperature, adhesion failure; inspect summary.scope and material provenance before using predictions");
+    json_push(analyses, fff);
+    JsonValue *lpbf = json_object();
+    json_set_string(lpbf, "name", "lpbf_build");
+    json_set_string(lpbf, "status", "available");
+    json_set_string(lpbf, "operation", "lpbf_build_run");
+    json_set_string(lpbf, "physics", "layer activation with declared inherent strain, support and plate restraint, elastic or J2 mechanical response, release and cutting");
+    json_set_string(lpbf, "not_included", "laser-resolved heat input, melt-pool flow, keyholing, microstructure; strain calibration is process-specific and is not a universal material constant");
+    json_push(analyses, lpbf);
 
     JsonValue *lims = json_set_array(v, "model_limitations");
     static const char *LIMITS[] = {
@@ -257,10 +265,10 @@ static void op_capabilities_get(Engine *e, JsonValue *params, OpResult *out) {
         "Self-intersection checks skip faces that share a vertex; folded neighbouring faces are not detected.",
         "Wall thickness is estimated by inward ray casts from sampled faces; it is a diagnostic, not a measurement.",
         "Volume meshes are voxel-derived hexahedra: boundaries are staircases, so stresses at inclined or curved surfaces and at re-entrant steps depend on the element size. mesh_generate reports volume, area and boundary-distance errors.",
-        "Structural analysis is small-strain linear elastic with isotropic materials: no contact, plasticity, creep, geometric nonlinearity, residual stress or anisotropy. Thermal strain is available only through a thermomechanical analysis.",
-        "Library materials are demonstration values, not calibrated data: results obtained with them are indicative only.",
+        "The static structural analysis is small-strain linear elastic and isotropic. Separate mechanical and printing operations have their own constitutive scope; inspect the selected analysis rather than assuming all operations include plasticity, contact or anisotropy.",
+        "Material records carry demonstration, published or measured status and provenance; demonstration values are not calibrated data and are indicative only.",
         "Ideal supports and sharp inside corners are stress singularities: peak stresses there grow with mesh refinement and are flagged instead of being reported as design values.",
-        "Transient thermal, one-way thermomechanical and conjugate heat transfer analyses are available; FFF and LPBF process simulation are not.",
+        "FFF uses a homogenised layer thermal-stress model; LPBF uses declared inherent strain. Neither resolves all printing process physics. Their summaries state omissions and calibration provenance.",
         "Thermal radiation is grey-body exchange with a single ambient temperature. There are no view factors, no occlusion and no enclosure radiosity, so surfaces do not radiate to each other.",
         "Fluid energy transport exists only in a conjugate_heat_transfer analysis, for a steady laminar constant-property flow computed once without buoyancy; elsewhere convection must be supplied as a heat-transfer coefficient.",
         "Adaptive transient stepping estimates and controls the error of each step (step doubling, temperature and enthalpy), not the global error: errors of successive steps accumulate, so establish accuracy by repeating a run with tighter tolerances. Fixed steps carry no error estimate at all.",

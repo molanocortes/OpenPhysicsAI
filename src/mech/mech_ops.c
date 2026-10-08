@@ -3637,7 +3637,7 @@ static void op_lpbf_build_run(Engine *e, JsonValue *p, OpResult *out) {
     json_set_string(v, "spec_hash", hash);
     json_set(v, "model", model);
     json_set(v, "warnings", warnings);
-    json_set_string(v, "scope", "inherent strain is a calibrated input; the summary's scope block states what the number is and is not");
+    json_set_string(v, "scope", "inherent strain is a declared process input; predictive use requires a relevant calibration. Read the summary's provenance and scope");
     json_set_string(v, "next_step",
                     "poll job_status with {\"job_id\": \"...\", \"wait_seconds\": 30}; the summary carries tip_uz_before_cut_mm, "
                     "tip_uz_after_cut_mm and springback_mm, and results_query reads every stored time (displacement, von_mises)");

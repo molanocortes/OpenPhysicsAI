@@ -31,16 +31,28 @@ static void thermal_increment(const FffMaterial *mat, double T0, double T1, doub
     if (!(E1 >= mat->E_floor)) E1 = mat->E_floor;
     *eps = 0, *E_eff = E1;
     if (!(hi > lo)) return;
-    int n = (int)ceil((hi - lo) / 0.5);
-    if (n < 4) n = 4;
-    if (n > 2048) n = 2048;
-    double h = (hi - lo) / n, sa = 0, sea = 0;
-    for (int i = 0; i <= n; i++) { /* trapezoid on 0.5 K sub-intervals: the tables are piecewise linear */
-        double T = lo + i * h, E = mat_eval(&mat->E, T), a = mat_eval(&mat->alpha, T), w = i == 0 || i == n ? 0.5 : 1.0;
-        if (!(E >= mat->E_floor)) E = mat->E_floor;
-        sa += w * a, sea += w * E * a;
+    double sa = 0, sea = 0;
+    for (double a = lo; a < hi;) {
+        double b = hi;
+        for (int i = 0; i < mat->E.n; i++)
+            if (mat->E.t[i] > a && mat->E.t[i] < b) b = mat->E.t[i];
+        for (int i = 0; i < mat->alpha.n; i++)
+            if (mat->alpha.t[i] > a && mat->alpha.t[i] < b) b = mat->alpha.t[i];
+        double Ea = mat_eval(&mat->E, a), Eb = mat_eval(&mat->E, b);
+        /* Clipping a linear modulus at E_floor adds a breakpoint inside its table interval. */
+        if ((Ea < mat->E_floor && Eb > mat->E_floor) || (Ea > mat->E_floor && Eb < mat->E_floor)) {
+            double cross = a + (b - a) * (mat->E_floor - Ea) / (Eb - Ea);
+            if (cross > a && cross < b) b = cross;
+        }
+        double mid = 0.5 * (a + b), aa = mat_eval(&mat->alpha, a), am = mat_eval(&mat->alpha, mid);
+        double ab = mat_eval(&mat->alpha, b), w = (b - a) / 6.0;
+        /* E and alpha are linear here, so their product is quadratic: Simpson is exact. */
+        sa += w * (aa + 4 * am + ab);
+        sea += w * (fmax(mat->E_floor, mat_eval(&mat->E, a)) * aa +
+                    4 * fmax(mat->E_floor, mat_eval(&mat->E, mid)) * am +
+                    fmax(mat->E_floor, mat_eval(&mat->E, b)) * ab);
+        a = b;
     }
-    sa *= h, sea *= h;
     *eps = T1 > T0 ? sa : -sa;
     if (fabs(sa) > 1e-30) *E_eff = sea / sa;
 }
@@ -54,6 +66,33 @@ static double elem_mean_T(const FffMesh *M, int e, const double *T) {
     double s = 0;
     for (int a = 0; a < 8; a++) s += T[M->conn[8 * (size_t)e + a]];
     return s / 8;
+}
+
+/* Independently integrate physical enthalpy at the same eight points as the thermal element. At birth, the incoming
+ * material would be uniformly at T_nozzle, while conforming interface nodes keep their old temperatures. The nodal
+ * pulse sums to that exact missing enthalpy because sum_a N_a (T_nozzle - T_a) = T_nozzle - T_gp. */
+static double element_heat(const FffMesh *M, int e, const ThermalMaterial *mat, const double *T, double T_ref,
+                           double T_nozzle, double *pulse, double *incoming) {
+    double X[8][3], energy = 0;
+    elem_X(M, e, X);
+    const double gp = 1.0 / sqrt(3.0), href = thermal_enthalpy(mat, T_ref);
+    if (incoming) *incoming = 0;
+    for (int g = 0; g < 8; g++) {
+        double N[8], dN[8][3], J[3][3], dNdx[8][3], Tg = 0;
+        hex8_shape(HEX8_XI[g][0] * gp, HEX8_XI[g][1] * gp, HEX8_XI[g][2] * gp, N, dN);
+        double det = hex8_jacobian(X, dN, J, dNdx);
+        for (int a = 0; a < 8; a++) Tg += N[a] * T[M->conn[8 * (size_t)e + (size_t)a]];
+        energy += det * (thermal_enthalpy(mat, Tg) - href);
+        if (incoming) *incoming += det * (thermal_enthalpy(mat, T_nozzle) - href);
+        if (pulse) {
+            double secant = thermal_secant_capacity(mat, Tg, T_nozzle);
+            for (int a = 0; a < 8; a++) {
+                int n = M->conn[8 * (size_t)e + (size_t)a];
+                pulse[n] += det * N[a] * secant * (T_nozzle - T[n]);
+            }
+        }
+    }
+    return energy;
 }
 
 /* ------------------------------------------------------------------------------------------------ stress history */
@@ -74,6 +113,7 @@ struct FffMech {
     double *escale; /* nelems: stiffness multiplier (homogenised supports), NULL: 1 */
     bool released;
     double release_reaction;
+    double equilibrium_error, release_equilibrium_error;
     int solves;
 };
 
@@ -247,6 +287,8 @@ static bool solve_increment(FffMech *m, const double *T, int mode, char *err, si
     if (getenv("NAVIER_PRINT_SOLVE_LOG")) fprintf(stderr, "  dT %8.3f K", worst_dt);
     if (!solid_solve(&hm, &L, &opt, &res, err, errlen)) goto done;
     m->solves++;
+    m->equilibrium_error = res.equilibrium_error;
+    if (mode == MODE_RELEASE) m->release_equilibrium_error = res.equilibrium_error;
     if (getenv("NAVIER_PRINT_SOLVE_LOG")) /* profiling: one line per stress increment */
         fprintf(stderr, "  solve %3d  mode %d  elements %6d  equations %7d  %-18s %6.3f s (assembly and recovery %5.3f s) factor %6.1f MB\n", m->solves,
                 mode, na, res.neq, res.stats.method, res.stats.seconds, now_s() - t_solve - res.stats.seconds, res.stats.factor_mb);
@@ -362,16 +404,15 @@ const double *fff_mech_u(const FffMech *m) { return m->u; }
 const double *fff_mech_stress(const FffMech *m) { return m->stress; }
 const unsigned char *fff_mech_active(const FffMech *m) { return m->active; }
 double fff_mech_release_reaction(const FffMech *m) { return m->release_reaction; }
+double fff_mech_equilibrium_error(const FffMech *m) { return m->equilibrium_error; }
+double fff_mech_release_equilibrium_error(const FffMech *m) { return m->release_equilibrium_error; }
 int fff_mech_solves(const FffMech *m) { return m->solves; }
 
 void fff_mech_von_mises(const FffMech *m, double *vm) {
     for (int e = 0; e < m->mesh.nelems; e++) {
         vm[e] = 0;
         if (!m->active[e]) continue;
-        double s[6] = {0};
-        for (int g = 0; g < 8; g++)
-            for (int k = 0; k < 6; k++) s[k] += m->stress[48 * (size_t)e + 6 * (size_t)g + (size_t)k] / 8;
-        vm[e] = von_mises(s);
+        for (int g = 0; g < 8; g++) vm[e] += von_mises(m->stress + 48 * (size_t)e + 6 * (size_t)g) / 8;
     }
 }
 
@@ -544,6 +585,7 @@ bool fff_simulate(const FffMesh *M, const FffMaterial *mat, const FffProcess *P,
     int *layer = fff_plan(M, P->layer_height, &plan), *nb = fff_face_neighbours(M);
     double *vol = malloc(ne * sizeof(double)), *T = malloc(nn * sizeof(double)), *T1 = malloc(nn * sizeof(double));
     double *fixed_T = malloc(nn * sizeof(double)), *vm = calloc(ne, sizeof(double));
+    double *birth_heat = calloc(nn, sizeof(double)), *node_power = calloc(nn, sizeof(double));
     size_t face_cap = 12 * ne; /* two per exposed face; a support element takes 6 x (1 + its radiation terms) */
     if (M->support_band && M->band_props)
         for (size_t e = 0; e < ne; e++)
@@ -559,7 +601,7 @@ bool fff_simulate(const FffMesh *M, const FffMaterial *mat, const FffProcess *P,
     int *emat = NULL;
     ThermalSolver *solver = NULL;
     FffMech *mech = NULL;
-    if (!bed || !active || !node_on || !fixed || !layer || !nb || !vol || !T || !T1 || !fixed_T || !vm || !faces) {
+    if (!bed || !active || !node_on || !fixed || !layer || !nb || !vol || !T || !T1 || !fixed_T || !vm || !faces || !birth_heat || !node_power) {
         snprintf(err, errlen, "out of memory for the print simulation (%zu elements)", ne);
         goto done;
     }
@@ -627,6 +669,7 @@ bool fff_simulate(const FffMesh *M, const FffMaterial *mat, const FffProcess *P,
     topt.theta = 1.0, topt.max_picard = 50, topt.picard_tol = 1e-6, topt.pcg_tol = 1e-12, topt.pcg_max_iter = 20000;
     double emis = mat->emissivity.n ? mat_eval(&mat->emissivity, 293.15) : 0.9;
     double time = 0, worst = 0, t_mech = 0, t_therm = 0;
+    bool birth_pending = false;
     int frame_index = 0;
     const int S = P->thermal_substeps;
 
@@ -676,12 +719,21 @@ bool fff_simulate(const FffMesh *M, const FffMaterial *mat, const FffProcess *P,
         if (r_ == 1.0) dt0_ = dur_ / S;                                                                                                    \
         for (int i = 0; i < S; i++) {                                                                                                      \
             double dt = dt0_ * pow(r_, i);                                                                                                 \
+            if (birth_pending) {                                                                                                          \
+                for (size_t n = 0; n < nn; n++) node_power[n] = fixed[n] ? 0 : birth_heat[n] / dt;                                         \
+                tmod.node_power = node_power;                                                                                              \
+            } else tmod.node_power = NULL;                                                                                                 \
             ThermalStepStats st;                                                                                                           \
             double t0 = now_s();                                                                                                           \
             if (!thermal_step(solver, &tmod, T, T1, time, dt, &st, err, errlen)) goto done;                                                \
             t_therm += now_s() - t0;                                                                                                       \
             worst = fmax(worst, st.balance_error);                                                                                         \
             sum->bed_heat -= st.prescribed_energy;                                                                                         \
+            sum->air_heat -= st.boundary_energy;                                                                                           \
+            if (birth_pending) {                                                                                                          \
+                for (size_t n = 0; n < nn; n++) if (fixed[n]) sum->bed_heat += birth_heat[n];                                               \
+                birth_pending = false;                                                                                                    \
+            }                                                                                                                             \
             double *sw = T;                                                                                                                \
             T = T1, T1 = sw;                                                                                                               \
             time += dt, sum->thermal_steps++;                                                                                              \
@@ -709,6 +761,19 @@ bool fff_simulate(const FffMesh *M, const FffMaterial *mat, const FffProcess *P,
             }
         }
         if (Vk == 0) continue;
+        memset(birth_heat, 0, nn * sizeof(double));
+        double incoming = 0, initial = 0, correction = 0;
+        for (size_t e = 0; e < ne; e++) {
+            if (layer[e] != k) continue;
+            double supplied = 0;
+            initial += element_heat(M, (int)e, &tmats[emat ? emat[e] : 0], T, P->T_ambient, P->T_nozzle, birth_heat, &supplied);
+            incoming += supplied;
+        }
+        for (size_t n = 0; n < nn; n++) correction += birth_heat[n];
+        sum->deposition_heat += incoming, sum->deposition_correction += correction;
+        double largest = fmax(fabs(incoming), fmax(fabs(initial), fabs(correction)));
+        sum->deposition_balance = fmax(sum->deposition_balance, largest > 0 ? fabs(incoming - initial - correction) / largest : 0);
+        birth_pending = true;
         sum->printed_volume += Vk;
         REBUILD_FACES();
         if (!solver && !(solver = thermal_create(&tmod, &topt, err, errlen))) goto done;
@@ -740,10 +805,17 @@ bool fff_simulate(const FffMesh *M, const FffMaterial *mat, const FffProcess *P,
         double t0 = now_s();
         bool okr = fff_mech_remove(mech, rm, nrm, T, &sum->tearoff_max, &sum->tearoff_sum, err, errlen);
         t_mech += now_s() - t0;
-        for (int i = 0; i < nrm; i++) active[rm[i]] = 0;
+        for (int i = 0; i < nrm; i++) {
+            sum->removed_heat += element_heat(M, rm[i], &tmats[emat ? emat[rm[i]] : 0], T, P->T_ambient, 0, NULL, NULL);
+            active[rm[i]] = 0;
+        }
         sum->support_elements = nrm;
         free(rm);
         if (!okr) goto done;
+        memset(node_on, 0, nn);
+        for (size_t e = 0; e < ne; e++)
+            if (active[e])
+                for (int a = 0; a < 8; a++) node_on[M->conn[8 * e + (size_t)a]] = 1;
         EMIT("supports removed", nlayers - 1);
     }
     {
@@ -753,8 +825,18 @@ bool fff_simulate(const FffMesh *M, const FffMaterial *mat, const FffProcess *P,
             if (node_on[n]) sum->warp_z_max = fmax(sum->warp_z_max, uu[3 * n + 2]), sum->warp_z_min = fmin(sum->warp_z_min, uu[3 * n + 2]);
     }
     sum->nlayers = nlayers, sum->frames = frame_index, sum->mech_solves = fff_mech_solves(mech);
+    sum->equilibrium_error_last_solve = fff_mech_equilibrium_error(mech);
+    sum->equilibrium_error_at_release = fff_mech_release_equilibrium_error(mech);
     sum->total_time = time, sum->seconds_thermal = t_therm, sum->seconds_mech = t_mech;
     sum->elements = M->nelems, sum->nodes = M->nnodes;
+    for (size_t e = 0; e < ne; e++)
+        if (active[e]) sum->stored_heat += element_heat(M, (int)e, &tmats[emat ? emat[e] : 0], T, P->T_ambient, 0, NULL, NULL);
+    {
+        double largest = fmax(fabs(sum->deposition_heat), fmax(fabs(sum->stored_heat),
+                         fmax(fabs(sum->air_heat), fmax(fabs(sum->bed_heat), fabs(sum->removed_heat)))));
+        sum->global_heat_balance = largest > 0 ? fabs(sum->stored_heat + sum->air_heat + sum->bed_heat + sum->removed_heat -
+                                                     sum->deposition_heat) / largest : 0;
+    }
     ok = true;
 #undef REBUILD_FACES
 #undef EMIT
@@ -764,5 +846,6 @@ done:
     fff_mech_free(mech);
     free(bed), free(active), free(node_on), free(fixed), free(layer), free(nb), free(vol);
     free(T), free(T1), free(fixed_T), free(vm), free(faces), free(tmats), free(tvals), free(emat);
+    free(birth_heat), free(node_power);
     return ok;
 }

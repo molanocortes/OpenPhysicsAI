@@ -1,0 +1,751 @@
+{
+  "kind": "thermal",
+  "result_sha256": "a76868c2cce894c4efd5a759b624ded17f6f2db91ebc6adeb6a0bcb141badedc",
+  "renderer_sha256": "13c899b512baefb8e7baa784f44f179905d6d6bfe896602286868e2ae537c9b9",
+  "pixels": "Native OpenGL output; no painted fields or fabricated time interpolation",
+  "deformation_scale": 0,
+  "range": "all stored states, full peak (not percentile clipped)",
+  "presentation": "Designed geometry; artificial studio lighting, ambient occlusion, bloom and backdrop",
+  "preset": {
+    "field": "temperature",
+    "cmap": "inferno",
+    "elevation": 42,
+    "hero": 11,
+    "frames": 122
+  },
+  "fps": 20,
+  "frames": [
+    {
+      "path": "frames/thermal/0000.png",
+      "stored_step_one_based": 1,
+      "requested_yaw_degrees": 30.0,
+      "sha256": "809d4b3020fea317e65d41e97c7d47cfbf7df29e68888ee1679f638384167309"
+    },
+    {
+      "path": "frames/thermal/0001.png",
+      "stored_step_one_based": 1,
+      "requested_yaw_degrees": 30.454545454545453,
+      "sha256": "17ba3dc3cd60b7f58806367f4899d7f892944b27d65ebc024115e2e3c8c544ab"
+    },
+    {
+      "path": "frames/thermal/0002.png",
+      "stored_step_one_based": 2,
+      "requested_yaw_degrees": 30.90909090909091,
+      "sha256": "7e61e011445c4538b23aa2e392ab98b694087241a18fa46d236e9aaeb79b0c2c"
+    },
+    {
+      "path": "frames/thermal/0003.png",
+      "stored_step_one_based": 2,
+      "requested_yaw_degrees": 31.363636363636363,
+      "sha256": "8dd0caf1006d2eb77156f2db0da001da4bc53706c3bd0cff6c943713badf4d04"
+    },
+    {
+      "path": "frames/thermal/0004.png",
+      "stored_step_one_based": 3,
+      "requested_yaw_degrees": 31.818181818181817,
+      "sha256": "2dc3c5a8d885b773f3da3e0925301f2a2a52046b804eb9ceb6337d35ffdd895c"
+    },
+    {
+      "path": "frames/thermal/0005.png",
+      "stored_step_one_based": 3,
+      "requested_yaw_degrees": 32.27272727272727,
+      "sha256": "8ced79306b1d971b26087becd0616762f9c98db9242b607cdb0538fda0dbaa71"
+    },
+    {
+      "path": "frames/thermal/0006.png",
+      "stored_step_one_based": 4,
+      "requested_yaw_degrees": 32.72727272727273,
+      "sha256": "4e45819bb6d0ba5738f89b24f2cccc1aaf0255c98cb54a9613d983267a27a7d9"
+    },
+    {
+      "path": "frames/thermal/0007.png",
+      "stored_step_one_based": 4,
+      "requested_yaw_degrees": 33.18181818181818,
+      "sha256": "bd8fb2058e8db9da764a544679fb4d5c69e65639141ff52f41b025a309db86c1"
+    },
+    {
+      "path": "frames/thermal/0008.png",
+      "stored_step_one_based": 5,
+      "requested_yaw_degrees": 33.63636363636363,
+      "sha256": "771da3ad65c96815c916d1ae89f3146108cc823b95ca63aad7a2b4f25d9e3762"
+    },
+    {
+      "path": "frames/thermal/0009.png",
+      "stored_step_one_based": 5,
+      "requested_yaw_degrees": 34.09090909090909,
+      "sha256": "feb6de65b2efe0d433ce85776480c93230b16c4ee6873302806804e1afa83139"
+    },
+    {
+      "path": "frames/thermal/0010.png",
+      "stored_step_one_based": 6,
+      "requested_yaw_degrees": 34.54545454545455,
+      "sha256": "56694bcbe10a5e3b183da955bf68eb6c735ef32a140df4e38e617f0f9517440c"
+    },
+    {
+      "path": "frames/thermal/0011.png",
+      "stored_step_one_based": 6,
+      "requested_yaw_degrees": 35.0,
+      "sha256": "4571a2ae59461933df1d9e9644b1e8335b1173ae513a05698e401b61337990b9"
+    },
+    {
+      "path": "frames/thermal/0012.png",
+      "stored_step_one_based": 7,
+      "requested_yaw_degrees": 35.45454545454545,
+      "sha256": "661a12d9861b54c0bcd688485439f171ca9ca6c83fd1f75b2931687207008040"
+    },
+    {
+      "path": "frames/thermal/0013.png",
+      "stored_step_one_based": 7,
+      "requested_yaw_degrees": 35.90909090909091,
+      "sha256": "696d4b20133b348aeba319c3e293bf9195e5e91588a14a68b9b3bbce1dceb311"
+    },
+    {
+      "path": "frames/thermal/0014.png",
+      "stored_step_one_based": 8,
+      "requested_yaw_degrees": 36.36363636363636,
+      "sha256": "9a7ed0f73f997bd89e8bffb5c82cc8708155f12ca14c640d6949f9c18878a136"
+    },
+    {
+      "path": "frames/thermal/0015.png",
+      "stored_step_one_based": 8,
+      "requested_yaw_degrees": 36.81818181818182,
+      "sha256": "f6a7a70f38658e47ecf7300a356aea7fc551f17323598ee2b169ca18553c834a"
+    },
+    {
+      "path": "frames/thermal/0016.png",
+      "stored_step_one_based": 9,
+      "requested_yaw_degrees": 37.27272727272727,
+      "sha256": "a197a89dd701527150db3d14b9609c88c2684f4a7cc4006f441895a2e7ebd369"
+    },
+    {
+      "path": "frames/thermal/0017.png",
+      "stored_step_one_based": 9,
+      "requested_yaw_degrees": 37.72727272727273,
+      "sha256": "24cb4cfef7c913cc80e642beef5011c02d81e65e73278e186845583038be0752"
+    },
+    {
+      "path": "frames/thermal/0018.png",
+      "stored_step_one_based": 10,
+      "requested_yaw_degrees": 38.18181818181818,
+      "sha256": "1cc9c2722c8b0d44909534f43186941a529e39407d0981bf07f3750ac8ae2d3f"
+    },
+    {
+      "path": "frames/thermal/0019.png",
+      "stored_step_one_based": 10,
+      "requested_yaw_degrees": 38.63636363636364,
+      "sha256": "8e9d7ddc44261b88bbffeb7444cb10ba5696aba05199d594710f7ef4decb8d8b"
+    },
+    {
+      "path": "frames/thermal/0020.png",
+      "stored_step_one_based": 11,
+      "requested_yaw_degrees": 39.09090909090909,
+      "sha256": "c783a13a2ce0d8e989abd70c22f8ce6d173e1f196697a46c9ab6d6c73c615d2c"
+    },
+    {
+      "path": "frames/thermal/0021.png",
+      "stored_step_one_based": 11,
+      "requested_yaw_degrees": 39.54545454545455,
+      "sha256": "d8ea0b6b505f59e646f1af7d84e83c123b9b92700527b6fc4e991676e9d3a933"
+    },
+    {
+      "path": "frames/thermal/0022.png",
+      "stored_step_one_based": 12,
+      "requested_yaw_degrees": 40.0,
+      "sha256": "6ecce001d83695e0b0b5de4af63545efd0713661ffa4479031ae6a22ef531935"
+    },
+    {
+      "path": "frames/thermal/0023.png",
+      "stored_step_one_based": 12,
+      "requested_yaw_degrees": 40.45454545454545,
+      "sha256": "bd1f114cedecb4c504fe02afe87d08bff72439cc826a0e42350f7d5c58cfb81d"
+    },
+    {
+      "path": "frames/thermal/0024.png",
+      "stored_step_one_based": 13,
+      "requested_yaw_degrees": 40.90909090909091,
+      "sha256": "3a295458e5d446684081d7450ed58948ba68daeba458ad7a07a579270950dd9c"
+    },
+    {
+      "path": "frames/thermal/0025.png",
+      "stored_step_one_based": 13,
+      "requested_yaw_degrees": 41.36363636363636,
+      "sha256": "e3456a3cb7ed68007e05a3afe9bf6dc21466f7f23703afd0a5d5e5fbf1e63786"
+    },
+    {
+      "path": "frames/thermal/0026.png",
+      "stored_step_one_based": 14,
+      "requested_yaw_degrees": 41.81818181818182,
+      "sha256": "27ce293c43a9a30c4451a3aa83065f91acb7c624603a5914bbb58fea2dd00973"
+    },
+    {
+      "path": "frames/thermal/0027.png",
+      "stored_step_one_based": 14,
+      "requested_yaw_degrees": 42.27272727272727,
+      "sha256": "256724893ffa3957f2bdb1bfdc0c99d03a066c0ffa3a30e36141aaf6ee3bc935"
+    },
+    {
+      "path": "frames/thermal/0028.png",
+      "stored_step_one_based": 15,
+      "requested_yaw_degrees": 42.72727272727273,
+      "sha256": "c5fa24b8e1832cde4b66bae0cf11876f7c61d8e89454ed1a8eb69678d0715041"
+    },
+    {
+      "path": "frames/thermal/0029.png",
+      "stored_step_one_based": 15,
+      "requested_yaw_degrees": 43.18181818181818,
+      "sha256": "e93adcac54af25487a6357d20f90d6dd45e182880f46b0ee2977a9094ab8f792"
+    },
+    {
+      "path": "frames/thermal/0030.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 43.63636363636364,
+      "sha256": "4b394a440bb6b047d0a63adf9a950f47287aa27f2273b4f86073f5dcb5556d31"
+    },
+    {
+      "path": "frames/thermal/0031.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 44.09090909090909,
+      "sha256": "89e52b2b1df47d1ef0af8ba8c0ca04d8bd32b7ec69fab0673469115503560c7f"
+    },
+    {
+      "path": "frames/thermal/0032.png",
+      "stored_step_one_based": 17,
+      "requested_yaw_degrees": 44.54545454545455,
+      "sha256": "37d7cb21911acb392505387075cc41ec9554db12328fb7dab3cd42545742f107"
+    },
+    {
+      "path": "frames/thermal/0033.png",
+      "stored_step_one_based": 17,
+      "requested_yaw_degrees": 45.0,
+      "sha256": "1bf0bda27feb0302a4fdccc282f1eb0510448b4fe501c4ebe10b7ead428d20d7"
+    },
+    {
+      "path": "frames/thermal/0034.png",
+      "stored_step_one_based": 18,
+      "requested_yaw_degrees": 45.45454545454545,
+      "sha256": "2f9485e703a935a3f1811274a058cb9c1a6f157a45c82ed9ebbfbe92415fdd12"
+    },
+    {
+      "path": "frames/thermal/0035.png",
+      "stored_step_one_based": 18,
+      "requested_yaw_degrees": 45.90909090909091,
+      "sha256": "0eb245755eb50e162a6f0f94018470506170885d4e09a7ef254826da233115cc"
+    },
+    {
+      "path": "frames/thermal/0036.png",
+      "stored_step_one_based": 19,
+      "requested_yaw_degrees": 46.36363636363636,
+      "sha256": "16d9d66f63ee6e96a3acae0da57d15afb484820a1a2b318a186ca1afd68bbb98"
+    },
+    {
+      "path": "frames/thermal/0037.png",
+      "stored_step_one_based": 19,
+      "requested_yaw_degrees": 46.81818181818181,
+      "sha256": "000db5d01887bd94582dc7b7b3ee7b2944adc41cee8ae0208465e222e03f9fde"
+    },
+    {
+      "path": "frames/thermal/0038.png",
+      "stored_step_one_based": 20,
+      "requested_yaw_degrees": 47.27272727272727,
+      "sha256": "9bc2d0a0d9b7700688adcb5d9b0fb260f71da817dea6871b310088cbc5d8d19e"
+    },
+    {
+      "path": "frames/thermal/0039.png",
+      "stored_step_one_based": 20,
+      "requested_yaw_degrees": 47.72727272727273,
+      "sha256": "52485ef13f27282075a73c9107c3d4c74f377eabf94309b5a845092ea02bb212"
+    },
+    {
+      "path": "frames/thermal/0040.png",
+      "stored_step_one_based": 21,
+      "requested_yaw_degrees": 48.18181818181819,
+      "sha256": "ce53d70309af8d70eb202ce3c969bda916386be7626fa0eb9541c1ffc29a38a4"
+    },
+    {
+      "path": "frames/thermal/0041.png",
+      "stored_step_one_based": 21,
+      "requested_yaw_degrees": 48.63636363636364,
+      "sha256": "980019a1061dcf2cee268acb8d61c5a5be1c7aa36229c83b0b204b075ee3db18"
+    },
+    {
+      "path": "frames/thermal/0042.png",
+      "stored_step_one_based": 22,
+      "requested_yaw_degrees": 49.09090909090909,
+      "sha256": "074869fd9856ded4a97fee63901f404952c6ae5f4575853158f4186f60d05659"
+    },
+    {
+      "path": "frames/thermal/0043.png",
+      "stored_step_one_based": 22,
+      "requested_yaw_degrees": 49.54545454545455,
+      "sha256": "a8cc68b26489ab4d623aee5ad5a43fa4f3af64a9812c81b7bfd7646ccd56333c"
+    },
+    {
+      "path": "frames/thermal/0044.png",
+      "stored_step_one_based": 23,
+      "requested_yaw_degrees": 50.0,
+      "sha256": "15f342938c7d53e30ba7fb91887ff17ed6fe6770cec4af2c4dd599b1d0cfdd23"
+    },
+    {
+      "path": "frames/thermal/0045.png",
+      "stored_step_one_based": 23,
+      "requested_yaw_degrees": 50.45454545454545,
+      "sha256": "835f9c74421c148adb1960cbf613a36aeee922e6128f7457d256705331aa1897"
+    },
+    {
+      "path": "frames/thermal/0046.png",
+      "stored_step_one_based": 24,
+      "requested_yaw_degrees": 50.90909090909091,
+      "sha256": "78f1146ad310173f98b636a9939e26d6fb5049418b80462a08f29e280696b3e5"
+    },
+    {
+      "path": "frames/thermal/0047.png",
+      "stored_step_one_based": 24,
+      "requested_yaw_degrees": 51.36363636363636,
+      "sha256": "19dd4844a5a928cefb5929c74243da2f2222b7aaff37ace39b56d1fe037dae09"
+    },
+    {
+      "path": "frames/thermal/0048.png",
+      "stored_step_one_based": 25,
+      "requested_yaw_degrees": 51.81818181818181,
+      "sha256": "df04f64577f2258c79fcfd112545d4f531e770d18b3c4a63253615559f136012"
+    },
+    {
+      "path": "frames/thermal/0049.png",
+      "stored_step_one_based": 25,
+      "requested_yaw_degrees": 52.27272727272727,
+      "sha256": "abf6bd5cb27c4ef09c7f48bb47ce7a37dbd4184bd7c6726a89037254d47adee0"
+    },
+    {
+      "path": "frames/thermal/0050.png",
+      "stored_step_one_based": 26,
+      "requested_yaw_degrees": 52.72727272727273,
+      "sha256": "cbdeb618be2771912909fd1406c1649f336f74a08d5b4d860e29257261f3d926"
+    },
+    {
+      "path": "frames/thermal/0051.png",
+      "stored_step_one_based": 26,
+      "requested_yaw_degrees": 53.18181818181819,
+      "sha256": "1a1180051e320e7d2924c0cb17df3c59a516f91ce1bacac1d5626e64e62cdbff"
+    },
+    {
+      "path": "frames/thermal/0052.png",
+      "stored_step_one_based": 27,
+      "requested_yaw_degrees": 53.63636363636364,
+      "sha256": "039eddc88d76df9a1ce0ef5dd56031610d79c8ae58fdf931d9d3edbfdfb90ce3"
+    },
+    {
+      "path": "frames/thermal/0053.png",
+      "stored_step_one_based": 27,
+      "requested_yaw_degrees": 54.09090909090909,
+      "sha256": "eaaf40837f7b363f79fde6bb9b2460d4a99a580c1d94c7e3d11c9f313cf8a0cf"
+    },
+    {
+      "path": "frames/thermal/0054.png",
+      "stored_step_one_based": 28,
+      "requested_yaw_degrees": 54.54545454545455,
+      "sha256": "49902f03bcdcc9f0653380fe149fd2e87b525a2f8c0757927209b51e664df3aa"
+    },
+    {
+      "path": "frames/thermal/0055.png",
+      "stored_step_one_based": 28,
+      "requested_yaw_degrees": 55.0,
+      "sha256": "c5e36e980cb19c273599bd4f49bffddadb0ee813dc3671bec34fd1f0c73b6af9"
+    },
+    {
+      "path": "frames/thermal/0056.png",
+      "stored_step_one_based": 29,
+      "requested_yaw_degrees": 55.45454545454545,
+      "sha256": "885e0ab559577437e074a09e5d0905846239f0525f092455568d8b32d8bda5e2"
+    },
+    {
+      "path": "frames/thermal/0057.png",
+      "stored_step_one_based": 29,
+      "requested_yaw_degrees": 55.90909090909091,
+      "sha256": "188ccb0d807f0b5da35fd29ac228999736b2455949ba230ec13de05d7aa8c165"
+    },
+    {
+      "path": "frames/thermal/0058.png",
+      "stored_step_one_based": 30,
+      "requested_yaw_degrees": 56.36363636363636,
+      "sha256": "36fde95dbd81db93e1342c7daca54c85565e471fd4838fca27a5dc27efe67356"
+    },
+    {
+      "path": "frames/thermal/0059.png",
+      "stored_step_one_based": 30,
+      "requested_yaw_degrees": 56.81818181818181,
+      "sha256": "cbcfb6e08e876033efdcbc2e017e257943ef344ffb8ebaa076cdf657a58a062c"
+    },
+    {
+      "path": "frames/thermal/0060.png",
+      "stored_step_one_based": 31,
+      "requested_yaw_degrees": 57.27272727272727,
+      "sha256": "c7a0c5f922dab438a57d6ccd8875ed21242d1745ab28298dffbe15c6e989e5f6"
+    },
+    {
+      "path": "frames/thermal/0061.png",
+      "stored_step_one_based": 31,
+      "requested_yaw_degrees": 57.72727272727273,
+      "sha256": "63a2201f5391fdef25eaf6fe0713720f4521c5ad1e13e334a1b94d39964a1114"
+    },
+    {
+      "path": "frames/thermal/0062.png",
+      "stored_step_one_based": 32,
+      "requested_yaw_degrees": 58.18181818181819,
+      "sha256": "389745b8a5383a5f92336b4e209734f0c63aacb7b4b8723e8075a66b8e35e304"
+    },
+    {
+      "path": "frames/thermal/0063.png",
+      "stored_step_one_based": 32,
+      "requested_yaw_degrees": 58.63636363636364,
+      "sha256": "02c126b1d0ef16d33934200a570b5dca76de47d8fbf17cf378dac3d69f4a70ba"
+    },
+    {
+      "path": "frames/thermal/0064.png",
+      "stored_step_one_based": 33,
+      "requested_yaw_degrees": 59.09090909090909,
+      "sha256": "9338ec269a46d0280369dcf973d085c82ebe06af4f4926fe7d2a1e3c0d2684d2"
+    },
+    {
+      "path": "frames/thermal/0065.png",
+      "stored_step_one_based": 33,
+      "requested_yaw_degrees": 59.54545454545455,
+      "sha256": "5c5721dbfef4cf20c6ed1e52aa3b027eb68d2489348332c450df184670cc4a2f"
+    },
+    {
+      "path": "frames/thermal/0066.png",
+      "stored_step_one_based": 34,
+      "requested_yaw_degrees": 60.0,
+      "sha256": "1513096620e8dd4eed03a9ff0d20919bd0622da25e95fe06fe10be8272e8cf48"
+    },
+    {
+      "path": "frames/thermal/0067.png",
+      "stored_step_one_based": 34,
+      "requested_yaw_degrees": 60.45454545454545,
+      "sha256": "225366eecb164a056cdf518fc1b879eab14eaa7508830e8ed985aa6b74752cd3"
+    },
+    {
+      "path": "frames/thermal/0068.png",
+      "stored_step_one_based": 35,
+      "requested_yaw_degrees": 60.90909090909091,
+      "sha256": "d960827f4299a3495db1a6ca54c97c7231421bfe8b051c10cef6a57fac822921"
+    },
+    {
+      "path": "frames/thermal/0069.png",
+      "stored_step_one_based": 35,
+      "requested_yaw_degrees": 61.36363636363636,
+      "sha256": "525a48ee430ce3b4ffa71acb41e6aa9cbb9445ad8663de1454863c8dd940ac26"
+    },
+    {
+      "path": "frames/thermal/0070.png",
+      "stored_step_one_based": 36,
+      "requested_yaw_degrees": 61.81818181818181,
+      "sha256": "35761c9dd37e1faf80c251cea60554e2b25787f446f0c3326dd2311cc65486b4"
+    },
+    {
+      "path": "frames/thermal/0071.png",
+      "stored_step_one_based": 36,
+      "requested_yaw_degrees": 62.27272727272727,
+      "sha256": "e9d55807ed5ecfad8dbf0f49080bc7fa115ec23377970d12d0343d7358170db4"
+    },
+    {
+      "path": "frames/thermal/0072.png",
+      "stored_step_one_based": 37,
+      "requested_yaw_degrees": 62.72727272727273,
+      "sha256": "3783db0202160adfe504b90af68d1ab4f596b359c827c348dfe2a39ec4613b45"
+    },
+    {
+      "path": "frames/thermal/0073.png",
+      "stored_step_one_based": 37,
+      "requested_yaw_degrees": 63.18181818181818,
+      "sha256": "2d3c019a9aca88fb19b37addec859b82595b0eb6fa4629b26ca4b798c03922d5"
+    },
+    {
+      "path": "frames/thermal/0074.png",
+      "stored_step_one_based": 38,
+      "requested_yaw_degrees": 63.63636363636363,
+      "sha256": "a1c8f7da571789800b97afbce77673833409657d328cfb41a858e5156308377a"
+    },
+    {
+      "path": "frames/thermal/0075.png",
+      "stored_step_one_based": 38,
+      "requested_yaw_degrees": 64.0909090909091,
+      "sha256": "4008821e08d04be81707b92c71ae781b439f049697b622c630a1ca94ddc4dca0"
+    },
+    {
+      "path": "frames/thermal/0076.png",
+      "stored_step_one_based": 39,
+      "requested_yaw_degrees": 64.54545454545455,
+      "sha256": "93792eb5bd09bac376f9c2f6dfc10073cc8911c74df03f3a3afc21f5c2c89590"
+    },
+    {
+      "path": "frames/thermal/0077.png",
+      "stored_step_one_based": 39,
+      "requested_yaw_degrees": 65.0,
+      "sha256": "7fe4257d2341a6ef66547e8fe624b154acde7ee1dede23c10938836a46040981"
+    },
+    {
+      "path": "frames/thermal/0078.png",
+      "stored_step_one_based": 40,
+      "requested_yaw_degrees": 65.45454545454545,
+      "sha256": "b79957ca328c28702c0c430b0cb54d4ada66018777ba641952c75e3cf3ba96e5"
+    },
+    {
+      "path": "frames/thermal/0079.png",
+      "stored_step_one_based": 40,
+      "requested_yaw_degrees": 65.9090909090909,
+      "sha256": "c7b6a5dd440ae041180f3dae9a025918543a63623af37507a4ad7e39f66bcb79"
+    },
+    {
+      "path": "frames/thermal/0080.png",
+      "stored_step_one_based": 41,
+      "requested_yaw_degrees": 66.36363636363637,
+      "sha256": "7fea842c333230bc98b3581ceebb7cc81718cfe627f6b660d56c518d658c47c0"
+    },
+    {
+      "path": "frames/thermal/0081.png",
+      "stored_step_one_based": 41,
+      "requested_yaw_degrees": 66.81818181818181,
+      "sha256": "bcb7c21ab14b6ed6568c13297847f6bf4f97aafed79ba55e50de58054354b39d"
+    },
+    {
+      "path": "frames/thermal/0082.png",
+      "stored_step_one_based": 42,
+      "requested_yaw_degrees": 67.27272727272728,
+      "sha256": "8f5cfb6626f55db1c8ad264722a52a33da8cd2ebc243cbd288b67a7355b76f9e"
+    },
+    {
+      "path": "frames/thermal/0083.png",
+      "stored_step_one_based": 42,
+      "requested_yaw_degrees": 67.72727272727272,
+      "sha256": "515f3ec440a659d3a9c556efedc1f0c8eae1094400042fc3de538f16371528bc"
+    },
+    {
+      "path": "frames/thermal/0084.png",
+      "stored_step_one_based": 43,
+      "requested_yaw_degrees": 68.18181818181819,
+      "sha256": "118e0988021b5bff3bd9e01d2e7da1f86091c5cc2fb166eb02d32b01f7b6bb4c"
+    },
+    {
+      "path": "frames/thermal/0085.png",
+      "stored_step_one_based": 43,
+      "requested_yaw_degrees": 68.63636363636363,
+      "sha256": "e248283c6e3d310965f76345a52cc50784a6222a815073720d6f3ed8a7b67924"
+    },
+    {
+      "path": "frames/thermal/0086.png",
+      "stored_step_one_based": 44,
+      "requested_yaw_degrees": 69.0909090909091,
+      "sha256": "4d42a306525b0c97828cfad894246d8a182d83dd630b81583bd81569302fbd0d"
+    },
+    {
+      "path": "frames/thermal/0087.png",
+      "stored_step_one_based": 44,
+      "requested_yaw_degrees": 69.54545454545455,
+      "sha256": "43c7714148888c540fafd8b4230b49ec05f28403e4586ddfd6c3d6898aeb0bc5"
+    },
+    {
+      "path": "frames/thermal/0088.png",
+      "stored_step_one_based": 45,
+      "requested_yaw_degrees": 70.0,
+      "sha256": "5587472ead9a50106c87437dd59d21a590aff25a915c084afde810730cd0005e"
+    },
+    {
+      "path": "frames/thermal/0089.png",
+      "stored_step_one_based": 45,
+      "requested_yaw_degrees": 70.45454545454545,
+      "sha256": "4a2240c859a9df52285036ffeb642db06507e0f5eb42ee56995a99130c90539c"
+    },
+    {
+      "path": "frames/thermal/0090.png",
+      "stored_step_one_based": 46,
+      "requested_yaw_degrees": 70.9090909090909,
+      "sha256": "536f288db319a1586cc50bdbf02508b62e4f2e917c79f809e18d4a1f57a5b265"
+    },
+    {
+      "path": "frames/thermal/0091.png",
+      "stored_step_one_based": 46,
+      "requested_yaw_degrees": 71.36363636363637,
+      "sha256": "258f00e83af8b8d5328a68b51748e1613bd77f689365d0f776c66574da50d6d4"
+    },
+    {
+      "path": "frames/thermal/0092.png",
+      "stored_step_one_based": 47,
+      "requested_yaw_degrees": 71.81818181818181,
+      "sha256": "cc6e806d77014aff362a1260cda48a3f098e42e6bfdbdf82068b83180cbca12e"
+    },
+    {
+      "path": "frames/thermal/0093.png",
+      "stored_step_one_based": 47,
+      "requested_yaw_degrees": 72.27272727272728,
+      "sha256": "292e95fbc22263453b75253dc9fbb0c005b15162d0d21f6a648f23d1e32065e2"
+    },
+    {
+      "path": "frames/thermal/0094.png",
+      "stored_step_one_based": 48,
+      "requested_yaw_degrees": 72.72727272727272,
+      "sha256": "e6d84f9530bef3114914c1bceff3623e9535f4e13eb431666574ee307afa5dcb"
+    },
+    {
+      "path": "frames/thermal/0095.png",
+      "stored_step_one_based": 48,
+      "requested_yaw_degrees": 73.18181818181819,
+      "sha256": "28dfa99d55f8b5992cad577e0c98bde0b4926b3223b6ec7b4ad94a5e0d346989"
+    },
+    {
+      "path": "frames/thermal/0096.png",
+      "stored_step_one_based": 49,
+      "requested_yaw_degrees": 73.63636363636363,
+      "sha256": "6b5fcbe29a5e5584d7ea8a8d2e4ca35f18f2ecde229746be87fdad10d038369f"
+    },
+    {
+      "path": "frames/thermal/0097.png",
+      "stored_step_one_based": 49,
+      "requested_yaw_degrees": 74.0909090909091,
+      "sha256": "e2c2ffa268e626b06f0563bbd15f4c57fcd37bdc5c89c19ce9cbf13e8792119a"
+    },
+    {
+      "path": "frames/thermal/0098.png",
+      "stored_step_one_based": 50,
+      "requested_yaw_degrees": 74.54545454545455,
+      "sha256": "215f396ea377c7b2035108a3a35db6fd5b88b2afba09f97baffba625fe30f3d1"
+    },
+    {
+      "path": "frames/thermal/0099.png",
+      "stored_step_one_based": 50,
+      "requested_yaw_degrees": 75.0,
+      "sha256": "bd50721052cbdabc78eeed8ebd1d050350d14fccab247f9b248874ad24a4f9ce"
+    },
+    {
+      "path": "frames/thermal/0100.png",
+      "stored_step_one_based": 51,
+      "requested_yaw_degrees": 75.45454545454545,
+      "sha256": "01dc883ca5f5f43ab1772cce5d3ca876a30dfcef1fa37e494069d5a27723ec18"
+    },
+    {
+      "path": "frames/thermal/0101.png",
+      "stored_step_one_based": 51,
+      "requested_yaw_degrees": 75.9090909090909,
+      "sha256": "603dc91baa8ce43bed3aab5e05d1391faad0c01ecd9c06dfd395a2278bfc3cae"
+    },
+    {
+      "path": "frames/thermal/0102.png",
+      "stored_step_one_based": 52,
+      "requested_yaw_degrees": 76.36363636363637,
+      "sha256": "40d750d7232af38ff06d732e09689707059c466992ce4e2652da1aabbe7e519b"
+    },
+    {
+      "path": "frames/thermal/0103.png",
+      "stored_step_one_based": 52,
+      "requested_yaw_degrees": 76.81818181818181,
+      "sha256": "3825b94b2f7ea4407a92d93077b4c8880a9a2a702468ffb7ea107a1ddcdd5fbd"
+    },
+    {
+      "path": "frames/thermal/0104.png",
+      "stored_step_one_based": 53,
+      "requested_yaw_degrees": 77.27272727272728,
+      "sha256": "a6581975807ebb3e800f9fc641311ba9a2c71540b5b6759c96183e1c15031510"
+    },
+    {
+      "path": "frames/thermal/0105.png",
+      "stored_step_one_based": 53,
+      "requested_yaw_degrees": 77.72727272727272,
+      "sha256": "4b6cbabfb1927fb344e42e895b0dd754ba7ffbefba33615b4bd14c2aad72de99"
+    },
+    {
+      "path": "frames/thermal/0106.png",
+      "stored_step_one_based": 54,
+      "requested_yaw_degrees": 78.18181818181819,
+      "sha256": "e04b6fda76825f05387f7b3d8dbeb831a9fe72ee3791268c9ddcbd43d56c4442"
+    },
+    {
+      "path": "frames/thermal/0107.png",
+      "stored_step_one_based": 54,
+      "requested_yaw_degrees": 78.63636363636363,
+      "sha256": "ef2b2868595241080abea2037c4c28db6c2013aaf7885a7a1f632048c0432cc7"
+    },
+    {
+      "path": "frames/thermal/0108.png",
+      "stored_step_one_based": 55,
+      "requested_yaw_degrees": 79.0909090909091,
+      "sha256": "17ac30d607669f7e7d38e880a407b415c176402b2071c7a836d3322cdf1a82b6"
+    },
+    {
+      "path": "frames/thermal/0109.png",
+      "stored_step_one_based": 55,
+      "requested_yaw_degrees": 79.54545454545455,
+      "sha256": "de51ce11d0752ac95f4801c91d41f1624f41f3fc48f1d99eb3b0433b48c57e07"
+    },
+    {
+      "path": "frames/thermal/0110.png",
+      "stored_step_one_based": 56,
+      "requested_yaw_degrees": 80.0,
+      "sha256": "86ad7899a88d798554d6b76a67ebc5240b554119dc3e157240546ba26340a5d9"
+    },
+    {
+      "path": "frames/thermal/0111.png",
+      "stored_step_one_based": 56,
+      "requested_yaw_degrees": 80.45454545454545,
+      "sha256": "2bcbbb4c2db233e2bd92c50f1a58194607fe411a24e5c7a2ea6e7a8d5319ead7"
+    },
+    {
+      "path": "frames/thermal/0112.png",
+      "stored_step_one_based": 57,
+      "requested_yaw_degrees": 80.9090909090909,
+      "sha256": "d8fca9d65afb70d33e3472de0602cdf48e790926318244d48680700baeba046a"
+    },
+    {
+      "path": "frames/thermal/0113.png",
+      "stored_step_one_based": 57,
+      "requested_yaw_degrees": 81.36363636363637,
+      "sha256": "6c182941b5b4fcb42797cf2a6a20e64aba92c16f834f091c40f0b3ecc408c004"
+    },
+    {
+      "path": "frames/thermal/0114.png",
+      "stored_step_one_based": 58,
+      "requested_yaw_degrees": 81.81818181818181,
+      "sha256": "2f4b3797c57fcf4a97fdf51d2f24d82fbeda6aec0d28dd137dd93ef03293ad20"
+    },
+    {
+      "path": "frames/thermal/0115.png",
+      "stored_step_one_based": 58,
+      "requested_yaw_degrees": 82.27272727272728,
+      "sha256": "958094dc02a639d3f59496cfa2c413620563c7f6f5c41c8c060b6c9534df62ec"
+    },
+    {
+      "path": "frames/thermal/0116.png",
+      "stored_step_one_based": 59,
+      "requested_yaw_degrees": 82.72727272727272,
+      "sha256": "4d7c319c2095feb28b994a3c2fed81428fc4c4352d976448751ab13af624e5df"
+    },
+    {
+      "path": "frames/thermal/0117.png",
+      "stored_step_one_based": 59,
+      "requested_yaw_degrees": 83.18181818181819,
+      "sha256": "12ed618d23aaf2940aa993dd54fd2626bdb0d2adaedf993b3c5f37da255815f9"
+    },
+    {
+      "path": "frames/thermal/0118.png",
+      "stored_step_one_based": 60,
+      "requested_yaw_degrees": 83.63636363636363,
+      "sha256": "b020371e06df94670a705fa9856c83e01d1541a6f7e35d35fc9a4222df4b7f9e"
+    },
+    {
+      "path": "frames/thermal/0119.png",
+      "stored_step_one_based": 60,
+      "requested_yaw_degrees": 84.0909090909091,
+      "sha256": "adcc62ca578c12a92a12303ccbe7fee4679e5c02216629900eb32f905a384656"
+    },
+    {
+      "path": "frames/thermal/0120.png",
+      "stored_step_one_based": 61,
+      "requested_yaw_degrees": 84.54545454545455,
+      "sha256": "7e310929f80a9d0c5a4d075c49bcd4c6f7f365b22537c1caa895dfce941edd36"
+    },
+    {
+      "path": "frames/thermal/0121.png",
+      "stored_step_one_based": 61,
+      "requested_yaw_degrees": 85.0,
+      "sha256": "4d4703a20b772a5fd954f61376206983095a8ec8a43cca33df6de8eb053c28f3"
+    }
+  ]
+}

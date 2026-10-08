@@ -190,3 +190,12 @@ build/roomtest: tools/roomtest.c $(CORE_OBJ)
 	$(CC) $(LINK_CFLAGS) $^ -o $@ $(CORE_LDLIBS)
 build/battest: tools/battest.c $(CORE_OBJ)
 	$(CC) $(LINK_CFLAGS) $^ -o $@ $(CORE_LDLIBS)
+
+# Recompile the dispatcher when an optional backend is added or removed.
+# An explicit numerical-core recipe avoids the later target-specific CFLAGS assignment.
+build/gen/lab_backends.h: FORCE
+	@mkdir -p $(dir $@); echo '#define NAVIER_HAS_MFEM $(if $(filter Darwin,$(UNAME)),$(if $(wildcard $(MFEM_LIB)),1,0),0)' > $@.tmp; \
+	cmp -s $@.tmp $@ && rm -f $@.tmp || mv $@.tmp $@
+build/obj/lab/magnet/mg_scenario.o: src/lab/magnet/mg_scenario.c build/gen/lab_backends.h
+	@mkdir -p $(dir $@)
+	$(CC) $(CORE_CFLAGS) -include build/gen/lab_backends.h -c $< -o $@

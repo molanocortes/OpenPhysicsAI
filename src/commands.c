@@ -1140,7 +1140,13 @@ static void cmd_msaa(int argc, char **argv) {
 
 static void cmd_floorgrid(int argc, char **argv) { apply_onoff(&app.rs.floor_on, argc, argv, 1, "floor grid"); }
 static void cmd_box(int argc, char **argv) { apply_onoff(&app.rs.box_on, argc, argv, 1, "tunnel box"); }
-static void cmd_hud(int argc, char **argv) { apply_onoff(&app.hud_on, argc, argv, 1, "HUD"); }
+static void cmd_hud(int argc, char **argv) {
+    if (argc > 1 && str_ieq(argv[1], "clean")) {
+        hud_set_clean_view(true);
+        app.hud_on = false;
+        LOGI("clean view: computed field, stored time, scale and legend; H restores the interface");
+    } else if (apply_onoff(&app.hud_on, argc, argv, 1, "HUD")) hud_set_clean_view(false);
+}
 
 /* ---- camera and output -------------------------------------------------------------------------- */
 
@@ -1512,6 +1518,24 @@ static void cmd_uikeys(int argc, char **argv) {
     LOGI("typed %d characters into the panel field: '%s'", typed, hud_text_value());
 }
 
+static void cmd_uikey(int argc, char **argv) {
+    int key = 0;
+    if (argc > 1) {
+        if (strlen(argv[1]) == 1) key = (unsigned char)tolower((unsigned char)argv[1][0]);
+        else if (str_ieq(argv[1], "space")) key = ' ';
+        else if (str_ieq(argv[1], "left")) key = KEY_LEFT;
+        else if (str_ieq(argv[1], "right")) key = KEY_RIGHT;
+        else if (str_ieq(argv[1], "up")) key = KEY_UP;
+        else if (str_ieq(argv[1], "down")) key = KEY_DOWN;
+        else if (str_ieq(argv[1], "escape")) key = KEY_ESCAPE;
+    }
+    if (!key) { LOGE("usage: uikey <character|space|left|right|up|down|escape>"); return; }
+    int wait = app_inject_key(key);
+    if (!wait) { LOGE("the input queue is full"); return; }
+    g_wait_frames = MAXI(g_wait_frames, wait + 2);
+    LOGI("key pressed through the window input path: %s", argv[1]);
+}
+
 static void cmd_uilist(int argc, char **argv) {
     static const char *kinds[] = {"button", "slider", "region"};
     int n = ui_widget_count(app.ui);
@@ -1639,12 +1663,41 @@ static void cmd_fem(int argc, char **argv) {
         LOGI("result colour map %s", colormap_name(render_result_colormap(app.renderer)));
         LOGI("groups part %d support %d plate %d", fem_group_shown(0), fem_group_shown(1), fem_group_shown(2));
         if (fem_last_error()[0]) LOGI("last refusal shown in the panel: %s", fem_last_error());
-        LOGI("usage: fem field <von_mises|displacement|temperature> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>");
+        LOGI("usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | marker on|off | outline on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>");
+        return;
+    }
+    if (str_ieq(argv[1], "cmap")) {
+        if (argc < 3) {
+            LOGI("result colour map %s (usage: fem cmap <name>)", colormap_name(render_result_colormap(app.renderer)));
+            return;
+        }
+        int c = colormap_find(argv[2]);
+        if (c < 0) {
+            LOGE("unknown result colour map '%s' - palette unchanged", argv[2]);
+            return;
+        }
+        render_set_result_colormap(app.renderer, c);
+        LOGOK("result colour map %s", colormap_name(c));
+        return;
+    }
+    if (str_ieq(argv[1], "marker") || str_ieq(argv[1], "outline")) {
+        bool marker = str_ieq(argv[1], "marker");
+        if (argc > 3 || (argc == 3 && !str_ieq(argv[2], "on") && !str_ieq(argv[2], "off"))) {
+            LOGE("usage: fem %s on|off", argv[1]);
+            return;
+        }
+        if (argc == 3) {
+            bool on = str_ieq(argv[2], "on");
+            if (marker) fem_set_marker(on);
+            else fem_set_outline(on);
+        }
+        LOGI("%s %s", marker ? "peak marker" : "undeformed outline",
+             (marker ? fem_marker_on() : fem_outline_on()) ? "on" : "off");
         return;
     }
     if (str_ieq(argv[1], "field")) {
         if (argc < 3) {
-            LOGE("usage: fem field von_mises|displacement|temperature");
+            LOGI("showing %s [%s]", fem_field_label(fem_field()), fem_field_unit(fem_field()));
             return;
         }
         for (int i = 0; i < FEM_FIELD_COUNT; i++)
@@ -2116,10 +2169,12 @@ static void cmd_agent(int argc, char **argv) {
 static void cmd_mode(int argc, char **argv) {
     if (argc > 1) {
         int m = -1;
+        if (str_ieq(argv[1], "manual")) m = UI_ADVANCED;
+        if (str_ieq(argv[1], "agentic")) m = UI_AGENT;
         for (int i = 0; i < UI_MODE_COUNT; i++)
             if (str_ieq(argv[1], ui_mode_name(i))) m = i;
         if (m < 0) {
-            LOGE("usage: mode simple|advanced|agent");
+            LOGE("usage: mode manual|agentic (advanced|agent|simple remain aliases)");
             return;
         }
         app_set_ui_mode(m);
@@ -2338,7 +2393,7 @@ static const Command COMMANDS[] = {
     {"msaa", "<1|2|4|8>", "anti-aliasing samples", cmd_msaa, NULL},
     {"floorgrid", "<on|off>", "floor grid", cmd_floorgrid, complete_onoff},
     {"box", "<on|off>", "tunnel outline", cmd_box, complete_onoff},
-    {"hud", "<on|off>", "interface overlay (H)", cmd_hud, complete_onoff},
+    {"hud", "<on|off|clean>", "interface overlay or clean numerical view (H restores)", cmd_hud, complete_onoff},
     {"fps", "<n|off>", "cap the render frame rate (default 60) so the solver gets the spare CPU", cmd_fps, NULL},
     /* camera & output */
     {"camera", "<iso|front|back|side|top|bottom|model|lock|unlock|orbit y p|zoom f|fov d>", "camera presets and control", cmd_camera, complete_cams},
@@ -2357,6 +2412,7 @@ static const Command COMMANDS[] = {
     {"uiclickat", "<x> <y> [frames]", "click a point of the 3D view, e.g. to pick a face (UI testing)", cmd_uiclickat, NULL},
     {"uiscroll", "<x> <y> <points>", "turn the wheel at a window point (UI testing)", cmd_uiscroll, NULL},
     {"uikeys", "<text>", "type into the focused panel field through the real key path (UI testing)", cmd_uikeys, NULL},
+    {"uikey", "<key>", "press a keyboard shortcut through the window event path (UI testing)", cmd_uikey, NULL},
     {"uiclick", "<label> [pos] [frames]", "click a button or slider through the real input path (UI testing)", cmd_uiclick, NULL},
     {"uidrag", "<x0> <y0> <x1> <y1> [alt] [shift] [frames N]", "drag through the real input path, e.g. Option-drag the model (UI testing)", cmd_uidrag, NULL},
     /* additive manufacturing */
@@ -2364,10 +2420,10 @@ static const Command COMMANDS[] = {
     {"lab", "<open|run|close|field|frame|play|pause|view|orbit|mesh|cmap|range|info>", "the physics lab: open a result (.lab) or run a scenario (.json), play it, turn it", cmd_lab, NULL},
     {"workspace", "[fluid|solid|toggle]", "switch between the water tunnel and the finite-element analysis", cmd_workspace, NULL},
     {"solid", "<new|open|run|wait|cancel|fixbase|import|export|mesh|repair|status>", "analysis actions: run a solve, support the base, share geometry with the tunnel", cmd_solid, NULL},
-    {"fem", "<field|deform|step|range|play|pause|speed|section|glass|explode|edges|shadows|export|job|show|hide|fit>",
+    {"fem", "<field|cmap|deform|step|range|play|pause|speed|section|glass|explode|edges|marker|outline|shadows|export|job|show|hide|fit>",
      "how the finite-element result is drawn in the shared 3D view", cmd_fem, NULL},
     {"agent", "wait [seconds] | stop | status | command <line>", "scripts: wait for the agent's command to end, or stop it", cmd_agent, NULL},
-    {"mode", "[simple|advanced|agent]", "who the window is for: a guided path, every control, or your AI tool", cmd_mode, NULL},
+    {"mode", "[manual|agentic]", "control the physics yourself or use your AI tool", cmd_mode, NULL},
     {"uitext", "", "print every sentence the analysis panel wrote this frame (UI testing)", cmd_uitext, NULL},
     {"elapsed", "[reset] [label]", "seconds since the last reset: how long a step of a script actually took", cmd_elapsed, NULL},
     {"echo", "<text>", "print text", cmd_echo, NULL},

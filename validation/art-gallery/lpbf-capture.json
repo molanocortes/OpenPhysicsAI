@@ -1,0 +1,883 @@
+{
+  "kind": "lpbf",
+  "result_sha256": "f1fc8dd11f12e34d4876ec5e80052ec7eb2ff97da2717aca325b707ae7a50f0f",
+  "renderer_sha256": "13c899b512baefb8e7baa784f44f179905d6d6bfe896602286868e2ae537c9b9",
+  "pixels": "Native OpenGL output; no painted fields or fabricated time interpolation",
+  "deformation_scale": 1,
+  "range": "all stored states, full peak (not percentile clipped)",
+  "presentation": "Designed geometry; artificial studio lighting, ambient occlusion, bloom and backdrop",
+  "preset": {
+    "field": "von_mises",
+    "cmap": "viridis",
+    "elevation": 28,
+    "hero": 16,
+    "frames": 144
+  },
+  "fps": 20,
+  "frames": [
+    {
+      "path": "frames/lpbf/0000.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 30.0,
+      "sha256": "757af636d6d7508c625e23b54b80454039ac77256bcbb8c0036f6bf4f601f2cd"
+    },
+    {
+      "path": "frames/lpbf/0001.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 32.5,
+      "sha256": "ec940a746952a38c868d8fafdfdc31fa52464da10750d8d713cb5419922ea478"
+    },
+    {
+      "path": "frames/lpbf/0002.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 35.0,
+      "sha256": "2beb5957b42bb3d9ec9ce8d2d474f332216fe98bb670827f1868c43b3e69d80d"
+    },
+    {
+      "path": "frames/lpbf/0003.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 37.5,
+      "sha256": "674db7dbfb603ab460b21b2ce8163202c2024e8bd746689c43a0941623724022"
+    },
+    {
+      "path": "frames/lpbf/0004.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 40.0,
+      "sha256": "99589a483310937fd4c5847409f956ec1f6dfff81feb50cdaf9ec0d99a8973ba"
+    },
+    {
+      "path": "frames/lpbf/0005.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 42.5,
+      "sha256": "cc909b9a8744a251a0032b25d302a3d135e8377748e6667383be00edda7b9551"
+    },
+    {
+      "path": "frames/lpbf/0006.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 45.0,
+      "sha256": "d0e9abee0bb7bdb39384efd4ea951dec1129f255a4a9929edee123e8b9e03ee9"
+    },
+    {
+      "path": "frames/lpbf/0007.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 47.5,
+      "sha256": "15beaa3d7bbe7c62914003ecc97eafc836c726c62c474d349f0dbec547b99edc"
+    },
+    {
+      "path": "frames/lpbf/0008.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 50.0,
+      "sha256": "16d5bf807a7b2329be2922d2674139b6d8935adba4e27cf8168df5d24d4c9fe2"
+    },
+    {
+      "path": "frames/lpbf/0009.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 52.5,
+      "sha256": "3323d54d9686bc504cf4821e178a4a002693c537b6f38603962c894b9dba3a9d"
+    },
+    {
+      "path": "frames/lpbf/0010.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 55.0,
+      "sha256": "bbf3e3f0a06932471ec98e2d6f5093ec2f598aafa05cdd2b157d3b621afd0b08"
+    },
+    {
+      "path": "frames/lpbf/0011.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 57.5,
+      "sha256": "b86111770c773e012f8685a73b948b8b46301b1f3f5bf296e7d9ba61b2700a3b"
+    },
+    {
+      "path": "frames/lpbf/0012.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 60.0,
+      "sha256": "0e8eaaf447356f3dc0c7139a688afee1813363388d45d75cc793b696c3c0e68b"
+    },
+    {
+      "path": "frames/lpbf/0013.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 62.5,
+      "sha256": "35777a990c6a5988e54b78fc92303acfc21ae1b301a03be386699ce6ec961312"
+    },
+    {
+      "path": "frames/lpbf/0014.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 65.0,
+      "sha256": "d38fe4f948e6bf4a210aed827cab9796d6913462f136636a9edac8da90012d38"
+    },
+    {
+      "path": "frames/lpbf/0015.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 67.5,
+      "sha256": "276569d3f8ab72fb7d1fb31c5413adcb14715bcab3876ef044d57c7b3b727b9d"
+    },
+    {
+      "path": "frames/lpbf/0016.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 70.0,
+      "sha256": "199c8bc3b857322f56307f968af26b072da2fddb6ba0806bf3d88e44a0463d50"
+    },
+    {
+      "path": "frames/lpbf/0017.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 72.5,
+      "sha256": "9baae0909c564227c5d8f607e15a32e56ba32d9083dc9fecdd358b128665b529"
+    },
+    {
+      "path": "frames/lpbf/0018.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 75.0,
+      "sha256": "4dffe5b11691ebb084dae2611e357ec6070acbec12905932d83f8917e2c86e51"
+    },
+    {
+      "path": "frames/lpbf/0019.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 77.5,
+      "sha256": "d4964f784a2aed17d7573212e2b5d68ec5eb487d021ad75aa1e021e503ab2fe1"
+    },
+    {
+      "path": "frames/lpbf/0020.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 80.0,
+      "sha256": "e7d865f4c5a825796cecc8ef1208fa724b94071f0dddf599a745a17af4c64095"
+    },
+    {
+      "path": "frames/lpbf/0021.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 82.5,
+      "sha256": "e57231d064c11f96e5f844ce7accdd77d5a7529717cf33a01705dfe10cf11c8e"
+    },
+    {
+      "path": "frames/lpbf/0022.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 85.0,
+      "sha256": "84016d2398807e1404fcd3ad44c29478fb705d7bf22a920d7ee2aa25bd5a1c43"
+    },
+    {
+      "path": "frames/lpbf/0023.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 87.5,
+      "sha256": "986eea7aced395465d9440c3f8e81270e2c9b9d1256e7f63302fe0eefc6aa14f"
+    },
+    {
+      "path": "frames/lpbf/0024.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 90.0,
+      "sha256": "9452e9cabcd445e1b46d8e5bd79279ca50bb9e965d7b8c04018c979e09d7d4b6"
+    },
+    {
+      "path": "frames/lpbf/0025.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 92.5,
+      "sha256": "5b134f518ae5bedbe40c35c1f2b60c8bacd117898b613592e3b37a4738246a7e"
+    },
+    {
+      "path": "frames/lpbf/0026.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 95.0,
+      "sha256": "aa4856fa9c0944aa7fc4389fd5d80534a58c906deb3eaeefc42cc52ac6bbf698"
+    },
+    {
+      "path": "frames/lpbf/0027.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 97.5,
+      "sha256": "15442a03f4ec6c5668d319b505fc903b4ebf245cd183af1e1d2068e97dc1136d"
+    },
+    {
+      "path": "frames/lpbf/0028.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 100.0,
+      "sha256": "b46acaa2def0bca89de033ee26e9ab12bcb1b1072ecc3f438e6d7e6d407da1d8"
+    },
+    {
+      "path": "frames/lpbf/0029.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 102.5,
+      "sha256": "3eb38979fbce29604b5c2fb610d2f72695a89a0d42e2927d948683017b51f8b0"
+    },
+    {
+      "path": "frames/lpbf/0030.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 105.0,
+      "sha256": "782266254d0c4fe4bb57e2a03e99bd0435264d1ed74963554c77df8611a54cbd"
+    },
+    {
+      "path": "frames/lpbf/0031.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 107.5,
+      "sha256": "837645136d4bb2f40b2afae5e5038583ec85685188a52ef38c873d8ee03b8072"
+    },
+    {
+      "path": "frames/lpbf/0032.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 110.0,
+      "sha256": "98f0fec7ee989346faf849a2fcd067902ae6736cd5eb4809688f20b7f099fe3e"
+    },
+    {
+      "path": "frames/lpbf/0033.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 112.5,
+      "sha256": "6c9f351fc8f8480a2f13de175153666d34c24cde021e81a0bb67b4194191976b"
+    },
+    {
+      "path": "frames/lpbf/0034.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 115.0,
+      "sha256": "af6a79be71406db367eceade5c6970886740dedf86d165236ee75752f1b64805"
+    },
+    {
+      "path": "frames/lpbf/0035.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 117.5,
+      "sha256": "c47ae51f67796eb9558a224eebed57d649f5fd9946c3683a3b7b86fcbc2a116e"
+    },
+    {
+      "path": "frames/lpbf/0036.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 120.0,
+      "sha256": "d0e9b0d7295f29e1258325d80e5c77765565b38c0b312021cf07664549f65295"
+    },
+    {
+      "path": "frames/lpbf/0037.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 122.5,
+      "sha256": "5460dfab65bd5f667a7691a17dd0a51b3fe9f2c2a968db8850b14dc7d83e51d3"
+    },
+    {
+      "path": "frames/lpbf/0038.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 125.0,
+      "sha256": "7b815342ac2f4e353e6aa66f198e33aa294e50ab3ea4daf21bedb8bf61aef309"
+    },
+    {
+      "path": "frames/lpbf/0039.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 127.5,
+      "sha256": "d5a947a98a88d2dbe2f7979b7722e67f2778750856235f030c303542e307ce0b"
+    },
+    {
+      "path": "frames/lpbf/0040.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 130.0,
+      "sha256": "9a57c0f87d0e774760799d355164a6fad9e7eca2bd7996b3492ceedc13a7be84"
+    },
+    {
+      "path": "frames/lpbf/0041.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 132.5,
+      "sha256": "cd792366f062f4cad901603967770472002f32b066dbe59eb34d561ce6d1b772"
+    },
+    {
+      "path": "frames/lpbf/0042.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 135.0,
+      "sha256": "c9aa48c81abe68e9431843ff9de24c44a7ba52e3f66723ba83a27afdb0e5921b"
+    },
+    {
+      "path": "frames/lpbf/0043.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 137.5,
+      "sha256": "1f21b240dcc1bf73de5a84e00b426fffe0afe0d79097c18a23d6ff0c60c7b238"
+    },
+    {
+      "path": "frames/lpbf/0044.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 140.0,
+      "sha256": "bd5df5d58a3d3329f6d0e478befd84bc412dc8c62c6ce0181a1ad967aba67455"
+    },
+    {
+      "path": "frames/lpbf/0045.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 142.5,
+      "sha256": "61f6749169f211f71285078be59139fd56628c2ff1efead4cb64283745978c39"
+    },
+    {
+      "path": "frames/lpbf/0046.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 145.0,
+      "sha256": "1cc8896ddddbaf8a9998dacfbff7cdf52b120232b6714cdc0fd9f828675f0574"
+    },
+    {
+      "path": "frames/lpbf/0047.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 147.5,
+      "sha256": "2375a60576b1e3f1cd7849313d98c946cf680c19e4f87a1addab13d6c82f60ef"
+    },
+    {
+      "path": "frames/lpbf/0048.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 150.0,
+      "sha256": "7f65f65fe654f7d21bf21a4ca53272e70a6b649d99a688c95e50659e676019fc"
+    },
+    {
+      "path": "frames/lpbf/0049.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 152.5,
+      "sha256": "bbe2911dd6bd35d728611e873726b708fb9b7bd87aff9beafa5b548c7630e791"
+    },
+    {
+      "path": "frames/lpbf/0050.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 155.0,
+      "sha256": "6b4fab469b1e9da90e4aa3e61434f19360fdd6ef1e17d276630159a13f349058"
+    },
+    {
+      "path": "frames/lpbf/0051.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 157.5,
+      "sha256": "ed0e1e9decfd91b9ef4df5a045d7fd8e9acc12ae25530935917b65e763ae4f60"
+    },
+    {
+      "path": "frames/lpbf/0052.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 160.0,
+      "sha256": "42da122d01f81c0ae07593be88a5b93642a88aa41563d9befdcc01c316f520e6"
+    },
+    {
+      "path": "frames/lpbf/0053.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 162.5,
+      "sha256": "601061a5752ef6066fad0d99a6250a71baac745df22594b79078c0c29e7a3697"
+    },
+    {
+      "path": "frames/lpbf/0054.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 165.0,
+      "sha256": "61b86179e53290be41892f2ea698bbd84fd6beb8498c1f9cbaa100f6665dc7e5"
+    },
+    {
+      "path": "frames/lpbf/0055.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 167.5,
+      "sha256": "20361cdbbc970992141f975820159be07d9f91bfff71a5a3a0c22dc7156a935b"
+    },
+    {
+      "path": "frames/lpbf/0056.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 170.0,
+      "sha256": "421a8ef73f224d8600c8801ec426e231b57b37dfecdc351f596ce24417d8d2f0"
+    },
+    {
+      "path": "frames/lpbf/0057.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 172.5,
+      "sha256": "1c8fd8d702aa4241a67b9df1316912417509303e238575946f15ba7fefa7b799"
+    },
+    {
+      "path": "frames/lpbf/0058.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 175.0,
+      "sha256": "858a1ba59d7c7309dafd989becc14d677fa9c34e9f256a4ee62238c19a6ad971"
+    },
+    {
+      "path": "frames/lpbf/0059.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 177.5,
+      "sha256": "2b20a55d56036e9e2a831b8b5cfd61484290c9f9de16857bc58b4a1a7b4dff17"
+    },
+    {
+      "path": "frames/lpbf/0060.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 180.0,
+      "sha256": "5ff963c98dff334cd16649aabb2f54eb5c61f2ecc600e840af651d7ad222c9eb"
+    },
+    {
+      "path": "frames/lpbf/0061.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 182.5,
+      "sha256": "f02833b855422b4a8f75062c648064e8ef7b18ddfaddd026e5e2cd45140116f8"
+    },
+    {
+      "path": "frames/lpbf/0062.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 185.0,
+      "sha256": "f66d4bbc98f747c3fc4c3137faa774c505e6f42d1bc3189a61132f267fff42b2"
+    },
+    {
+      "path": "frames/lpbf/0063.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 187.5,
+      "sha256": "3c218690e280029b33b79c37b3b8243ceb34f25a45b47a9804d4c5e89378bdcd"
+    },
+    {
+      "path": "frames/lpbf/0064.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 190.0,
+      "sha256": "658c0bf2918f0c922a77e87632a3b4cd258b93a88928489c785ef79ec6a6a804"
+    },
+    {
+      "path": "frames/lpbf/0065.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 192.5,
+      "sha256": "fa5f08e31727ea56cdd74eded0de2b00ba64e2d3541a43b363f9e72ea452af17"
+    },
+    {
+      "path": "frames/lpbf/0066.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 195.0,
+      "sha256": "891885c0d65ba2f81bb541bd8a178c476026c638d94ff4ef16b6a2c176ebba49"
+    },
+    {
+      "path": "frames/lpbf/0067.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 197.5,
+      "sha256": "6dad61784461bb2ab94a57e37184c14e9e74c84da9e79cf951ac52bdfe993bb9"
+    },
+    {
+      "path": "frames/lpbf/0068.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 200.0,
+      "sha256": "e1815f96ab7afbc62b785deeecb564a7cc99c1c967ff1fcfdf992eb3c2449851"
+    },
+    {
+      "path": "frames/lpbf/0069.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 202.5,
+      "sha256": "d50c586facfc4281daea5a4144273a8b405c15f9d509e74b250a362694722475"
+    },
+    {
+      "path": "frames/lpbf/0070.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 205.0,
+      "sha256": "3dd2a35927c5baebbd853195018ea05306098c87c0de978c5d4a7e56787d8263"
+    },
+    {
+      "path": "frames/lpbf/0071.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 207.5,
+      "sha256": "30306614b8f14a2c1b781db3086ab13d07eb92ba88433e61d1e936aac736e41c"
+    },
+    {
+      "path": "frames/lpbf/0072.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 210.0,
+      "sha256": "1e0c685de5c8b7446a6721abd01744c4f552b0c7f4743a2a85be3fea222bd1f1"
+    },
+    {
+      "path": "frames/lpbf/0073.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 212.5,
+      "sha256": "0303d25e07ae03e943624e738af8edc9d6e7fc0720bdaeb90b3176f6e115584c"
+    },
+    {
+      "path": "frames/lpbf/0074.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 215.0,
+      "sha256": "922a1118c16bc26f835d9ca107c2a78f6405ff8704f8270c1649f28f97e5e665"
+    },
+    {
+      "path": "frames/lpbf/0075.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 217.5,
+      "sha256": "bdc96439d167af98897925c3a3502c76727f3fa19ecc5db95807cee0d5bf4775"
+    },
+    {
+      "path": "frames/lpbf/0076.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 220.0,
+      "sha256": "d1bbeee9051c540aeb7ec3e5429e2465b34c1d9f620dbdd8c2a536107b11a102"
+    },
+    {
+      "path": "frames/lpbf/0077.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 222.5,
+      "sha256": "0cf9a6ca31066adeebef3664a4d1a671a4270510217133fd68565c9fda5c7d99"
+    },
+    {
+      "path": "frames/lpbf/0078.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 225.0,
+      "sha256": "2eca682406eca0d6ede983261125239c2b2ddc49ee12b7d87601d37fa3bfa1c7"
+    },
+    {
+      "path": "frames/lpbf/0079.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 227.5,
+      "sha256": "cf71dc8d10673bf712f6961f6116aca4d5d5c267ea5e18c24117f40e48a82310"
+    },
+    {
+      "path": "frames/lpbf/0080.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 230.0,
+      "sha256": "6b412389cc10e97b6e1f0c54b770442a9467d26312577cbc2645aab09effe76b"
+    },
+    {
+      "path": "frames/lpbf/0081.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 232.5,
+      "sha256": "571143191cd4cb16eac53fa48d171c3c7fa6e7941be39f21727fd22d1b104463"
+    },
+    {
+      "path": "frames/lpbf/0082.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 235.0,
+      "sha256": "7f1248124aaacee3468cb4ead655ae88d0a19c955eca4931d6c3897ce7c998f5"
+    },
+    {
+      "path": "frames/lpbf/0083.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 237.5,
+      "sha256": "a0b3185d5cd39abaef0a5377f053d278f9ec77254bc1c400ba9303118518d123"
+    },
+    {
+      "path": "frames/lpbf/0084.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 240.0,
+      "sha256": "5e9b09bb26f273807c98686033e5e30658e16f602abe95cc9124e8844685dd6c"
+    },
+    {
+      "path": "frames/lpbf/0085.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 242.5,
+      "sha256": "f72748cd2b49605083114d156fccdd46bb89dd8de686af2fdd2ac71ec14349ed"
+    },
+    {
+      "path": "frames/lpbf/0086.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 245.0,
+      "sha256": "9f6ef699ece6c153d898d8f14221f977eb4c853d7f54add98dbc4fbb18796cf4"
+    },
+    {
+      "path": "frames/lpbf/0087.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 247.5,
+      "sha256": "3b767e76f7104afe9d4cc0f411221fb6dfbff35073cba7a0e5582f6c3588218a"
+    },
+    {
+      "path": "frames/lpbf/0088.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 250.0,
+      "sha256": "507f1a8c9d4e6bacaaadcc65b940b889b419df875317408c355424fa2e59fce4"
+    },
+    {
+      "path": "frames/lpbf/0089.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 252.5,
+      "sha256": "16baeb07e8264b8379c9929b7ea3e1e23e3101f8c364048d87bce0e665028b67"
+    },
+    {
+      "path": "frames/lpbf/0090.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 255.0,
+      "sha256": "bea8ce96bdc02c8c6e798462aa79b6e44cc1e913ca7f595ab920adba035fb27b"
+    },
+    {
+      "path": "frames/lpbf/0091.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 257.5,
+      "sha256": "33d10f06b7c13f4e1be947e0a72a7b6681168782e6adb8833a128a60e9760561"
+    },
+    {
+      "path": "frames/lpbf/0092.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 260.0,
+      "sha256": "5d47fbf0ba54cf25d8a1437d1cafafd5ea52d1369e511620e6f4b0b07a91354d"
+    },
+    {
+      "path": "frames/lpbf/0093.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 262.5,
+      "sha256": "b8f6d9ea0a8789b08c9ba0704478a6d88a03cebdb19f056483c0a487b8b95b11"
+    },
+    {
+      "path": "frames/lpbf/0094.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 265.0,
+      "sha256": "a06dfd82be2b75be19bc2a095212d68313b5363e63290156b4e6e6be959ea334"
+    },
+    {
+      "path": "frames/lpbf/0095.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 267.5,
+      "sha256": "1eed4f6750a9f772c874333964242a467875dbccf3db8a5bb88b8a1986257cce"
+    },
+    {
+      "path": "frames/lpbf/0096.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 270.0,
+      "sha256": "2110593b4e26e91feea7aa967e089d42f0bc66f6bccd14a6ff1229c081516be5"
+    },
+    {
+      "path": "frames/lpbf/0097.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 272.5,
+      "sha256": "62659c94df9353ea72b521ccb8a205c01469d421f3c91b1b7a174de460eaf6b5"
+    },
+    {
+      "path": "frames/lpbf/0098.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 275.0,
+      "sha256": "cd65662be11471672040156de09967ab604df259e56ff103405ea48dc159a7f6"
+    },
+    {
+      "path": "frames/lpbf/0099.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 277.5,
+      "sha256": "f18f4b9b2be466b00478c2737b112f6a50c1e08ade8e0d4620f53a990623a30c"
+    },
+    {
+      "path": "frames/lpbf/0100.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 280.0,
+      "sha256": "ca122720de73fb07a30f86f03a957525accec127470f63460de673c551f93448"
+    },
+    {
+      "path": "frames/lpbf/0101.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 282.5,
+      "sha256": "ea4b650b6f38f4f648951551e8d8e34e9199be0b704241807cd679b27037e96d"
+    },
+    {
+      "path": "frames/lpbf/0102.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 285.0,
+      "sha256": "073c45752cdb6008c50e6e1fb0943e791b6f0025b5d6efd9935adf28c3497acd"
+    },
+    {
+      "path": "frames/lpbf/0103.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 287.5,
+      "sha256": "709d998f13c13da54d9a0ece323298ece1d3fb6e2861d519eff77ff7dabd1d49"
+    },
+    {
+      "path": "frames/lpbf/0104.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 290.0,
+      "sha256": "6f8df1ac7c57d7f518366a3de2c857c2d49ba7647ae3327ac5d6877bf75fdc49"
+    },
+    {
+      "path": "frames/lpbf/0105.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 292.5,
+      "sha256": "1d107745cb5d10dc0a503cd8b969f427f2397b9b0a44beb6e769ec319e7424d3"
+    },
+    {
+      "path": "frames/lpbf/0106.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 295.0,
+      "sha256": "99ad5311427406037ea4a1185da0c2f7a12c14122d3f1791e3669b7dba6415c2"
+    },
+    {
+      "path": "frames/lpbf/0107.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 297.5,
+      "sha256": "b78e4e1d9c7267aa6aeeb026967630e2ce443e14a142e76898fae7a83902329f"
+    },
+    {
+      "path": "frames/lpbf/0108.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 300.0,
+      "sha256": "675de9030e8798b2ad0ce928ac88947fd6122eed6d87b322a01c9ab4687a4b32"
+    },
+    {
+      "path": "frames/lpbf/0109.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 302.5,
+      "sha256": "d55bd75a5cc9ef7adb29f93c792cb746f99d2b492646ae4e2f55e515d84ae743"
+    },
+    {
+      "path": "frames/lpbf/0110.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 305.0,
+      "sha256": "d1dd423b9e410bc8a9dc8b99f3e467cfe830df73186a5a220c00e89fd02eb56c"
+    },
+    {
+      "path": "frames/lpbf/0111.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 307.5,
+      "sha256": "0f755e1a27d958653f42b894429124076ebccd57b922dee6403db304926cd188"
+    },
+    {
+      "path": "frames/lpbf/0112.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 310.0,
+      "sha256": "cce41f19704a9255cbd7d8729b4232b6a34d40d34f0283ad6105eb7f182b44bb"
+    },
+    {
+      "path": "frames/lpbf/0113.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 312.5,
+      "sha256": "80be5188351a26cef82465f481149731d9d08f209272382c02addf2be9c43a0c"
+    },
+    {
+      "path": "frames/lpbf/0114.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 315.0,
+      "sha256": "2d59233c186613cea7a84e42ace33b1e4828866a87fa30d305cb79085e0d9f0c"
+    },
+    {
+      "path": "frames/lpbf/0115.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 317.5,
+      "sha256": "d739e9275f0d1326d55ae81bf2bcd830ea0aa2082efd3d4edd1e9d9e13b81e09"
+    },
+    {
+      "path": "frames/lpbf/0116.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 320.0,
+      "sha256": "d75c4ee6580b3b96770b8d0870cd540e4c8b955608b3901bea042e80010249c3"
+    },
+    {
+      "path": "frames/lpbf/0117.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 322.5,
+      "sha256": "1d9dcb501390430b9617532ca945c92a42038e899445bd0774ce9151aa82cf7b"
+    },
+    {
+      "path": "frames/lpbf/0118.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 325.0,
+      "sha256": "c798940ad685da7d39fa742ce148ae02a55822aa90e1def807c2d599e49ba677"
+    },
+    {
+      "path": "frames/lpbf/0119.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 327.5,
+      "sha256": "e79c6ff91a9dc625232ef28e52fa6757f8fe021c9f491815ff3ee0652626397f"
+    },
+    {
+      "path": "frames/lpbf/0120.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 330.0,
+      "sha256": "bb3c54f20b60b76e5a86123f541391ce67f8963aed205ccc6fd461fa523bdc53"
+    },
+    {
+      "path": "frames/lpbf/0121.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 332.5,
+      "sha256": "e18b2b9999af693549409fd934a00cb0e3e475888e6ea832eede74ad34cf3a32"
+    },
+    {
+      "path": "frames/lpbf/0122.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 335.0,
+      "sha256": "d496346ba786e0ce3d7f7540240001b622190d8e5420b785b72eb421fa3d3b36"
+    },
+    {
+      "path": "frames/lpbf/0123.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 337.5,
+      "sha256": "b2f824ee94e2191878f663cd464daaa59cd7d6b2e8b441fe649ed03ec645c45c"
+    },
+    {
+      "path": "frames/lpbf/0124.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 340.0,
+      "sha256": "704e6a98c945f790237853ae3140e101ad63627e7d3c723e7b3bf81e77e20070"
+    },
+    {
+      "path": "frames/lpbf/0125.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 342.5,
+      "sha256": "9da739688202a890e905446b789ad99595f1893ec5ac41283b2b4743159fa96e"
+    },
+    {
+      "path": "frames/lpbf/0126.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 345.0,
+      "sha256": "03b9c9b6336fd28cc6d2219e9311321ab2160a6c3a283e8c97e61e40b65e8d04"
+    },
+    {
+      "path": "frames/lpbf/0127.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 347.5,
+      "sha256": "954850fb0ea263fa4f25080917a6b64dc27b601cbdfe6982621fc8d8a84a0487"
+    },
+    {
+      "path": "frames/lpbf/0128.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 350.0,
+      "sha256": "8176db96fe6873e76c7ff4419ec17e472407c9508b6bb94750a7d428b09b504a"
+    },
+    {
+      "path": "frames/lpbf/0129.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 352.5,
+      "sha256": "25178d0670b13762926245eee7041ed1df3a1b3183adaa9f4a5a6a96712b2905"
+    },
+    {
+      "path": "frames/lpbf/0130.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 355.0,
+      "sha256": "1b1b20ee2e702022767a52aadff8dfbe1ecdd5c8a556bb0d1f0b66143ea5e45c"
+    },
+    {
+      "path": "frames/lpbf/0131.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 357.5,
+      "sha256": "a12ec96d3950798d81095ee0b70afebc5fa70d288b4beb4cf6860e0b60a6de9a"
+    },
+    {
+      "path": "frames/lpbf/0132.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 360.0,
+      "sha256": "41ca00656343bad0ebdec6fb4932cc1750211e5262ba3d0e7a42c4095491e8d0"
+    },
+    {
+      "path": "frames/lpbf/0133.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 362.5,
+      "sha256": "968b015761d89d02a5e777b85ebcfd6a4135dd70c608db3d7d1b061f89575faa"
+    },
+    {
+      "path": "frames/lpbf/0134.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 365.0,
+      "sha256": "6f77ddca596d80218ee7e3fed451d2457bfb8676ca0ebf79a822d6d9cc8e7ece"
+    },
+    {
+      "path": "frames/lpbf/0135.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 367.5,
+      "sha256": "cf022815f5fdd2e43efd7f35e99a6b9c8e866195d62f2f1b7fd7d78d0303c136"
+    },
+    {
+      "path": "frames/lpbf/0136.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 370.0,
+      "sha256": "f6af9460a318b2891cad5d740b660dd77bdd730c4afbc29e8d7c8bb9ae790790"
+    },
+    {
+      "path": "frames/lpbf/0137.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 372.5,
+      "sha256": "289d0a93cc76dbdb9fd1c8f5f34f117aa43230ae677e37c2e4db81b364055b26"
+    },
+    {
+      "path": "frames/lpbf/0138.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 375.0,
+      "sha256": "83fc48e94c95274387ad82d40103b36e3b6876d6652761318d8bcfda5bd91ebe"
+    },
+    {
+      "path": "frames/lpbf/0139.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 377.5,
+      "sha256": "fa4b85f492bbfe180c214fdb49cb04d1435254e0f1d0dcc782f14cc5a183033f"
+    },
+    {
+      "path": "frames/lpbf/0140.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 380.0,
+      "sha256": "00d4ec148705bb5e84011670f23a23a9af5179a7c55d1240daf7c6cd86b2ac19"
+    },
+    {
+      "path": "frames/lpbf/0141.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 382.5,
+      "sha256": "e18a6af419616212d6ab312429c4d244b49d445deca25a95547cf88f68235c88"
+    },
+    {
+      "path": "frames/lpbf/0142.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 385.0,
+      "sha256": "ef3b92deb6e8db4f43d8794e0b7940bc581b546a9bbb234a4d1de038e3697329"
+    },
+    {
+      "path": "frames/lpbf/0143.png",
+      "stored_step_one_based": 16,
+      "requested_yaw_degrees": 387.5,
+      "sha256": "b3d10569b2ed7597a3a137b2e0cb67804ad98a301c88e83b2ccf173aa07bbeab"
+    }
+  ]
+}

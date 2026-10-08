@@ -36,8 +36,8 @@ const char *mcp_default_instructions(void) {
            "pixels (view_pick, or a pick query): only views rendered by this server have a known camera. For photographs or "
            "screenshots from other software, ask the user to identify the faces instead of guessing.\n"
            "Results: quote numbers only after reading the summary checks (equilibrium_ok, energy_ok) and the warnings. Peaks at "
-           "supports or sharp inside corners are singular and not design values; library materials are uncalibrated demonstration "
-           "values; a colour image alone is not evidence of correctness.\n"
+           "supports or sharp inside corners are singular and not design values; read each material's status and provenance "
+           "(demonstration, published or measured); a colour image alone is not evidence of correctness.\n"
            "Rules: STL has no units, so always pass units; if the user did not state them, pass your best inference with "
            "units_source 'inferred' and a units_note. Numbers are in the unit documented for each field (lengths mm, "
            "angles deg, temperatures degC); strings may carry units ('0.25 in'). Mutations return the project revision: "
@@ -153,15 +153,23 @@ static JsonValue *do_tools_list(McpSession *s, const JsonValue *id, const JsonVa
         if (at_least(s, "2025-06-18")) json_set_string(t, "title", json_get_str(op, "title", ""));
         json_set_string(t, "description", json_get_str(op, "description", ""));
         json_set(t, "inputSchema", json_clone(json_get(op, "input_schema")));
+        if (at_least(s, "2025-06-18")) {
+            /* All tools return the control-layer envelope; image bytes remain in image content. */
+            JsonValue *schema = json_set_object(t, "outputSchema");
+            json_set_string(schema, "type", "object");
+            JsonValue *props = json_set_object(schema, "properties");
+            const char *keys[] = {"ok", "revision", "value", "error", "replayed", "images"};
+            const char *types[] = {"boolean", "number", "object", "object", "boolean", "array"};
+            for (int k = 0; k < 6; k++) json_set_string(json_set_object(props, keys[k]), "type", types[k]);
+            json_push(json_set_array(schema, "required"), json_string("ok"));
+        }
         if (at_least(s, "2025-03-26")) {
             JsonValue *ann = json_set_object(t, "annotations");
             bool query = !strcmp(json_get_str(op, "kind", "query"), "query");
             json_set_string(ann, "title", json_get_str(op, "title", ""));
             json_set_bool(ann, "readOnlyHint", query);
-            if (!query) {
-                json_set_bool(ann, "destructiveHint", json_get_bool(op, "destructive", false));
-                json_set_bool(ann, "idempotentHint", json_get_bool(op, "idempotent", false));
-            }
+            json_set_bool(ann, "destructiveHint", !query && json_get_bool(op, "destructive", false));
+            json_set_bool(ann, "idempotentHint", query || json_get_bool(op, "idempotent", false));
             json_set_bool(ann, "openWorldHint", false);
         }
         json_push(arr, t);

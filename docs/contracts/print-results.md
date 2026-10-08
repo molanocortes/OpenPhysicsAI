@@ -71,11 +71,12 @@ mechanical solve, plus the release: `thermal_substeps x (layers_deposited + 2) +
 and the disk). Probe temperature histories are always kept at every thermal substep, in the summary, because they are a
 few hundred numbers.
 
-The two modes do not give exactly the same stresses, and the difference measures the increment lumping: on the PLA wall
-of `tools/printflow.py`, `key_times` reports a peak of 7.791 MPa on the bed and `substeps` 7.578 MPa (2.7 % lower),
-because the finer increments catch material that rises above the relaxation temperature between two key times and
-release its stress, which the coarse increments miss. `substeps` is the more resolved answer; `key_times` is the
-default because it is a few times cheaper.
+The two modes do not give exactly the same stresses; their difference measures mechanical increment lumping. The
+original PLA wall record from `tools/printflow.py` was 7.791 MPa at `key_times` and 7.578 MPa at `substeps`. Amended
+2026-10-03 after the deposition, stress-field and radiation corrections: the same workflow reports 8.506 MPa at
+the nine key times and 9.028 MPa at 21 substep states (6.1 percent higher). Finer increments resolve temperature
+paths, relaxation resets and stress redistribution differently; the change has no guaranteed sign. `substeps` is
+the more resolved calculation, not a physical-accuracy certificate; `key_times` is cheaper.
 
 ## 5. The summary
 
@@ -95,7 +96,9 @@ default because it is a few times cheaper.
   "is_forecast": false,
   "layer_lumping": {"simulation_layer_mm": 3.0, "printed_layers_per_simulation_layer": 15, "toolpath_within_a_layer": "not modelled"},
   "creep_below_relaxation_temperature": "not modelled",
-  "bed_stresses_are_upper_bound": true,
+  "constitutive_law": "temperature-dependent incremental stress accumulation (hypoelastic approximation); old stress is not rescaled when the modulus changes, and stress is reset above the relaxation temperature; no time-dependent viscoelastic law",
+  "bed_stresses_are_upper_bound": false,
+  "bed_stresses_note": "creep below the relaxation temperature is omitted; temperature-dependent stiffness and stress redistribution mean this approximation establishes no general local stress bound",
   "material": {"id": "pla_generic_demo", "status": "demonstration", "measured": false},
   "compared_with_measurement": false,
   "not_modelled": ["toolpath within a layer", "creep below the relaxation temperature", "plasticity", "raster anisotropy and interlayer strength", "crystallisation", "supports", "gravity", "adhesion failure"]
@@ -104,6 +107,13 @@ default because it is a few times cheaper.
 
 An agent that reads only `summary.scope` can tell that the numbers are a trend on demonstration data, not a prediction
 to certify a part with.
+
+The implemented stress law accumulates increments evaluated along the temperature path. A changed modulus does not
+rescale previously accumulated stress; above the relaxation temperature the stress is reset instantly. Exact
+integration of `E(T) alpha(T) dT` verifies this chosen incremental law. It does not supply a time-dependent polymer
+relaxation law or establish the general thermoelastic relation `sigma = D(T) (epsilon - epsilon_thermal)`.
+Omitting creep also does not establish a general upper bound on local bed stresses: a spatially varying temperature
+field changes stiffness and redistributes stress. The legacy scope key is retained with `false`; no stress bound is claimed.
 
 ## 6. File layout: `results.nvt` version 3
 
@@ -187,3 +197,71 @@ These criteria were written before the implementation ran. Each one is either me
 | A7 | `tools/printflow.py`, an independent MCP client, prints a small PLA wall end to end, provokes the refusals of section 3, reopens the project in a second engine session and reads the same stored times and the same peak von Mises (1e-9 relative), and checks from the results that the worst heat balance is ≤ 1e-6 and that the support reaction after release is ≤ 1e-6 of the largest bed reaction |
 | A8 | `make test` runs `tools/printflow.py` and every suite passes |
 | A9 | Speed: the truss-bridge print at 3 mm elements finishes in ≤ 180 s with its final warp and peak stress equal to the 519 s reference within 1e-6 relative for exact methods, or within a stated measured tolerance for iterative ones |
+
+## 8. Numerical amendments, 2026-10-03
+
+The following criteria are fixed before the new checks run. Synthetic material tables below are verification data,
+not a measured filament or a printer forecast.
+
+- F10: on a fully restrained hex, a piecewise linear modulus transition only 0.01 K wide and a piecewise linear
+  expansion table give the closed-form stress integral to 1e-10 relative in one increment and in multiple increments.
+  The integration splits at all material-table breakpoints, the relaxation temperature and every modulus-floor crossing;
+  Simpson integration is exact on each resulting quadratic product. The previous fixed 0.5 K trapezoid is replaced.
+- F11: on a bent two-layer specimen the reported element von Mises equals the mean of the eight Gauss-point von Mises
+  values within 1e-12 relative. It is no longer computed from the mean stress tensor, whose opposite bending stresses
+  can cancel before the invariant is evaluated. Uniform stress retains its previous value. This is an element mean,
+  not a Gauss-point maximum and not a spatial convergence certificate.
+- F12: for three deposited hex layers with no convection or radiation, the independently integrated final enthalpy
+  plus reported heat into the bed equals the supplied nozzle enthalpy within 1e-7 relative, both for constant heat
+  capacity and for a linear temperature-dependent heat capacity. The layer deposition correction must be nonzero;
+  the reported deposition identity must close within 1e-12 relative. This checks deposition energy separately from
+  the thermal solver's subsequent step balances. With bed and ambient at 300 K and deposition at 400 K, stored-frame
+  nodal temperatures must stay in [300 - 1e-6, 400 + 1e-6] K.
+- F13: repeat the constant-capacity three-layer print with a homogenised support bottom layer at capacity/stiffness
+  fraction 0.25, then remove that support. The independent retained-part enthalpy plus removed-support enthalpy and
+  bed heat equals supplied nozzle enthalpy within 1e-7 relative. The support-removal ledger equals the independent
+  support enthalpy within 1e-10 of supplied energy.
+- F14: the existing eight-layer demonstration PLA wall, with convection, radiation and both bed cool-down stages,
+  closes its whole-print physical heat ledger within 1e-6 relative. This is a conservation check, not measured-print
+  validation of the demonstration material.
+- F15: after support removal, the stored frame's maximum temperature/displacement and final warp extrema equal the
+  extrema independently computed over nodes of the remaining active elements, within 1e-10 K and 1e-12 m.
+
+Conforming nodes at a new layer's interface already carry the previous layer's temperature. Setting only brand-new
+nodes to the nozzle temperature loses some of the incoming material's energy before any cooling solve. The amended
+layer model retains those interface temperatures and supplies the missing enthalpy during the first thermal substep
+as a nodal heat pulse. At each new element's Gauss point the secant capacity between its interpolated initial
+temperature and the nozzle temperature multiplies `N_a (T_nozzle - T_a) detJ`. Summing these nodal contributions is
+exactly the missing Gauss-integrated enthalpy. A contribution on a prescribed bed node goes directly into the bed
+heat ledger; free-node contributions enter the thermal solve. The pulse duration is the first substep, so substep
+refinement is still required for local temperature-history convergence. This correction does not resolve individual
+extruded roads, contact resistance, or a toolpath.
+
+The result summary additionally reports supplied nozzle enthalpy above ambient, deposition correction, stored
+enthalpy above ambient, heat into the air, enthalpy removed with supports, and the resulting whole-print heat balance.
+
+## 9. Equilibrium diagnostic amendment, 2026-10-03
+
+Before the first new diagnostic run, F16 requires the FDM increment's reported equilibrium residual to match an
+independent direct structural solve of the same cooled bed-bonded hex to 1e-12 absolute, and to remain finite and
+below 1e-9. Skipping an unchanged thermal increment must preserve that exact value and the solve count. Release
+records its own successful solve residual; later solves or skips preserve that release value. F17 requires the
+end-to-end MCP summary to carry finite last-solve and bed-release residuals below 1e-6 with their definition.
+The first F16 harness incorrectly selected z=0 as the bed of a box centred on z=0, leaving no constrained nodes;
+the solver correctly refused its rigid-body singularity. The harness now selects the bottom face by connectivity.
+No acceptance tolerance or numerical solver changed for this fixture correction.
+
+Amendment to A7: its original support-reaction/bed-reaction ratio is not a meaningful normalization for these
+self-equilibrated thermal loads. `largest_bed_reaction_n` is the largest component of the net bed resultant, not
+the largest individual bed force. Opposite bed forces can cancel even while the part carries substantial stress.
+The first refinement study failed this ratio; its recorded failure is retained rather than labelled a physical
+regression. The new criterion uses the recovered free-equation residual norm divided by the sum of the applied
+nodal load norm, the individual prescribed-DOF reaction norm and the assembled free RHS norm including thermal
+eigenstrain. This is the structural solver's existing equilibrium diagnostic; no force or state computation is
+changed. With exactly zero force scale the solver reports its absolute residual, zero for an unloaded zero state.
+Reaction forces remain reported in newtons and are not divided by the near-zero net bed resultant.
+
+Observed after the fixture correction: F16's on-bed residual was 1.34e-16, bed-release 2.49e-16, and the later free
+solve 1.69e-16; the five diagnostic checks passed with the full printing suite, 40/40. The MCP wall's last and
+release residuals were both 6.29e-15, with 88/88 flow checks. These are last-increment equilibrium diagnostics,
+not a measurement-validation claim or an independent convergence proof for the accumulated stress history.

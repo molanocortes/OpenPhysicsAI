@@ -1343,11 +1343,17 @@ JsonValue *lpbf_summary_json(const LpbfCase *lc) {
     json_set_number(r, "free_end_x_mm", 1e3 * lc->tip_x);
     json_set_number(r, "peak_von_mises_before_cut_mpa", lc->peak_vm_before / 1e6);
     json_set_number(r, "peak_von_mises_after_cut_mpa", lc->peak_vm_after / 1e6);
+    json_set_string(r, "stress_field_definition", "element mean of eight Gauss-point von Mises values, not a Gauss-point maximum");
     json_set_int(r, "layers", lc->layers);
     json_set_int(r, "stored_times", c->noutputs);
     json_set_int(r, "solves", lc->solves);
     json_set_number(r, "seconds", lc->seconds);
     json_set_number(r, "equilibrium_error_last_solve", lc->equilibrium_error);
+    json_set_string(r, "equilibrium_error_definition", lc->s.yield_stress > 0
+        ? "accepted nonlinear free residual norm / (reduced applied/release force norm + individual constrained "
+          "incremental reaction norm + initial nonlinear predictor free residual norm); absolute residual in N if scale is zero"
+        : "recovered linear free residual norm / (applied nodal load norm + individual constrained reaction norm + "
+          "assembled free RHS norm including eigenstrain); absolute residual in N if scale is zero");
     if (lc->s.max_element_size > 0) {
         JsonValue *am = json_set_object(r, "adaptive_mesh");
         json_set_number(am, "surface_element_size_mm", 1e3 * lc->c.h[0]);
@@ -1391,8 +1397,8 @@ JsonValue *lpbf_summary_json(const LpbfCase *lc) {
     json_set_number(r, "largest_plate_reaction_n", lc->plate_reaction);
     JsonValue *sc = json_set_object(o, "scope");
     json_set_string(sc, "statement",
-                    "inherent-strain process simulation: the strain is a calibrated input, not a material property, and the result is only as good as "
-                    "that calibration and the geometry it was calibrated on");
+                    "inherent-strain process simulation: the strain is a declared process input, not a material property. Predictive use requires "
+                    "calibration for the relevant process and geometry; inspect the recorded provenance, which may be inferred demonstration values");
     json_set_bool(sc, "is_forecast", false);
     json_set_string(sc, "method", "layer-by-layer activation, each layer stress-free on the deformed part, then its eigenstrain, then equilibrium");
     json_set_bool(sc, "plasticity", false);
