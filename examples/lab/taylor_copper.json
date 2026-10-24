@@ -1,0 +1,43 @@
+{
+ "domain": "impact",
+ "title": "Taylor anvil test: OFHC copper at 190 m/s",
+ "provenance": {
+  "test": "the geometry and speed of the classic copper Taylor test (25.4 mm by 7.62 mm, 190 m/s)",
+  "material": "ofhc_copper, Johnson-Cook constants of Johnson and Cook (1983)"
+ },
+ "symmetry": "quarter",
+ "anvil_z_m": 0.0,
+ "bodies": [
+  {
+   "shape": "cylinder",
+   "radius_m": 0.00381,
+   "z0_m": 0.0,
+   "length_m": 0.0254,
+   "cells": [
+    8,
+    5,
+    80
+   ],
+   "material": "ofhc_copper",
+   "velocity_m_s": [
+    0,
+    0,
+    -190
+   ]
+  }
+ ],
+ "run": {
+  "end_time_s": 8e-05,
+  "frames": 40,
+  "mirror": true
+ },
+ "controls": [
+  {
+   "label": "impact speed, m/s (downward)",
+   "path": "bodies.0.velocity_m_s.2",
+   "min": -400,
+   "max": -50,
+   "log": false
+  }
+ ]
+}

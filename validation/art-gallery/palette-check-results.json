@@ -1,0 +1,88 @@
+{
+  "passed": 31,
+  "failed": 0,
+  "native_returncode": 0,
+  "field": "displacement",
+  "result": "Helical_Flute",
+  "image_size": [
+    1440,
+    900
+  ],
+  "model_region": [
+    60,
+    80,
+    950,
+    780
+  ],
+  "legend_region": [
+    24,
+    848,
+    314,
+    858
+  ],
+  "pixel_checks": [
+    {
+      "before": "initial",
+      "after": "legend_inferno",
+      "expected_change": true,
+      "model_changed_pixels": 254646,
+      "legend_changed_pixels": 2796
+    },
+    {
+      "before": "legend_inferno",
+      "after": "legend_magma",
+      "expected_change": true,
+      "model_changed_pixels": 215041,
+      "legend_changed_pixels": 1954
+    },
+    {
+      "before": "legend_magma",
+      "after": "legend_plasma",
+      "expected_change": true,
+      "model_changed_pixels": 184770,
+      "legend_changed_pixels": 2096
+    },
+    {
+      "before": "legend_plasma",
+      "after": "legend_turbo",
+      "expected_change": true,
+      "model_changed_pixels": 238494,
+      "legend_changed_pixels": 2796
+    },
+    {
+      "before": "legend_turbo",
+      "after": "legend_viridis",
+      "expected_change": true,
+      "model_changed_pixels": 269001,
+      "legend_changed_pixels": 2796
+    },
+    {
+      "before": "legend_viridis",
+      "after": "fem_cmap_magma",
+      "expected_change": true,
+      "model_changed_pixels": 258123,
+      "legend_changed_pixels": 2796
+    },
+    {
+      "before": "fem_cmap_magma",
+      "after": "fem_cmap_invalid",
+      "expected_change": false,
+      "model_changed_pixels": 0,
+      "legend_changed_pixels": 0
+    },
+    {
+      "before": "initial",
+      "after": "legend_viridis",
+      "expected_change": false,
+      "model_changed_pixels": 0,
+      "legend_changed_pixels": 0
+    },
+    {
+      "before": "initial",
+      "after": "legend_from_gray",
+      "expected_change": false,
+      "model_changed_pixels": 0,
+      "legend_changed_pixels": 0
+    }
+  ]
+}

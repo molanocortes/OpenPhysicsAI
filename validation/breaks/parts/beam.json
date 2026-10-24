@@ -1,0 +1,107 @@
+{
+ "title": "cantilever 8 mm deep and 10 mm wide on a clamped block, for the three infill levels",
+ "depth_mm": 10.0,
+ "supports": [
+  {
+   "name": "clamp",
+   "kind": "fixed",
+   "box": [
+    -1,
+    23.99,
+    -1,
+    20.01,
+    24.01,
+    11.0
+   ],
+   "facing": "+y",
+   "rig": "the block's top clamped to the table over its first 20 mm"
+  },
+  {
+   "name": "table",
+   "kind": "fixed",
+   "box": [
+    -1,
+    -0.01,
+    -1,
+    20.01,
+    0.01,
+    11.0
+   ],
+   "facing": "-y",
+   "rig": "the block's bottom on the table under the clamp"
+  }
+ ],
+ "load": {
+  "name": "cord",
+  "box": [
+   80.99,
+   15.99,
+   -1,
+   87.01,
+   16.01,
+   11.0
+  ],
+  "facing": "+y",
+  "direction": [
+   0,
+   -1,
+   0
+  ],
+  "rig": "a cord over the beam against the lip, the bucket below"
+ },
+ "regions": {
+  "root": [
+   29.0,
+   -1,
+   -1,
+   41.0,
+   25.0,
+   11.0
+  ],
+  "span": [
+   30.0,
+   -1,
+   -1,
+   91.0,
+   25.0,
+   11.0
+  ],
+  "block": [
+   -1,
+   -1,
+   -1,
+   30.0,
+   25.0,
+   11.0
+  ]
+ },
+ "prints": {
+  "flat": {
+   "build_direction": "z",
+   "raster_reference": "x"
+  }
+ },
+ "layouts": {
+  "20 %": {
+   "density": "20 %"
+  },
+  "50 %": {
+   "density": "50 %"
+  },
+  "100 %": {
+   "density": "100 %"
+  }
+ },
+ "measure": "the beam's depth and width at the root, with calipers",
+ "stl": "beam.stl",
+ "file_min_mm": [
+  0,
+  0,
+  0.0
+ ],
+ "size_mm": [
+  90.0,
+  24.0,
+  10.0
+ ]
+}

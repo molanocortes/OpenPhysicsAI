@@ -1,0 +1,83 @@
+{
+ "title": "J-hook, 5 mm thick and 8 mm deep, head resting in a slotted plate, bucket handle at the bottom of the ring",
+ "depth_mm": 8.0,
+ "supports": [
+  {
+   "name": "head",
+   "kind": "fixed",
+   "box": [
+    -13.0,
+    19.99,
+    -1,
+    13.0,
+    20.01,
+    9.0
+   ],
+   "facing": "-y",
+   "rig": "the head's underside rests on a slotted plate hung from a beam"
+  }
+ ],
+ "load": {
+  "name": "bucket",
+  "box": [
+   12.0,
+   -12.6,
+   -1,
+   17.0,
+   -11.4,
+   9.0
+  ],
+  "facing": "+y",
+  "max_angle_deg": 30,
+  "direction": [
+   0,
+   -1,
+   0
+  ],
+  "rig": "the bucket's handle sits at the lowest point of the ring"
+ },
+ "regions": {
+  "bend": [
+   -6.0,
+   -18.0,
+   -1,
+   46.0,
+   6,
+   9.0
+  ],
+  "shank": [
+   -5.0,
+   6,
+   -1,
+   5.0,
+   19.5,
+   9.0
+  ],
+  "head": [
+   -20,
+   19.5,
+   -1,
+   20,
+   60,
+   9.0
+  ]
+ },
+ "prints": {
+  "flat": {
+   "build_direction": "z",
+   "raster_reference": "x"
+  }
+ },
+ "measure": "the ring's thickness at its lowest point, with calipers",
+ "stl": "hook.stl",
+ "file_min_mm": [
+  -12.0,
+  -16.99772434446255,
+  0.0
+ ],
+ "size_mm": [
+  43.490897987098215,
+  42.997724344462554,
+  8.0
+ ]
+}

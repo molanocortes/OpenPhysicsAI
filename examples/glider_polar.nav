@@ -1,0 +1,6 @@
+# Lift polar of the sailplane: angle-of-attack sweep in water.
+# Every run starts from a uniform stream, runs 2500 steps and logs mean Cd/Cl/Cs to glider_polar.csv.
+scene glider
+init flow
+speed 0.8
+sweep aoa -4 12 2 steps 2500 glider_polar.csv

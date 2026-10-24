@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleIdentifier</key><string>lab.openphysicsai.listen-cli</string>
+    <key>CFBundleName</key><string>OpenPhysicsAI listen</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>OpenPhysicsAI turns the questions you speak in the headset into text for Ask AI, on this Mac.</string>
+</dict>
+</plist>

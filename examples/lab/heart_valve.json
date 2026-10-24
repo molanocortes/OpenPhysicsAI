@@ -1,0 +1,145 @@
+{
+ "domain": "flow",
+ "model": "lbm3d",
+ "title": "A heart valve opens and closes through one heartbeat",
+ "fluid": {
+  "kinematic_viscosity_m2_s": 3.30188679245283e-06,
+  "density_kg_m3": 1060.0,
+  "source": "whole blood at 37 C taken as a Newtonian fluid: viscosity 3.5 mPa s and density 1060 kg/m3, the values usual for large arteries (Ku, Blood flow in arteries, Annu Rev Fluid Mech 29, 1997); blood thins at high shear, which is not modelled"
+ },
+ "stream": {
+  "speed_m_s": 1.2,
+  "waveform": {
+   "period_s": 0.8,
+   "points": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     0.05,
+     0.6
+    ],
+    [
+     0.1,
+     1.1
+    ],
+    [
+     0.15,
+     1.2
+    ],
+    [
+     0.2,
+     1.05
+    ],
+    [
+     0.25,
+     0.7
+    ],
+    [
+     0.3,
+     0.25
+    ],
+    [
+     0.33,
+     0.0
+    ],
+    [
+     0.36,
+     -0.25
+    ],
+    [
+     0.4,
+     -0.05
+    ],
+    [
+     0.43,
+     0.0
+    ],
+    [
+     0.8,
+     0.0
+    ]
+   ],
+   "source": "a demonstration waveform shaped like the flow through the aortic valve of an adult at rest (peak about 1.2 m/s, ejection 0.33 s, heartbeat 0.8 s) with a backflow at closure of about 3.5 % of the ejected volume (the closing regurgitation of a healthy valve is some 2 to 5 %); the inflow is prescribed, so the aortic pressure that shuts a real valve is represented only by that backflow. Not a measured patient curve"
+  }
+ },
+ "box_m": [
+  -0.02,
+  -0.0185,
+  -0.0185,
+  0.08,
+  0.0185,
+  0.0185
+ ],
+ "cell_m": 0.0006,
+ "lattice_speed": 0.02,
+ "sides": "slip",
+ "les": {
+  "smagorinsky": 0.15
+ },
+ "collision": "regularized",
+ "sponge_cells": 30,
+ "sponge_viscosity_lattice": 0.25,
+ "outlet": "pressure",
+ "disturbance": {
+  "noise_fraction": 0.01
+ },
+ "bodies": [
+  {
+   "shape": "aortic_root",
+   "centre_m": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "radius_m": 0.0125,
+   "sinus_radius_m": 0.008749999999999999,
+   "sinus_offset_m": 0.009375000000000001,
+   "sinus_x_m": 0.001,
+   "sinus_phase_deg": 0.0,
+   "source": "a straight vessel of 25 mm with three sinuses as spheres behind the leaflets, bulging to 1.45 times its radius: the proportions of an adult aortic root, simplified (demonstration geometry)"
+  }
+ ],
+ "body_look": "glass",
+ "bodies_cutaway": [
+  0,
+  1,
+  0
+ ],
+ "sheet": {
+  "material": {
+   "shear_modulus_pa": 500000.0,
+   "density_kg_m3": 1100.0,
+   "source": "valve leaflet tissue taken as an isotropic neo-Hookean sheet with a small-strain shear modulus of 0.5 MPa (the real tissue is layered, anisotropic and stiffens strongly with stretch; its low-strain range is of this order), 0.5 mm thick (demonstration values)"
+  },
+  "thickness_m": 0.0005,
+  "gravity_m_s2": 0.0,
+  "self_contact_m": 0.0004,
+  "look": "tissue",
+  "valve": {
+   "centre_m": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "radius_m": 0.0125,
+   "height_m": 0.009,
+   "belly_m": 0.004,
+   "gap_m": 0.001,
+   "nodes_around": 23
+  }
+ },
+ "reference": {
+  "area_m2": 0.0004908738521234052,
+  "length_m": 0.025
+ },
+ "run": {
+  "end_s": 0.6,
+  "frames": 60,
+  "output_stride": 1,
+  "output_from_s": 0.0,
+  "average_from_s": 0.0,
+  "iso_level_q_per_s2": 460799.9999999998
+ }
+}

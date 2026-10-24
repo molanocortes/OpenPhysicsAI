@@ -1,0 +1,93 @@
+{
+ "domain": "heat",
+ "title": "Ventilated seat: air through a foam cushion under a warm occupant",
+ "provenance": {
+  "geometry": "demonstration",
+  "foam": "permeability 2e-8 m^2 and conductivity 0.04 W/(m K), assumed"
+ },
+ "grid": {
+  "nx": 200,
+  "ny": 48,
+  "cell_m": 0.0025
+ },
+ "fluid": {
+  "kinematic_viscosity_m2_s": 1.589e-05,
+  "density_kg_m3": 1.1614,
+  "source": "Incropera, DeWitt, Bergman and Lavine, Fundamentals of Heat and Mass Transfer, 6th ed. (2007), table A.4 (air at 300 K and 1 atm): nu 15.89e-6 m2/s, rho 1.1614 kg/m3, 300 K; typed from the table, not re-checked against a copy in this session"
+ },
+ "gravity_m_s2": [
+  0,
+  -9.81
+ ],
+ "reference_temperature_k": 296.0,
+ "initial_temperature_k": 296.0,
+ "largest_speed_m_s": 2.0,
+ "turbulence": {
+  "smagorinsky": 0.16,
+  "turbulent_prandtl": 0.85
+ },
+ "materials": [
+  {
+   "name": "foam",
+   "kind": "porous",
+   "conductivity_w_mk": 0.04,
+   "volumetric_heat_capacity_j_m3k": 50000.0,
+   "permeability_m2": 2e-08,
+   "source": "assumed for a demonstration: an open-cell foam, not a measured product"
+  }
+ ],
+ "regions": [
+  {
+   "box_m": [
+    0.0,
+    0.0,
+    0.5,
+    0.1
+   ],
+   "material": "foam"
+  }
+ ],
+ "boundaries": [
+  {
+   "side": "y-",
+   "from_m": 0.15,
+   "to_m": 0.35,
+   "type": "inlet",
+   "speed_m_s": 0.1,
+   "temperature_k": 293.0
+  },
+  {
+   "side": "y+",
+   "from_m": 0.0,
+   "to_m": 0.5,
+   "type": "wall",
+   "thermal": "fixed",
+   "temperature_k": 307.0
+  },
+  {
+   "side": "x-",
+   "from_m": 0.0,
+   "to_m": 0.12,
+   "type": "outlet"
+  },
+  {
+   "side": "x+",
+   "from_m": 0.0,
+   "to_m": 0.12,
+   "type": "outlet"
+  }
+ ],
+ "run": {
+  "end_time_s": 20.0,
+  "frames": 60
+ },
+ "controls": [
+  {
+   "label": "blower speed, m/s",
+   "path": "boundaries.0.speed_m_s",
+   "min": 0.02,
+   "max": 0.2,
+   "log": false
+  }
+ ]
+}

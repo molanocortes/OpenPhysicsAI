@@ -1,0 +1,20 @@
+== D6 (core) a single participant through the orchestrator equals tint_step bit for bit
+  fixed: 100 steps, 100 solves; tint_step 0.0028 s, orchestrated 0.0021 s (best of 5)
+  adaptive: 527 steps, 1590 solves; tint_step 0.0231 s, orchestrated 0.0231 s (best of 5)
+== D1 fixed-step partitioned against monolithic
+  100 steps, 300 coupling iterations (3.00 per step); max difference 3.524e-12 K; worst heat mismatch 0.00e+00
+  cost: monolithic 0.002 s, partitioned 0.004 s
+  three-block fields at fixed steps: 300 coupling iterations, max difference 3.809e-12 K, heat mismatch 0.00e+00
+== D2 adaptive partitioned against adaptive monolithic
+  cost: monolithic adaptive 0.023 s (1590 solves), partitioned adaptive 0.123 s
+  reference 8000 fixed steps; monolithic 527 steps, error 7.960e-02 K; partitioned 527 steps (3053 coupling iterations), error 7.960e-02 K
+  partitioned: 3 error rejections, 0 coupling rejections; largest accepted temporal error 0.948, largest final coupling change 1 (both normalised by their own tolerances)
+== D3 rollback after coupling failures
+  4007 accepted steps after 1357 coupling rejections and 3 error rejections; error 5.944e-03 K (monolithic adaptive 371 steps, 6.065e-02 K)
+  monolithic replay of the accepted steps: max difference 6.787e-10 K
+  (original two-sided D3 criterion, recorded: not met)
+== D4 graph analysis
+== D5 synchronisation of quasi-static participants
+  73 steps: elastic evaluated 11 times, history-dependent 74 times
+
+ALL ORCHESTRATOR TESTS PASSED: 24 passed, 0 failed

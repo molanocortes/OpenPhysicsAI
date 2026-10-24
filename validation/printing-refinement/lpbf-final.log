@@ -1,0 +1,34 @@
+== refusals before any solve
+== a part that does not rest on the plate, and a stale mesh
+== the build
+   4 layers, before +0.0000 mm, after +0.0018 mm, springback +0.0018 mm, 64 elements cut
+== the build through the ordinary result operations
+== the result file's element birth and death
+== a second session reads the same build
+== the whole-part cross-check mode
+   layer by layer +0.0018 mm against whole part +0.0000 mm
+== plasticity
+   elastic +0.0018 mm, yielding +0.0029 mm, peak plastic strain 0.00403
+== supports
+   bridge: 96 support elements; largest displacement 0.01352 mm without, 0.01347 mm with, 0.01525 mm after removing them
+== the support rule
+   channel: 0 support elements (wave-4 rule: 256, overhang_all: 256); lean 60: 800; lean 30: 0
+== typed supports (docs/contracts/supports.md S7 to S9)
+   generating thin_wall supports
+   thin_wall supports request elapsed 1.454 s
+   generating cone supports
+   cone supports request elapsed 0.221 s
+   generating tree supports
+   tree supports request elapsed 6.029 s
+   generating lattice supports
+   lattice supports request elapsed 3.738 s
+   block on the bridge: 96 elements, 34.56 mm3, contact 8.76 mm2; with a 1 mm offset 64; slab tear-off 20.699 N largest, resultant 1.6e-11 N
+== the 3-2-1 hold on an adaptive mesh
+== supports in the FFF print (heat model and stress history)
+== an adaptive mesh
+   adaptive slab: 1056 elements against 1440 uniform, 464 hanging nodes; 200 top-edge hanging nodes checked in the file, worst 2.1e-16 of the largest displacement
+== fitting an inherent strain of our own
+   fitted exx -0.001314, eyy -0.002359 in 8 builds
+== the fitted strain reproduces the deflection it was fitted to
+
+ALL LPBF FLOW TESTS PASSED: 239 passed, 0 failed

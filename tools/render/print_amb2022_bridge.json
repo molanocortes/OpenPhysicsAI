@@ -1,0 +1,73 @@
+{
+ "title": "NIST AM-Bench 2022 bridge, IN718, built layer by layer and cut from the plate",
+ "about": "The scenario of the metal printing film (tools/render/README.md, section 'The metal printing film'). The part, the strain, the material and the cut are exactly those of the blind prediction in GOALS.md G20 step 3 (tools/g20_bridge.py predict); only the element size differs, finer at the same 0.5 mm simulation layer, which is the discretisation the strain was calibrated at (lpbf-build.md V6: halving the element size at the same layer thickness is a discretisation change; halving the layer is a change of physics).",
+ "part": {
+  "name": "bridge",
+  "stl": "~/.openphysicsai/g20/metal/sources/amb2022-01-cad/AMB2022-01-AMMT-PartCAD.STL",
+  "stl_sha256": "d92f368a35952ff877624f3d15fb0e38c099e2528cfd96bf1d76a868a088e1f4",
+  "units": "mm",
+  "source": "NIST AM-Bench 2022, AMB2022-01 part CAD (AMB2022-01-AMMT-PartCAD.STL, a US government work), fetched with the owner's approval on 2026-10-08 for GOALS.md G20 step 3; not held by this repository. Drawn with the pointed end, the base that stays on the plate, at x = 0, so it is built as drawn",
+  "mirror_x": false,
+  "z_offset_mm": 0.0
+ },
+ "material": {
+  "id": "in718_datasheet",
+  "name": "IN718, room-temperature datasheet elastic constants",
+  "youngs_modulus_mpa": 199947.953,
+  "poissons_ratio": 0.294,
+  "density_kg_m3": 8190.0,
+  "source": "Special Metals INCONEL 718 datasheet, 70 F: E = 29.0e6 psi, nu = 0.294 (as tools/g20_bridge.py); the displacement of a body loaded only by an eigenstrain does not depend on E, the stress does"
+ },
+ "build": {
+  "layer_thickness_mm": 0.5,
+  "element_size_mm": 0.25,
+  "element_size_z_mm": 0.25,
+  "build_orientation": "X",
+  "plasticity": false
+ },
+ "inherent_strain": {
+  "exx": -3.790e-3,
+  "eyy": -3.790e-3,
+  "ezz": -3.790e-3,
+  "provenance": "calibrated",
+  "source": "GOALS.md G20 step 3: fitted on NIST AM-Bench AMB2018-01 (IN625 bridge), its free-end ridge measured 1.276 mm, at 0.5 mm layers",
+  "note": "one isotropic strain fitted on a published measurement, the free-end ridge of NIST AM-Bench's 2018 IN625 bridge (AMB2018-01, 1.276 mm after the cut), at 0.5 mm layers and elements; at a unit strain of -0.001 that ridge rose 0.3367 mm (GOALS.md G20 step 3)"
+ },
+ "cut": {
+  "height_mm": 0.25,
+  "kerf_mm": 0.3,
+  "from_x_mm": 20.0,
+  "provenance": "inferred",
+  "note": "as GOALS.md G20 step 3: NIST cut the twelve legs as close to the plate as possible, no height stated; the bottom 0.5 mm of every leg is removed (two element rows at 0.25 mm), from 20 mm from the pointed end on; the base, the first 19 mm, stays on the plate"
+ },
+ "supports": null,
+ "supports_note": "none: NIST built the bridge without supports, and the overhang rule (45 degrees) finds none, its arches being steeper than that",
+ "probes": [
+  {"name": "ridge 1", "x_mm": 4.5, "y_mm": 2.5, "z_mm": 12.375},
+  {"name": "ridge 2", "x_mm": 18.5, "y_mm": 2.5, "z_mm": 12.375},
+  {"name": "ridge 3", "x_mm": 32.5, "y_mm": 2.5, "z_mm": 12.375},
+  {"name": "ridge 4", "x_mm": 46.5, "y_mm": 2.5, "z_mm": 12.375},
+  {"name": "ridge 5", "x_mm": 60.5, "y_mm": 2.5, "z_mm": 12.375},
+  {"name": "ridge 6", "x_mm": 74.5, "y_mm": 2.5, "z_mm": 12.375}
+ ],
+ "probes_note": "NIST's measured ridges 1 to 6 of the 2022 bridge, every other ridge from the pointed end (centres at X_sq 70.5 to 0.5 mm, here x = 75 - X_sq), each read at the centre of its top, a quarter layer below it, as tools/g20_bridge.py reads them; the deflection is u_z after the cut minus before",
+ "record": {
+  "source": "GOALS.md G20 step 3 (2026-10-08), the public record; docs/map/PHYSICS.md and the build summary's scope.measured_accuracy quote it",
+  "unit": "mm",
+  "predicted_blind_at_0p5mm": {"ridge 1": -0.006, "ridge 2": 0.023, "ridge 3": 0.152, "ridge 4": 0.385, "ridge 5": 0.742, "ridge 6": 1.287},
+  "measured": {"ridge 1": -0.0025, "ridge 2": 0.0154, "ridge 3": 0.1826, "ridge 4": 0.5232, "ridge 5": 1.0583, "ridge 6": 1.8088},
+  "measured_expanded_uncertainty_k2": 0.0043,
+  "relative_errors_percent": {"ridge 1": -128, "ridge 2": 49, "ridge 3": -17, "ridge 4": -26, "ridge 5": -30, "ridge 6": -29},
+  "median_absolute_error_percent": 29.4,
+  "criterion_percent": 15,
+  "criterion_met": false
+ },
+ "film": {
+  "scale": 10,
+  "plate_margin_mm": [6.0, 13.0],
+  "plate_thickness_mm": 12.0,
+  "title": "Printing NIST's AM-Bench bridge in Inconel 718",
+  "caption": "NIST AM-Bench 2022 bridge, Inconel 718, printed layer by layer and cut from the plate",
+  "probe": "ridge 6"
+ }
+}

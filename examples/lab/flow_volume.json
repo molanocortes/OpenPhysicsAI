@@ -1,0 +1,21 @@
+{
+  "domain": "flow",
+  "model": "periodic3d",
+  "title": "Three-dimensional Beltrami vortex flow",
+  "boundary": "periodic",
+  "initial_field": "abc",
+  "grid": {
+    "cells_per_axis": 32,
+    "cell_m": 0.01
+  },
+  "time_step_s": 0.01,
+  "fluid": {
+    "kinematic_viscosity_m2_s": 0.001,
+    "source": "Demonstration viscous fluid for analytic Beltrami decay, not a measured fluid"
+  },
+  "velocity_amplitude_m_s": 0.01,
+  "run": {
+    "end_time_s": 2,
+    "frames": 40
+  }
+}

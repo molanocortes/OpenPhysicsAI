@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="240" viewBox="0 0 1280 240" font-family="-apple-system, 'Segoe UI', Inter, Helvetica, Arial, sans-serif" role="img">
+<title>Flag 02: Re-entry from space</title>
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#06121f"/><stop offset="1" stop-color="#0e2944"/></linearGradient>
+<linearGradient id="shine" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff" stop-opacity="0"/><stop offset="0.5" stop-color="#ffffff" stop-opacity="0.10"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+<clipPath id="card"><rect x="1" y="1" width="1278" height="238" rx="22"/></clipPath>
+<radialGradient id="core-flag" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#1a4470"/><stop offset="1" stop-color="#040a14"/></radialGradient>
+<radialGradient id="core-semi-holy-grail" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#444d5e"/><stop offset="1" stop-color="#05070c"/></radialGradient>
+<radialGradient id="core-holy-grail" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#6b4e12"/><stop offset="1" stop-color="#0b0702"/></radialGradient>
+<radialGradient id="core-trial" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#1c4d2e"/><stop offset="1" stop-color="#030a05"/></radialGradient>
+<filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
+</defs>
+<g clip-path="url(#card)"><rect width="1280" height="240" fill="url(#bg)"/>
+</g>
+<rect x="1" y="1" width="1278" height="238" rx="22" fill="none" stroke="#5cc8ff" stroke-opacity="0.4" stroke-width="1.5"/>
+<circle cx="128" cy="120" r="80" fill="url(#core-flag)"/>
+<circle cx="128" cy="120" r="79.2" fill="none" stroke="#5cc8ff" stroke-width="1.5" stroke-opacity="0.75"/>
+<g transform="translate(128.0 120.0) scale(1.250)">
+<defs><radialGradient id="g-reentry-fire-ii-h" cx="30%" cy="50%" r="70%"><stop offset="0" stop-color="#fff6d8"/><stop offset="0.45" stop-color="#ff8c42"/><stop offset="1" stop-color="#ff8c42" stop-opacity="0"/></radialGradient></defs>
+<line x1="-50" y1="-36" x2="-30" y2="-36" stroke="#f3f6fb" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 7" opacity="0.50"><animate attributeName="stroke-dashoffset" from="24" to="0" dur="0.8s" repeatCount="indefinite"/></line>
+<line x1="-50" y1="-18" x2="-30" y2="-18" stroke="#f3f6fb" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 7" opacity="0.50"><animate attributeName="stroke-dashoffset" from="24" to="0" dur="0.8s" repeatCount="indefinite"/></line>
+<line x1="-50" y1="18" x2="-30" y2="18" stroke="#f3f6fb" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 7" opacity="0.50"><animate attributeName="stroke-dashoffset" from="24" to="0" dur="0.8s" repeatCount="indefinite"/></line>
+<line x1="-50" y1="36" x2="-30" y2="36" stroke="#f3f6fb" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 7" opacity="0.50"><animate attributeName="stroke-dashoffset" from="24" to="0" dur="0.8s" repeatCount="indefinite"/></line>
+<g transform="rotate(-10)">
+<path d="M 6 -46 Q -58 0 6 46 L 0 30 Q -24 0 0 -30 Z" fill="url(#g-reentry-fire-ii-h)" opacity="0.9"><animate attributeName="opacity" values="0.65;1;0.65" dur="1.6s" repeatCount="indefinite"/></path>
+<path d="M 6 -46 Q -58 0 6 46" fill="none" stroke="#ff8c42" stroke-width="2.4"/>
+<path d="M -8 -24 Q -20 0 -8 24 L 20 9 Q 24 8 24 4 L 24 -4 Q 24 -8 20 -9 Z" fill="#f3f6fb"/>
+<path d="M -8 -24 Q -20 0 -8 24" fill="none" stroke="#ff8c42" stroke-width="3"/>
+</g>
+</g>
+<rect x="262" y="30" width="91" height="28" rx="14" fill="#5cc8ff" fill-opacity="0.12" stroke="#5cc8ff" stroke-opacity="0.55"/>
+<text x="308" y="49" text-anchor="middle" fill="#5cc8ff" font-size="12" font-weight="700" letter-spacing="2.2">FLAG 02</text>
+<rect x="365" y="30" width="196" height="28" rx="14" fill="#b9c4d6" fill-opacity="0.12" stroke="#b9c4d6" stroke-opacity="0.55"/>
+<text x="463" y="49" text-anchor="middle" fill="#b9c4d6" font-size="12" font-weight="700" letter-spacing="2.2">STONE · HYPERSONICS</text>
+<text x="262" y="112" fill="#f4f7fb" font-size="40.0" font-weight="700">Re-entry from space</text>
+<text x="262" y="146" fill="#a9b5c8" font-size="19.0">NASA's FIRE II probe enters the atmosphere at 11 km/s</text>
+<rect x="262" y="176" width="145" height="30" rx="15" fill="#8fa3c0" fill-opacity="0.14" stroke="#8fa3c0" stroke-opacity="0.7"/>
+<text x="334" y="196" text-anchor="middle" fill="#8fa3c0" font-size="13" font-weight="700" letter-spacing="1.8">IN PREPARATION</text>
+<rect x="910" y="22" width="346" height="196" rx="16" fill="#000000" fill-opacity="0.26" stroke="#ffffff" stroke-opacity="0.06"/>
+<text x="934" y="62" fill="#7e8aa0" font-size="11.5" font-weight="700" letter-spacing="2.4">DIFFICULTY</text>
+<text x="1232" y="64" text-anchor="end" fill="#5cc8ff" font-size="19" font-weight="700">★★★★☆</text>
+<text x="934" y="106" fill="#7e8aa0" font-size="11.5" font-weight="700" letter-spacing="2.4">ATTEMPTS</text>
+<text x="1232" y="108" text-anchor="end" fill="#e9eef6" font-size="19" font-weight="700">0</text>
+<text x="934" y="150" fill="#7e8aa0" font-size="11.5" font-weight="700" letter-spacing="2.4">CHALLENGERS</text>
+<text x="1232" y="152" text-anchor="end" fill="#e9eef6" font-size="19" font-weight="700">0</text>
+<text x="934" y="194" fill="#7e8aa0" font-size="11.5" font-weight="700" letter-spacing="2.4">RECORD</text>
+<text x="1232" y="196" text-anchor="end" fill="#e9eef6" font-size="19" font-weight="700">unclaimed</text>
+</svg>

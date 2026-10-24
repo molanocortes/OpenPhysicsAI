@@ -1,0 +1,155 @@
+{
+ "domain": "em",
+ "title": "A radar pulse finds an aircraft: 300 MHz, the echo and its range",
+ "provenance": {
+  "aircraft": "a generic swept-wing shape from simple bodies, perfectly conducting; a demonstration",
+  "radar": "a pulsed dipole at 300 MHz, vertical polarisation; the same antenna listens for the echo"
+ },
+ "cells": [
+  360,
+  200,
+  100
+ ],
+ "dx_m": 0.1,
+ "pml_cells": 12,
+ "bodies": [
+  {
+   "shape": "revolved",
+   "profile_m": [
+    [
+     0,
+     0
+    ],
+    [
+     0.6,
+     0.38
+    ],
+    [
+     1.5,
+     0.66
+    ],
+    [
+     2.6,
+     0.82
+    ],
+    [
+     4.0,
+     0.9
+    ],
+    [
+     11.0,
+     0.9
+    ],
+    [
+     13.5,
+     0.6
+    ],
+    [
+     15.0,
+     0.35
+    ],
+    [
+     15.0,
+     0.0
+    ]
+   ],
+   "origin_m": [
+    12.0,
+    10.0,
+    5.0
+   ],
+   "pitch_deg": 0.0
+  },
+  {
+   "shape": "wing",
+   "naca": "0006",
+   "chord_m": 4.5,
+   "tip_chord_m": 1.4,
+   "span_m": 5.8,
+   "sweep_deg": 35.0,
+   "angle_deg": 0.0,
+   "root_leading_edge_m": [
+    17.2,
+    10.0,
+    5.0
+   ],
+   "span_axis": "y"
+  },
+  {
+   "shape": "wing",
+   "naca": "0006",
+   "chord_m": 4.5,
+   "tip_chord_m": 1.4,
+   "span_m": 5.8,
+   "sweep_deg": 35.0,
+   "angle_deg": 0.0,
+   "root_leading_edge_m": [
+    17.2,
+    10.0,
+    5.0
+   ],
+   "span_axis": "-y"
+  },
+  {
+   "shape": "wing",
+   "naca": "0006",
+   "chord_m": 2.3,
+   "tip_chord_m": 0.9,
+   "span_m": 3.0,
+   "sweep_deg": 40.0,
+   "angle_deg": 0.0,
+   "root_leading_edge_m": [
+    24.4,
+    10.0,
+    5.2
+   ],
+   "span_axis": "y"
+  },
+  {
+   "shape": "wing",
+   "naca": "0006",
+   "chord_m": 2.3,
+   "tip_chord_m": 0.9,
+   "span_m": 3.0,
+   "sweep_deg": 40.0,
+   "angle_deg": 0.0,
+   "root_leading_edge_m": [
+    24.4,
+    10.0,
+    5.2
+   ],
+   "span_axis": "-y"
+  },
+  {
+   "shape": "wing",
+   "naca": "0008",
+   "chord_m": 3.0,
+   "tip_chord_m": 1.2,
+   "span_m": 3.2,
+   "sweep_deg": 45.0,
+   "angle_deg": 0.0,
+   "root_leading_edge_m": [
+    23.0,
+    10.0,
+    5.6
+   ],
+   "span_axis": "z"
+  }
+ ],
+ "radar": {
+  "antenna_m": [
+   2.5,
+   4.0,
+   5.0
+  ],
+  "frequency_hz": 300000000.0,
+  "bandwidth_hz": 150000000.0,
+  "amplitude_v_m": 1.0
+ },
+ "run": {
+  "end_time_s": 1.9e-07,
+  "frames": 60,
+  "volume": true,
+  "volume_stride": 2
+ }
+}

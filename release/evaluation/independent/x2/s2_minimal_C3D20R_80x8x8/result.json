@@ -1,0 +1,31 @@
+{
+ "case": "s2_minimal_C3D20R_80x8x8",
+ "element": "C3D20R",
+ "mesh": [
+  80,
+  8,
+  8
+ ],
+ "root": "minimal",
+ "nu": 0.3,
+ "element_size_mm": 1.25,
+ "nodes": 24705,
+ "elements": 5120,
+ "ccx_rc": 0,
+ "ccx_seconds": 5.100825071334839,
+ "status": "solved",
+ "tip_mean_uz_area_weighted_mm": 0.020262539218749993,
+ "tip_mean_uz_nodal_mm": 0.02026262937777778,
+ "reaction_n": [
+  -3.667688e-11,
+  -1.10983e-10,
+  10.0
+ ],
+ "reaction_balance": 0.0,
+ "reaction_print_resolution": 5e-07,
+ "strain_energy_nmm": 0.1013127,
+ "energy_displacement_mm": 0.020262540000000002,
+ "energy_vs_work": 1.0000000385563725,
+ "weight_sum": 0.9999999999999988,
+ "ccx_messages": []
+}

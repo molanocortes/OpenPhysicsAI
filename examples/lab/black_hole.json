@@ -1,0 +1,52 @@
+{
+ "domain": "relativity",
+ "title": "Light bends around a black hole",
+ "note": "Lengths in the hole's mass M (G = c = 1): the horizon at 2 M, the photon sphere at 3 M, the innermost stable orbit at 6 M. The disk is thin and Keplerian with the Shakura-Sunyaev temperature profile; its colours are those of a blackbody at the temperature each photon brings to the camera (demonstration scale: temperature_k sets the colour, not a particular object).",
+ "camera": {
+  "distance_M": 55,
+  "inclination_deg": 80,
+  "azimuth_deg": 0,
+  "fov_deg": 28
+ },
+ "image": {
+  "width": 640,
+  "height": 360,
+  "samples_per_axis": 2
+ },
+ "disk": {
+  "inner_M": 6,
+  "outer_M": 20,
+  "temperature_k": 4000
+ },
+ "stars": true,
+ "run": {
+  "frames": 60,
+  "time_from_M": 0,
+  "time_to_M": 120,
+  "inclination_from_deg": 72,
+  "inclination_to_deg": 86
+ },
+ "controls": [
+  {
+   "label": "inclination from the axis, deg",
+   "path": "camera.inclination_deg",
+   "min": 0,
+   "max": 90,
+   "log": false
+  },
+  {
+   "label": "camera distance, M",
+   "path": "camera.distance_M",
+   "min": 15,
+   "max": 200,
+   "log": true
+  },
+  {
+   "label": "disk temperature, K",
+   "path": "disk.temperature_k",
+   "min": 2500,
+   "max": 30000,
+   "log": true
+  }
+ ]
+}

@@ -1,0 +1,24 @@
+== tables
+== steady conduction with a heat flux
+== temperature-dependent conductivity
+== semi-infinite solid after a surface temperature step
+== spatial convergence
+== lumped cooling and time-step convergence
+== radiation equilibrium
+== fin with lateral convection
+== moving source energy
+== element activation
+== invalid input
+== thermoelastic coupling
+== anisotropic conduction
+== phase change: latent heat is conserved and not counted twice
+  melt and re-freeze of 2.106e+09 J/m^3 latent heat: worst enthalpy mismatch 8.7e-14, at most 93 Picard iterations per step
+== Stefan melting front against the similarity solution
+  500 steps: 32 Picard iterations at most, 5.0 on average
+  Stefan number 1, lambda 0.620063: front 39.16727 mm (similarity solution 39.21620 mm, -0.12 %); mushy interval 0.5 K, element 0.500 mm, dt 2 s
+== thermal contact resistance across an interface
+  series resistance 29 K/W: 3.44828 W through the wall, 17.24 K jump at a 2000 W/(m^2 K) contact
+== timing
+  96000 elements, 102541 nodes: 0.050 s per backward Euler step (assembly 0.007 s, solve 0.037 s, energy 0.005 s; 40 CG iterations, 4 threads)
+
+ALL THERMAL VERIFICATION TESTS PASSED: 72 passed, 0 failed

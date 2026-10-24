@@ -1,0 +1,531 @@
+{
+  "analysis": "transient_thermal",
+  "assessment": {
+    "conservation": {
+      "energy_closure_error": 1.2657221452108545e-12,
+      "enthalpy_mismatch": 2.5475012681148494e-14,
+      "passed": true
+    },
+    "discretization_evidence": {
+      "element_size_mm": [0.75, 0.75, 0.75],
+      "spatial": "not estimated: one mesh was solved. Establish mesh convergence by repeating the study with a finer element_size; voxel boundaries are staircases, so surface values on curved or inclined faces depend on the element size",
+      "temporal": "not estimated (fixed steps)"
+    },
+    "execution": "COMPLETED",
+    "experimental_validation": "none: no comparison with measurements is part of this run",
+    "material_provenance": [
+      {
+        "material": "corolla_demo",
+        "status": "demonstration",
+        "target": "sculpture"
+      }
+    ],
+    "numerical_convergence": {
+      "failed_attempts_recovered": 0,
+      "largest_picard_iterations": 3,
+      "nonlinear": "every accepted step converged its Picard iteration to the nonlinear tolerance"
+    },
+    "reading": "The job completed, which says nothing about accuracy. Demonstration materials were used, so values are indicative only."
+  },
+  "bodies": [
+    {
+      "balance_error": 1.2437981949034696e-12,
+      "boundary_and_prescribed_j": 92.04278158206344,
+      "independently_closed": true,
+      "name": "sculpture",
+      "residual_j": -1.1448264558566734e-10,
+      "sources_j": 0,
+      "stored_j": 92.04278158194896,
+      "through_interfaces_j": 0
+    }
+  ],
+  "conditions": [
+    {
+      "body": "sculpture",
+      "energy_into_model_j": 927.2812499999878,
+      "kind": "heat_flux",
+      "mean_power_w": 6.181874999999919,
+      "name": "bottom_pulse"
+    },
+    {
+      "body": "sculpture",
+      "energy_into_model_j": -748.2568901949451,
+      "kind": "convection",
+      "mean_power_w": -4.988379267966301,
+      "name": "ambient_convection"
+    },
+    {
+      "body": "sculpture",
+      "energy_into_model_j": -86.98157822297932,
+      "kind": "radiation",
+      "mean_power_w": -0.5798771881531954,
+      "name": "ambient_radiation"
+    }
+  ],
+  "coupling": {
+    "character": "one-way: every coupling runs forward only, nothing feeds back within a step",
+    "couplings": [],
+    "execution_order": [
+      {
+        "coupling": "sequential (one-way)",
+        "participants": ["thermal"]
+      }
+    ],
+    "participants": [
+      {
+        "kind": "transient",
+        "name": "thermal",
+        "order": 1
+      }
+    ],
+    "summary": "a single transient thermal participant: nothing is coupled"
+  },
+  "energy": {
+    "boundary_j": 92.04278158206546,
+    "closure_error": 1.2657221452108545e-12,
+    "enthalpy_change_j": 92.04278158194661,
+    "enthalpy_mismatch": 2.5475012681148494e-14,
+    "note": "accepted steps only: rejected trial steps never enter these sums. The stored energy of every step must equal the heat delivered by sources, boundary faces and prescribed-temperature nodes; enthalpy_change_j is the same energy obtained by integrating the enthalpy function over the elements, which checks the capacity model itself rather than the linear solve",
+    "prescribed_nodes_j": 0,
+    "sources_j": 0,
+    "stored_j": 92.04278158194896,
+    "supplied_j": 92.04278158206546,
+    "worst_step_balance_error": 5.368968003100459e-12,
+    "worst_step_enthalpy_mismatch": 8.204033062242323e-14
+  },
+  "files": [
+    {
+      "bytes": 10525992,
+      "format": "navier-am-thermal-results 2: JSON header and little-endian arrays",
+      "name": "results.nvt",
+      "sha256": "a76868c2cce894c4efd5a759b624ded17f6f2db91ebc6adeb6a0bcb141badedc"
+    }
+  ],
+  "history": [
+    {
+      "max_c": 20,
+      "min_c": 20,
+      "time_s": 0
+    },
+    {
+      "max_c": 43.830517698430754,
+      "min_c": 20.004223629842784,
+      "time_s": 2.5
+    },
+    {
+      "max_c": 59.75181534157781,
+      "min_c": 20.04246632994733,
+      "time_s": 5
+    },
+    {
+      "max_c": 72.3586613692678,
+      "min_c": 20.177476678954747,
+      "time_s": 7.5
+    },
+    {
+      "max_c": 82.742183150203,
+      "min_c": 20.477291283764373,
+      "time_s": 10
+    },
+    {
+      "max_c": 91.52650379502091,
+      "min_c": 20.98733957509552,
+      "time_s": 12.5
+    },
+    {
+      "max_c": 99.10612231444998,
+      "min_c": 21.72268389528614,
+      "time_s": 15
+    },
+    {
+      "max_c": 105.74659922773714,
+      "min_c": 22.67411182380448,
+      "time_s": 17.5
+    },
+    {
+      "max_c": 111.63507068652143,
+      "min_c": 23.817766458272672,
+      "time_s": 20
+    },
+    {
+      "max_c": 116.90825172969028,
+      "min_c": 25.123147189171732,
+      "time_s": 22.5
+    },
+    {
+      "max_c": 121.669034031742,
+      "min_c": 26.55835231383395,
+      "time_s": 25
+    },
+    {
+      "max_c": 102.36909818941712,
+      "min_c": 28.08883709731407,
+      "time_s": 27.5
+    },
+    {
+      "max_c": 90.53576451360266,
+      "min_c": 29.657667302532275,
+      "time_s": 30
+    },
+    {
+      "max_c": 81.69651695981332,
+      "min_c": 31.178846437349705,
+      "time_s": 32.5
+    },
+    {
+      "max_c": 74.77987233701657,
+      "min_c": 32.564913090610276,
+      "time_s": 35
+    },
+    {
+      "max_c": 69.19975537839639,
+      "min_c": 33.75433151106108,
+      "time_s": 37.5
+    },
+    {
+      "max_c": 64.59313824883105,
+      "min_c": 34.71868636498857,
+      "time_s": 40
+    },
+    {
+      "max_c": 60.72299867706573,
+      "min_c": 35.45612908865132,
+      "time_s": 42.5
+    },
+    {
+      "max_c": 57.437011152355296,
+      "min_c": 35.98139900750283,
+      "time_s": 45
+    },
+    {
+      "max_c": 54.59578431100903,
+      "min_c": 36.31440161713698,
+      "time_s": 47.5
+    },
+    {
+      "max_c": 52.1158108711013,
+      "min_c": 36.48385989722931,
+      "time_s": 50
+    },
+    {
+      "max_c": 50.0135968309188,
+      "min_c": 36.514364572708985,
+      "time_s": 52.5
+    },
+    {
+      "max_c": 48.33999747224482,
+      "min_c": 36.43059825116171,
+      "time_s": 55
+    },
+    {
+      "max_c": 46.802762015851215,
+      "min_c": 36.25484008597766,
+      "time_s": 57.5
+    },
+    {
+      "max_c": 45.386743324381484,
+      "min_c": 36.00538645276811,
+      "time_s": 60
+    },
+    {
+      "max_c": 44.078469101345775,
+      "min_c": 35.697872832129576,
+      "time_s": 62.5
+    },
+    {
+      "max_c": 42.8660636209745,
+      "min_c": 35.345509828707236,
+      "time_s": 65
+    },
+    {
+      "max_c": 41.73912583636718,
+      "min_c": 34.95936280448768,
+      "time_s": 67.5
+    },
+    {
+      "max_c": 40.68858599855213,
+      "min_c": 34.54863446977271,
+      "time_s": 70
+    },
+    {
+      "max_c": 39.710392164445466,
+      "min_c": 34.12093036026653,
+      "time_s": 72.5
+    },
+    {
+      "max_c": 38.793655567772475,
+      "min_c": 33.682498457566,
+      "time_s": 75
+    },
+    {
+      "max_c": 37.931839744189176,
+      "min_c": 33.23844030000123,
+      "time_s": 77.5
+    },
+    {
+      "max_c": 37.11991213916991,
+      "min_c": 32.792894087690286,
+      "time_s": 80
+    },
+    {
+      "max_c": 36.353484465579015,
+      "min_c": 32.34919181505546,
+      "time_s": 82.5
+    },
+    {
+      "max_c": 35.62872115844982,
+      "min_c": 31.909993099940664,
+      "time_s": 85
+    },
+    {
+      "max_c": 34.94225983234048,
+      "min_c": 31.477398533022154,
+      "time_s": 87.5
+    },
+    {
+      "max_c": 34.29114274762014,
+      "min_c": 31.05304527563419,
+      "time_s": 90
+    },
+    {
+      "max_c": 33.67319073047827,
+      "min_c": 30.638187417965412,
+      "time_s": 92.5
+    },
+    {
+      "max_c": 33.08668618114427,
+      "min_c": 30.233763344777287,
+      "time_s": 95
+    },
+    {
+      "max_c": 32.528227887836465,
+      "min_c": 29.840452081739045,
+      "time_s": 97.5
+    },
+    {
+      "max_c": 31.996024953460278,
+      "min_c": 29.458720332822963,
+      "time_s": 100
+    },
+    {
+      "max_c": 31.48846418984806,
+      "min_c": 29.088861678076626,
+      "time_s": 102.5
+    },
+    {
+      "max_c": 31.004085853970935,
+      "min_c": 28.731029185508817,
+      "time_s": 105
+    },
+    {
+      "max_c": 30.54156310539406,
+      "min_c": 28.38526250140353,
+      "time_s": 107.5
+    },
+    {
+      "max_c": 30.09968461104154,
+      "min_c": 28.05151031913516,
+      "time_s": 110
+    },
+    {
+      "max_c": 29.67733980589611,
+      "min_c": 27.729648985214965,
+      "time_s": 112.5
+    },
+    {
+      "max_c": 29.273506391427247,
+      "min_c": 27.419497880657218,
+      "time_s": 115
+    },
+    {
+      "max_c": 28.887239717389605,
+      "min_c": 27.12083211320703,
+      "time_s": 117.5
+    },
+    {
+      "max_c": 28.517663747744507,
+      "min_c": 26.833392969194904,
+      "time_s": 120
+    },
+    {
+      "max_c": 28.163963358627427,
+      "min_c": 26.55689650057053,
+      "time_s": 122.5
+    },
+    {
+      "max_c": 27.825377756427713,
+      "min_c": 26.291040561057343,
+      "time_s": 125
+    },
+    {
+      "max_c": 27.501194838044228,
+      "min_c": 26.035510553624817,
+      "time_s": 127.5
+    },
+    {
+      "max_c": 27.19083836660394,
+      "min_c": 25.789984108086742,
+      "time_s": 130
+    },
+    {
+      "max_c": 26.893623472634715,
+      "min_c": 25.55413487131233,
+      "time_s": 132.5
+    },
+    {
+      "max_c": 26.60889464861225,
+      "min_c": 25.3276355621378,
+      "time_s": 135
+    },
+    {
+      "max_c": 26.33609704050258,
+      "min_c": 25.11016041767857,
+      "time_s": 137.5
+    },
+    {
+      "max_c": 26.074705155439005,
+      "min_c": 24.901387136527887,
+      "time_s": 140
+    },
+    {
+      "max_c": 25.824220598368925,
+      "min_c": 24.70099840663022,
+      "time_s": 142.5
+    },
+    {
+      "max_c": 25.58417007467574,
+      "min_c": 24.50868309085189,
+      "time_s": 145
+    },
+    {
+      "max_c": 25.35410361930593,
+      "min_c": 24.324137130957524,
+      "time_s": 147.5
+    },
+    {
+      "max_c": 25.133593019271984,
+      "min_c": 24.147064220443326,
+      "time_s": 150
+    }
+  ],
+  "interpretation": ["Heat conduction in solids with an enthalpy formulation: latent heat of melting is carried when materials state a solidus, a liquidus and a latent heat and phase_change is on. There is no convection inside the material: convection and radiation act as boundary conditions with coefficients the user supplies.", "Conductivity is integrated at the Gauss points (unless property_evaluation is element_mean), and the voxel mesh has a staircase boundary, so surface temperatures on curved or inclined faces depend on the element size."],
+  "model": {
+    "analysis": "transient_thermal",
+    "boundary_faces": 28203,
+    "element_size_mm": [0.75, 0.75, 0.75],
+    "elements": 11840,
+    "initial_temperature_c": 20,
+    "materials": [
+      {
+        "conductivity_at_20c": 10,
+        "density_at_20c": 7800,
+        "material": "corolla_demo",
+        "specific_heat_at_20c": 500,
+        "status": "demonstration",
+        "target": "sculpture"
+      }
+    ],
+    "mesh_hash": "364431edbc286041f1a02ddfa418cd61b12b911b154667625173a7f98534ca19",
+    "nodes": 18650,
+    "thermal_conditions": [
+      {
+        "applies_to": "bottom",
+        "kind": "heat_flux",
+        "mesh_area_mm2": 618.1875000000114,
+        "mesh_faces": 1099,
+        "name": "bottom_pulse",
+        "nominal_power_w": 37.091250000000684,
+        "stl_area_mm2": 615.6422596086572
+      },
+      {
+        "applies_to": "outer",
+        "kind": "convection",
+        "mesh_area_mm2": 7622.999999998305,
+        "mesh_faces": 13552,
+        "name": "ambient_convection",
+        "nominal_power_w": 0,
+        "stl_area_mm2": 5889.892832288351
+      },
+      {
+        "applies_to": "outer",
+        "kind": "radiation",
+        "mesh_area_mm2": 7622.999999998305,
+        "mesh_faces": 13552,
+        "name": "ambient_radiation",
+        "nominal_power_w": 0,
+        "stl_area_mm2": 5889.892832288351
+      }
+    ],
+    "time": {
+      "capacity": "lumped",
+      "condition_changes": 1,
+      "end_s": 150,
+      "integration": "backward Euler",
+      "step_s": 1.25,
+      "stepping": "fixed",
+      "steps": 120,
+      "stored_times": 61
+    }
+  },
+  "restart": {
+    "checkpoints_written": 0,
+    "note": "a resumed run continues the same accepted state, controller history and budget: it is the same physical run",
+    "resumed_from_s": []
+  },
+  "setup_warnings": [
+    {
+      "code": "DEMONSTRATION_MATERIAL",
+      "message": "'sculpture' uses the demonstration material 'corolla_demo': temperatures follow its uncalibrated conductivity and heat capacity"
+    }
+  ],
+  "solver": {
+    "largest_picard_iterations": 3,
+    "steps": 120,
+    "total_cg_iterations": 18998
+  },
+  "temperature": {
+    "final_max_c": 25.133593019271984,
+    "final_min_c": 24.147064220443326,
+    "max_at_s": 25,
+    "max_c": 121.669034031742,
+    "min_c": 20,
+    "note": "the extremes over the stored times; a peak between stored times is not seen here"
+  },
+  "time_integration": {
+    "accepted_steps": 120,
+    "attempts": 120,
+    "error_estimate": {
+      "method": "none: fixed steps carry no temporal error estimate",
+      "note": "repeat the run with half the time step (or run adaptively) to establish the temporal error"
+    },
+    "events": {
+      "condition_changes": 1,
+      "note": "every stored time and every schedule change was landed on exactly",
+      "stored_times": 60
+    },
+    "invalid_states": 0,
+    "largest_step_s": 1.25,
+    "linear_failures": 0,
+    "method": "backward Euler",
+    "nonlinear_failures": 0,
+    "order": 1,
+    "rejected_steps": 0,
+    "smallest_step_s": 1.25,
+    "stepping": "fixed",
+    "work": {
+      "assemblies": 320,
+      "cg_iterations": 18998,
+      "estimate_seconds": 0,
+      "picard_iterations": 320,
+      "solve_seconds": 6.20267899974715,
+      "solves": 120
+    }
+  },
+  "units": {
+    "energy": "J",
+    "length": "mm",
+    "stress": "MPa",
+    "temperature": "degC",
+    "time": "s"
+  }
+}

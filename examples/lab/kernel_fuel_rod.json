@@ -1,0 +1,150 @@
+{
+ "domain": "kernel",
+ "title": "A fuel rod heating from within: when does its axis reach 1000 K? (the first application trial)",
+ "provenance": {
+  "purpose": "composed by an agent from the documentation alone in the first application trial (challenges/agents/trials/2026-10-08-fuel-rod.json): heat written as a field, a solid cylinder made from a box by the square-to-disc map, the first crossing of 1000 K at the axis. The exact answer, 5.3264 s, follows from the series solution of a cylinder with uniform generation",
+  "geometry": "a box [-R, R] x [-R, R] x [0, L] in its own coordinates, mapped onto the solid cylinder of radius R = 5 mm by the elliptical square-to-disc map; length 20 mm along z; the side held at 600 K, the ends insulated",
+  "material": "values given in the trial's problem statement (k 3 W/(m K), rho 10970 kg/m^3, c_p 300 J/(kg K)), not a particular fuel's data"
+ },
+ "mesh": {
+  "box": {
+   "size_m": [
+    0.01,
+    0.01,
+    0.02
+   ],
+   "cells": [
+    8,
+    8,
+    2
+   ],
+   "origin_m": [
+    -0.005,
+    -0.005,
+    0
+   ]
+  },
+  "map_m": [
+   "x*sqrt(1 - 0.5*(y/0.005)^2)",
+   "y*sqrt(1 - 0.5*(x/0.005)^2)",
+   "z"
+  ]
+ },
+ "order": 2,
+ "materials": {
+  "fuel": {
+   "conductivity_w_mk": 3,
+   "density_kg_m3": 10970,
+   "specific_heat_j_kgk": 300,
+   "source": "given in the problem statement"
+  }
+ },
+ "fields": {
+  "T": {
+   "mass": "density_kg_m3*specific_heat_j_kgk",
+   "diffusion": "conductivity_w_mk",
+   "source": 300000000.0,
+   "initial": 600,
+   "unit": "K"
+  }
+ },
+ "boundaries": [
+  {
+   "name": "coolant x-",
+   "where": {
+    "plane": [
+     "x",
+     -0.005
+    ],
+    "space": "box"
+   },
+   "value": {
+    "T": 600
+   }
+  },
+  {
+   "name": "coolant x+",
+   "where": {
+    "plane": [
+     "x",
+     0.005
+    ],
+    "space": "box"
+   },
+   "value": {
+    "T": 600
+   }
+  },
+  {
+   "name": "coolant y-",
+   "where": {
+    "plane": [
+     "y",
+     -0.005
+    ],
+    "space": "box"
+   },
+   "value": {
+    "T": 600
+   }
+  },
+  {
+   "name": "coolant y+",
+   "where": {
+    "plane": [
+     "y",
+     0.005
+    ],
+    "space": "box"
+   },
+   "value": {
+    "T": 600
+   }
+  }
+ ],
+ "time": {
+  "end_s": 8,
+  "step_s": 0.05,
+  "method": "bdf2",
+  "outputs": 32
+ },
+ "outputs": {
+  "probes": [
+   {
+    "name": "axis, mid-length",
+    "point_m": [
+     0,
+     0,
+     0.01
+    ]
+   },
+   {
+    "name": "half radius, mid-length",
+    "point_m": [
+     0.0025,
+     0,
+     0.01
+    ]
+   }
+  ],
+  "crossings": [
+   {
+    "probe": "axis, mid-length",
+    "field": "T",
+    "value": 1000
+   }
+  ]
+ },
+ "picture": {
+  "film": "build/labfilm OUT.lab --out DIR --field T --light"
+ },
+ "controls": [
+  {
+   "label": "the heat generation, W/m^3",
+   "path": "fields.T.source",
+   "min": 100000000.0,
+   "max": 500000000.0,
+   "log": false
+  }
+ ]
+}

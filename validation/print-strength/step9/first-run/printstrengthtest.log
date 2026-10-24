@@ -1,0 +1,114 @@
+== Tsai-Hill: a stress of zero never switches the criterion
+  ok   the strength ratio does not change when a zero normal stress changes sign (largest jump 1.901e-13)
+  ok   with equal tension and compression strengths it is the 3D Hill form (0.0e+00)
+  ok   index 1 at each tensile, compressive and shear strength (0.0e+00)
+== a. isotropic limit
+  ok   cantilever (2, 3, -10) N on 1280 elements: displacements equal the isotropic solver's to 5.19e-10 relative (largest 13.2721 mm); Gauss-point stresses to 8.28e-10
+  ok   uniaxial bar, 1000 N on 10 x 10 mm against 50 MPa: maximum-stress index 0.2 at every Gauss point (3.04e-14) and in the summary (0.2), mode 1t everywhere
+== step 4: a printed part on a TET10 mesh
+  (T s of processor time: 3648 elements, sparse Cholesky (nested dissection), 0 iterations)
+  (T s of processor time: 3648 elements, sparse Cholesky (nested dissection), 0 iterations)
+  ok   cantilever 40 x 10 x 10 mm, (2, 3, -10) N on 3648 TET10 elements: displacements equal the isotropic tetrahedral solver's to 3.02e-13 relative (largest 0.109518 mm), Gauss-point stresses to 9.29e-13 (criterion 1e-9)
+  ok   the force condition applies its requested resultant on the TET10 faces to 4.00e-16 relative (criterion 1e-9)
+  peak flag support, stated strength ratio 19.0768 beside the point value 13.9635
+== b. off-axis bar, Tsai-Hill
+  layers at  0 deg: closed form 5.000000; gauge length (2048 points) within 1.367e-08, bar free to shear within 1.394e-12; whole clamped bar smallest 4.731204 (1t (tension along axis 1) at x = -54.5 mm, beside the clamp)
+  layers at 30 deg: closed form 5.173567; gauge length (2048 points) within 1.614e-08, bar free to shear within 1.241e-12; whole clamped bar smallest 4.815281 (s31 (interlayer shear, plane 31) at x = -58.0 mm, beside the clamp)
+  layers at 60 deg: closed form 3.703280; gauge length (2048 points) within 8.874e-09, bar free to shear within 1.309e-12; whole clamped bar smallest 3.239952 (3t (interlayer tension) at x = -58.0 mm, beside the clamp)
+  layers at 90 deg: closed form 3.000000; gauge length (2048 points) within 2.407e-09, bar free to shear within 2.363e-12; whole clamped bar smallest 2.827953 (3t (interlayer tension) at x = -54.5 mm, beside the clamp)
+  ok   clamped bar through analysis_run: gauge-length strength ratio equals the closed form within 1.614e-08 (criterion 5e-3)
+  ok   bar free to shear: every Gauss point within 2.363e-12 (criterion 5e-3)
+  ok   governing mode 1t at 0 degrees and 3t (interlayer tension) at 90 degrees in the gauge length
+== c. printed cantilever, layers along the beam (printed flat)
+  ok   tip deflection 9.96630 mm against Timoshenko 10.02182 mm with E = 3.20 GPa along the beam (-0.554 %)
+  ok   largest failure index 0.229767 in element 960, which touches the clamped root (the summary names the same element and value)
+  ok   mid-span: 64 outermost Gauss points within 7.584e-03 of beam theory at those points (criterion 2e-2)
+  ok   their governing mode is tension 1t or compression 1c along the raster
+== c. printed cantilever, layers across the beam (printed upright)
+  ok   tip deflection 12.27509 mm against Timoshenko 12.32951 mm with E = 2.60 GPa along the beam (-0.441 %)
+  ok   largest failure index 0.37715 in element 0, which touches the clamped root (the summary names the same element and value)
+  ok   mid-span: 64 outermost Gauss points within 7.513e-03 of beam theory at those points (criterion 2e-2)
+  ok   their governing mode is interlayer tension 3t or compression 3c
+== step 2: library records with strengths along and across the layers
+  pla_fff      along  52.30 MPa: ratio 1.000000000 (max stress), 1.000000000 (Tsai-Wu); across  40.50 MPa: 1.000000000, 1.000000000
+  abs_fff      along  33.40 MPa: ratio 1.000000000 (max stress), 1.000000000 (Tsai-Wu); across  29.70 MPa: 1.000000000, 1.000000000
+  petg_fff     along  50.80 MPa: ratio 1.000000000 (max stress), 1.000000000 (Tsai-Wu); across  42.80 MPa: 1.000000000, 1.000000000
+  asa_fff      along  43.80 MPa: ratio 1.000000000 (max stress), 1.000000000 (Tsai-Wu); across  32.00 MPa: 1.000000000, 1.000000000
+  pc_fff       along  69.10 MPa: ratio 1.000000000 (max stress), 1.000000000 (Tsai-Wu); across  52.80 MPa: 1.000000000, 1.000000000
+  pa12_fff     along  49.30 MPa: ratio 1.000000000 (max stress), 1.000000000 (Tsai-Wu); across  41.80 MPa: 1.000000000, 1.000000000
+  pa6_66_fff   along  78.00 MPa: ratio 1.000000000 (max stress), 1.000000000 (Tsai-Wu); across  45.80 MPa: 1.000000000, 1.000000000
+  pa6cf_fff    along 109.30 MPa: ratio 1.000000000 (max stress), 1.000000000 (Tsai-Wu); across  54.00 MPa: 1.000000000, 1.000000000
+  pei9085_fff  along  69.20 MPa: ratio 1.000000000 (max stress), 1.000000000 (Tsai-Wu); across  39.40 MPa: 1.000000000, 1.000000000
+  ok   9 records, 36 solves: a model built from each record is at strength ratio 1 at its stated strengths along and across the layers within 4.69e-14 (criterion 1e-6)
+  ok   the governing mode is 1t along the layers and 3t (interlayer tension) across them
+  ok   every result states the rules for what no document gives (Poisson, interlayer shear modulus, compression, shear)
+  ok   a part assigned petg_fff (no Poisson's ratio) is ready and solves as a printed part, and the result says 0.35 was assumed (ready 1, solved 1, said 1)
+== step 3: walls and infill
+  (T s of processor time: 9600 elements, pcg/block-jacobi, 472 iterations)
+  ok   box 20 x 10 x 6 mm, walls 0.9 mm, top 0.8 mm, bottom 0.6 mm on 0.5 mm elements: wall volume fraction 0.427913333333 against the box less its core 0.427913333333 (2760 elements in walls, 4608 in the infill, 2232 mixed)
+  ok   infill alone at 20 % along the layers: modulus 267.052 MPa against Eq. 12, 0.07793 x 3426.9 MPa = 267.052 MPa (-4.77e-15; criterion 1.13 %)
+  ok   and its strength ratio 3.49313129 against the rule's 0.06679 x 52.3 MPa / 1 MPa = 3.49313129 (-2.3e-14; criterion 1e-6), governed by the infill, the rule in the result
+  ok   and the stated ratio, read at the Gauss points, 3.49313129 (-2.3e-14; criterion 1e-6), placed in the infill
+  ok   built along x, y and z the infill bar reads 2.70500607, 3.49313129, 3.49313129 against the across rule's 2.70500607 and the along rule's 3.49313129 (criterion 1e-6), strongest named z
+  ok   infill alone at 50 % along the layers: modulus 838.723 MPa against Eq. 12, 0.24475 x 3426.9 MPa = 838.723 MPa (+3.11e-15; criterion 1.13 %)
+  ok   and its strength ratio 12.8002665 against the rule's 0.2447 x 52.3 MPa / 1 MPa = 12.8002665 (-1.8e-14; criterion 1e-6), governed by the infill, the rule in the result
+  ok   and the stated ratio, read at the Gauss points, 12.8002665 (-1.8e-14; criterion 1e-6), placed in the infill
+  ok   infill alone at 100 % along the layers: modulus 3426.9 MPa against Eq. 12, 1.00000 x 3426.9 MPa = 3426.9 MPa (+1.11e-14; criterion 1.13 %)
+  ok   and its strength ratio 52.3 against the rule's 1 x 52.3 MPa / 1 MPa = 52.3 (-1.3e-14; criterion 1e-6), governed by the infill, the rule in the result
+  ok   and the stated ratio, read at the Gauss points, 52.3 (-1.3e-14; criterion 1e-6), placed in the infill
+  ok   infill alone at 20 % across the layers: modulus 238.842 MPa against Eq. 12, 0.07793 x 3064.9 MPa = 238.842 MPa (+1.49e-14; criterion 1.13 %)
+  ok   and its strength ratio 2.70500607 against the rule's 0.06679 x 40.5 MPa / 1 MPa = 2.70500607 (-9.7e-15; criterion 1e-6), governed by the infill, the rule in the result
+  ok   and the stated ratio, read at the Gauss points, 2.70500607 (-9.7e-15; criterion 1e-6), placed in the infill
+  ok   8 % infill with strengths is refused, not guessed ("no measured strength of printed gyroid infill below 10 % was found, so the strength of a 8")
+  (T s of processor time: 5120 elements, sparse Cholesky (nested dissection), 0 iterations)
+  (T s of processor time: 5120 elements, sparse Cholesky (nested dissection), 0 iterations)
+  (T s of processor time: 5120 elements, sparse Cholesky (nested dissection), 0 iterations)
+  ok   sandwich 160 x 16 x 16 mm, 2 mm walls and skins, 20 % gyroid core (E1 0.2671 GPa): bending stiffness from the mid-span curvature 13.2552 N m2 against E_wall I_shell + E_core I_core 13.2552 N m2 (+1.04e-06; criterion 2 %)
+  ok   100 % infill inside the walls: displacements equal the solid model's to 9.71e-11 (criterion 1e-9)
+== step 4: the stated failure load and the build direction
+  (T s of processor time: 3000 elements, sparse Cholesky (nested dissection), 0 iterations)
+  layers at  0 deg: stated failure load 4965.18 N against the closed form 5000 N (-0.696 %), peak flag support
+  ok   step 8: the bar's faces all lie along the grid, and its answer does not place the stated point at a staircase
+  ok   f. uniform tension along the layers (amended): break factor 4.99536144, the section's own 4.99536144 (0.0e+00; criterion 1e-6), first failure 4.96518 (+0.61 %; criterion 1 %)
+  (T s of processor time: 3000 elements, sparse Cholesky (nested dissection), 0 iterations)
+  layers at 30 deg: stated failure load 5088.75 N against the closed form 5173.57 N (-1.639 %), peak flag support
+  (T s of processor time: 3000 elements, sparse Cholesky (nested dissection), 0 iterations)
+  layers at 60 deg: stated failure load 3640.03 N against the closed form 3703.28 N (-1.708 %), peak flag support
+  (T s of processor time: 3000 elements, sparse Cholesky (nested dissection), 0 iterations)
+  layers at 90 deg: stated failure load 2962.25 N against the closed form 3000 N (-1.258 %), peak flag support
+  ok   off-axis bar free to shear, layers at 0 to 90 degrees: stated failure load within 1.708 % of the closed form (criterion 2 %)
+  (T s of processor time: 10240 elements, sparse Cholesky (nested dissection), 0 iterations)
+  OPEN cantilever flat: stated failure load 42.752 N against beam theory at the root 41.667 N (+2.605 %; criterion 2 %, not met, recorded in GOALS.md G17 step 4; pinned at 3 %)
+  ok   the clamped cantilever flat: its peak is flagged at the support (peak 3.786, stated 4.275)
+  answer: The highest stress sits where a support holds the part, which an ideal rigid support exaggerates. Read 1.9 mm away from it, it holds about 4.3 times the load you entered (about 4.4 kg) before it would first fail, along the layers at (-93.8, 0, 10) mm, by 1t (tension along axis 1). The break estimate, with the plastic flowing before it breaks: about 6.1 times (about 6.2 kg). As placed is about as strong as the strongest of the three principal build directions (y). Supports and loads: all set by you. Strengths of printed_ti: assumed. Both are estimates for non-critical parts, not a guarantee.
+  build directions: x 2.5585, y 4.2802, z 4.2752 (as placed); strongest named y
+  ok   ranking of the build directions matches the hand calculation: x the weakest, R_x / R_z 0.5984 against Zt / Xt 0.6000, R_y / R_z 1.0012, strongest named y
+  (T s of processor time: 10240 elements, sparse Cholesky (nested dissection), 0 iterations)
+  OPEN cantilever upright: stated failure load 25.585 N against beam theory at the root 25 N (+2.339 %; criterion 2 %, not met, recorded in GOALS.md G17 step 4; pinned at 3 %)
+  ok   the clamped cantilever upright: its peak is flagged at the support (peak 2.36, stated 2.558)
+  answer: The highest stress sits where a support holds the part, which an ideal rigid support exaggerates. Read 1.9 mm away from it, it holds about 2.6 times the load you entered (about 2.6 kg) before it would first fail, between the layers at (-5, 1.25, 5) mm, by 3t (interlayer tension). The break estimate, with the plastic flowing before it breaks: about 3.7 times (about 3.7 kg). Supports and loads: all set by you. Strengths of printed_ti: assumed. Both are estimates for non-critical parts, not a guarantee.
+  (T s of processor time: 10240 elements, sparse Cholesky (nested dissection), 0 iterations)
+  ok   cantilever held as beam theory assumes, flat: stated failure load 41.88 N against beam theory at the root 41.667 N (+0.512 %; criterion 2 %), peak flag none
+  OPEN e. cantilever flat, the break estimate: membrane 0.00201 MPa, bending 12.35 MPa, wall 10 mm, break factor over first failure 1.4002 against g 1.4487 (-3.34 %; criterion 3 %, not met, pinned at 4 %)
+  ok   the answer's provenance: 3 supports and loads, each with its kind and "user", and the sentence that says so
+  answer: Holds about 4.2 times the load you entered (about 4.3 kg) before it would first fail, along the layers at (-100, 5, 10) mm, by 1t (tension along axis 1). The break estimate, with the plastic flowing before it breaks: about 5.9 times (about 6 kg). Supports and loads: all set by you. Strengths of printed_ti: assumed. Both are estimates for non-critical parts, not a guarantee.
+  (T s of processor time: 10240 elements, sparse Cholesky (nested dissection), 0 iterations)
+  ok   cantilever held as beam theory assumes, upright: stated failure load 24.998 N against beam theory at the root 25 N (-0.009 %; criterion 2 %), peak flag none
+  ok   e. cantilever upright, the break estimate: membrane 0.00105 MPa, bending 11.99 MPa, wall 10 mm, break factor 3.624 over first failure 2.5 = 1.4496 against g 1.4487 (+0.06 %; criteria 3 %, one cell, 3 %)
+  ok   an L with a sharp inner corner, loaded to open it: the peak (9.458) is flagged at the corner, 1.25 mm from it; the stated 13.96 is read 2.5 mm from the corner's edge (zone 1.88 mm)
+  (T s of processor time: 9734 elements, pcg-two-level-tet4, 44 iterations)
+  ok   the same L with the corner rounded (5 mm, 8 facets): no corner flagged (peak flag none, stated 9.65)
+== step 8: the answer at a voxel staircase
+  (T s of processor time: 2416 elements, sparse Cholesky (nested dissection), 0 iterations)
+  ok   a quarter tube on voxels states its point at the staircase (stated_near_staircase true) and its answer says so and names TET10
+== step 9: TET10 for the printed answer on a curved part
+  (T s of processor time: 4284 elements, sparse Cholesky (nested dissection), 0 iterations)
+  ok   the tube meshed with 0.5 mm voxels (2416) is solved on TET10 at 1 mm (4284 elements), and mesh_choice says so
+  (T s of processor time: 4284 elements, sparse Cholesky (nested dissection), 0 iterations)
+  ok   asked again on that project, nothing is meshed (4284 TET10 elements, the same mesh)
+  (T s of processor time: 4284 elements, sparse Cholesky (nested dissection), 0 iterations)
+  ok   its stated ratio 2.323233189 equals that of a TET10 mesh made directly at 1 mm, 2.323233189 (0.0e+00; criterion 1e-9)
+  (T s of processor time: 2416 elements, sparse Cholesky (nested dissection), 0 iterations)
+  ok   with walls and infill the tube stays on its voxels (2416 hex8 elements, no mesh_choice)
+
+PRINTED-PART STRENGTH (G17 step 1 a-c, steps 2 to 4, 8 and 9): 56 passed, 0 failed, 3 open (recorded as failed in GOALS.md)

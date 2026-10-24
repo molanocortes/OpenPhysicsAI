@@ -1,0 +1,7 @@
+FAIL fdm absent-mechanical-load warning qualifies its zero-state claim for process loading
+retained warning: ['there are no loads, gravity or nonzero prescribed displacements: every displacement and stress will be zero']
+FAIL lpbf absent-mechanical-load warning qualifies its zero-state claim for process loading
+retained warning: ['there are no loads, gravity or nonzero prescribed displacements: every displacement and stress will be zero']
+WARNING SCOPE BEFORE: 0 passed, 2 failed
+fixture: /private/tmp/openphysics-printing-foundation/docs/media/foundation/evidence.json
+fixture sha256: f8a0f8cb8de3c57908b902548c57a4641fb426e3b0e3fe16e1e7fc34df6a05cf

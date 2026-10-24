@@ -1,0 +1,37 @@
+{
+ "domain": "fire",
+ "title": "A 100 kW methane fire and its plume",
+ "fuel": {
+  "molar_mass_kg_mol": 0.016043,
+  "heat_of_combustion_j_kg": 50000000.0,
+  "air_per_fuel_kg": 17.2,
+  "radiative_fraction": 0.2,
+  "source": "methane: molar mass 16.043 g/mol; heat of combustion 50.0 MJ/kg (lower heating value, Drysdale, An Introduction to Fire Dynamics, 3rd ed., 2011); 17.2 kg of air per kg from CH4 + 2 (O2 + 3.76 N2); radiative fraction 0.2, the value fire models take for methane flames of this size (a demonstration value: it is not radiated here, only removed)"
+ },
+ "burner": {
+  "box_m": [
+   -0.15,
+   -0.15,
+   0.15,
+   0.15
+  ],
+  "heat_release_rate_w": 100000.0,
+  "ramp_s": 1.0,
+  "source": "a porous square burner 0.3 m across, as in McCaffrey's experiments (1979)"
+ },
+ "box_m": [
+  -0.8,
+  -0.8,
+  0.0,
+  0.8,
+  0.8,
+  3.2
+ ],
+ "cell_m": 0.04,
+ "ambient_temperature_k": 293.15,
+ "run": {
+  "end_s": 12.0,
+  "frames": 96,
+  "average_from_s": 6.0
+ }
+}

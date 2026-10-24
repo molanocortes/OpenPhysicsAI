@@ -1,0 +1,6 @@
+== G20 step 5 (c): a hole's edge in TET10 with sharp edges kept
+  mesh: 323160 elements, surface 0.5 mm; sharp edges kept True: nodes onto edges 661, onto corners 14, refused 0
+  largest von Mises 32.4570 MPa at (0.13, 5.00, 3.62) mm in the part's frame; Heywood: Kt 2.4219 on the net section, 32.2917 MPa (+0.51 %; criterion 3 %)
+  ok
+
+HOLE PLATE: 1 passed, 0 failed

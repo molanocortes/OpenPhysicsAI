@@ -1,0 +1,116 @@
+{
+ "domain": "kernel",
+ "title": "A rigid ball pressed 0.04 mm into a steel block: frictionless contact in the kernel (demonstration)",
+ "provenance": {
+  "purpose": "contact with a rigid obstacle, G24 step 3: a quarter of the block (symmetry planes x = 0 and y = 0), its mesh graded toward the contact point by formulas that keep a slope at every face (x^3 alone would fold the quadratic elements there, and the kernel refuses such a mesh), the ball given as a sphere; the contact pressure on the surface in the frame. A demonstration: Hertz's point contact is the reference for a ball on a half-space, and this block is finite and held at its base (on 2026-10-09 its force came out 4.2 % over Hertz's, its peak pressure 2.4 % over); kerneltest K19 checks the method against Hertz's line contact",
+  "material": "nominal steel (E 200 GPa, Poisson's ratio 0.3)"
+ },
+ "mesh": {
+  "box": {
+   "size_m": [
+    1,
+    1,
+    1
+   ],
+   "cells": [
+    12,
+    12,
+    8
+   ]
+  },
+  "map_m": [
+   "0.01*(0.1*x + 0.9*x^3)",
+   "0.01*(0.1*y + 0.9*y^3)",
+   "0.01*(1 - 0.1*(1 - z) - 0.9*(1 - z)^3)"
+  ]
+ },
+ "order": 2,
+ "physics": [
+  "elasticity"
+ ],
+ "materials": {
+  "steel": {
+   "youngs_modulus_pa": 200000000000.0,
+   "poisson_ratio": 0.3,
+   "source": "nominal steel"
+  }
+ },
+ "boundaries": [
+  {
+   "name": "symmetry x",
+   "where": {
+    "plane": [
+     "x",
+     0
+    ],
+    "space": "box"
+   },
+   "fix": [
+    "x"
+   ]
+  },
+  {
+   "name": "symmetry y",
+   "where": {
+    "plane": [
+     "y",
+     0
+    ],
+    "space": "box"
+   },
+   "fix": [
+    "y"
+   ]
+  },
+  {
+   "name": "base",
+   "where": {
+    "plane": [
+     "z",
+     0
+    ],
+    "space": "box"
+   },
+   "fix": [
+    "z"
+   ]
+  },
+  {
+   "name": "top",
+   "where": {
+    "plane": [
+     "z",
+     1
+    ],
+    "space": "box"
+   },
+   "contact": {
+    "sphere": {
+     "center_m": [
+      0,
+      0,
+      0.01496
+     ],
+     "radius_m": 0.005
+    },
+    "report_points": true
+   }
+  }
+ ],
+ "solver": {
+  "contact_tolerance": 1e-06
+ },
+ "picture": {
+  "deformation_scale": 50,
+  "film": "build/labfilm OUT.lab --out DIR --field contact_pressure --light"
+ },
+ "controls": [
+  {
+   "label": "how deep the ball presses, m",
+   "path": "boundaries.3.contact.sphere.center_m.2",
+   "min": 0.0149,
+   "max": 0.014999,
+   "log": false
+  }
+ ]
+}

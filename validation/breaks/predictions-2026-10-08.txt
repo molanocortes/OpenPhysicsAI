@@ -1,0 +1,8 @@
+  bar      flat      solid  fails at   125.4 N = 12.79 kg, gauge     1t (tension along axis 1) support
+  bar      upright   solid  fails at    97.2 N =  9.91 kg, gauge     3t (interlayer tension) support
+  beam     flat      20 %   fails at    31.9 N =  3.25 kg, root      1t (tension along axis 1) none
+  beam     flat      50 %   fails at    54.8 N =  5.59 kg, root      1t (tension along axis 1) none
+  beam     flat      100 %  fails at    89.9 N =  9.16 kg, root      1c (compression along axis 1) none
+  bracket  side      solid  fails at    70.2 N =  7.16 kg, corner    1t (tension along axis 1) none
+  bracket  standing  solid  fails at    52.1 N =  5.31 kg, corner    3t (interlayer tension) none
+  hook     flat      solid  fails at    93.3 N =  9.51 kg, bend      2t (tension along axis 2) none

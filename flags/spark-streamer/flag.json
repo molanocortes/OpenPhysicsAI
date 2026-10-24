@@ -1,0 +1,14 @@
+{
+ "id": "spark-streamer",
+ "number": 8,
+ "tier": "flag",
+ "stone": "electric fields and plasma",
+ "stone_short": "plasma",
+ "difficulty": 3,
+ "title": "A spark in air",
+ "subtitle": "Positive streamers: the birth of every spark and every lightning bolt",
+ "short": "Spark",
+ "status": "preparing",
+ "hook": "Put tens of thousands of volts on a needle above a plate and a finger of glowing plasma runs across the gap, carrying its own electric field. Predict how fast it runs and how wide it is.",
+ "note": "In preparation: the cases, the outputs and their units are written here when the flag opens, and the measured values are sealed at the same moment (tools/flags.py seal)."
+}

@@ -1,0 +1,1817 @@
+{
+  "kind": "thermal",
+  "title": "Thermal Corolla",
+  "scope": "Numerical demonstration with inferred inputs; no measurement comparison",
+  "geometry": "thermal_corolla_mm.stl",
+  "mesh_spacing_mm": 0.75,
+  "acceptance": {
+    "max_elements": 12000,
+    "residual_or_heat_balance": 1e-06,
+    "thermal_enthalpy_mismatch": 1e-09,
+    "finite_arrays": true,
+    "runtime_budget_seconds": 480
+  },
+  "project": {
+    "project": {
+      "id": "26750880afac6846b2f51e8a4e9a241a",
+      "name": "Thermal_Corolla",
+      "description": "Numerical demonstration with inferred inputs; no measurement comparison",
+      "directory": "/private/tmp/openphysics-art-gallery/workspace/Thermal_Corolla",
+      "revision": 2,
+      "unsaved_changes": false,
+      "created": "2026-10-03T07:16:15Z",
+      "modified": "2026-10-03T07:16:15Z",
+      "bodies": 0,
+      "selections": 0,
+      "material_assignments": 0,
+      "boundary_conditions": 0,
+      "mesh_generated": false,
+      "assumptions": 0
+    },
+    "project_file": "/private/tmp/openphysics-art-gallery/workspace/Thermal_Corolla/project.json",
+    "next_steps": [
+      "geometry_import: load the part STL with an explicit unit"
+    ]
+  },
+  "import": {
+    "body": {
+      "name": "sculpture",
+      "role": "part",
+      "units": {
+        "value": "mm",
+        "source": "user"
+      },
+      "size_mm": [
+        27.99803352355957,
+        27.99803352355957,
+        18.000000000000004
+      ],
+      "bounds_mm": {
+        "min": [
+          -13.999016761779785,
+          -13.999016761779785,
+          0
+        ],
+        "max": [
+          13.999016761779785,
+          13.999016761779785,
+          18.000000000000004
+        ]
+      },
+      "volume_mm3": 4977.810162669507,
+      "surface_area_mm2": 5889.8928322885495,
+      "triangles": 51166,
+      "surface_patches": 64,
+      "closed_solid": true,
+      "geometry_revision": 1,
+      "source": {
+        "original_path": "/private/tmp/openphysics-art-gallery/thermal_corolla_mm.stl",
+        "stored_file": "inputs/sculpture-5c2e317dc135.stl",
+        "sha256": "5c2e317dc13542f8ff43f7284fa368450147e76d6698b03e1d42c1f32e95ae96",
+        "bytes": 2558384,
+        "format": "binary",
+        "header": "OpenPhysicsAI designed geometry; units mm; thermal_corolla_mm"
+      },
+      "placement": {
+        "up_axis": "+Z",
+        "up_axis_source": "default",
+        "rotate_z_deg": 0,
+        "rotations": [],
+        "position_mm": [
+          0,
+          0
+        ],
+        "z_offset_mm": 0,
+        "rotation_matrix": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "translation_mm": [
+          0,
+          0,
+          0
+        ],
+        "transform": "x_build = R * (unit_scale * x_file) + t"
+      },
+      "repair_options": {
+        "remove_degenerate": true,
+        "remove_duplicate_faces": true,
+        "orient_outward": true
+      }
+    },
+    "diagnostics": {
+      "topology": {
+        "source_triangles": 51166,
+        "analysis_triangles": 51166,
+        "unique_vertices": 25585,
+        "merged_duplicate_vertices": 127913,
+        "weld_tolerance_mm": 4.3494594633962635e-05,
+        "open_edges": 0,
+        "nonmanifold_edges": 0,
+        "boundary_loops": 0,
+        "watertight": true,
+        "consistently_oriented": true,
+        "closed_solid": true,
+        "components": 1,
+        "closed_components": 1,
+        "nested_shells": 0,
+        "surface_patches": 64
+      },
+      "repairs": {
+        "degenerate_faces_found": 0,
+        "degenerate_faces_removed": 0,
+        "duplicate_faces_found": 0,
+        "duplicate_faces_removed": 0,
+        "opposite_duplicate_faces": 0,
+        "inconsistent_edges_found": 0,
+        "faces_flipped_for_consistency": 0,
+        "shells_reoriented": 0,
+        "non_orientable_components": 0,
+        "holes_filled": "none (no automatic hole filling)"
+      },
+      "components": [
+        {
+          "id": 0,
+          "triangles": 51166,
+          "closed": true,
+          "area_mm2": 5889.8928322885495,
+          "enclosed_volume_mm3": 4977.810162669507,
+          "nesting_depth": 0
+        }
+      ],
+      "checks": {
+        "self_intersections": "not checked",
+        "wall_thickness": "not checked"
+      },
+      "issues": []
+    },
+    "units_check": {
+      "largest_extent_in_file_units": 27.99803352355957,
+      "declared_unit": "mm",
+      "largest_extent_mm": 27.99803352355957,
+      "plausible": true,
+      "criterion": "largest extent between 1 mm and 1000 mm (typical additive manufacturing parts)",
+      "if_unit_were": [
+        {
+          "unit": "mm",
+          "largest_extent_mm": 27.99803352355957,
+          "plausible": true
+        },
+        {
+          "unit": "cm",
+          "largest_extent_mm": 279.98033523559576,
+          "plausible": true
+        },
+        {
+          "unit": "m",
+          "largest_extent_mm": 27998.03352355957,
+          "plausible": false
+        },
+        {
+          "unit": "in",
+          "largest_extent_mm": 711.1500514984131,
+          "plausible": true
+        },
+        {
+          "unit": "ft",
+          "largest_extent_mm": 8533.800617980958,
+          "plausible": false
+        },
+        {
+          "unit": "um",
+          "largest_extent_mm": 0.02799803352355957,
+          "plausible": false
+        }
+      ],
+      "assessment": "plausible: with mm the part is 28 mm across its largest extent",
+      "header_text": "OpenPhysicsAI designed geometry; units mm; thermal_corolla_mm",
+      "header_note": "the file header mentions units; headers are free text and not authoritative"
+    },
+    "warnings": [],
+    "assumptions": [
+      {
+        "subject": "bodies/sculpture/up_axis",
+        "text": "file axis +Z of body 'sculpture' is taken as the build direction (+Z)",
+        "source": "default",
+        "revision": 2
+      }
+    ]
+  },
+  "mesh": {
+    "mesh": {
+      "method": "voxel_hex8",
+      "description": "layer-aligned voxel mesh of 8-node hexahedra: undistorted boxes whose boundary is a staircase approximation of the STL surface",
+      "nodes": 18650,
+      "elements": 11840,
+      "dofs_structural": 55950,
+      "elements_by_region": {
+        "part": 11840,
+        "support": 0,
+        "build_plate": 0
+      },
+      "element_size_mm": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "grid_cells": [
+        38,
+        38,
+        24
+      ],
+      "quality": {
+        "jacobian": "constant and positive in every element (det J = hx hy hz / 8); no inverted or distorted elements",
+        "jacobian_determinant_mm3": 0.052734375,
+        "aspect_ratio": 1,
+        "face_connected_regions": 1,
+        "inside_test": {
+          "method": "parity of ray crossings along x, y and z through one sample point per cell, majority of three",
+          "uncertain_cells": 0,
+          "abstained_rays": 0,
+          "abstained_rays_meaning": "rays whose crossing count was odd: they went through a hole or a sheet of zero thickness, so that axis did not vote for that column",
+          "uncertain_fraction_of_elements": 0,
+          "refused_above_fraction": 0.05
+        },
+        "edge_or_vertex_contact_nodes": 0
+      },
+      "bodies": [
+        {
+          "name": "sculpture",
+          "volume_stl_mm3": 4977.810162669515,
+          "volume_mesh_mm3": 4994.99999999918,
+          "volume_error_percent": 0.3453293068220515,
+          "area_stl_mm2": 5889.892832288342,
+          "area_mesh_mm2": 7622.999999998305,
+          "area_ratio_mesh_to_stl": 1.2942510529578881
+        }
+      ],
+      "boundary": {
+        "faces": 13552,
+        "mean_distance_to_stl_mm": 0.11284269281022835,
+        "mean_distance_weighting": "boundary-face area",
+        "max_distance_to_stl_mm": 0.38214612868614495
+      },
+      "selections": [],
+      "hash": "364431edbc286041f1a02ddfa418cd61b12b911b154667625173a7f98534ca19",
+      "generated_at_revision": 6,
+      "seconds": 0.03484400000888854
+    },
+    "element_size_source": "user",
+    "warnings": [
+      "wall thickness has not been measured: run geometry_diagnostics (thickness: run) to find walls thinner than two elements"
+    ],
+    "resolution_dependence": "Volume, surface area and stresses at inclined or curved faces change with the element size. Repeat the analysis with half the element size to check that the quantities of interest have converged."
+  },
+  "inspection": {
+    "generated": true,
+    "current": true,
+    "settings": {
+      "element_size_mm": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "include_build_plate": false,
+      "plate_thickness_mm": 10,
+      "plate_margin_mm": 5
+    },
+    "mesh": {
+      "method": "voxel_hex8",
+      "description": "layer-aligned voxel mesh of 8-node hexahedra: undistorted boxes whose boundary is a staircase approximation of the STL surface",
+      "nodes": 18650,
+      "elements": 11840,
+      "dofs_structural": 55950,
+      "elements_by_region": {
+        "part": 11840,
+        "support": 0,
+        "build_plate": 0
+      },
+      "element_size_mm": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "grid_cells": [
+        38,
+        38,
+        24
+      ],
+      "quality": {
+        "jacobian": "constant and positive in every element (det J = hx hy hz / 8); no inverted or distorted elements",
+        "jacobian_determinant_mm3": 0.052734375,
+        "aspect_ratio": 1,
+        "face_connected_regions": 1,
+        "inside_test": {
+          "method": "parity of ray crossings along x, y and z through one sample point per cell, majority of three",
+          "uncertain_cells": 0,
+          "abstained_rays": 0,
+          "abstained_rays_meaning": "rays whose crossing count was odd: they went through a hole or a sheet of zero thickness, so that axis did not vote for that column",
+          "uncertain_fraction_of_elements": 0,
+          "refused_above_fraction": 0.05
+        },
+        "edge_or_vertex_contact_nodes": 0
+      },
+      "bodies": [
+        {
+          "name": "sculpture",
+          "volume_stl_mm3": 4977.810162669515,
+          "volume_mesh_mm3": 4994.99999999918,
+          "volume_error_percent": 0.3453293068220515,
+          "area_stl_mm2": 5889.892832288342,
+          "area_mesh_mm2": 7622.999999998305,
+          "area_ratio_mesh_to_stl": 1.2942510529578881
+        }
+      ],
+      "boundary": {
+        "faces": 13552,
+        "mean_distance_to_stl_mm": 0.11284269281022835,
+        "mean_distance_weighting": "boundary-face area",
+        "max_distance_to_stl_mm": 0.38214612868614495
+      },
+      "selections": [],
+      "hash": "364431edbc286041f1a02ddfa418cd61b12b911b154667625173a7f98534ca19",
+      "generated_at_revision": 6,
+      "seconds": 0.03484400000888854
+    },
+    "warnings": [
+      "wall thickness has not been measured: run geometry_diagnostics (thickness: run) to find walls thinner than two elements"
+    ]
+  },
+  "inputs": {
+    "analysis": "transient_thermal",
+    "end_time": "150 s",
+    "time_step": "1.25 s",
+    "theta": 1,
+    "capacity": "lumped",
+    "initial_temperature": "20 degC",
+    "output_times": [
+      2.5,
+      5.0,
+      7.5,
+      10.0,
+      12.5,
+      15.0,
+      17.5,
+      20.0,
+      22.5,
+      25.0,
+      27.5,
+      30.0,
+      32.5,
+      35.0,
+      37.5,
+      40.0,
+      42.5,
+      45.0,
+      47.5,
+      50.0,
+      52.5,
+      55.0,
+      57.5,
+      60.0,
+      62.5,
+      65.0,
+      67.5,
+      70.0,
+      72.5,
+      75.0,
+      77.5,
+      80.0,
+      82.5,
+      85.0,
+      87.5,
+      90.0,
+      92.5,
+      95.0,
+      97.5,
+      100.0,
+      102.5,
+      105.0,
+      107.5,
+      110.0,
+      112.5,
+      115.0,
+      117.5,
+      120.0,
+      122.5,
+      125.0,
+      127.5,
+      130.0,
+      132.5,
+      135.0,
+      137.5,
+      140.0,
+      142.5,
+      145.0,
+      147.5,
+      150.0
+    ]
+  },
+  "run": {
+    "job_id": "job-20261003-071615-7f70-1",
+    "state": "queued",
+    "analysis": "transient_thermal",
+    "run_directory": "/private/tmp/openphysics-art-gallery/workspace/Thermal_Corolla/runs/job-20261003-071615-7f70-1",
+    "spec_file": "/private/tmp/openphysics-art-gallery/workspace/Thermal_Corolla/runs/job-20261003-071615-7f70-1/spec.json",
+    "spec_hash": "0f1e9513df802509a753824f1ac93b5a6d751746ea8aa88ca8f2d62684a13fb2",
+    "model": {
+      "analysis": "transient_thermal",
+      "nodes": 18650,
+      "elements": 11840,
+      "mesh_hash": "364431edbc286041f1a02ddfa418cd61b12b911b154667625173a7f98534ca19",
+      "element_size_mm": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "time": {
+        "end_s": 150,
+        "stepping": "fixed",
+        "step_s": 1.25,
+        "steps": 120,
+        "stored_times": 61,
+        "condition_changes": 1,
+        "integration": "backward Euler",
+        "capacity": "lumped"
+      },
+      "initial_temperature_c": 20,
+      "materials": [
+        {
+          "target": "sculpture",
+          "material": "corolla_demo",
+          "status": "demonstration",
+          "conductivity_at_20c": 10,
+          "specific_heat_at_20c": 500,
+          "density_at_20c": 7800
+        }
+      ],
+      "thermal_conditions": [
+        {
+          "name": "bottom_pulse",
+          "kind": "heat_flux",
+          "applies_to": "bottom",
+          "mesh_faces": 1099,
+          "mesh_area_mm2": 618.1875000000114,
+          "stl_area_mm2": 615.6422596086572,
+          "nominal_power_w": 37.091250000000684
+        },
+        {
+          "name": "ambient_convection",
+          "kind": "convection",
+          "applies_to": "outer",
+          "mesh_faces": 13552,
+          "mesh_area_mm2": 7622.999999998305,
+          "stl_area_mm2": 5889.892832288351,
+          "nominal_power_w": 0
+        },
+        {
+          "name": "ambient_radiation",
+          "kind": "radiation",
+          "applies_to": "outer",
+          "mesh_faces": 13552,
+          "mesh_area_mm2": 7622.999999998305,
+          "stl_area_mm2": 5889.892832288351,
+          "nominal_power_w": 0
+        }
+      ],
+      "boundary_faces": 28203
+    },
+    "warnings": [
+      {
+        "code": "DEMONSTRATION_MATERIAL",
+        "message": "'sculpture' uses the demonstration material 'corolla_demo': temperatures follow its uncalibrated conductivity and heat capacity"
+      }
+    ],
+    "next_step": "poll job_status with {\"job_id\": \"...\", \"wait_seconds\": 30}; then results_query, results_probe, results_render and results_export accept a time_s or time_index"
+  },
+  "status": {
+    "job_id": "job-20261003-071615-7f70-1",
+    "kind": "transient_thermal",
+    "state": "succeeded",
+    "progress": 1,
+    "stage": "done",
+    "created": "2026-10-03T07:16:15Z",
+    "started": "2026-10-03T07:16:15Z",
+    "finished": "2026-10-03T07:16:21Z",
+    "elapsed_s": 6.293,
+    "run_directory": "/private/tmp/openphysics-art-gallery/workspace/Thermal_Corolla/runs/job-20261003-071615-7f70-1",
+    "spec_hash": "0f1e9513df802509a753824f1ac93b5a6d751746ea8aa88ca8f2d62684a13fb2",
+    "project": {
+      "id": "26750880afac6846b2f51e8a4e9a241a",
+      "name": "Thermal_Corolla",
+      "revision": 11
+    },
+    "cancel_requested": false,
+    "summary": {
+      "analysis": "transient_thermal",
+      "model": {
+        "analysis": "transient_thermal",
+        "nodes": 18650,
+        "elements": 11840,
+        "mesh_hash": "364431edbc286041f1a02ddfa418cd61b12b911b154667625173a7f98534ca19",
+        "element_size_mm": [
+          0.75,
+          0.75,
+          0.75
+        ],
+        "time": {
+          "end_s": 150,
+          "stepping": "fixed",
+          "step_s": 1.25,
+          "steps": 120,
+          "stored_times": 61,
+          "condition_changes": 1,
+          "integration": "backward Euler",
+          "capacity": "lumped"
+        },
+        "initial_temperature_c": 20,
+        "materials": [
+          {
+            "target": "sculpture",
+            "material": "corolla_demo",
+            "status": "demonstration",
+            "conductivity_at_20c": 10,
+            "specific_heat_at_20c": 500,
+            "density_at_20c": 7800
+          }
+        ],
+        "thermal_conditions": [
+          {
+            "name": "bottom_pulse",
+            "kind": "heat_flux",
+            "applies_to": "bottom",
+            "mesh_faces": 1099,
+            "mesh_area_mm2": 618.1875000000114,
+            "stl_area_mm2": 615.6422596086572,
+            "nominal_power_w": 37.091250000000684
+          },
+          {
+            "name": "ambient_convection",
+            "kind": "convection",
+            "applies_to": "outer",
+            "mesh_faces": 13552,
+            "mesh_area_mm2": 7622.999999998305,
+            "stl_area_mm2": 5889.892832288351,
+            "nominal_power_w": 0
+          },
+          {
+            "name": "ambient_radiation",
+            "kind": "radiation",
+            "applies_to": "outer",
+            "mesh_faces": 13552,
+            "mesh_area_mm2": 7622.999999998305,
+            "stl_area_mm2": 5889.892832288351,
+            "nominal_power_w": 0
+          }
+        ],
+        "boundary_faces": 28203
+      },
+      "temperature": {
+        "min_c": 20,
+        "max_c": 121.669034031742,
+        "max_at_s": 25,
+        "note": "the extremes over the stored times; a peak between stored times is not seen here",
+        "final_min_c": 24.147064220443326,
+        "final_max_c": 25.133593019271984
+      },
+      "history": [
+        {
+          "time_s": 0,
+          "min_c": 20,
+          "max_c": 20
+        },
+        {
+          "time_s": 2.5,
+          "min_c": 20.004223629842784,
+          "max_c": 43.830517698430754
+        },
+        {
+          "time_s": 5,
+          "min_c": 20.04246632994733,
+          "max_c": 59.75181534157781
+        },
+        {
+          "time_s": 7.5,
+          "min_c": 20.177476678954747,
+          "max_c": 72.3586613692678
+        },
+        {
+          "time_s": 10,
+          "min_c": 20.477291283764373,
+          "max_c": 82.742183150203
+        },
+        {
+          "time_s": 12.5,
+          "min_c": 20.98733957509552,
+          "max_c": 91.52650379502091
+        },
+        {
+          "time_s": 15,
+          "min_c": 21.72268389528614,
+          "max_c": 99.10612231444998
+        },
+        {
+          "time_s": 17.5,
+          "min_c": 22.67411182380448,
+          "max_c": 105.74659922773714
+        },
+        {
+          "time_s": 20,
+          "min_c": 23.817766458272672,
+          "max_c": 111.63507068652143
+        },
+        {
+          "time_s": 22.5,
+          "min_c": 25.123147189171732,
+          "max_c": 116.90825172969028
+        },
+        {
+          "time_s": 25,
+          "min_c": 26.55835231383395,
+          "max_c": 121.669034031742
+        },
+        {
+          "time_s": 27.5,
+          "min_c": 28.08883709731407,
+          "max_c": 102.36909818941712
+        },
+        {
+          "time_s": 30,
+          "min_c": 29.657667302532275,
+          "max_c": 90.53576451360266
+        },
+        {
+          "time_s": 32.5,
+          "min_c": 31.178846437349705,
+          "max_c": 81.69651695981332
+        },
+        {
+          "time_s": 35,
+          "min_c": 32.564913090610276,
+          "max_c": 74.77987233701657
+        },
+        {
+          "time_s": 37.5,
+          "min_c": 33.75433151106108,
+          "max_c": 69.19975537839639
+        },
+        {
+          "time_s": 40,
+          "min_c": 34.71868636498857,
+          "max_c": 64.59313824883105
+        },
+        {
+          "time_s": 42.5,
+          "min_c": 35.45612908865132,
+          "max_c": 60.72299867706573
+        },
+        {
+          "time_s": 45,
+          "min_c": 35.98139900750283,
+          "max_c": 57.437011152355296
+        },
+        {
+          "time_s": 47.5,
+          "min_c": 36.31440161713698,
+          "max_c": 54.59578431100903
+        },
+        {
+          "time_s": 50,
+          "min_c": 36.48385989722931,
+          "max_c": 52.1158108711013
+        },
+        {
+          "time_s": 52.5,
+          "min_c": 36.514364572708985,
+          "max_c": 50.0135968309188
+        },
+        {
+          "time_s": 55,
+          "min_c": 36.43059825116171,
+          "max_c": 48.33999747224482
+        },
+        {
+          "time_s": 57.5,
+          "min_c": 36.25484008597766,
+          "max_c": 46.802762015851215
+        },
+        {
+          "time_s": 60,
+          "min_c": 36.00538645276811,
+          "max_c": 45.386743324381484
+        },
+        {
+          "time_s": 62.5,
+          "min_c": 35.697872832129576,
+          "max_c": 44.078469101345775
+        },
+        {
+          "time_s": 65,
+          "min_c": 35.345509828707236,
+          "max_c": 42.8660636209745
+        },
+        {
+          "time_s": 67.5,
+          "min_c": 34.95936280448768,
+          "max_c": 41.73912583636718
+        },
+        {
+          "time_s": 70,
+          "min_c": 34.54863446977271,
+          "max_c": 40.68858599855213
+        },
+        {
+          "time_s": 72.5,
+          "min_c": 34.12093036026653,
+          "max_c": 39.710392164445466
+        },
+        {
+          "time_s": 75,
+          "min_c": 33.682498457566,
+          "max_c": 38.793655567772475
+        },
+        {
+          "time_s": 77.5,
+          "min_c": 33.23844030000123,
+          "max_c": 37.931839744189176
+        },
+        {
+          "time_s": 80,
+          "min_c": 32.792894087690286,
+          "max_c": 37.11991213916991
+        },
+        {
+          "time_s": 82.5,
+          "min_c": 32.34919181505546,
+          "max_c": 36.353484465579015
+        },
+        {
+          "time_s": 85,
+          "min_c": 31.909993099940664,
+          "max_c": 35.62872115844982
+        },
+        {
+          "time_s": 87.5,
+          "min_c": 31.477398533022154,
+          "max_c": 34.94225983234048
+        },
+        {
+          "time_s": 90,
+          "min_c": 31.05304527563419,
+          "max_c": 34.29114274762014
+        },
+        {
+          "time_s": 92.5,
+          "min_c": 30.638187417965412,
+          "max_c": 33.67319073047827
+        },
+        {
+          "time_s": 95,
+          "min_c": 30.233763344777287,
+          "max_c": 33.08668618114427
+        },
+        {
+          "time_s": 97.5,
+          "min_c": 29.840452081739045,
+          "max_c": 32.528227887836465
+        },
+        {
+          "time_s": 100,
+          "min_c": 29.458720332822963,
+          "max_c": 31.996024953460278
+        },
+        {
+          "time_s": 102.5,
+          "min_c": 29.088861678076626,
+          "max_c": 31.48846418984806
+        },
+        {
+          "time_s": 105,
+          "min_c": 28.731029185508817,
+          "max_c": 31.004085853970935
+        },
+        {
+          "time_s": 107.5,
+          "min_c": 28.38526250140353,
+          "max_c": 30.54156310539406
+        },
+        {
+          "time_s": 110,
+          "min_c": 28.05151031913516,
+          "max_c": 30.09968461104154
+        },
+        {
+          "time_s": 112.5,
+          "min_c": 27.729648985214965,
+          "max_c": 29.67733980589611
+        },
+        {
+          "time_s": 115,
+          "min_c": 27.419497880657218,
+          "max_c": 29.273506391427247
+        },
+        {
+          "time_s": 117.5,
+          "min_c": 27.12083211320703,
+          "max_c": 28.887239717389605
+        },
+        {
+          "time_s": 120,
+          "min_c": 26.833392969194904,
+          "max_c": 28.517663747744507
+        },
+        {
+          "time_s": 122.5,
+          "min_c": 26.55689650057053,
+          "max_c": 28.163963358627427
+        },
+        {
+          "time_s": 125,
+          "min_c": 26.291040561057343,
+          "max_c": 27.825377756427713
+        },
+        {
+          "time_s": 127.5,
+          "min_c": 26.035510553624817,
+          "max_c": 27.501194838044228
+        },
+        {
+          "time_s": 130,
+          "min_c": 25.789984108086742,
+          "max_c": 27.19083836660394
+        },
+        {
+          "time_s": 132.5,
+          "min_c": 25.55413487131233,
+          "max_c": 26.893623472634715
+        },
+        {
+          "time_s": 135,
+          "min_c": 25.3276355621378,
+          "max_c": 26.60889464861225
+        },
+        {
+          "time_s": 137.5,
+          "min_c": 25.11016041767857,
+          "max_c": 26.33609704050258
+        },
+        {
+          "time_s": 140,
+          "min_c": 24.901387136527887,
+          "max_c": 26.074705155439005
+        },
+        {
+          "time_s": 142.5,
+          "min_c": 24.70099840663022,
+          "max_c": 25.824220598368925
+        },
+        {
+          "time_s": 145,
+          "min_c": 24.50868309085189,
+          "max_c": 25.58417007467574
+        },
+        {
+          "time_s": 147.5,
+          "min_c": 24.324137130957524,
+          "max_c": 25.35410361930593
+        },
+        {
+          "time_s": 150,
+          "min_c": 24.147064220443326,
+          "max_c": 25.133593019271984
+        }
+      ],
+      "energy": {
+        "sources_j": 0,
+        "boundary_j": 92.04278158206546,
+        "prescribed_nodes_j": 0,
+        "stored_j": 92.04278158194896,
+        "enthalpy_change_j": 92.04278158194661,
+        "supplied_j": 92.04278158206546,
+        "closure_error": 1.2657221452108545e-12,
+        "worst_step_balance_error": 5.368968003100459e-12,
+        "enthalpy_mismatch": 2.5475012681148494e-14,
+        "worst_step_enthalpy_mismatch": 8.204033062242323e-14,
+        "note": "accepted steps only: rejected trial steps never enter these sums. The stored energy of every step must equal the heat delivered by sources, boundary faces and prescribed-temperature nodes; enthalpy_change_j is the same energy obtained by integrating the enthalpy function over the elements, which checks the capacity model itself rather than the linear solve"
+      },
+      "solver": {
+        "steps": 120,
+        "largest_picard_iterations": 3,
+        "total_cg_iterations": 18998
+      },
+      "time_integration": {
+        "stepping": "fixed",
+        "method": "backward Euler",
+        "order": 1,
+        "accepted_steps": 120,
+        "rejected_steps": 0,
+        "attempts": 120,
+        "nonlinear_failures": 0,
+        "linear_failures": 0,
+        "invalid_states": 0,
+        "smallest_step_s": 1.25,
+        "largest_step_s": 1.25,
+        "work": {
+          "solves": 120,
+          "assemblies": 320,
+          "picard_iterations": 320,
+          "cg_iterations": 18998,
+          "solve_seconds": 6.20267899974715,
+          "estimate_seconds": 0
+        },
+        "events": {
+          "stored_times": 60,
+          "condition_changes": 1,
+          "note": "every stored time and every schedule change was landed on exactly"
+        },
+        "error_estimate": {
+          "method": "none: fixed steps carry no temporal error estimate",
+          "note": "repeat the run with half the time step (or run adaptively) to establish the temporal error"
+        }
+      },
+      "coupling": {
+        "participants": [
+          {
+            "name": "thermal",
+            "kind": "transient",
+            "order": 1
+          }
+        ],
+        "couplings": [],
+        "execution_order": [
+          {
+            "participants": [
+              "thermal"
+            ],
+            "coupling": "sequential (one-way)"
+          }
+        ],
+        "character": "one-way: every coupling runs forward only, nothing feeds back within a step",
+        "summary": "a single transient thermal participant: nothing is coupled"
+      },
+      "conditions": [
+        {
+          "name": "bottom_pulse",
+          "kind": "heat_flux",
+          "energy_into_model_j": 927.2812499999878,
+          "mean_power_w": 6.181874999999919,
+          "body": "sculpture"
+        },
+        {
+          "name": "ambient_convection",
+          "kind": "convection",
+          "energy_into_model_j": -748.2568901949451,
+          "mean_power_w": -4.988379267966301,
+          "body": "sculpture"
+        },
+        {
+          "name": "ambient_radiation",
+          "kind": "radiation",
+          "energy_into_model_j": -86.98157822297932,
+          "mean_power_w": -0.5798771881531954,
+          "body": "sculpture"
+        }
+      ],
+      "bodies": [
+        {
+          "name": "sculpture",
+          "stored_j": 92.04278158194896,
+          "sources_j": 0,
+          "boundary_and_prescribed_j": 92.04278158206344,
+          "through_interfaces_j": 0,
+          "residual_j": -1.1448264558566734e-10,
+          "balance_error": 1.2437981949034696e-12,
+          "independently_closed": true
+        }
+      ],
+      "restart": {
+        "checkpoints_written": 0,
+        "resumed_from_s": [],
+        "note": "a resumed run continues the same accepted state, controller history and budget: it is the same physical run"
+      },
+      "assessment": {
+        "execution": "COMPLETED",
+        "numerical_convergence": {
+          "nonlinear": "every accepted step converged its Picard iteration to the nonlinear tolerance",
+          "largest_picard_iterations": 3,
+          "failed_attempts_recovered": 0
+        },
+        "conservation": {
+          "energy_closure_error": 1.2657221452108545e-12,
+          "enthalpy_mismatch": 2.5475012681148494e-14,
+          "passed": true
+        },
+        "discretization_evidence": {
+          "temporal": "not estimated (fixed steps)",
+          "spatial": "not estimated: one mesh was solved. Establish mesh convergence by repeating the study with a finer element_size; voxel boundaries are staircases, so surface values on curved or inclined faces depend on the element size",
+          "element_size_mm": [
+            0.75,
+            0.75,
+            0.75
+          ]
+        },
+        "material_provenance": [
+          {
+            "target": "sculpture",
+            "material": "corolla_demo",
+            "status": "demonstration"
+          }
+        ],
+        "experimental_validation": "none: no comparison with measurements is part of this run",
+        "reading": "The job completed, which says nothing about accuracy. Demonstration materials were used, so values are indicative only."
+      },
+      "setup_warnings": [
+        {
+          "code": "DEMONSTRATION_MATERIAL",
+          "message": "'sculpture' uses the demonstration material 'corolla_demo': temperatures follow its uncalibrated conductivity and heat capacity"
+        }
+      ],
+      "interpretation": [
+        "Heat conduction in solids with an enthalpy formulation: latent heat of melting is carried when materials state a solidus, a liquidus and a latent heat and phase_change is on. There is no convection inside the material: convection and radiation act as boundary conditions with coefficients the user supplies.",
+        "Conductivity is integrated at the Gauss points (unless property_evaluation is element_mean), and the voxel mesh has a staircase boundary, so surface temperatures on curved or inclined faces depend on the element size."
+      ],
+      "units": {
+        "temperature": "degC",
+        "time": "s",
+        "energy": "J",
+        "length": "mm",
+        "stress": "MPa"
+      },
+      "files": [
+        {
+          "name": "results.nvt",
+          "format": "navier-am-thermal-results 2: JSON header and little-endian arrays",
+          "bytes": 10525992,
+          "sha256": "a76868c2cce894c4efd5a759b624ded17f6f2db91ebc6adeb6a0bcb141badedc"
+        }
+      ]
+    },
+    "results_in_memory": true
+  },
+  "elapsed_seconds": 6.319524958031252,
+  "result_header": {
+    "format": "navier-am-thermal-results",
+    "version": 4,
+    "has_elem_birth": false,
+    "has_elem_death": false,
+    "has_elem_group": false,
+    "has_temperature": true,
+    "nhistory": 120,
+    "nmesh_nodes": 18650,
+    "has_node_map": true,
+    "ninterface": 0,
+    "contacts": [],
+    "kind": "transient_thermal",
+    "byte_order": "little",
+    "job_id": "job-20261003-071615-7f70-1",
+    "nnodes": 18650,
+    "nelems": 11840,
+    "nfaces": 13552,
+    "noutputs": 61,
+    "nsteps": 120,
+    "has_mechanical": false,
+    "h_m": [
+      0.00075,
+      0.00075,
+      0.00075
+    ],
+    "mesh_hash": "364431edbc286041f1a02ddfa418cd61b12b911b154667625173a7f98534ca19",
+    "bodies": [
+      "sculpture"
+    ],
+    "settings": {
+      "end_time": 150,
+      "time_step": 1.25,
+      "theta": 1,
+      "consistent_capacity": false,
+      "initial_temperature": 293.15,
+      "reference_temperature": 293.15,
+      "output_every": 1,
+      "mechanical": false,
+      "time_stepping": "fixed"
+    },
+    "conditions": [
+      {
+        "name": "bottom_pulse",
+        "kind": "heat_flux",
+        "applies_to": "bottom",
+        "faces": 1099,
+        "mesh_area": 0.0006181875000000114,
+        "nominal": 37.091250000000684
+      },
+      {
+        "name": "ambient_convection",
+        "kind": "convection",
+        "applies_to": "outer",
+        "faces": 13552,
+        "mesh_area": 0.007622999999998305,
+        "nominal": 0
+      },
+      {
+        "name": "ambient_radiation",
+        "kind": "radiation",
+        "applies_to": "outer",
+        "faces": 13552,
+        "mesh_area": 0.007622999999998305,
+        "nominal": 0
+      }
+    ],
+    "sets": [
+      {
+        "name": "bottom",
+        "nnodes": 1176,
+        "nfaces": 1099
+      },
+      {
+        "name": "outer",
+        "nnodes": 13489,
+        "nfaces": 13552
+      }
+    ],
+    "energy": {
+      "source": 0,
+      "boundary": 92.04278158206546,
+      "prescribed": 0,
+      "stored": 92.04278158194896,
+      "worst_balance": 5.368968003100459e-12,
+      "picard_max": 3,
+      "cg_total": 18998
+    },
+    "summary": {
+      "analysis": "transient_thermal",
+      "model": {
+        "analysis": "transient_thermal",
+        "nodes": 18650,
+        "elements": 11840,
+        "mesh_hash": "364431edbc286041f1a02ddfa418cd61b12b911b154667625173a7f98534ca19",
+        "element_size_mm": [
+          0.75,
+          0.75,
+          0.75
+        ],
+        "time": {
+          "end_s": 150,
+          "stepping": "fixed",
+          "step_s": 1.25,
+          "steps": 120,
+          "stored_times": 61,
+          "condition_changes": 1,
+          "integration": "backward Euler",
+          "capacity": "lumped"
+        },
+        "initial_temperature_c": 20,
+        "materials": [
+          {
+            "target": "sculpture",
+            "material": "corolla_demo",
+            "status": "demonstration",
+            "conductivity_at_20c": 10,
+            "specific_heat_at_20c": 500,
+            "density_at_20c": 7800
+          }
+        ],
+        "thermal_conditions": [
+          {
+            "name": "bottom_pulse",
+            "kind": "heat_flux",
+            "applies_to": "bottom",
+            "mesh_faces": 1099,
+            "mesh_area_mm2": 618.1875000000114,
+            "stl_area_mm2": 615.6422596086572,
+            "nominal_power_w": 37.091250000000684
+          },
+          {
+            "name": "ambient_convection",
+            "kind": "convection",
+            "applies_to": "outer",
+            "mesh_faces": 13552,
+            "mesh_area_mm2": 7622.999999998305,
+            "stl_area_mm2": 5889.892832288351,
+            "nominal_power_w": 0
+          },
+          {
+            "name": "ambient_radiation",
+            "kind": "radiation",
+            "applies_to": "outer",
+            "mesh_faces": 13552,
+            "mesh_area_mm2": 7622.999999998305,
+            "stl_area_mm2": 5889.892832288351,
+            "nominal_power_w": 0
+          }
+        ],
+        "boundary_faces": 28203
+      },
+      "temperature": {
+        "min_c": 20,
+        "max_c": 121.669034031742,
+        "max_at_s": 25,
+        "note": "the extremes over the stored times; a peak between stored times is not seen here",
+        "final_min_c": 24.147064220443326,
+        "final_max_c": 25.133593019271984
+      },
+      "history": [
+        {
+          "time_s": 0,
+          "min_c": 20,
+          "max_c": 20
+        },
+        {
+          "time_s": 2.5,
+          "min_c": 20.004223629842784,
+          "max_c": 43.830517698430754
+        },
+        {
+          "time_s": 5,
+          "min_c": 20.04246632994733,
+          "max_c": 59.75181534157781
+        },
+        {
+          "time_s": 7.5,
+          "min_c": 20.177476678954747,
+          "max_c": 72.3586613692678
+        },
+        {
+          "time_s": 10,
+          "min_c": 20.477291283764373,
+          "max_c": 82.742183150203
+        },
+        {
+          "time_s": 12.5,
+          "min_c": 20.98733957509552,
+          "max_c": 91.52650379502091
+        },
+        {
+          "time_s": 15,
+          "min_c": 21.72268389528614,
+          "max_c": 99.10612231444998
+        },
+        {
+          "time_s": 17.5,
+          "min_c": 22.67411182380448,
+          "max_c": 105.74659922773714
+        },
+        {
+          "time_s": 20,
+          "min_c": 23.817766458272672,
+          "max_c": 111.63507068652143
+        },
+        {
+          "time_s": 22.5,
+          "min_c": 25.123147189171732,
+          "max_c": 116.90825172969028
+        },
+        {
+          "time_s": 25,
+          "min_c": 26.55835231383395,
+          "max_c": 121.669034031742
+        },
+        {
+          "time_s": 27.5,
+          "min_c": 28.08883709731407,
+          "max_c": 102.36909818941712
+        },
+        {
+          "time_s": 30,
+          "min_c": 29.657667302532275,
+          "max_c": 90.53576451360266
+        },
+        {
+          "time_s": 32.5,
+          "min_c": 31.178846437349705,
+          "max_c": 81.69651695981332
+        },
+        {
+          "time_s": 35,
+          "min_c": 32.564913090610276,
+          "max_c": 74.77987233701657
+        },
+        {
+          "time_s": 37.5,
+          "min_c": 33.75433151106108,
+          "max_c": 69.19975537839639
+        },
+        {
+          "time_s": 40,
+          "min_c": 34.71868636498857,
+          "max_c": 64.59313824883105
+        },
+        {
+          "time_s": 42.5,
+          "min_c": 35.45612908865132,
+          "max_c": 60.72299867706573
+        },
+        {
+          "time_s": 45,
+          "min_c": 35.98139900750283,
+          "max_c": 57.437011152355296
+        },
+        {
+          "time_s": 47.5,
+          "min_c": 36.31440161713698,
+          "max_c": 54.59578431100903
+        },
+        {
+          "time_s": 50,
+          "min_c": 36.48385989722931,
+          "max_c": 52.1158108711013
+        },
+        {
+          "time_s": 52.5,
+          "min_c": 36.514364572708985,
+          "max_c": 50.0135968309188
+        },
+        {
+          "time_s": 55,
+          "min_c": 36.43059825116171,
+          "max_c": 48.33999747224482
+        },
+        {
+          "time_s": 57.5,
+          "min_c": 36.25484008597766,
+          "max_c": 46.802762015851215
+        },
+        {
+          "time_s": 60,
+          "min_c": 36.00538645276811,
+          "max_c": 45.386743324381484
+        },
+        {
+          "time_s": 62.5,
+          "min_c": 35.697872832129576,
+          "max_c": 44.078469101345775
+        },
+        {
+          "time_s": 65,
+          "min_c": 35.345509828707236,
+          "max_c": 42.8660636209745
+        },
+        {
+          "time_s": 67.5,
+          "min_c": 34.95936280448768,
+          "max_c": 41.73912583636718
+        },
+        {
+          "time_s": 70,
+          "min_c": 34.54863446977271,
+          "max_c": 40.68858599855213
+        },
+        {
+          "time_s": 72.5,
+          "min_c": 34.12093036026653,
+          "max_c": 39.710392164445466
+        },
+        {
+          "time_s": 75,
+          "min_c": 33.682498457566,
+          "max_c": 38.793655567772475
+        },
+        {
+          "time_s": 77.5,
+          "min_c": 33.23844030000123,
+          "max_c": 37.931839744189176
+        },
+        {
+          "time_s": 80,
+          "min_c": 32.792894087690286,
+          "max_c": 37.11991213916991
+        },
+        {
+          "time_s": 82.5,
+          "min_c": 32.34919181505546,
+          "max_c": 36.353484465579015
+        },
+        {
+          "time_s": 85,
+          "min_c": 31.909993099940664,
+          "max_c": 35.62872115844982
+        },
+        {
+          "time_s": 87.5,
+          "min_c": 31.477398533022154,
+          "max_c": 34.94225983234048
+        },
+        {
+          "time_s": 90,
+          "min_c": 31.05304527563419,
+          "max_c": 34.29114274762014
+        },
+        {
+          "time_s": 92.5,
+          "min_c": 30.638187417965412,
+          "max_c": 33.67319073047827
+        },
+        {
+          "time_s": 95,
+          "min_c": 30.233763344777287,
+          "max_c": 33.08668618114427
+        },
+        {
+          "time_s": 97.5,
+          "min_c": 29.840452081739045,
+          "max_c": 32.528227887836465
+        },
+        {
+          "time_s": 100,
+          "min_c": 29.458720332822963,
+          "max_c": 31.996024953460278
+        },
+        {
+          "time_s": 102.5,
+          "min_c": 29.088861678076626,
+          "max_c": 31.48846418984806
+        },
+        {
+          "time_s": 105,
+          "min_c": 28.731029185508817,
+          "max_c": 31.004085853970935
+        },
+        {
+          "time_s": 107.5,
+          "min_c": 28.38526250140353,
+          "max_c": 30.54156310539406
+        },
+        {
+          "time_s": 110,
+          "min_c": 28.05151031913516,
+          "max_c": 30.09968461104154
+        },
+        {
+          "time_s": 112.5,
+          "min_c": 27.729648985214965,
+          "max_c": 29.67733980589611
+        },
+        {
+          "time_s": 115,
+          "min_c": 27.419497880657218,
+          "max_c": 29.273506391427247
+        },
+        {
+          "time_s": 117.5,
+          "min_c": 27.12083211320703,
+          "max_c": 28.887239717389605
+        },
+        {
+          "time_s": 120,
+          "min_c": 26.833392969194904,
+          "max_c": 28.517663747744507
+        },
+        {
+          "time_s": 122.5,
+          "min_c": 26.55689650057053,
+          "max_c": 28.163963358627427
+        },
+        {
+          "time_s": 125,
+          "min_c": 26.291040561057343,
+          "max_c": 27.825377756427713
+        },
+        {
+          "time_s": 127.5,
+          "min_c": 26.035510553624817,
+          "max_c": 27.501194838044228
+        },
+        {
+          "time_s": 130,
+          "min_c": 25.789984108086742,
+          "max_c": 27.19083836660394
+        },
+        {
+          "time_s": 132.5,
+          "min_c": 25.55413487131233,
+          "max_c": 26.893623472634715
+        },
+        {
+          "time_s": 135,
+          "min_c": 25.3276355621378,
+          "max_c": 26.60889464861225
+        },
+        {
+          "time_s": 137.5,
+          "min_c": 25.11016041767857,
+          "max_c": 26.33609704050258
+        },
+        {
+          "time_s": 140,
+          "min_c": 24.901387136527887,
+          "max_c": 26.074705155439005
+        },
+        {
+          "time_s": 142.5,
+          "min_c": 24.70099840663022,
+          "max_c": 25.824220598368925
+        },
+        {
+          "time_s": 145,
+          "min_c": 24.50868309085189,
+          "max_c": 25.58417007467574
+        },
+        {
+          "time_s": 147.5,
+          "min_c": 24.324137130957524,
+          "max_c": 25.35410361930593
+        },
+        {
+          "time_s": 150,
+          "min_c": 24.147064220443326,
+          "max_c": 25.133593019271984
+        }
+      ],
+      "energy": {
+        "sources_j": 0,
+        "boundary_j": 92.04278158206546,
+        "prescribed_nodes_j": 0,
+        "stored_j": 92.04278158194896,
+        "enthalpy_change_j": 92.04278158194661,
+        "supplied_j": 92.04278158206546,
+        "closure_error": 1.2657221452108545e-12,
+        "worst_step_balance_error": 5.368968003100459e-12,
+        "enthalpy_mismatch": 2.5475012681148494e-14,
+        "worst_step_enthalpy_mismatch": 8.204033062242323e-14,
+        "note": "accepted steps only: rejected trial steps never enter these sums. The stored energy of every step must equal the heat delivered by sources, boundary faces and prescribed-temperature nodes; enthalpy_change_j is the same energy obtained by integrating the enthalpy function over the elements, which checks the capacity model itself rather than the linear solve"
+      },
+      "solver": {
+        "steps": 120,
+        "largest_picard_iterations": 3,
+        "total_cg_iterations": 18998
+      },
+      "time_integration": {
+        "stepping": "fixed",
+        "method": "backward Euler",
+        "order": 1,
+        "accepted_steps": 120,
+        "rejected_steps": 0,
+        "attempts": 120,
+        "nonlinear_failures": 0,
+        "linear_failures": 0,
+        "invalid_states": 0,
+        "smallest_step_s": 1.25,
+        "largest_step_s": 1.25,
+        "work": {
+          "solves": 120,
+          "assemblies": 320,
+          "picard_iterations": 320,
+          "cg_iterations": 18998,
+          "solve_seconds": 6.20267899974715,
+          "estimate_seconds": 0
+        },
+        "events": {
+          "stored_times": 60,
+          "condition_changes": 1,
+          "note": "every stored time and every schedule change was landed on exactly"
+        },
+        "error_estimate": {
+          "method": "none: fixed steps carry no temporal error estimate",
+          "note": "repeat the run with half the time step (or run adaptively) to establish the temporal error"
+        }
+      },
+      "coupling": {
+        "participants": [
+          {
+            "name": "thermal",
+            "kind": "transient",
+            "order": 1
+          }
+        ],
+        "couplings": [],
+        "execution_order": [
+          {
+            "participants": [
+              "thermal"
+            ],
+            "coupling": "sequential (one-way)"
+          }
+        ],
+        "character": "one-way: every coupling runs forward only, nothing feeds back within a step",
+        "summary": "a single transient thermal participant: nothing is coupled"
+      },
+      "conditions": [
+        {
+          "name": "bottom_pulse",
+          "kind": "heat_flux",
+          "energy_into_model_j": 927.2812499999878,
+          "mean_power_w": 6.181874999999919,
+          "body": "sculpture"
+        },
+        {
+          "name": "ambient_convection",
+          "kind": "convection",
+          "energy_into_model_j": -748.2568901949451,
+          "mean_power_w": -4.988379267966301,
+          "body": "sculpture"
+        },
+        {
+          "name": "ambient_radiation",
+          "kind": "radiation",
+          "energy_into_model_j": -86.98157822297932,
+          "mean_power_w": -0.5798771881531954,
+          "body": "sculpture"
+        }
+      ],
+      "bodies": [
+        {
+          "name": "sculpture",
+          "stored_j": 92.04278158194896,
+          "sources_j": 0,
+          "boundary_and_prescribed_j": 92.04278158206344,
+          "through_interfaces_j": 0,
+          "residual_j": -1.1448264558566734e-10,
+          "balance_error": 1.2437981949034696e-12,
+          "independently_closed": true
+        }
+      ],
+      "restart": {
+        "checkpoints_written": 0,
+        "resumed_from_s": [],
+        "note": "a resumed run continues the same accepted state, controller history and budget: it is the same physical run"
+      },
+      "assessment": {
+        "execution": "COMPLETED",
+        "numerical_convergence": {
+          "nonlinear": "every accepted step converged its Picard iteration to the nonlinear tolerance",
+          "largest_picard_iterations": 3,
+          "failed_attempts_recovered": 0
+        },
+        "conservation": {
+          "energy_closure_error": 1.2657221452108545e-12,
+          "enthalpy_mismatch": 2.5475012681148494e-14,
+          "passed": true
+        },
+        "discretization_evidence": {
+          "temporal": "not estimated (fixed steps)",
+          "spatial": "not estimated: one mesh was solved. Establish mesh convergence by repeating the study with a finer element_size; voxel boundaries are staircases, so surface values on curved or inclined faces depend on the element size",
+          "element_size_mm": [
+            0.75,
+            0.75,
+            0.75
+          ]
+        },
+        "material_provenance": [
+          {
+            "target": "sculpture",
+            "material": "corolla_demo",
+            "status": "demonstration"
+          }
+        ],
+        "experimental_validation": "none: no comparison with measurements is part of this run",
+        "reading": "The job completed, which says nothing about accuracy. Demonstration materials were used, so values are indicative only."
+      },
+      "setup_warnings": [
+        {
+          "code": "DEMONSTRATION_MATERIAL",
+          "message": "'sculpture' uses the demonstration material 'corolla_demo': temperatures follow its uncalibrated conductivity and heat capacity"
+        }
+      ],
+      "interpretation": [
+        "Heat conduction in solids with an enthalpy formulation: latent heat of melting is carried when materials state a solidus, a liquidus and a latent heat and phase_change is on. There is no convection inside the material: convection and radiation act as boundary conditions with coefficients the user supplies.",
+        "Conductivity is integrated at the Gauss points (unless property_evaluation is element_mean), and the voxel mesh has a staircase boundary, so surface temperatures on curved or inclined faces depend on the element size."
+      ],
+      "units": {
+        "temperature": "degC",
+        "time": "s",
+        "energy": "J",
+        "length": "mm",
+        "stress": "MPa"
+      }
+    },
+    "build_warnings": [
+      {
+        "code": "DEMONSTRATION_MATERIAL",
+        "message": "'sculpture' uses the demonstration material 'corolla_demo': temperatures follow its uncalibrated conductivity and heat capacity"
+      }
+    ],
+    "arrays": [
+      {
+        "name": "xyz",
+        "type": "d",
+        "count": 55950
+      },
+      {
+        "name": "conn",
+        "type": "i",
+        "count": 94720
+      },
+      {
+        "name": "elem_mat",
+        "type": "i",
+        "count": 11840
+      },
+      {
+        "name": "elem_body",
+        "type": "c",
+        "count": 11840
+      },
+      {
+        "name": "face_elem",
+        "type": "i",
+        "count": 13552
+      },
+      {
+        "name": "face_local",
+        "type": "b",
+        "count": 13552
+      },
+      {
+        "name": "fixed",
+        "type": "b",
+        "count": 18650
+      },
+      {
+        "name": "fixed_T",
+        "type": "d",
+        "count": 18650
+      },
+      {
+        "name": "elem_source",
+        "type": "d",
+        "count": 11840
+      },
+      {
+        "name": "times",
+        "type": "d",
+        "count": 61
+      },
+      {
+        "name": "T",
+        "type": "d",
+        "count": 1137650
+      },
+      {
+        "name": "tmin",
+        "type": "d",
+        "count": 61
+      },
+      {
+        "name": "tmax",
+        "type": "d",
+        "count": 61
+      },
+      {
+        "name": "tnode_mesh",
+        "type": "i",
+        "count": 18650
+      },
+      {
+        "name": "step_t",
+        "type": "d",
+        "count": 120
+      },
+      {
+        "name": "step_dt",
+        "type": "d",
+        "count": 120
+      },
+      {
+        "name": "step_err",
+        "type": "d",
+        "count": 120
+      },
+      {
+        "name": "set0_nodes",
+        "type": "i",
+        "count": 1176
+      },
+      {
+        "name": "set0_faces",
+        "type": "i",
+        "count": 1099
+      },
+      {
+        "name": "set1_nodes",
+        "type": "i",
+        "count": 13489
+      },
+      {
+        "name": "set1_faces",
+        "type": "i",
+        "count": 13552
+      }
+    ]
+  },
+  "finite_arrays": {
+    "times": {
+      "count": 61,
+      "min": 0.0,
+      "max": 150.0
+    },
+    "T": {
+      "count": 1137650,
+      "min": 293.15,
+      "max": 394.819034031742
+    }
+  },
+  "results_sha256": "a76868c2cce894c4efd5a759b624ded17f6f2db91ebc6adeb6a0bcb141badedc",
+  "acceptance_passed": true
+}

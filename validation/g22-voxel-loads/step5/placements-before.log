@@ -1,0 +1,68 @@
+== p_025_turn0: case P, voxels 0.25 mm, 29402 elements, 6.9 s
+   radial displacement at r = 81 mm (mm): closed form 0.0814604; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0823142 0.0825248 0.0825128 0.0821522 0.0819573 0.0819496 0.0821403 0.0820956 0.0818582
+     mean +0.87 %, spread 0.82 % (limit 1 %), worst angle 1.31 %   [outside the criterion]
+   radial displacement at r = 83.5 mm (mm): closed form 0.080527; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0813968 0.0815806 0.0815642 0.0811965 0.0809955 0.0809939 0.0811863 0.0811513 0.0809407
+     mean +0.86 %, spread 0.79 % (limit 1 %), worst angle 1.31 %   [outside the criterion]
+   radial displacement at r = 86 mm (mm): closed form 0.0796923; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0805417 0.080738 0.0807074 0.0803651 0.0801257 0.0801625 0.0803289 0.0803088 0.0800857
+     mean +0.86 %, spread 0.82 % (limit 1 %), worst angle 1.31 %   [outside the criterion]
+     two-lobed terms +0.305 %, +0.310 %, +0.313 %; four-lobed +0.088 %, +0.113 %, +0.111 %
+== p_025_turn1: case P, voxels 0.25 mm, 29396 elements, 5.7 s
+   radial displacement at r = 81 mm (mm): closed form 0.0814604; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0826073 0.082794 0.0826581 0.0823586 0.0821528 0.0819627 0.0819075 0.0818048 0.0814825
+     mean +0.90 %, spread 1.61 % (limit 1 %), worst angle 1.64 %   [outside the criterion]
+   radial displacement at r = 83.5 mm (mm): closed form 0.080527; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0816914 0.0818503 0.0816914 0.081404 0.0811916 0.0810081 0.0809371 0.0808609 0.0805661
+     mean +0.89 %, spread 1.59 % (limit 1 %), worst angle 1.64 %   [outside the criterion]
+   radial displacement at r = 86 mm (mm): closed form 0.0796923; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0808392 0.0810071 0.0808344 0.0805719 0.0803209 0.0801761 0.0800791 0.0800176 0.0797139
+     mean +0.88 %, spread 1.62 % (limit 1 %), worst angle 1.65 %   [outside the criterion]
+     two-lobed terms +0.698 %, +0.707 %, +0.715 %; four-lobed -0.031 %, -0.005 %, -0.006 %
+== p_025_turn2: case P, voxels 0.25 mm, 29400 elements, 6.4 s
+   radial displacement at r = 81 mm (mm): closed form 0.0814604; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.081659 0.0819196 0.0819666 0.0820444 0.0822146 0.0823203 0.0825115 0.0826207 0.0824053
+     mean +0.89 %, spread 1.18 % (limit 1 %), worst angle 1.42 %   [outside the criterion]
+   radial displacement at r = 83.5 mm (mm): closed form 0.080527; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.080743 0.0809772 0.0809952 0.0810901 0.0812537 0.0813661 0.081542 0.0816771 0.0814893
+     mean +0.88 %, spread 1.16 % (limit 1 %), worst angle 1.43 %   [outside the criterion]
+   radial displacement at r = 86 mm (mm): closed form 0.0796923; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0798902 0.0801366 0.0801426 0.0802577 0.0803824 0.0805337 0.0806841 0.0808334 0.0806365
+     mean +0.87 %, spread 1.18 % (limit 1 %), worst angle 1.43 %   [outside the criterion]
+     two-lobed terms -0.483 %, -0.489 %, -0.492 %; four-lobed -0.067 %, -0.041 %, -0.042 %
+== p_025_turn3: case P, voxels 0.25 mm, 29398 elements, 7.7 s
+   radial displacement at r = 81 mm (mm): closed form 0.0814604; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0806993 0.0811168 0.0814039 0.0816475 0.0820851 0.0826148 0.0832272 0.0834723 0.0833822
+     mean +0.89 %, spread 3.40 % (limit 1 %), worst angle 2.47 %   [outside the criterion]
+   radial displacement at r = 83.5 mm (mm): closed form 0.080527; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0797827 0.0801726 0.0804368 0.0806925 0.0811236 0.0816596 0.0822736 0.0825284 0.0824651
+     mean +0.88 %, spread 3.41 % (limit 1 %), worst angle 2.49 %   [outside the criterion]
+   radial displacement at r = 86 mm (mm): closed form 0.0796923; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0789308 0.0793297 0.0795802 0.0798609 0.0802533 0.0808277 0.0814156 0.0816854 0.0816095
+     mean +0.87 %, spread 3.46 % (limit 1 %), worst angle 2.50 %   [outside the criterion]
+     two-lobed terms -1.672 %, -1.694 %, -1.711 %; four-lobed -0.007 %, +0.018 %, +0.017 %
+== at 0.25 mm the four placements differ by at most 2.0213 % of Lame
+== p_050_turn0: case P, voxels 0.5 mm, 7338 elements, 1.6 s
+   radial displacement at r = 81 mm (mm): closed form 0.0814604; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0845195 0.0846034 0.0840232 0.0839188 0.0834279 0.0828648 0.0819725 0.0816688 0.0808079
+     mean +2.00 %, spread 4.66 % (limit 1 %), worst angle 3.86 %   [outside the criterion]
+   radial displacement at r = 83.5 mm (mm): closed form 0.080527; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0834981 0.0837143 0.0830888 0.0829888 0.0824451 0.0819346 0.0810378 0.0807794 0.0798287
+     mean +2.01 %, spread 4.83 % (limit 1 %), worst angle 3.96 %   [outside the criterion]
+   radial displacement at r = 86 mm (mm): closed form 0.0796923; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0827214 0.0828464 0.0822502 0.0821317 0.0815334 0.0810777 0.0801996 0.079912 0.0790637
+     mean +2.02 %, spread 4.75 % (limit 1 %), worst angle 3.96 %   [outside the criterion]
+     two-lobed terms +2.106 %, +2.119 %, +2.138 %; four-lobed -0.407 %, -0.422 %, -0.372 %
+== p_050_turn1: case P, voxels 0.5 mm, 7336 elements, 1.1 s
+   radial displacement at r = 81 mm (mm): closed form 0.0814604; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0829621 0.0832647 0.0830644 0.0832329 0.0830231 0.0832329 0.0830644 0.0832647 0.0829621
+     mean +2.04 %, spread 0.37 % (limit 1 %), worst angle 2.21 %   [outside the criterion]
+   radial displacement at r = 83.5 mm (mm): closed form 0.080527; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0819853 0.0823823 0.0821323 0.0823009 0.0820286 0.0823009 0.0821323 0.0823823 0.0819853
+     mean +2.05 %, spread 0.49 % (limit 1 %), worst angle 2.30 %   [outside the criterion]
+   radial displacement at r = 86 mm (mm): closed form 0.0796923; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0812184 0.0815319 0.0812919 0.0814386 0.0811061 0.0814386 0.0812919 0.0815319 0.0812184
+     mean +2.07 %, spread 0.53 % (limit 1 %), worst angle 2.31 %   [outside the criterion]
+     two-lobed terms +0.000 %, +0.000 %, +0.000 %; four-lobed -0.056 %, -0.049 %, +0.017 %
+== p_050_turn2: case P, voxels 0.5 mm, 7332 elements, 1.1 s
+   radial displacement at r = 81 mm (mm): closed form 0.0814604; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0810343 0.0813774 0.0815745 0.0824677 0.0831664 0.0841425 0.0845696 0.0851764 0.0850784
+     mean +2.11 %, spread 5.08 % (limit 1 %), worst angle 4.56 %   [outside the criterion]
+   radial displacement at r = 83.5 mm (mm): closed form 0.080527; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0800577 0.0804909 0.0806426 0.0815323 0.0821724 0.0832111 0.083638 0.0842944 0.0841024
+     mean +2.12 %, spread 5.26 % (limit 1 %), worst angle 4.68 %   [outside the criterion]
+   radial displacement at r = 86 mm (mm): closed form 0.0796923; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0792907 0.0796373 0.0798016 0.0806664 0.081249 0.0823479 0.0827969 0.0834431 0.0833349
+     mean +2.14 %, spread 5.21 % (limit 1 %), worst angle 4.71 %   [outside the criterion]
+     two-lobed terms -2.610 %, -2.642 %, -2.670 %; four-lobed -0.074 %, -0.067 %, -0.001 %
+== p_050_turn3: case P, voxels 0.5 mm, 7340 elements, 1.3 s
+   radial displacement at r = 81 mm (mm): closed form 0.0814604; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0791843 0.0799427 0.0806449 0.0821249 0.0832988 0.0845568 0.0852629 0.0862534 0.0863744
+     mean +1.98 %, spread 8.83 % (limit 1 %), worst angle 6.03 %   [outside the criterion]
+   radial displacement at r = 83.5 mm (mm): closed form 0.080527; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0782059 0.0790593 0.0797115 0.0811953 0.0823098 0.0836273 0.0843291 0.0853647 0.0853539
+     mean +1.99 %, spread 8.89 % (limit 1 %), worst angle 6.01 %   [outside the criterion]
+   radial displacement at r = 86 mm (mm): closed form 0.0796923; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0774404 0.0782108 0.078873 0.0803375 0.0813934 0.0827693 0.0834897 0.0844959 0.0845767
+     mean +2.00 %, spread 8.95 % (limit 1 %), worst angle 6.13 %   [outside the criterion]
+     two-lobed terms -4.373 %, -4.410 %, -4.448 %; four-lobed -0.300 %, -0.311 %, -0.256 %
+== at 0.5 mm the four placements differ by at most 6.9178 % of Lame
+FAIL (engine 66d9479-dirty)
+workspaces kept in /var/folders/x4/xsz53mxd3j9f9txp7wy8_bdc0000gn/T/nvringloadsqdmcno3a

@@ -1,0 +1,110 @@
+{
+ "domain": "gas",
+ "title": "Cold-gas nozzle, 10 bar into 1 bar: shock diamonds",
+ "provenance": {
+  "shape": "conical nozzle, throat radius 20 mm, 15 degree divergence, exit radius 36.1 mm (area ratio 3.25)"
+ },
+ "geometry": "axisymmetric",
+ "gas_constant_j_kgk": 287.05,
+ "grid": {
+  "x0_m": -0.1,
+  "y0_m": 0.0,
+  "length_m": 0.6,
+  "root_blocks": [
+   16,
+   4
+  ],
+  "max_level": 3
+ },
+ "boundaries": {
+  "x_low": "inflow",
+  "x_high": "outflow",
+  "y_low": "axis",
+  "y_high": "outflow"
+ },
+ "initial": {
+  "density_kg_m3": 1.2041183163746156,
+  "velocity_m_s": [
+   0,
+   0
+  ],
+  "pressure_pa": 101325.0,
+  "gamma": 1.4
+ },
+ "freestream": {
+  "density_kg_m3": 11.883723823090211,
+  "velocity_m_s": [
+   0,
+   0
+  ],
+  "pressure_pa": 1000000.0,
+  "gamma": 1.4
+ },
+ "regions": [
+  {
+   "box_m": [
+    -1,
+    -1,
+    0.0,
+    0.05
+   ],
+   "state": {
+    "density_kg_m3": 11.883723823090211,
+    "velocity_m_s": [
+     0,
+     0
+    ],
+    "pressure_pa": 1000000.0,
+    "gamma": 1.4
+   }
+  }
+ ],
+ "bodies": [
+  {
+   "polygon_m": [
+    [
+     -0.11,
+     0.05
+    ],
+    [
+     -0.04,
+     0.05
+    ],
+    [
+     -0.02,
+     0.03
+    ],
+    [
+     0.0,
+     0.02
+    ],
+    [
+     0.06,
+     0.03607695154586736
+    ],
+    [
+     0.06,
+     0.04207695154586736
+    ],
+    [
+     0.0,
+     0.035
+    ],
+    [
+     -0.03,
+     0.2
+    ],
+    [
+     -0.11,
+     0.2
+    ]
+   ]
+  }
+ ],
+ "run": {
+  "end_time_s": 0.0015,
+  "frames": 60,
+  "fields": "rho,p,mach,solid",
+  "cfl": 0.4
+ }
+}

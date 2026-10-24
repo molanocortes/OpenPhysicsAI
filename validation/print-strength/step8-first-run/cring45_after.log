@@ -1,0 +1,8 @@
+  cring    voxel h 1        1156 elements  R 1.3352    (point 1.7946, peak flag none, zone 1.5 mm)  2c (compression along axis 2) at (  11.65    7.79   3.00) mm  radius 14.01 mm, 11.2 deg from the apex; closed form at the applied load 2.0451  [0.2 s]
+  cring    voxel h 0.5      9296 elements  R 2.1283    (point 1.7019, peak flag none, zone 1 mm)  s12 (in-plane shear)     at (   8.25    5.66   2.00) mm  radius 10.00 mm, 10.5 deg from the apex; closed form at the applied load 2.0303  [5.0 s]
+  cring    voxel h 0.25    74240 elements  R 1.9994    (point 1.651, peak flag none, zone 1 mm)  s12 (in-plane shear)     at (   8.32    5.55   2.00) mm  radius 10.00 mm, 11.3 deg from the apex; closed form at the applied load 2.0303  [41.2 s]
+  C-ring closed form (Winkler-Bach): inner-fibre stress 25.82 MPa at the apex under the requested 10 N, Xt 52.3 MPa, R 2.0252
+  FAIL cring on voxel: R moves -6.1 % from 0.5 to 0.25 mm (criterion 5 %)
+  ok   cring on voxel: the governing point moves 0.14 mm (criterion 2 mm)
+  ok   C-ring on voxel: R at 0.25 mm is -1.3 % from the closed form (criterion 5 %)
+PRINT MESH STUDY: 2 passed, 1 failed

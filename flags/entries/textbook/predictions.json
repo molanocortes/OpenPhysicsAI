@@ -1,0 +1,80 @@
+{
+ "entry": "textbook",
+ "commit": "3c038b8 with local changes",
+ "date": "2026-09-26",
+ "predictions": {
+  "flow-cylinder-shedding": {
+   "re060": {
+    "strouhal": 0.2
+   },
+   "re080": {
+    "strouhal": 0.2
+   },
+   "re120": {
+    "strouhal": 0.2
+   },
+   "re145": {
+    "strouhal": 0.2
+   },
+   "re100": {
+    "strouhal": 0.2
+   }
+  },
+  "gas-shock-bubble": {
+   "helium": {
+    "v_refracted": 984.75,
+    "v_transmitted": 408.15,
+    "v_upstream_interface": 157.05
+   },
+   "r22": {
+    "v_refracted": 236.96,
+    "v_transmitted": 413.93,
+    "v_upstream_interface": 85.26
+   }
+  },
+  "gas-sphere-bowshock": {
+   "m117": {
+    "standoff_center_over_d": 1.2624686211353564,
+    "shape_x_over_d_at_y_0.4": 0.0015128785296084932,
+    "shape_x_over_d_at_y_0.8": 0.006050810322221023
+   },
+   "m137": {
+    "standoff_center_over_d": 0.9017974806857773,
+    "shape_x_over_d_at_y_0.4": 0.023500777020634984,
+    "shape_x_over_d_at_y_0.8": 0.09292259632801748
+   },
+   "m162": {
+    "standoff_center_over_d": 0.7457378582611602,
+    "shape_x_over_d_at_y_0.4": 0.05310433791985845,
+    "shape_x_over_d_at_y_0.8": 0.2059831312246483
+   },
+   "m181": {
+    "standoff_center_over_d": 0.692227246954914,
+    "shape_x_over_d_at_y_0.4": 0.06892529830353335,
+    "shape_x_over_d_at_y_0.8": 0.2657973858462187
+   },
+   "m130": {
+    "standoff_center_over_d": 0.9863153165533439,
+    "shape_x_over_d_at_y_0.4": 0.01414887502446217,
+    "shape_x_over_d_at_y_0.8": 0.05629146991557945
+   }
+  },
+  "orbit-planets-2020": {
+   "mercury_2010": {
+    "longitude_deg": 80.50089266541534
+   },
+   "mercury_2020": {
+    "longitude_deg": 262.19875474838386
+   },
+   "mars_2020": {
+    "longitude_deg": 213.9232603219266
+   },
+   "jupiter_2020": {
+    "longitude_deg": 275.5245167645869
+   },
+   "venus_2020": {
+    "longitude_deg": 4.285518931795185
+   }
+  }
+ }
+}

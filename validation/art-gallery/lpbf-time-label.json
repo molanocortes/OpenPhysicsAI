@@ -1,0 +1,22 @@
+{
+  "passed": 12,
+  "failed": 0,
+  "native_returncode": 0,
+  "readbacks": {
+    "lpbf": "[info] TIMELABEL lpbf \n[ >> ] uitext\n[info] panel text:\n[data]   Clean view: Helical_Lantern \u00b7 displacement [mm]\n[data]   process step 17/17 \u00b7 deformation \u00d71 \u00b7 max displacement 0.0090124 mm \u00b7 range: all process steps\n[data]   LPBF: elastic (no yielding) inherent strain; input inferred; no measurement comparison.\n[data]   SECTION OFF",
+    "fdm": "[info] TIMELABEL fdm \n[ >> ] uitext\n[info] panel text:\n[data]   Clean view: Helical_Flute \u00b7 displacement [mm]\n[data]   t = 643.97 s \u00b7 stored time 35/35 \u00b7 deformation \u00d71 \u00b7 max displacement 0.082078 mm \u00b7 range: all stored times\n[data]   FDM: deposition, heat and stress; process inferred; material demonstration; no measurement comparison.\n[data]   SECTION OFF",
+    "thermal": "[info] TIMELABEL thermal \n[ >> ] uitext\n[info] panel text:\n[data]   Clean view: Thermal_Corolla \u00b7 temperature [\u00b0C]\n[data]   t = 150 s \u00b7 stored time 61/61 \u00b7 deformation \u00d70 \u00b7 max displacement 0 mm \u00b7 range: all stored times\n[data]   SECTION OFF"
+  },
+  "regression_helper": "tools/uicheck.py::check_result_time_labels",
+  "scope": "Existing native LPBF/FDM/thermal results; no solve or full workflow rerun",
+  "native_screenshot_review": {
+    "lpbf": "Legend visibly reads process step 17/17; clean-view metadata contains no t = or stored time.",
+    "fdm": "Legend visibly reads t = 644 s step 35/35; metadata preserves 643.97 s.",
+    "thermal": "Legend visibly reads t = 150 s step 61/61; metadata also preserves 150 s."
+  },
+  "overlay_default_reset_review": {
+    "finding": "No accidental reset found. Both toggles initialize true after the startup memset. Only shutdown clears the whole bridge thereafter; project/result changes preserve the selected toggle values.",
+    "scope": "Read-only source review of fem_init, fem_shutdown, fem_open_project, fem_follow_job and all marker_on/outline_on assignments; native default on was already verified by the overlay checks.",
+    "session_behavior": "Choices are session-local and return to on after application restart."
+  }
+}

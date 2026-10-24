@@ -1,0 +1,17 @@
+== surface patches
+== voxel hexahedral meshes
+  cylinder r=10 mm, h=2.00 mm: 750 elements, volume error 4.51%, area ratio 1.167, mean/max face distance 0.414/1.000 mm
+  cylinder r=10 mm, h=1.00 mm: 6320 elements, volume error 0.59%, area ratio 1.184, mean/max face distance 0.134/0.340 mm
+  cylinder r=10 mm, h=0.50 mm: 50560 elements, volume error 0.59%, area ratio 1.184, mean/max face distance 0.071/0.235 mm
+== PM printing meshes: layer geometry, ownership and anisotropic boundary error
+  PM1 25000 elements, 27846 nodes, 25 layers, min detJ 0.005 mm3, 0.0024 s
+  PM5 closed source-volume translation error 1.81921145e-12 relative
+  PM3 mean surface offset 0.0307692211 mm (exact 0.0307692308), maximum 0.200000009 mm
+== a ring meshes symmetrically about the grid (G22 step 4)
+  ring at 0.50 mm: 29346 cells (axis on node 174, 174); cells without their image: quarter turn 24, half turn 34, three quarter turns 24, mirror x 34, mirror y 10, mirror x = y 18, mirror x = -y 30
+  FAIL tools/meshtest.c:526: at 0.50 mm no cell breaks the square's symmetries (worst 34)
+  ring at 0.25 mm: 117598 cells (axis on node 348, 348); cells without their image: quarter turn 34, half turn 46, three quarter turns 34, mirror x 42, mirror y 22, mirror x = y 18, mirror x = -y 46
+  FAIL tools/meshtest.c:526: at 0.25 mm no cell breaks the square's symmetries (worst 46)
+
+MESH TESTS FAILED: 54 passed, 2 failed
+./build/meshtest  0.68s user 0.04s system 71% cpu 1.012 total

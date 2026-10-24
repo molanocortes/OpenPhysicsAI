@@ -1,0 +1,31 @@
+{
+  "comment": "Print settings presets for Simple mode. A preset is what a person recognises (a material on a machine, calibrated somewhere) and carries every number the simulation needs, each with the line that says where it came from. The panel shows that line when the pointer rests on the value. Nothing here is a default the software invents: a value with no source does not belong in this file. No metal preset ships: how much a metal shrinks as it cools is a calibration of one material on one machine, so the print screen asks for one instead (print the calibration cantilever of kit/README.md, measure its tip deflection after the cut, fit it with lpbf_calibrate, or take a published value, and add it here with its source). A metal preset names a material of the library (material.library_id) rather than defining its own, and carries two fitted strains, each an object with exx, eyy, ezz, provenance, source, layer_mm, detail_mm and scope: 'strain', fitted with the metal allowed to yield, used when the material has a yield value with a source; 'strain_elastic', fitted without plasticity, used otherwise. Each strain carries the layer and detail it was fitted at; 'orientation' (X or Y) is the machine axis the calibration bars' long side lay along.",
+  "profiles": [
+    {
+      "id": "pla_generic",
+      "technology": "plastic",
+      "name": "PLA on a desktop filament printer",
+      "subtitle": "printed-PLA values with sources; print settings typical, not calibrated",
+      "material": {
+        "library_id": "pla_fff",
+        "source": "the library record pla_fff in src/ctl/materials.json: PLA measured as printed (Prusament data sheet and open-access papers); each value there names its own source"
+      },
+      "process": {
+        "layer_mm": 1.0,
+        "layer_source": "one simulation layer for five printed layers of 0.2 mm, the value the print tests use",
+        "printed_layer_mm": 0.2,
+        "printed_layer_source": "a common layer height for a 0.4 mm nozzle",
+        "nozzle_c": 210,
+        "nozzle_source": "the middle of the usual PLA nozzle range, 190 to 220 degC",
+        "bed_c": 60,
+        "bed_source": "a common heated-bed setting for PLA",
+        "ambient_c": 30,
+        "ambient_source": "an enclosed printer's air temperature, assumed",
+        "rate_mm3_s": 8,
+        "rate_source": "a typical volumetric flow for a 0.4 mm nozzle"
+      },
+      "detail_mm": 2.0,
+      "detail_source": "coarse enough to run in seconds on a laptop"
+    }
+  ]
+}

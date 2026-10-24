@@ -1,0 +1,21 @@
+closed forms over 96 mm^2: convection 0.144000 W, radiation 0.080865 W
+== 0 degrees, cubes of 1 mm: 64 elements, printed volume 64.0000 mm^3 (+0.00 % of 64), 0.7 s
+   convection 0.143979 W (-0.015 %), radiation 0.080826 W (-0.048 %); heat into the air 10.078521448805349 J over 70 s
+== 30 degrees, cubes of 1 mm: 64 elements, printed volume 64.0000 mm^3 (+0.00 % of 64), 0.5 s
+   convection 0.146963 W (+2.058 %), radiation 0.082501 W (+2.023 %); heat into the air 10.28739867688682 J over 70 s   [outside the criterion]
+== 45 degrees, cubes of 1 mm: 64 elements, printed volume 64.0000 mm^3 (+0.00 % of 64), 0.5 s
+   convection 0.125807 W (-12.634 %), radiation 0.070627 W (-12.660 %); heat into the air 8.806485679222561 J over 70 s   [outside the criterion]
+== 0 degrees, cubes of 0.5 mm: 512 elements, printed volume 64.0000 mm^3 (+0.00 % of 64), 0.8 s
+   convection 0.143979 W (-0.015 %), radiation 0.080826 W (-0.049 %); heat into the air 10.078504274200197 J over 70 s
+== 30 degrees, cubes of 0.5 mm: 512 elements, printed volume 64.0000 mm^3 (+0.00 % of 64), 1.0 s
+   convection 0.138180 W (-4.042 %), radiation 0.077572 W (-4.073 %); heat into the air 9.672614124443953 J over 70 s   [outside the criterion]
+== 45 degrees, cubes of 0.5 mm: 464 elements, printed volume 58.0000 mm^3 (-9.37 % of 64), 1.0 s
+   convection 0.140522 W (-2.415 %), radiation 0.078884 W (-2.450 %); heat into the air 9.836536103221258 J over 70 s   [outside the criterion]
+== 0 degrees, cubes of 0.25 mm: 4096 elements, printed volume 64.0000 mm^3 (+0.00 % of 64), 16.6 s
+   convection 0.143979 W (-0.015 %), radiation 0.080825 W (-0.049 %); heat into the air 10.078499749310023 J over 70 s
+== 30 degrees, cubes of 0.25 mm: 4096 elements, printed volume 64.0000 mm^3 (+0.00 % of 64), 17.8 s
+   convection 0.142571 W (-0.992 %), radiation 0.080036 W (-1.026 %); heat into the air 9.979985136542147 J over 70 s
+== 45 degrees, cubes of 0.25 mm: 3968 elements, printed volume 62.0000 mm^3 (-3.12 % of 64), 22.1 s
+   convection 0.142023 W (-1.373 %), radiation 0.079727 W (-1.407 %); heat into the air 9.94157679956517 J over 70 s
+PASS (engine 6cf5b8f-dirty)
+=== exit 0 after 62 s

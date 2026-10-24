@@ -1,0 +1,689 @@
+{
+ "check": "GOALS.md G22: loads on curved voxel faces",
+ "engine": "fcec65c",
+ "angles_deg": [
+  5.0,
+  15.0,
+  25.0,
+  35.0,
+  45.0,
+  55.0,
+  65.0,
+  75.0,
+  85.0
+ ],
+ "criterion": "at 0.25 mm, every quantity's spread over the nine angles at most 1 % of the closed form (2 % for the drop) and their mean within 2 % of it",
+ "runs": [
+  {
+   "name": "p_025",
+   "case": "P",
+   "element_mm": 0.25,
+   "length_mm": 0.5,
+   "elements": 29402,
+   "nodes": 46194,
+   "selections": {
+    "inner": {
+     "stl_area_mm2": 62.83180325371438,
+     "mesh_faces": 1280,
+     "mesh_area_mm2": 79.99999999999947
+    },
+    "outer": {
+     "stl_area_mm2": 68.3295860444843,
+     "mesh_faces": 1392,
+     "mesh_area_mm2": 86.99999999999889
+    },
+    "cut_x": {
+     "stl_area_mm2": 3.5,
+     "mesh_faces": 56,
+     "mesh_area_mm2": 3.499999999999996
+    },
+    "cut_y": {
+     "stl_area_mm2": 3.5,
+     "mesh_faces": 56,
+     "mesh_area_mm2": 3.499999999999996
+    },
+    "bottom": {
+     "stl_area_mm2": 918.127541518808,
+     "mesh_faces": 14701,
+     "mesh_area_mm2": 918.8124999997282
+    }
+   },
+   "load_report": [
+    {
+     "condition": "p_inner",
+     "kind": "pressure",
+     "resultant_on_stl_n": [
+      240,
+      240,
+      0
+     ],
+     "resultant_applied_n": [
+      242.28870681967703,
+      242.28870681967763,
+      0
+     ]
+    }
+   ],
+   "quantities": [
+    {
+     "quantity": "radial displacement at r = 81 mm (mm)",
+     "closed_form": 0.08146044419098313,
+     "values": [
+      0.002075326180598534,
+      0.04105511195676416,
+      0.09824746544022814,
+      0.1464911391991328,
+      0.16502373880589735,
+      0.14631986389855367,
+      0.09793075620601478,
+      0.04068469011621515,
+      0.0016792271641700635
+     ],
+     "spread_limit": 0.01,
+     "mean": 0.08216747988528607,
+     "spread": 0.16334451164172728,
+     "mean_error_rel": 0.008679497163620981,
+     "spread_rel": 2.0052003553868163,
+     "worst_angle_error_rel": 1.0258143746307224,
+     "pass": false
+    },
+    {
+     "quantity": "radial displacement at r = 83.5 mm (mm)",
+     "closed_form": 0.08052700074615526,
+     "values": [
+      0.0010341530890076065,
+      0.040042339921586075,
+      0.09732794045925976,
+      0.14564743683438122,
+      0.1641948944950682,
+      0.14547617014647674,
+      0.09700697640508049,
+      0.039671861951223415,
+      0.0006380026909687083
+     ],
+     "spread_limit": 0.01,
+     "mean": 0.0812266417770058,
+     "spread": 0.1635568918040995,
+     "mean_error_rel": 0.00868827876821099,
+     "spread_rel": 2.0310813800166083,
+     "worst_angle_error_rel": 1.0390042218591833,
+     "pass": false
+    },
+    {
+     "quantity": "radial displacement at r = 86 mm (mm)",
+     "closed_form": 0.079692256682648,
+     "values": [
+      0.00039471357538223447,
+      0.03929582113764743,
+      0.09642197052367997,
+      0.1446623814689209,
+      0.1631118662643613,
+      0.14449112252801288,
+      0.09610053738257524,
+      0.03892542095648763,
+      -1.35716872807541e-06
+     ],
+     "spread_limit": 0.01,
+     "mean": 0.08037805296314883,
+     "spread": 0.16311322343308937,
+     "mean_error_rel": 0.00860555729061387,
+     "spread_rel": 2.0467888628457582,
+     "worst_angle_error_rel": 1.0467718327253355,
+     "pass": false
+    }
+   ],
+   "warnings": [],
+   "seconds": 6.1,
+   "judged": true
+  },
+  {
+   "name": "t_025",
+   "case": "T",
+   "element_mm": 0.25,
+   "length_mm": 0.5,
+   "elements": 29402,
+   "nodes": 46194,
+   "selections": {
+    "inner": {
+     "stl_area_mm2": 62.83180325371438,
+     "mesh_faces": 1280,
+     "mesh_area_mm2": 79.99999999999947
+    },
+    "outer": {
+     "stl_area_mm2": 68.3295860444843,
+     "mesh_faces": 1392,
+     "mesh_area_mm2": 86.99999999999889
+    },
+    "cut_x": {
+     "stl_area_mm2": 3.5,
+     "mesh_faces": 56,
+     "mesh_area_mm2": 3.499999999999996
+    },
+    "cut_y": {
+     "stl_area_mm2": 3.5,
+     "mesh_faces": 56,
+     "mesh_area_mm2": 3.499999999999996
+    },
+    "bottom": {
+     "stl_area_mm2": 918.127541518808,
+     "mesh_faces": 14701,
+     "mesh_area_mm2": 918.8124999997282
+    }
+   },
+   "films": {
+    "inner_w_m2k": 1000.0,
+    "inner_c": 600.0,
+    "outer_w_m2k": 4000.0,
+    "outer_c": 20.0
+   },
+   "closed_form_heat_w_per_m": 225844.06843232102,
+   "energy": {
+    "sources_j": 0,
+    "boundary_j": 125.57230614156862,
+    "prescribed_nodes_j": 0,
+    "stored_j": 125.57230614120638,
+    "enthalpy_change_j": 125.57230614120493,
+    "supplied_j": 125.57230614156862,
+    "closure_error": 2.884670177850523e-12,
+    "worst_step_balance_error": 0.04377518278181612,
+    "enthalpy_mismatch": 1.1543207459458695e-14,
+    "worst_step_enthalpy_mismatch": 5.999914273374603e-14,
+    "note": "accepted steps only: rejected trial steps never enter these sums. The stored energy of every step must equal the heat delivered by sources, boundary faces and prescribed-temperature nodes; enthalpy_change_j is the same energy obtained by integrating the enthalpy function over the elements, which checks the capacity model itself rather than the linear solve"
+   },
+   "conditions": [
+    {
+     "name": "film_inner",
+     "kind": "convection",
+     "energy_into_model_j": 3572.208071801889,
+     "mean_power_w": 35.722080718018894,
+     "body": "ring"
+    },
+    {
+     "name": "film_outer",
+     "kind": "convection",
+     "energy_into_model_j": -3446.63576566032,
+     "mean_power_w": -34.4663576566032,
+     "body": "ring"
+    }
+   ],
+   "quantities": [
+    {
+     "quantity": "rise above the outside fluid at r = 81 mm (K)",
+     "closed_form": 126.6382513846442,
+     "values": [
+      128.46995435337402,
+      130.47393821193486,
+      132.15974220000544,
+      133.2025899280435,
+      133.5541831218842,
+      133.20667489327167,
+      132.14965577805702,
+      130.47250159792577,
+      128.46941705844984
+     ],
+     "spread_limit": 0.01,
+     "mean": 131.3509619047718,
+     "spread": 5.084766063434358,
+     "mean_error_rel": 0.037213957620225294,
+     "spread_rel": 0.04015189729673512,
+     "worst_angle_error_rel": 0.05461171219297642,
+     "pass": false
+    },
+    {
+     "quantity": "rise above the outside fluid at r = 86 mm (K)",
+     "closed_form": 107.06560800126317,
+     "values": [
+      107.32359164928334,
+      106.77833349237528,
+      106.55742098734493,
+      106.45536964373434,
+      106.44972087772805,
+      106.4589721465453,
+      106.55626480018992,
+      106.7770218052267,
+      107.32309333407272
+     ],
+     "spread_limit": 0.01,
+     "mean": 106.74219874850007,
+     "spread": 0.8738707715552891,
+     "mean_error_rel": -0.0030206642338339268,
+     "spread_rel": 0.008162011946403733,
+     "worst_angle_error_rel": 0.005752427273638149,
+     "pass": true
+    },
+    {
+     "quantity": "drop from r = 81 to 86 mm, the local heat flow (K)",
+     "closed_form": 19.572643383381035,
+     "values": [
+      21.146362704090677,
+      23.695604719559583,
+      25.602321212660513,
+      26.74722028430915,
+      27.10446224415614,
+      26.74770274672636,
+      25.593390977867102,
+      23.695479792699075,
+      21.146323724377112
+     ],
+     "spread_limit": 0.02,
+     "mean": 24.608763156271745,
+     "spread": 5.958138519779027,
+     "mean_error_rel": 0.25730401735959885,
+     "spread_rel": 0.30441154028474415,
+     "worst_angle_error_rel": 0.38481357439794295,
+     "pass": false
+    }
+   ],
+   "warnings": [],
+   "seconds": 14.8,
+   "judged": true
+  },
+  {
+   "name": "p_050",
+   "case": "P",
+   "element_mm": 0.5,
+   "length_mm": 1.0,
+   "elements": 7338,
+   "nodes": 12054,
+   "selections": {
+    "inner": {
+     "stl_area_mm2": 125.66360650742875,
+     "mesh_faces": 640,
+     "mesh_area_mm2": 160.00000000000227
+    },
+    "outer": {
+     "stl_area_mm2": 136.6591720889686,
+     "mesh_faces": 696,
+     "mesh_area_mm2": 174.00000000000261
+    },
+    "cut_x": {
+     "stl_area_mm2": 7,
+     "mesh_faces": 28,
+     "mesh_area_mm2": 7.000000000000003
+    },
+    "cut_y": {
+     "stl_area_mm2": 7,
+     "mesh_faces": 28,
+     "mesh_area_mm2": 7.000000000000003
+    },
+    "bottom": {
+     "stl_area_mm2": 918.127541518808,
+     "mesh_faces": 3669,
+     "mesh_area_mm2": 917.2500000000407
+    }
+   },
+   "load_report": [
+    {
+     "condition": "p_inner",
+     "kind": "pressure",
+     "resultant_on_stl_n": [
+      480,
+      480,
+      0
+     ],
+     "resultant_applied_n": [
+      484.6022485591553,
+      484.59119375706723,
+      0
+     ]
+    }
+   ],
+   "quantities": [
+    {
+     "quantity": "radial displacement at r = 81 mm (mm)",
+     "closed_form": 0.08146044419098313,
+     "values": [
+      0.0027810550998232965,
+      0.0421635622922512,
+      0.10032782514505023,
+      0.1500224089788431,
+      0.168625913715283,
+      0.1488670970445713,
+      0.09805411378955592,
+      0.03884411836925762,
+      -0.0015792518958740315
+     ],
+     "spread_limit": 0.01,
+     "mean": 0.08312298250430683,
+     "spread": 0.170205165611157,
+     "mean_error_rel": 0.020409148634469784,
+     "spread_rel": 2.0894210349763482,
+     "worst_angle_error_rel": 1.0700343018010234,
+     "pass": false
+    },
+    {
+     "quantity": "radial displacement at r = 83.5 mm (mm)",
+     "closed_form": 0.08052700074615526,
+     "values": [
+      0.0015512806396032416,
+      0.041221308399390005,
+      0.09942217216968952,
+      0.1491950983777804,
+      0.16777480292923583,
+      0.148039779133407,
+      0.09714844707678727,
+      0.037901863200449644,
+      -0.0027286708223439723
+     ],
+     "spread_limit": 0.01,
+     "mean": 0.082169564567111,
+     "spread": 0.1705034737515798,
+     "mean_error_rel": 0.02039767786873842,
+     "spread_rel": 2.117345389393761,
+     "worst_angle_error_rel": 1.08346022296436,
+     "pass": false
+    },
+    {
+     "quantity": "radial displacement at r = 86 mm (mm)",
+     "closed_form": 0.079692256682648,
+     "values": [
+      0.0009167927174071428,
+      0.04046396959841573,
+      0.09853591340711326,
+      0.14816560556552374,
+      0.16660531586961558,
+      0.14701029678096955,
+      0.09626220743985034,
+      0.03714456980024485,
+      -0.003343996884287003
+     ],
+     "spread_limit": 0.01,
+     "mean": 0.08130674158831702,
+     "spread": 0.16994931275390257,
+     "mean_error_rel": 0.020258993443971068,
+     "spread_rel": 2.132569961353685,
+     "worst_angle_error_rel": 1.0906085836303319,
+     "pass": false
+    }
+   ],
+   "warnings": [],
+   "seconds": 1.1,
+   "judged": false
+  },
+  {
+   "name": "t_050",
+   "case": "T",
+   "element_mm": 0.5,
+   "length_mm": 1.0,
+   "elements": 7338,
+   "nodes": 12054,
+   "selections": {
+    "inner": {
+     "stl_area_mm2": 125.66360650742875,
+     "mesh_faces": 640,
+     "mesh_area_mm2": 160.00000000000227
+    },
+    "outer": {
+     "stl_area_mm2": 136.6591720889686,
+     "mesh_faces": 696,
+     "mesh_area_mm2": 174.00000000000261
+    },
+    "cut_x": {
+     "stl_area_mm2": 7,
+     "mesh_faces": 28,
+     "mesh_area_mm2": 7.000000000000003
+    },
+    "cut_y": {
+     "stl_area_mm2": 7,
+     "mesh_faces": 28,
+     "mesh_area_mm2": 7.000000000000003
+    },
+    "bottom": {
+     "stl_area_mm2": 918.127541518808,
+     "mesh_faces": 3669,
+     "mesh_area_mm2": 917.2500000000407
+    }
+   },
+   "films": {
+    "inner_w_m2k": 1000.0,
+    "inner_c": 600.0,
+    "outer_w_m2k": 4000.0,
+    "outer_c": 20.0
+   },
+   "closed_form_heat_w_per_m": 225844.06843232102,
+   "energy": {
+    "sources_j": 0,
+    "boundary_j": 250.67945611279941,
+    "prescribed_nodes_j": 0,
+    "stored_j": 250.6794561043256,
+    "enthalpy_change_j": 250.67945610432758,
+    "supplied_j": 250.67945611279941,
+    "closure_error": 3.380340420087807e-11,
+    "worst_step_balance_error": 0.2902950065366329,
+    "enthalpy_mismatch": 7.936508603641951e-15,
+    "worst_step_enthalpy_mismatch": 3.546973167525419e-14,
+    "note": "accepted steps only: rejected trial steps never enter these sums. The stored energy of every step must equal the heat delivered by sources, boundary faces and prescribed-temperature nodes; enthalpy_change_j is the same energy obtained by integrating the enthalpy function over the elements, which checks the capacity model itself rather than the linear solve"
+   },
+   "conditions": [
+    {
+     "name": "film_inner",
+     "kind": "convection",
+     "energy_into_model_j": 7144.618407021386,
+     "mean_power_w": 71.44618407021386,
+     "body": "ring"
+    },
+    {
+     "name": "film_outer",
+     "kind": "convection",
+     "energy_into_model_j": -6893.938950908586,
+     "mean_power_w": -68.93938950908586,
+     "body": "ring"
+    }
+   ],
+   "quantities": [
+    {
+     "quantity": "rise above the outside fluid at r = 81 mm (K)",
+     "closed_form": 126.6382513846442,
+     "values": [
+      128.53257242808536,
+      130.52133465242218,
+      132.19714635768952,
+      133.26104925994895,
+      133.61349806491205,
+      133.26211784433087,
+      132.20156301002203,
+      130.53798687838554,
+      128.64994988541878
+     ],
+     "spread_limit": 0.01,
+     "mean": 131.41969093124615,
+     "spread": 5.0809256368266915,
+     "mean_error_rel": 0.037756676946517985,
+     "spread_rel": 0.04012157133624786,
+     "worst_angle_error_rel": 0.05508009313143156,
+     "pass": false
+    },
+    {
+     "quantity": "rise above the outside fluid at r = 86 mm (K)",
+     "closed_form": 107.06560800126317,
+     "values": [
+      107.20187196626125,
+      106.8017279154833,
+      106.60170039831252,
+      106.53092366299347,
+      106.51386107260038,
+      106.5318941699577,
+      106.60573966881736,
+      106.81685570465919,
+      107.19430986744703
+     ],
+     "spread_limit": 0.01,
+     "mean": 106.75543160294802,
+     "spread": 0.6880108936608735,
+     "mean_error_rel": -0.002897068480772,
+     "spread_rel": 0.006426068151154162,
+     "worst_angle_error_rel": 0.00515335352745846,
+     "pass": true
+    },
+    {
+     "quantity": "drop from r = 81 to 86 mm, the local heat flow (K)",
+     "closed_form": 19.572643383381035,
+     "values": [
+      21.330700461824108,
+      23.719606736938886,
+      25.595445959377003,
+      26.730125596955475,
+      27.099636992311673,
+      26.73022367437318,
+      25.595823341204664,
+      23.72113117372635,
+      21.455640017971746
+     ],
+     "spread_limit": 0.02,
+     "mean": 24.66425932829812,
+     "spread": 5.768936530487565,
+     "mean_error_rel": 0.26013941219816694,
+     "spread_rel": 0.29474488537332266,
+     "worst_angle_error_rel": 0.3845670439855735,
+     "pass": false
+    }
+   ],
+   "warnings": [],
+   "seconds": 2.6,
+   "judged": false
+  },
+  {
+   "name": "t_025_g19",
+   "case": "T",
+   "element_mm": 0.25,
+   "length_mm": 0.5,
+   "elements": 29402,
+   "nodes": 46194,
+   "selections": {
+    "inner": {
+     "stl_area_mm2": 62.83180325371438,
+     "mesh_faces": 1280,
+     "mesh_area_mm2": 79.99999999999947
+    },
+    "outer": {
+     "stl_area_mm2": 68.3295860444843,
+     "mesh_faces": 1392,
+     "mesh_area_mm2": 86.99999999999889
+    },
+    "cut_x": {
+     "stl_area_mm2": 3.5,
+     "mesh_faces": 56,
+     "mesh_area_mm2": 3.499999999999996
+    },
+    "cut_y": {
+     "stl_area_mm2": 3.5,
+     "mesh_faces": 56,
+     "mesh_area_mm2": 3.499999999999996
+    },
+    "bottom": {
+     "stl_area_mm2": 918.127541518808,
+     "mesh_faces": 14701,
+     "mesh_area_mm2": 918.8124999997282
+    }
+   },
+   "films": {
+    "inner_w_m2k": 2400.0,
+    "inner_c": 2074.85,
+    "outer_w_m2k": 50000.0,
+    "outer_c": 36.85000000000002
+   },
+   "closed_form_heat_w_per_m": 2065084.9017777294,
+   "energy": {
+    "sources_j": 0,
+    "boundary_j": 259.4053725548753,
+    "prescribed_nodes_j": 0,
+    "stored_j": 259.40537255638674,
+    "enthalpy_change_j": 259.4053725563983,
+    "supplied_j": 259.4053725548753,
+    "closure_error": 5.826439326199731e-12,
+    "worst_step_balance_error": 1.619867323576613,
+    "enthalpy_mismatch": 4.4483327060757945e-14,
+    "worst_step_enthalpy_mismatch": 4.3679421009570394e-13,
+    "note": "accepted steps only: rejected trial steps never enter these sums. The stored energy of every step must equal the heat delivered by sources, boundary faces and prescribed-temperature nodes; enthalpy_change_j is the same energy obtained by integrating the enthalpy function over the elements, which checks the capacity model itself rather than the linear solve"
+   },
+   "conditions": [
+    {
+     "name": "film_inner",
+     "kind": "convection",
+     "energy_into_model_j": 31785.388259736104,
+     "mean_power_w": 317.85388259736106,
+     "body": "ring"
+    },
+    {
+     "name": "film_outer",
+     "kind": "convection",
+     "energy_into_model_j": -31525.982887181228,
+     "mean_power_w": -315.25982887181226,
+     "body": "ring"
+    }
+   ],
+   "quantities": [
+    {
+     "quantity": "rise above the outside fluid at r = 81 mm (K)",
+     "closed_form": 289.0678643145848,
+     "values": [
+      305.1121568301842,
+      327.35183296443654,
+      344.7494526650853,
+      355.30005008950457,
+      358.83676351694226,
+      355.31554284628544,
+      344.67706932390104,
+      327.34935664400325,
+      305.11199950931245
+     ],
+     "spread_limit": 0.01,
+     "mean": 335.9782471544061,
+     "spread": 53.7247640076298,
+     "mean_error_rel": 0.16228155610119976,
+     "spread_rel": 0.1858551940217145,
+     "worst_angle_error_rel": 0.24135819928579055,
+     "pass": false
+    },
+    {
+     "quantity": "rise above the outside fluid at r = 86 mm (K)",
+     "closed_form": 110.09849567246619,
+     "values": [
+      112.62511303943478,
+      114.49098955960056,
+      116.4397807041666,
+      117.8113808867621,
+      119.10224135796551,
+      117.81854100215594,
+      116.4362482785765,
+      114.48977504558479,
+      112.62503219408586
+     ],
+     "spread_limit": 0.01,
+     "mean": 115.75990022981472,
+     "spread": 6.47720916387965,
+     "mean_error_rel": 0.05142127077004519,
+     "spread_rel": 0.05883104146262638,
+     "worst_angle_error_rel": 0.0817790073379814,
+     "pass": false
+    },
+    {
+     "quantity": "drop from r = 81 to 86 mm, the local heat flow (K)",
+     "closed_form": 178.96936864211864,
+     "values": [
+      192.4870437907494,
+      212.86084340483598,
+      228.3096719609187,
+      237.48866920274247,
+      239.73452215897674,
+      237.4970018441295,
+      228.24082104532454,
+      212.85958159841846,
+      192.4869673152266
+     ],
+     "spread_limit": 0.02,
+     "mean": 220.21834692459137,
+     "spread": 47.24755484375015,
+     "mean_error_rel": 0.23048066043613008,
+     "spread_rel": 0.2639979969881333,
+     "worst_angle_error_rel": 0.3395282331155167,
+     "pass": false
+    }
+   ],
+   "warnings": [],
+   "seconds": 14.1,
+   "judged": false
+  }
+ ],
+ "pass": false
+}

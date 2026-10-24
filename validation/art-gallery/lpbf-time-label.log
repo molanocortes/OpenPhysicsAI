@@ -1,0 +1,132 @@
+[ ok ] lattice 192x64x224  (2.75M cells, 488 MB)
+[ ok ] NAVIER — real-time lattice-Boltzmann water tunnel
+[info] GPU Apple M2 · OpenGL 4.1 Metal - 89.4 · 8 CPU threads
+[info] type 'help' for commands, 'scene' for experiments, drop an .stl onto the window to test your own shape
+[ ok ] model 'glider': 18932 triangles, extent 0.459 x 0.115 x 1, watertight
+[ ok ] scene 'glider': sailplane at 4 deg AoA - wingtip vortices
+[ >> ] exec /private/tmp/openphysics-art-gallery/lpbf-time-label.nav
+[info] script /private/tmp/openphysics-art-gallery/lpbf-time-label.nav: 59 commands queued
+[ ok ] geometry: 6810 solid cells, 32690 boundary links (curved, 82% on the surface), frontal 578 cells  (21 ms, walls 9 ms)
+[data]   walls: bvh 3.1 ms, 32690 rays 6.4 ms, rest 0.0 ms
+[ >> ] mode manual
+[ ok ] mode advanced
+[ >> ] workspace solid
+[ ok ] SOLID workspace - finite-element analysis (the same operations as 'am' and the control socket)
+[ >> ] pause
+[info] paused at step 0 (t = 0 s)
+[ >> ] backdrop neutral
+[info] backdrop neutral
+[ >> ] floorgrid off
+[info] floor grid off
+[ >> ] box off
+[info] tunnel box off
+[ >> ] solid open /private/tmp/openphysics-art-gallery/workspace/Helical_Lantern
+[ ok ] opened /private/tmp/openphysics-art-gallery/workspace/Helical_Lantern
+[ >> ] frames 8
+[ >> ] fem follow last
+[ ok ] following job-20261003-071336-7f31-1
+[ >> ] frames 12
+[ ok ] analysis finished (job-20261003-071336-7f31-1)
+[info] surface map: 30674 vertices onto 3807 elements in 5 ms; 16059 snapped (mean 0.149 mm, largest 0.502 mm), 0 not drawn
+[ ok ] result surface built for job-20261003-071336-7f31-1 (lpbf_build): 1856 triangles, von Mises stress
+[ >> ] fem pause
+[ ok ] playback paused at stored time 1 of 17
+[ >> ] fem step last
+[ ok ] stored time 17 of 17 (t = 17 s)
+[ >> ] fem field displacement
+[ ok ] showing displacement [mm]
+[ >> ] fem range all
+[ ok ] colour range over all stored times: 0 to 0.00901242 mm
+[ >> ] fem deform true
+[ ok ] deformation scale ×1
+[ >> ] camera orbit 36 24
+[ >> ] fem fit
+[ ok ] framed the analysed part
+[ >> ] hud clean
+[info] clean view: computed field, stored time, scale and legend; H restores the interface
+[ >> ] frames 100
+[ >> ] echo TIMELABEL lpbf
+[info] TIMELABEL lpbf 
+[ >> ] uitext
+[info] panel text:
+[data]   Clean view: Helical_Lantern · displacement [mm]
+[data]   process step 17/17 · deformation ×1 · max displacement 0.0090124 mm · range: all process steps
+[data]   LPBF: elastic (no yielding) inherent strain; input inferred; no measurement comparison.
+[data]   SECTION OFF
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/lpbf-time-label-lpbf.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/lpbf-time-label-lpbf.png (1440x900)
+[ >> ] frames 6
+[ >> ] solid open /private/tmp/openphysics-art-gallery/workspace/Helical_Flute
+[ ok ] opened /private/tmp/openphysics-art-gallery/workspace/Helical_Flute
+[ >> ] frames 8
+[ >> ] fem follow last
+[ ok ] following job-20261003-071219-7e8c-1
+[ >> ] frames 12
+[ ok ] analysis finished (job-20261003-071219-7e8c-1)
+[info] surface map: 36098 vertices onto 5385 elements in 6 ms; 16660 snapped (mean 0.136 mm, largest 0.425 mm), 0 not drawn
+[ ok ] result surface built for job-20261003-071219-7e8c-1 (fff_print): 1428 triangles, displacement
+[ >> ] fem pause
+[ ok ] playback paused at stored time 1 of 35
+[ >> ] fem step last
+[ ok ] stored time 35 of 35 (t = 643.975 s)
+[ >> ] fem field displacement
+[ ok ] showing displacement [mm]
+[ >> ] fem range all
+[ ok ] colour range over all stored times: 0 to 0.0820785 mm
+[ >> ] fem deform true
+[ ok ] deformation scale ×1
+[ >> ] camera orbit 36 24
+[ >> ] fem fit
+[ ok ] framed the analysed part
+[ >> ] hud clean
+[info] clean view: computed field, stored time, scale and legend; H restores the interface
+[ >> ] frames 100
+[ >> ] echo TIMELABEL fdm
+[info] TIMELABEL fdm 
+[ >> ] uitext
+[info] panel text:
+[data]   Clean view: Helical_Flute · displacement [mm]
+[data]   t = 643.97 s · stored time 35/35 · deformation ×1 · max displacement 0.082078 mm · range: all stored times
+[data]   FDM: deposition, heat and stress; process inferred; material demonstration; no measurement comparison.
+[data]   SECTION OFF
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/lpbf-time-label-fdm.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/lpbf-time-label-fdm.png (1440x900)
+[ >> ] frames 6
+[ >> ] solid open /private/tmp/openphysics-art-gallery/workspace/Thermal_Corolla
+[ ok ] opened /private/tmp/openphysics-art-gallery/workspace/Thermal_Corolla
+[ >> ] frames 8
+[ >> ] fem follow last
+[ ok ] following job-20261003-071615-7f70-1
+[ >> ] frames 12
+[ ok ] analysis finished (job-20261003-071615-7f70-1)
+[info] surface map: 25585 vertices onto 11840 elements in 4 ms; 11789 snapped (mean 0.135 mm, largest 0.428 mm), 0 not drawn
+[ ok ] result surface built for job-20261003-071615-7f70-1 (transient_thermal): 51166 triangles, temperature
+[ >> ] fem pause
+[ ok ] playback paused at stored time 1 of 61
+[ >> ] fem step last
+[ ok ] stored time 61 of 61 (t = 150 s)
+[ >> ] fem field temperature
+[ ok ] showing temperature [°C]
+[ >> ] fem range all
+[ ok ] colour range over all stored times: 20 to 121.669 °C
+[ >> ] fem deform true
+[ ok ] deformation scale ×1
+[ >> ] camera orbit 36 24
+[ >> ] fem fit
+[ ok ] framed the analysed part
+[ >> ] hud clean
+[info] clean view: computed field, stored time, scale and legend; H restores the interface
+[ >> ] frames 100
+[ >> ] echo TIMELABEL thermal
+[info] TIMELABEL thermal 
+[ >> ] uitext
+[info] panel text:
+[data]   Clean view: Thermal_Corolla · temperature [°C]
+[data]   t = 150 s · stored time 61/61 · deformation ×0 · max displacement 0 mm · range: all stored times
+[data]   SECTION OFF
+[ >> ] screenshot /private/tmp/openphysics-art-gallery/lpbf-time-label-thermal.png
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/lpbf-time-label-thermal.png (1440x900)
+[ >> ] frames 6
+[ >> ] echo TIMELABEL end
+[info] TIMELABEL end 
+[ >> ] quit

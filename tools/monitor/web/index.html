@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F2F1EE">
+<title>Compute · OpenPhysicsAI</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23E8551C' stroke-width='5'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#history">Skip to the history</a>
+
+<header class="bar">
+  <div class="bar-in">
+    <a class="brand" href="#top" aria-label="OpenPhysicsAI Compute, back to the top">OpenPhysicsAI <span>Compute</span></a>
+    <nav class="jump" aria-label="Sections">
+      <a href="#machines">Machines</a><a href="#history">History</a><a href="#jobs">Jobs</a><a href="#work">Work done</a><a href="#compare">Compare</a>
+    </nav>
+    <div class="status" id="status" data-s="wait"><span class="dot" aria-hidden="true"></span><span id="status-text">Connecting</span><time id="clock"></time></div>
+  </div>
+</header>
+
+<main class="wrap" id="top">
+  <div class="notice" id="notice" role="status" hidden></div>
+
+  <section class="hero" aria-labelledby="headline">
+    <div class="hero-l">
+      <p class="eyebrow" id="eyebrow">Now</p>
+      <h1 id="headline"><span class="big" id="big">-</span><span class="big-k" id="big-k">connecting…</span></h1>
+    </div>
+    <dl class="hero-r">
+      <div class="fig"><dt>Threads busy</dt><dd id="fig-thr">-</dd></div>
+      <div class="fig"><dt id="fig-flops-k">Operations a second</dt><dd id="fig-flops">-</dd></div>
+      <div class="fig"><dt>Jobs running</dt><dd id="fig-jobs">-</dd></div>
+    </dl>
+  </section>
+
+  <section class="card away" id="away" hidden aria-label="While you were away"></section>
+
+  <section class="section" id="machines" aria-labelledby="machines-h">
+    <div class="section-head"><h2 id="machines-h">Machines</h2></div>
+    <div class="machines" id="machine-cards"></div>
+  </section>
+
+  <section class="section" id="history" aria-labelledby="history-h">
+    <div class="section-head history-head">
+      <div class="hh-title"><h2 id="history-h">History</h2><p class="window" id="window-title" aria-live="polite">Last 24 hours</p></div>
+      <div class="seg range" id="range" role="radiogroup" aria-label="Time range">
+        <button type="button" role="radio" data-v="live">Live</button>
+        <button type="button" role="radio" data-v="hour">Hour</button>
+        <button type="button" role="radio" data-v="day">Day</button>
+        <button type="button" role="radio" data-v="week">Week</button>
+        <button type="button" role="radio" data-v="month">Month</button>
+        <button type="button" role="radio" data-v="all">All</button>
+      </div>
+      <div class="pager">
+        <button type="button" class="latest" id="latest" hidden>Now</button>
+        <button type="button" id="prev" aria-label="Earlier"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5 7 10l5.5 5.5"/></svg></button>
+        <button type="button" id="next" aria-label="Later"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7.5 4.5 13 10l-5.5 5.5"/></svg></button>
+      </div>
+    </div>
+
+    <div class="tiles" id="range-figs" aria-live="polite"></div>
+
+    <div class="card charts" id="charts">
+      <div class="charts-head">
+        <div class="legend" id="legend"></div>
+        <div class="seg seg-s" id="stat" role="radiogroup" aria-label="Show">
+          <button type="button" role="radio" data-v="mean">Average</button>
+          <button type="button" role="radio" data-v="peak">Peak</button>
+        </div>
+      </div>
+      <div class="chart"><h3 class="chart-k">Busy <span>% of threads</span></h3>
+        <canvas class="plot" id="c-busy" tabindex="0" role="img" aria-label="Busy share over time"></canvas></div>
+      <div class="chart"><h3 class="chart-k">Floating-point operations <span id="flops-k">per second</span></h3>
+        <canvas class="plot" id="c-flops" tabindex="0" role="img" aria-label="Floating-point operations per second over time"></canvas></div>
+      <div class="chart"><h3 class="chart-k">Memory <span>% in use</span></h3>
+        <canvas class="plot" id="c-mem" tabindex="0" role="img" aria-label="Memory in use over time"></canvas></div>
+      <div class="chart"><h3 class="chart-k">Every thread</h3>
+        <div id="thread-plots"></div>
+        <div class="scale" id="scale">
+          <span class="scale-item"><span>Idle</span><i class="ramp" id="ramp" aria-hidden="true"></i><span>Busy</span></span>
+          <span class="scale-item" title="Older records keep only the machine's average, not each thread"><i class="hatch" aria-hidden="true"></i>Average only</span>
+          <span class="scale-item"><i class="none" aria-hidden="true"></i>Not recorded</span>
+          <span class="scale-item" id="mode-key" hidden></span>
+        </div>
+      </div>
+      <div class="crosshair" id="crosshair" hidden></div>
+      <div class="readout" id="readout" hidden></div>
+    </div>
+    <p class="foot" id="chart-foot"></p>
+    <div class="sr-only" id="readout-live" aria-live="polite"></div>
+  </section>
+
+  <section class="section" id="jobs" aria-labelledby="jobs-h">
+    <div class="section-head"><h2 id="jobs-h">Jobs</h2></div>
+    <div class="jobs" id="jobs-list"></div>
+  </section>
+
+  <section class="section" id="work" aria-labelledby="work-h">
+    <div class="section-head"><h2 id="work-h">Work done</h2><p class="window" id="work-sub"></p></div>
+    <div class="card odo">
+      <div class="digits" id="odo-digits">0</div>
+      <p class="odo-words" id="odo-words">floating-point operations</p>
+      <div class="share" id="odo-share" aria-hidden="true"></div>
+      <div class="share-legend" id="odo-share-legend"></div>
+      <dl class="facts">
+        <div><dd id="odo-apollo">0</dd><dt>Apollo 11 missions</dt></div>
+        <div><dd id="odo-cray">0</dd><dt>of a Cray-1 at full speed</dt></div>
+        <div><dd id="odo-people">0</dd><dt>for everyone on Earth, a sum a second</dt></div>
+        <div><dd id="odo-core">0</dd><dt>core-hours</dt></div>
+      </dl>
+      <dl class="periods" id="periods"></dl>
+    </div>
+    <div class="card moon-card">
+      <svg id="moon" viewBox="0 0 240 240" role="img" aria-label="The moon fills toward the next mark"></svg>
+      <div class="moon-body">
+        <h3>To a million moon missions</h3>
+        <p class="moon-text" id="moon-text">&nbsp;</p>
+        <ol class="ladder" id="ladder" aria-label="Marks on the way"></ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="compare" aria-labelledby="compare-h">
+    <div class="section-head"><h2 id="compare-h">Machines compared</h2><p class="window" id="bench-sub"></p></div>
+    <div class="bench" id="bench"></div>
+    <div class="card side">
+      <h3>Side by side</h3>
+      <div class="table-wrap"><table class="cmp" id="cmp"></table></div>
+      <div class="cmp-list" id="cmp-list"></div>
+    </div>
+  </section>
+
+  <footer class="notes">
+    <details>
+      <summary>How these numbers are measured</summary>
+      <p>Every two seconds a recorder on each node reads its processor's own counters: floating-point operations
+      retired (a vector instruction counted with the operations it does, a fused multiply-add as two), instructions,
+      cycles, and how busy each thread was, in the node's Linux, where the jobs run. Checked on the desktop against a
+      loop with a known count: 2.0010 × 10<sup>9</sup> counted, 2.0010 × 10<sup>9</sup> expected. Each machine keeps a
+      line a minute, so nights you sleep through are here when you come back.</p>
+      <p>The MacBook is read on this Mac: each core from the Mach call host_processor_info, memory from
+      host_statistics64, pressure and swap from sysctl, the time since your last input from CoreGraphics, power from
+      pmset. macOS gives ordinary programs no floating-point counters, so its operations (≈, hatched) are an estimate
+      that falls short on purpose: 0.2 per instruction of the lab's own programs, each process's instructions read with
+      proc_pid_rusage. The nodes measure 0.78 and 0.41 operations per instruction, and the M2's 128-bit vectors need up
+      to twice the instructions of the nodes' 256-bit ones; everything else is left out. The estimate is never added to
+      the nodes' measured totals.</p>
+      <p>Each slice of the history takes the records it overlaps, weighted by the time they share; Peak is the
+      busiest two-second sample (or minute, in older records). Shaded: 22:00 to 07:00.</p>
+      <p><b>Apollo 11:</b> two guidance computers, at least 11.72 µs an instruction
+      (<a href="https://en.wikipedia.org/wiki/Apollo_Guidance_Computer">AGC</a>), over 8 d 3 h 18 min 35 s
+      (<a href="https://en.wikipedia.org/wiki/Apollo_11">Apollo 11</a>): at most 1.2 × 10<sup>11</sup> instructions,
+      matched one for one with ours. <b>Cray-1:</b> 160 million operations a second at its peak
+      (<a href="https://en.wikipedia.org/wiki/Cray-1">Cray-1</a>). <b>Everyone on Earth:</b> about 8.2 billion people.</p>
+    </details>
+  </footer>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

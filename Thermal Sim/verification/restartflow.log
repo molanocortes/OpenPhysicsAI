@@ -1,0 +1,18 @@
+== setup
+== reference: uninterrupted run
+  1534 accepted steps, 13.3 s wall
+== B1 pause mid-run and resume in the same session
+  paused at t = 535.338 s; resumed run bitwise identical to the uninterrupted run
+== B7 checkpoint request on a running job
+  B7: bitwise identical to the uninterrupted run
+== B4 cancellation keeps a resumable checkpoint
+  B4: bitwise identical to the uninterrupted run
+== B3 thermomechanical pause and resume
+  B3: temperature, displacement and von Mises frames bitwise identical
+== B6 changed specifications are refused
+== B5 damaged checkpoints
+  fallback: resumed from t = 402.9696499951828 s (previous checkpoint) after the newest was truncated; bitwise identical
+== B2 process killed after a checkpoint, resumed by a new server
+  killed after a checkpoint, resumed at t = 150.98705717182824 s in a new process: bitwise identical
+
+ALL RESTART FLOW TESTS PASSED: 154 passed, 0 failed

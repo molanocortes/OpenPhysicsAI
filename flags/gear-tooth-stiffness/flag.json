@@ -1,0 +1,57 @@
+{
+ "id": "gear-tooth-stiffness",
+ "category": "solid mechanics and contact",
+ "title": "The stiffness of one pair of gear teeth",
+ "question": "Two identical steel spur gears mesh at the stated centre distance. From transmission error measured with a single pair of teeth carrying the load through its path of contact and with two pairs sharing it, the stiffness of one tooth pair was found with the rig's bearings and shafts taken out. Report that stiffness, the load per unit face width over the deflection along the line of action that the tooth pair alone gives, half a base pitch from the pitch point and at the pitch point, for the case's two loads.",
+ "conditions": {
+  "gears": "pinion and wheel alike: 54 teeth, module 3.738 mm, pressure angle 18 deg, face width 11 mm, outside diameter 212.344 mm, root diameter 190.575 mm, pitch circle diameter 201.854 mm, arc tooth thickness 6.220 mm on the pitch circle; no profile relief, 3 to 4 um of lead crowning; ground, BS 436 grade 2 to 3",
+  "assembly": "centre distance 203.2 mm; contact ratio 2.16; the gears run at about 60 rpm, slowly enough that dynamics play no part; the shafts in preloaded taper roller bearings",
+  "single_pair": "the two teeth either side of one tooth on one gear are ground back 0.5 mm on the loaded flank, so that the unground tooth's pair carries the whole load through its path of contact",
+  "reduction": "with N the change of load per unit face width between the case's two loads, delta1 the change of transmission error with the single pair and delta2 with two pairs of the unground teeth sharing the load symmetrically about the pitch point, both half a base pitch from their pitch points: the rig's stiffness c_b = N / (2 delta2 - delta1) and the tooth pair's c_t = N / (2 (delta1 - delta2)); the pitch point's value is the single pair's there with c_b taken out",
+  "not_stated": "the material grade (steel), the cutter's tip radius and the gear blanks' shape are not stated by the source"
+ },
+ "outputs": [
+  {
+   "name": "tooth_pair_stiffness_half_pitch_n_per_mm_um",
+   "unit": "N/(mm um)",
+   "meaning": "c_t, the tooth pair's stiffness half a base pitch from the pitch point, from the reduction above"
+  },
+  {
+   "name": "tooth_pair_stiffness_pitch_point_n_per_mm_um",
+   "unit": "N/(mm um)",
+   "meaning": "the tooth pair's stiffness at the pitch point"
+  }
+ ],
+ "cases": [
+  {
+   "case": "loads_191_520",
+   "inputs": {
+    "load_low_n_per_mm": 191,
+    "load_high_n_per_mm": 520
+   }
+  }
+ ],
+ "practice": [
+  {
+   "case": "loads_26_520",
+   "inputs": {
+    "load_low_n_per_mm": 26,
+    "load_high_n_per_mm": 520
+   },
+   "answers": {
+    "tooth_pair_stiffness_half_pitch_n_per_mm_um": 12.93,
+    "tooth_pair_stiffness_pitch_point_n_per_mm_um": 14.25
+   },
+   "note": "measured in the same experiment between a light and a heavy load; public so that an entrant can check the reduction, not tune the physics"
+  }
+ ],
+ "metric": "log_ratio",
+ "tier": "trial",
+ "leads_to": "metal-fracture",
+ "label": "T5",
+ "subtitle": "Leads to flag 06 · one pair of spur gear teeth, from transmission error through its path of contact",
+ "sealed": {
+  "sha256": "6cd5d4f29251eefaedb36f4280e61069f5714a9edaf3484666c9a68c9fa10b70",
+  "sealed_on": "2026-10-08"
+ }
+}

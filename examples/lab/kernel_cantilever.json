@@ -1,0 +1,84 @@
+{
+ "domain": "kernel",
+ "title": "A steel cantilever under an end load, composed in the kernel (its check K3 against Timoshenko's beam)",
+ "provenance": {
+  "purpose": "the kernel's simplest scenario: a 400 mm steel beam held at one end, 100 N at the other",
+  "material": "nominal steel"
+ },
+ "mesh": {
+  "box": {
+   "size_m": [
+    0.4,
+    0.02,
+    0.02
+   ],
+   "cells": [
+    40,
+    2,
+    2
+   ]
+  }
+ },
+ "order": 2,
+ "physics": [
+  "elasticity"
+ ],
+ "materials": {
+  "steel": {
+   "youngs_modulus_pa": 207000000000.0,
+   "poisson_ratio": 0.3,
+   "source": "nominal steel"
+  }
+ },
+ "boundaries": [
+  {
+   "name": "clamp",
+   "where": {
+    "plane": [
+     "x",
+     0
+    ]
+   },
+   "fixed": true
+  },
+  {
+   "name": "tip",
+   "where": {
+    "plane": [
+     "x",
+     0.4
+    ]
+   },
+   "force_n": [
+    0,
+    -100,
+    0
+   ]
+  }
+ ],
+ "outputs": {
+  "probes": [
+   {
+    "name": "middle",
+    "point_m": [
+     0.2,
+     0.01,
+     0.01
+    ]
+   }
+  ]
+ },
+ "picture": {
+  "deformation_scale": 100,
+  "film": "build/labfilm OUT.lab --out DIR --field von_mises --light"
+ },
+ "controls": [
+  {
+   "label": "the end load, N",
+   "path": "boundaries.1.force_n.1",
+   "min": -1000,
+   "max": -10,
+   "log": false
+  }
+ ]
+}

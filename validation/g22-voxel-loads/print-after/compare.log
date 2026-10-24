@@ -1,0 +1,7 @@
+   0 degrees, 0.25 mm, convection: 10.078499749310023 J before, 10.078499749310023 J after: bitwise equal
+   0 degrees, 0.25 mm, with_radiation: 15.736282556275361 J before, 15.736282556275361 J after: bitwise equal
+   0 degrees, 0.5 mm, convection: 10.078504274200197 J before, 10.078504274200197 J after: bitwise equal
+   0 degrees, 0.5 mm, with_radiation: 15.736295462045574 J before, 15.736295462045574 J after: bitwise equal
+   0 degrees, 1 mm, convection: 10.078521448805349 J before, 10.078521448805349 J after: bitwise equal
+   0 degrees, 1 mm, with_radiation: 15.736344446422917 J before, 15.736344446422917 J after: bitwise equal
+PASS (6 runs at 0 degrees compared)

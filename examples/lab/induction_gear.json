@@ -1,0 +1,43 @@
+{
+ "domain": "magnet",
+ "title": "Induction hardening of a gear: eddy currents heat the teeth first",
+ "induction": {
+  "gear": {
+   "teeth": 24,
+   "bore_radius_m": 0.015,
+   "root_radius_m": 0.04,
+   "tip_radius_m": 0.046,
+   "thickness_m": 0.02,
+   "tooth_fraction_at_root": 0.55,
+   "tooth_fraction_at_tip": 0.35,
+   "source": "a demonstration gear, module about 3.8 mm; not a particular part"
+  },
+  "coil": {
+   "inner_radius_m": 0.05,
+   "outer_radius_m": 0.056,
+   "height_m": 0.018,
+   "current_a": 10000.0,
+   "frequency_hz": 30000.0,
+   "source": "a single-turn water-cooled copper coil; current amplitude and frequency in the range of gear-hardening machines"
+  },
+  "steel": {
+   "conductivity_s_m": 860000.0,
+   "relative_permeability": 1.0,
+   "thermal_conductivity_w_mk": 26.0,
+   "volumetric_heat_capacity_j_m3k": 5005000.0,
+   "source": "AISI 1045 carbon steel at 800 C, above its Curie point (so non-magnetic): resistivity 1.16 micro-ohm m, thermal conductivity 26 W/(m K), specific heat 650 J/(kg K), density 7700 kg/m3 (Rudnev, Loveless and Cook, Handbook of Induction Heating, 2nd ed., 2017); held constant through the run"
+  },
+  "grid": {
+   "sectors_per_tooth": 24,
+   "surface_cell_m": 0.0005,
+   "outer_radius_m": 0.08,
+   "axial_extent_m": 0.06
+  },
+  "heat": {
+   "duration_s": 3.0,
+   "frames": 60,
+   "steps_per_frame": 5,
+   "ambient_k": 293.15
+  }
+ }
+}

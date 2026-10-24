@@ -1,0 +1,4 @@
+  cring    tet   h 0.5    100448 elements  R 2.0042    (point 2.0502, peak flag none, zone 1 mm)  s12 (in-plane shear)     at (   7.07    7.07   2.07) mm  radius 10.00 mm, 0.0 deg from the apex; closed form at the applied load 2.026  [32.1 s]
+           at a voxel staircase (GOALS.md G17 step 8): not reported; the answer names TET10: no
+  C-ring closed form (Winkler-Bach): inner-fibre stress 25.82 MPa at the apex under the requested 10 N, Xt 52.3 MPa, R 2.0252
+PRINT MESH STUDY: 0 passed, 0 failed

@@ -1,0 +1,188 @@
+{
+ "domain": "fire",
+ "title": "A data hall: cold aisle, hot aisles and recirculation",
+ "box_m": [
+  0,
+  0,
+  0,
+  6.4,
+  4.8,
+  3.2
+ ],
+ "cell_m": 0.1,
+ "ambient_temperature_k": 297.15,
+ "reference_temperature_k": 297.15,
+ "sides": {
+  "x-": "wall",
+  "x+": "wall",
+  "y-": "wall",
+  "y+": "wall",
+  "z-": "wall",
+  "z+": "wall"
+ },
+ "turbulence": "vreman",
+ "vents": [
+  {
+   "name": "perforated tiles",
+   "side": "z-",
+   "rect_m": [
+    1.6,
+    1.8,
+    4.8,
+    3.0
+   ],
+   "speed_m_s": 1.6,
+   "temperature_k": 291.15
+  }
+ ],
+ "openings": [
+  {
+   "name": "return, row 1",
+   "side": "z+",
+   "rect_m": [
+    1.6,
+    0.0,
+    4.8,
+    0.8
+   ]
+  },
+  {
+   "name": "return, row 2",
+   "side": "z+",
+   "rect_m": [
+    1.6,
+    4.0,
+    4.8,
+    4.8
+   ]
+  }
+ ],
+ "fans": [
+  {
+   "name": "rack row 1",
+   "box_m": [
+    1.6,
+    0.8,
+    0.0,
+    4.8,
+    1.8,
+    2.0
+   ],
+   "axis": "y",
+   "speed_m_s": -0.6
+  },
+  {
+   "name": "rack row 2",
+   "box_m": [
+    1.6,
+    3.0,
+    0.0,
+    4.8,
+    4.0,
+    2.0
+   ],
+   "axis": "y",
+   "speed_m_s": 0.6
+  }
+ ],
+ "heat_sources": [
+  {
+   "name": "servers, row 1",
+   "box_m": [
+    1.6,
+    0.8,
+    0.0,
+    4.8,
+    1.8,
+    2.0
+   ],
+   "power_w": 24000
+  },
+  {
+   "name": "servers, row 2",
+   "box_m": [
+    1.6,
+    3.0,
+    0.0,
+    4.8,
+    4.0,
+    2.0
+   ],
+   "power_w": 24000
+  }
+ ],
+ "obstacles": [
+  {
+   "name": "row 1 roof",
+   "box_m": [
+    1.6,
+    0.8,
+    2.0,
+    4.8,
+    1.8,
+    2.1
+   ]
+  },
+  {
+   "name": "row 1 end",
+   "box_m": [
+    1.5,
+    0.8,
+    0.0,
+    1.6,
+    1.8,
+    2.1
+   ]
+  },
+  {
+   "name": "row 1 end",
+   "box_m": [
+    4.8,
+    0.8,
+    0.0,
+    4.9,
+    1.8,
+    2.1
+   ]
+  },
+  {
+   "name": "row 2 roof",
+   "box_m": [
+    1.6,
+    3.0,
+    2.0,
+    4.8,
+    4.0,
+    2.1
+   ]
+  },
+  {
+   "name": "row 2 end",
+   "box_m": [
+    1.5,
+    3.0,
+    0.0,
+    1.6,
+    4.0,
+    2.1
+   ]
+  },
+  {
+   "name": "row 2 end",
+   "box_m": [
+    4.8,
+    3.0,
+    0.0,
+    4.9,
+    4.0,
+    2.1
+   ]
+  }
+ ],
+ "source": "demonstration: the hall is chosen, not measured. Each row of four racks dissipates 24 kW and draws 3.8 m^3/s through its fronts (0.6 m/s over 6.4 m^2); the tiles supply 6.1 m^3/s at 18 C.",
+ "run": {
+  "end_s": 120.0,
+  "frames": 120,
+  "average_from_s": 60.0
+ }
+}

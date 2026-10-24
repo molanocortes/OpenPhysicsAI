@@ -1,0 +1,70 @@
+{
+ "nature": "predictions of the NAVIER model for the physical protocol; not measurements",
+ "navier": {
+  "compiler": "Apple LLVM 17.0.0 (clang-1700.0.13.5)",
+  "contract_version": "0.6.0",
+  "floating_point": "IEEE 754 double precision; no -ffast-math; no floating-point contraction",
+  "name": "NAVIER",
+  "version": "0.3.0-rc1"
+ },
+ "study_hash": "15ab6d0fb9ed4261dccd76d3d8a6b1ca9b18bb03e571de8b60ac47de660a5fb3",
+ "outcome": "ranking_consistent_on_tested_meshes",
+ "statement": "Lower predicted load-region displacement under the modeled conditions on every tested mesh: design B against design A, a difference of 60.5% to 65.4% over 3 meshes (4 to 1 mm); at 1 mm 0.17191 mm against 0.49713 mm. No discretisation-error estimate is available for design B (the voxel representation of the geometry changes with the mesh, so the meshes discretise different shapes (volume errors -3.57%, -1.79%, -0.893%)), so the size of the difference is not estimated beyond the tested meshes. The difference at the finest mesh (0.33 mm) is larger than the sum of the designs' last changes between meshes (0.01 mm). Convergence criterion (2% change between the two finest meshes, relative to the finer) not met by design B (-3.52%), so the size of the difference is less certain than the ranking.",
+ "planning_material": {
+  "youngs_modulus_pa": 3500000000.0,
+  "poisson_ratio": 0.35,
+  "density_kg_m3": 1240.0
+ },
+ "load_at_prediction_kg": 3.0,
+ "force_at_prediction_n": 29.41995,
+ "preload_kg": 0.2,
+ "designs": {
+  "A": {
+   "element_size_mm": 1,
+   "displacement_at_3kg_mm": 0.4971291517175438,
+   "compliance_mm_per_n": 0.016897688531678123,
+   "mounting_area_mm2": 3360.0000000000296,
+   "last_relative_change": 0.008554938406350835,
+   "convergence_criterion_met": true,
+   "estimate_available": true,
+   "discretisation_error_estimate_mm": 0.012088715782260454,
+   "nodal_p99_von_mises_mpa_at_3kg": 3.728415110658456,
+   "peak_at_sharp_corner_or_support": true,
+   "net_displacement_at_steps_mm": {
+    "1.0": 0.13256777379134502,
+    "2.0": 0.2982774910305263,
+    "3.0": 0.46398720826970746
+   }
+  },
+  "B": {
+   "element_size_mm": 1,
+   "displacement_at_3kg_mm": 0.17191010388855146,
+   "compliance_mm_per_n": 0.005843317336995864,
+   "mounting_area_mm2": 3360.0000000000296,
+   "last_relative_change": -0.03521054072769505,
+   "convergence_criterion_met": false,
+   "estimate_available": false,
+   "discretisation_error_estimate_mm": null,
+   "nodal_p99_von_mises_mpa_at_3kg": 2.2399619336254952,
+   "peak_at_sharp_corner_or_support": true,
+   "net_displacement_at_steps_mm": {
+    "1.0": 0.045842694370280386,
+    "2.0": 0.10314606233313088,
+    "3.0": 0.16044943029598135
+   }
+  }
+ },
+ "ratio_B_over_A": 0.345805719287664,
+ "prediction_allowance": {
+  "relative_standard": 0.03623491616484201,
+  "expanded_k2_relative": 0.07246983232968401,
+  "basis": "last relative changes between the two finest meshes of A and B combined in quadrature: an allowance, not an estimate (PROTOCOL.md 7.5)"
+ },
+ "non_destructive_planning_check": {
+  "nodal_p99_von_mises_mpa_at_3kg": 3.728415110658456,
+  "limit_mpa": 5.0,
+  "tensile_strength_datasheet_mpa": 50.0,
+  "proceed": true,
+  "note": "planning indicator only (PROTOCOL.md 6); stresses do not depend on E for these supports and loads; peaks at the sharp corner are singular and not used"
+ }
+}

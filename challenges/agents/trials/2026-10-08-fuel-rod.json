@@ -1,0 +1,54 @@
+{
+ "format": "openphysicsai-application-trial",
+ "format_version": 1,
+ "trial": "fuel-rod",
+ "date": "2026-10-08",
+ "goal": "G24 step 4",
+ "model": {
+  "name": "claude-opus-5-5",
+  "note": "a general-purpose subagent of the orchestrating session, which runs claude-opus-5-5; it inherits that model unless a default subagent model is set, which was not checked"
+ },
+ "agent": {
+  "tool": "Claude Code desktop app, a general-purpose subagent started by the orchestrating session with the prompt below and nothing else",
+  "version": ""
+ },
+ "platform": "goal/physics-kernel at aec2103 (the kernel with the fields of G24 step 2b), its programs built beforehand",
+ "prompt": "You are trying the OpenPhysicsAI physics platform for the first time, as an engineer who needs a simulation that nobody has programmed for you. Work only from the platform's own documentation.\n\nThe platform is the git worktree <platform checkout>. Start at its AGENTS.md. Its programs are already built (build/labrun, build/labfilm and the others): do not run make, and do not create, change or delete any file in that worktree or anywhere else except your working folder.\n\nYour working folder: <working folder> (create it). Put every file you make there (scenarios, results, notes). Do not write anywhere else, and do not delete anything outside it. Do not commit anything to git.\n\nThe problem. A stack of nuclear fuel pellets is modelled as a solid cylinder of radius 5 mm and length 20 mm. Its material (take these values as given): thermal conductivity 3 W/(m K), density 10970 kg/m^3, specific heat 300 J/(kg K). Everything starts at 600 K. At t = 0 a uniform heat generation of 3e8 W/m^3 switches on and stays on. The cylindrical surface is held at 600 K at all times (an idealised coolant); the two flat ends are insulated.\n\nQuestion: how many seconds after the generation switches on does the temperature on the axis, at mid-length, first reach 1000 K? Give the answer to three significant figures.\n\nRules: get the answer from a simulation you set up on the platform, and show that it is converged (the answer barely changes when you refine the mesh and the time step). Do not derive the answer from a formula or a series solution, and do not search the web for it. Any single run must take under 10 minutes on this laptop (it is shared with other work; start with small meshes).\n\nIn your final message report: (1) your answer in seconds; (2) the runs you made, each with its mesh, element order, time step and the answer it gave (your convergence evidence); (3) the path of your final scenario file; (4) roughly how long the whole task took you, and which parts of the documentation helped or got in your way (be specific: which file, what was missing or confusing). Keep the report under 400 words.",
+ "prompt_paths": "the agent was given absolute paths; the home folder is written ~ here, as the quality gate refuses absolute home paths in tracked files",
+ "reference": {
+  "kind": "exact",
+  "value_s": 5.32636,
+  "how": "the series solution of a solid cylinder with uniform generation, its surface held and its ends insulated (the problem is radial): T(0, t) = Ts + q R^2 / (4 k) (1 - sum 8 exp(-lambda_n^2 alpha t / R^2) / (lambda_n^3 J1(lambda_n))), twelve terms, Bessel functions by their integral form; computed by the orchestrating session before the trial started and not shown to the agent"
+ },
+ "answer": {
+  "value_s": 5.326361,
+  "evidence": "BDF2 on a box mapped onto the cylinder by the square-to-disc map, a probe on the axis at mid-length: 8x8x2 cells quadratic 5.32688 s, 16x16x2 5.32660, 32x32x2 5.32658; cubic 8x8x2 5.32658, 16x16x2 5.32658, 8x8x8 5.32658; time steps 0.1 to 0.003125 s on cubic 8x8x2: 5.32725, 5.32641, 5.32637, 5.326362, 5.326360 (second order); quartic 5.326361; final cubic 16x16x2 at 0.00625 s 5.326361. Independent: a 360-facet STL cylinder on quadratic tetrahedra at 1 mm, 5.32676 s (+0.007 %, the faceted volume)",
+  "files": "kept outside the repository in the trial's working folder; its final scenario became examples/lab/kernel_fuel_rod.json"
+ },
+ "error": {
+  "absolute_s": 1e-06,
+  "note": "the answer agrees with the reference to the five decimals the reference was computed to"
+ },
+ "wall_s": 917,
+ "tokens": 164058,
+ "tool_uses": 29,
+ "cost_usd": null,
+ "human_edits_after_agent": "none to its answer; its final scenario was lightened (quadratic elements, 0.05 s steps, the new crossings output) to become the shipped example",
+ "documentation_findings": [
+  "docs/map/PHYSICS.md listed time under the kernel's 'does not model' while its description said 'in time or steady', and its transient conduction row pointed to the engine's thermal solver, which has no lab scenario: it nearly sent the agent the wrong way",
+  "docs/lab/kernel.md did not say that heat in time is written as a field",
+  "no recipe for a solid cylinder: map_m showed only a ring and MFEM's sample meshes have none; the agent derived the square-to-disc map itself",
+  "undocumented: how time.outputs are spaced and that t = 0 is included (read from kernel.cpp), how a cylinder selection takes face centres on curved meshes",
+  "no output for the first time a probe reaches a value: the agent interpolated a series written at every step",
+  "the record of a field problem had no boundaries, so the heat balance could not be checked",
+  "assembly on 19,568 quadratic tetrahedra took 180 s; the documentation mentioned slow assembly only for curved high-order meshes"
+ ],
+ "changed_because_of_it": [
+  "docs/map/PHYSICS.md: the kernel row no longer lists time as missing; the transient conduction row points to fields",
+  "docs/lab/kernel.md: heat in time as a field; the solid cylinder's map; how outputs are spaced; how cylinder selections take face centres; where assembly is slow",
+  "outputs.crossings: the first time a probe's field crosses a value, watched at every step (kerneltest K15, written before its run: 8.7926 s against erfc's 8.7924 s)",
+  "boundaries.NAME.flow_in in a field problem's record, from the residuals where a field is held (kerneltest K16: 67.5 W to 5e-13)",
+  "loads kept when nothing in them varies: the agent's tetrahedral run went from 212 s to 13 s",
+  "examples/lab/kernel_fuel_rod.json, from the agent's scenario"
+ ]
+}

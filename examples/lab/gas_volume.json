@@ -1,0 +1,27 @@
+{
+  "domain": "gas",
+  "model": "euler3d",
+  "title": "Three-dimensional pressure pulse in an ideal gas",
+  "boundary": "periodic",
+  "grid": {
+    "cells_per_axis": 40,
+    "cell_m": 0.025
+  },
+  "initial": {
+    "density_kg_m3": 1,
+    "pressure_pa": 100,
+    "gamma": 1.4,
+    "pulse_pressure_pa": 1,
+    "pulse_width_m": 0.07,
+    "center_m": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "source": "Ideal-gas demonstration parameters; Gaussian isentropic pressure perturbation, not a measured gas"
+  },
+  "run": {
+    "end_time_s": 0.025,
+    "frames": 40
+  }
+}

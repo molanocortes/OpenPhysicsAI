@@ -1,0 +1,17 @@
+{
+ "id": "corona-2027",
+ "number": 10,
+ "tier": "semi-holy-grail",
+ "stone": "magnetic fields of a star",
+ "stone_short": "solar magnetism",
+ "difficulty": 5,
+ "title": "The Sun's corona at the eclipse of 2027",
+ "subtitle": "2 August 2027: predict the shape of the corona before the Moon reveals it",
+ "short": "Corona 2027",
+ "status": "preparing",
+ "hook": "On 2 August 2027 the Moon will cover the Sun along a path from Spain to Egypt, and for up to six minutes the corona will shine around it. Predict its shape before the day.",
+ "deadline": "00:00 UTC, 2 August 2027",
+ "event": "2 August 2027",
+ "event_words": "the Moon reveals it on the day",
+ "note": "In preparation: the cases, the outputs and their units are written here when the flag opens, and the measured values are sealed at the same moment (tools/flags.py seal)."
+}

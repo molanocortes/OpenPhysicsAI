@@ -1,0 +1,7 @@
+== G17 step 8 (c): a hole's peak in the printed answer on voxels
+  Heywood: Kt 2.4219 on the net section, peak 32.2917 MPa, R = Xt / peak = 1.54839
+  h 0.5     18884 elements  R 1.4018 (-9.5 % from Heywood; Gauss-point minimum 1.296, peak at the surface 1.402, flag none), at (0.00, 5.12, 0.29) mm in the part's frame; at a voxel staircase: not reported, the answer names TET10: no  [9.2 s]
+           solved on TET10 at 0.75 mm, 71240 elements (mesh_choice, GOALS.md G17 step 9)
+  FAIL h 0.5: the stated ratio within 5 % of Heywood's (-9.5 %)
+  ok   h 0.5: the stated point 0.12 mm from the hole's wall at the net section (criterion 1 mm)
+PRINT HOLE: 1 passed, 1 failed

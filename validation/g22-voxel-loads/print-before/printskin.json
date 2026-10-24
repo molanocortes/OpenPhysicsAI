@@ -1,0 +1,301 @@
+{
+ "check": "GOALS.md G22 step 4: the print model's skin",
+ "engine": "6cf5b8f",
+ "closed_forms_w": {
+  "convection_w": 0.14400000000000002,
+  "radiation_w": 0.08086516963788774
+ },
+ "area_mm2": 96.0,
+ "criterion": "at 0.25 mm and each of 0, 30 and 45 degrees, the uniform-surface convection and radiation within 2 % of h A dT and eps sigma A (T_bed^4 - T_air^4), the whole wall printed; at 0 degrees the heat into the air bitwise the same before and after the change (--compare)",
+ "runs": [
+  {
+   "name": "wall_0deg_1mm",
+   "angle_deg": 0.0,
+   "element_mm": 1.0,
+   "elements": 64,
+   "nodes": 135,
+   "convection": {
+    "air_heat_j": 10.078521448805349,
+    "total_time_s": 70.00000000000003,
+    "printed_volume_mm3": 64.00000000000004,
+    "elements_never_deposited": 0,
+    "elements_deposited_late": 0,
+    "worst_heat_balance_relative": 7.574021809569443e-11
+   },
+   "with_radiation": {
+    "air_heat_j": 15.736344446422917,
+    "total_time_s": 70.00000000000003,
+    "printed_volume_mm3": 64.00000000000004,
+    "elements_never_deposited": 0,
+    "elements_deposited_late": 0,
+    "worst_heat_balance_relative": 4.555587926047713e-11
+   },
+   "seconds": 0.9,
+   "convection_w": 0.14397887784007635,
+   "radiation_w": 0.08082604282310808,
+   "convection_error_rel": -0.0001466816661366277,
+   "radiation_error_rel": -0.00048385250355464926,
+   "volume_error_rel": 6.661338147750939e-16,
+   "whole_wall_printed": true,
+   "pass": true,
+   "judged": false
+  },
+  {
+   "name": "wall_30deg_1mm",
+   "angle_deg": 30.0,
+   "element_mm": 1.0,
+   "elements": 64,
+   "nodes": 155,
+   "convection": {
+    "air_heat_j": 13.437511431916743,
+    "total_time_s": 70.00000000000003,
+    "printed_volume_mm3": 64.00000000000004,
+    "elements_never_deposited": 0,
+    "elements_deposited_late": 0,
+    "worst_heat_balance_relative": 7.349414032198988e-11
+   },
+   "with_radiation": {
+    "air_heat_j": 20.980317791038026,
+    "total_time_s": 70.00000000000003,
+    "printed_volume_mm3": 64.00000000000004,
+    "elements_never_deposited": 0,
+    "elements_deposited_late": 0,
+    "worst_heat_balance_relative": 4.1473605192196236e-11
+   },
+   "seconds": 0.5,
+   "convection_w": 0.19196444902738197,
+   "radiation_w": 0.10775437655887542,
+   "convection_error_rel": 0.33308645157904126,
+   "radiation_error_rel": 0.33251901951602747,
+   "volume_error_rel": 6.661338147750939e-16,
+   "whole_wall_printed": true,
+   "pass": false,
+   "judged": false
+  },
+  {
+   "name": "wall_45deg_1mm",
+   "angle_deg": 45.0,
+   "element_mm": 1.0,
+   "elements": 64,
+   "nodes": 145,
+   "convection": {
+    "air_heat_j": 11.758049961919637,
+    "total_time_s": 70.00000000000003,
+    "printed_volume_mm3": 64.00000000000004,
+    "elements_never_deposited": 0,
+    "elements_deposited_late": 0,
+    "worst_heat_balance_relative": 8.948197000987922e-11
+   },
+   "with_radiation": {
+    "air_heat_j": 18.35842669339871,
+    "total_time_s": 70.00000000000003,
+    "printed_volume_mm3": 64.00000000000004,
+    "elements_never_deposited": 0,
+    "elements_deposited_late": 0,
+    "worst_heat_balance_relative": 5.270601812212791e-11
+   },
+   "seconds": 0.5,
+   "convection_w": 0.1679721423131376,
+   "radiation_w": 0.0942910961639867,
+   "convection_error_rel": 0.16647321050789987,
+   "radiation_error_rel": 0.16602854586492466,
+   "volume_error_rel": 6.661338147750939e-16,
+   "whole_wall_printed": true,
+   "pass": false,
+   "judged": false
+  },
+  {
+   "name": "wall_0deg_0p5mm",
+   "angle_deg": 0.0,
+   "element_mm": 0.5,
+   "elements": 512,
+   "nodes": 765,
+   "convection": {
+    "air_heat_j": 10.078504274200197,
+    "total_time_s": 70.00000000000003,
+    "printed_volume_mm3": 64.00000000000043,
+    "elements_never_deposited": 0,
+    "elements_deposited_late": 0,
+    "worst_heat_balance_relative": 2.1776949664391586e-10
+   },
+   "with_radiation": {
+    "air_heat_j": 15.736295462045574,
+    "total_time_s": 70.00000000000003,
+    "printed_volume_mm3": 64.00000000000043,
+    "elements_never_deposited": 0,
+    "elements_deposited_late": 0,
+    "worst_heat_balance_relative": 1.1112827395575542e-10
+   },
+   "seconds": 1.0,
+   "convection_w": 0.14397863248857418,
+   "radiation_w": 0.08082558839779105,
+   "convection_error_rel": -0.00014838549601281503,
+   "radiation_error_rel": -0.0004894720467901736,
+   "volume_error_rel": 6.661338147750939e-15,
+   "whole_wall_printed": true,
+   "pass": true,
+   "judged": false
+  },
+  {
+   "name": "wall_30deg_0p5mm",
+   "angle_deg": 30.0,
+   "element_mm": 0.5,
+   "elements": 512,
+   "nodes": 819,
+   "convection": {
+    "air_heat_j": 12.597750724189044,
+    "total_time_s": 70.00000000000003,
+    "printed_volume_mm3": 64.00000000000043,
+    "elements_never_deposited": 0,
+    "elements_deposited_late": 0,
+    "worst_heat_balance_relative": 1.8339857779195994e-10
+   },
+   "with_radiation": {
+    "air_heat_j": 19.669286756714516,
+    "total_time_s": 70.00000000000003,
+    "printed_volume_mm3": 64.00000000000043,
+    "elements_never_deposited": 0,
+    "elements_deposited_late": 0,
+    "worst_heat_balance_relative": 1.1359528921374942e-10
+   },
+   "seconds": 1.0,
+   "convection_w": 0.17996786748841484,
+   "radiation_w": 0.10102194332179242,
+   "convection_error_rel": 0.24977685755843626,
+   "radiation_error_rel": 0.24926397575329662,
+   "volume_error_rel": 6.661338147750939e-15,
+   "whole_wall_printed": true,
+   "pass": false,
+   "judged": false
+  },
+  {
+   "name": "wall_45deg_0p5mm",
+   "angle_deg": 45.0,
+   "element_mm": 0.5,
+   "elements": 464,
+   "nodes": 783,
+   "convection": {
+    "air_heat_j": 13.279804375639207,
+    "total_time_s": 70.00000000000003,
+    "printed_volume_mm3": 58.00000000000053,
+    "elements_never_deposited": 0,
+    "elements_deposited_late": 0,
+    "worst_heat_balance_relative": 1.6712109138670743e-10
+   },
+   "with_radiation": {
+    "air_heat_j": 20.733781101255012,
+    "total_time_s": 70.00000000000003,
+    "printed_volume_mm3": 58.00000000000053,
+    "elements_never_deposited": 0,
+    "elements_deposited_late": 0,
+    "worst_heat_balance_relative": 1.0380731707653318e-10
+   },
+   "seconds": 1.0,
+   "convection_w": 0.18971149108056,
+   "radiation_w": 0.10648538179451145,
+   "convection_error_rel": 0.31744091028166666,
+   "radiation_error_rel": 0.3168262958125283,
+   "volume_error_rel": -0.09374999999999167,
+   "whole_wall_printed": true,
+   "pass": false,
+   "judged": false
+  },
+  {
+   "name": "wall_0deg_0p25mm",
+   "angle_deg": 0.0,
+   "element_mm": 0.25,
+   "elements": 4096,
+   "nodes": 5049,
+   "convection": {
+    "air_heat_j": 10.078499749310023,
+    "total_time_s": 70.00000000000003,
+    "printed_volume_mm3": 64.00000000000166,
+    "elements_never_deposited": 0,
+    "elements_deposited_late": 0,
+    "worst_heat_balance_relative": 1.7938841710053543e-09
+   },
+   "with_radiation": {
+    "air_heat_j": 15.736282556275361,
+    "total_time_s": 70.00000000000003,
+    "printed_volume_mm3": 64.00000000000166,
+    "elements_never_deposited": 0,
+    "elements_deposited_late": 0,
+    "worst_heat_balance_relative": 1.128498945518315e-09
+   },
+   "seconds": 20.6,
+   "convection_w": 0.143978567847286,
+   "radiation_w": 0.08082546867093338,
+   "convection_error_rel": -0.00014883439384738573,
+   "radiation_error_rel": -0.0004909526206665626,
+   "volume_error_rel": 2.5979218776228663e-14,
+   "whole_wall_printed": true,
+   "pass": true,
+   "judged": true
+  },
+  {
+   "name": "wall_30deg_0p25mm",
+   "angle_deg": 30.0,
+   "element_mm": 0.25,
+   "elements": 4096,
+   "nodes": 5287,
+   "convection": {
+    "air_heat_j": 13.017591404318956,
+    "total_time_s": 70.00000000000003,
+    "printed_volume_mm3": 64.00000000000166,
+    "elements_never_deposited": 0,
+    "elements_deposited_late": 0,
+    "worst_heat_balance_relative": 8.787946615256025e-10
+   },
+   "with_radiation": {
+    "air_heat_j": 20.32468912991483,
+    "total_time_s": 70.00000000000003,
+    "printed_volume_mm3": 64.00000000000166,
+    "elements_never_deposited": 0,
+    "elements_deposited_late": 0,
+    "worst_heat_balance_relative": 5.806481722381205e-10
+   },
+   "seconds": 21.9,
+   "convection_w": 0.18596559149027073,
+   "radiation_w": 0.1043871103656553,
+   "convection_error_rel": 0.29142771868243544,
+   "radiation_error_rel": 0.2908785183175677,
+   "volume_error_rel": 2.5979218776228663e-14,
+   "whole_wall_printed": true,
+   "pass": false,
+   "judged": true
+  },
+  {
+   "name": "wall_45deg_0p25mm",
+   "angle_deg": 45.0,
+   "element_mm": 0.25,
+   "elements": 3968,
+   "nodes": 5185,
+   "convection": {
+    "air_heat_j": 13.384892056868994,
+    "total_time_s": 70.00000000000003,
+    "printed_volume_mm3": 62.00000000000235,
+    "elements_never_deposited": 0,
+    "elements_deposited_late": 0,
+    "worst_heat_balance_relative": 9.338614324624363e-10
+   },
+   "with_radiation": {
+    "air_heat_j": 20.897995285474448,
+    "total_time_s": 70.00000000000003,
+    "printed_volume_mm3": 62.00000000000235,
+    "elements_never_deposited": 0,
+    "elements_deposited_late": 0,
+    "worst_heat_balance_relative": 5.851121906304405e-10
+   },
+   "seconds": 28.6,
+   "convection_w": 0.19121274366955698,
+   "radiation_w": 0.10733004612293501,
+   "convection_error_rel": 0.3278662754830344,
+   "radiation_error_rel": 0.32727163751163,
+   "volume_error_rel": -0.03124999999996325,
+   "whole_wall_printed": true,
+   "pass": false,
+   "judged": true
+  }
+ ],
+ "pass": false
+}

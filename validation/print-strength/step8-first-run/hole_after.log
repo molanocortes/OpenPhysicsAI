@@ -1,0 +1,9 @@
+== G17 step 8 (c): a hole's peak in the printed answer on voxels
+  Heywood: Kt 2.4219 on the net section, peak 32.2917 MPa, R = Xt / peak = 1.54839
+  h 0.5     18884 elements  R 1.8147 (+17.2 % from Heywood; Gauss-point minimum 1.374, peak at the surface 1.815, flag none), 220 nodes read by the fit, at (0.00, 5.00, 2.00) mm in the part's frame  [15.0 s]
+  FAIL h 0.5: the stated ratio within 5 % of Heywood's (+17.2 %)
+  ok   h 0.5: the stated point 0.00 mm from the hole's wall at the net section (criterion 1 mm)
+  h 0.25   151072 elements  R 1.6131 (+4.2 % from Heywood; Gauss-point minimum 1.269, peak at the surface 1.613, flag none), 756 nodes read by the fit, at (0.00, 5.00, 0.00) mm in the part's frame  [32.8 s]
+  ok   h 0.25: the stated ratio within 5 % of Heywood's (+4.2 %)
+  ok   h 0.25: the stated point 0.00 mm from the hole's wall at the net section (criterion 1 mm)
+PRINT HOLE: 3 passed, 1 failed

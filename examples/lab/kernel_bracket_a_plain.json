@@ -1,0 +1,73 @@
+{
+ "domain": "kernel",
+ "title": "Wall bracket A, the plain L with a sharp inner corner, 3 kg on its pad, composed in the kernel from its STL file (its check K9)",
+ "provenance": {
+  "purpose": "the engineering core's flagship comparison (examples/bracket_comparison) rebuilt as a scenario: the part read from its STL file and meshed by the repository's own tetrahedral mesher, the back face held, 3 kg x 9.80665 m/s^2 down on the 16 x 16 mm pad at the arm's tip",
+  "material": "6061-T6, nominal handbook values (E 68.9 GPa, nu 0.33) as examples/bracket_comparison/study.json states them; not measured for a batch",
+  "check": "tools/kerneltest.c K9: the pad's mean displacement down, A within 0.45 % of the core's Richardson-extrapolated 0.025603 mm, A and B within 0.6 % from quadratic to cubic elements on 4 mm tetrahedra"
+ },
+ "mesh": {
+  "stl": "examples/bracket_comparison/geometry/bracket_a_plain.stl",
+  "scale": 0.001,
+  "element_size_m": 0.004
+ },
+ "order": 3,
+ "physics": [
+  "elasticity"
+ ],
+ "materials": {
+  "al6061": {
+   "youngs_modulus_pa": 68900000000.0,
+   "poisson_ratio": 0.33,
+   "density_kg_m3": 2700,
+   "source": "nominal handbook values for 6061-T6, as examples/bracket_comparison/study.json states them"
+  }
+ },
+ "boundaries": [
+  {
+   "name": "wall",
+   "where": {
+    "plane": [
+     "x",
+     0
+    ]
+   },
+   "fixed": true
+  },
+  {
+   "name": "pad",
+   "where": {
+    "box": [
+     [
+      0.064,
+      0.012,
+      0.0599
+     ],
+     [
+      0.08,
+      0.028,
+      0.0601
+     ]
+    ]
+   },
+   "force_n": [
+    0,
+    0,
+    -29.41995
+   ]
+  }
+ ],
+ "picture": {
+  "deformation_scale": 300,
+  "film": "build/labfilm OUT.lab --out DIR --field von_mises --light"
+ },
+ "controls": [
+  {
+   "label": "the load on the pad, N (down)",
+   "path": "boundaries.1.force_n.2",
+   "min": -300,
+   "max": -1,
+   "log": false
+  }
+ ]
+}

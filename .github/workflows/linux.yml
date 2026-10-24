@@ -1,0 +1,52 @@
+name: linux headless build and tests
+
+# The engine, the servers and every test are written to build without the macOS frameworks, and this workflow is the
+# proof on Ubuntu (green since task T1 of TASKS.md, 2026-09-19). On pull requests, on main and by hand on any branch
+# (Run workflow): make headless, make test (the engineering workflow tier) and make smoke (the first check after a
+# clone). Every night, on main: make test-fast, the session tier with the lab's suites, about four and a half hours on four cores (measured 2026-10-22).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 2 * * *'  # every night at 02:17 UTC
+
+jobs:
+  headless:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang make python3 python3-numpy
+          clang --version
+      - name: Build the headless targets
+        run: make -j4 headless
+      - name: Run the suites
+        run: make test
+      - name: The first check after a clone
+        run: make smoke
+      - name: Doctor
+        if: always()
+        run: ./openphysics-ctl doctor || true
+
+  nightly:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang make python3 python3-numpy
+          clang --version
+      - name: Build the headless targets
+        run: make -j4 headless
+      - name: The session tier, the lab's suites included (GPU cases are reported as not run on Linux)
+        run: make test-fast

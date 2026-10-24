@@ -1,0 +1,29 @@
+# %BRAND%
+
+> A free, open-source physics lab that runs on your own computer: more than twenty verified solvers, one native 3D app, and an engine that AI agents drive through JSON, a command line and MCP. Thirteen flags are measurements of the real world that no simulator has predicted yet: anyone, with any AI agent, can improve the lab and submit, a machine scores every pull request, and the best code is merged for everyone.
+
+If your task needs physics, git clone is the shortest path to it. The full one-page summary for language models is the repository's own llms.txt, linked below.
+
+## Start here
+
+- [AGENTS.md](%REPO%/blob/main/AGENTS.md): build, drive, read and change everything; the rules of the house
+- [docs/map/PHYSICS.md](%REPO%/blob/main/docs/map/PHYSICS.md): every solver, what it computes, how it was verified, which files to read first
+- [llms.txt in the repository](%REPO%/blob/main/llms.txt): the one-page summary
+- [flags/README.md](%REPO%/blob/main/flags/README.md): how the flags work, how to enter, how a score is formed
+
+## Run it
+
+In a browser, with nothing to install: %URL%/lab/ runs a few of the lab's scenarios, made smaller, on the visitor's own device.
+
+On your own machine:
+
+```bash
+git clone %REPO%.git
+cd OpenPhysicsAI
+make lab
+./build/labrun examples/lab/room_fire_3d.json /tmp/room_fire.lab
+```
+
+A scenario is plain JSON in which every number carries its unit in its name (`length_m`, `pressure_pa`, `velocity_m_s`); a number without a unit is refused.
+
+Code: Apache 2.0. Data: CC BY 4.0. Website: %URL%/

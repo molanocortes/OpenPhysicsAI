@@ -1,0 +1,37 @@
+== p_025: case P, voxels 0.25 mm, 29402 elements, 6.1 s
+   radial displacement at r = 81 mm (mm): closed form 0.0814604; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0823142 0.0825248 0.0825128 0.0821522 0.0819573 0.0819496 0.0821403 0.0820956 0.0818582
+     mean +0.87 %, spread 0.82 % (limit 1 %), worst angle 1.31 %
+   radial displacement at r = 83.5 mm (mm): closed form 0.080527; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0813968 0.0815806 0.0815642 0.0811965 0.0809955 0.0809939 0.0811863 0.0811513 0.0809407
+     mean +0.86 %, spread 0.79 % (limit 1 %), worst angle 1.31 %
+   radial displacement at r = 86 mm (mm): closed form 0.0796923; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0805417 0.080738 0.0807074 0.0803651 0.0801257 0.0801625 0.0803289 0.0803088 0.0800857
+     mean +0.86 %, spread 0.82 % (limit 1 %), worst angle 1.31 %
+== t_025: case T, voxels 0.25 mm, 29402 elements, films 1000/4000 W/(m^2 K), 13.6 s
+   rise above the outside fluid at r = 81 mm (K): closed form 126.638; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 126.569 126.646 126.691 126.693 126.69 126.696 126.685 126.646 126.569
+     mean +0.01 %, spread 0.10 % (limit 1 %), worst angle 0.05 %
+   rise above the outside fluid at r = 86 mm (K): closed form 107.066; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 107.004 107.078 107.103 107.108 107.123 107.111 107.103 107.077 107.004
+     mean +0.01 %, spread 0.11 % (limit 1 %), worst angle 0.06 %
+   drop from r = 81 to 86 mm, the local heat flow (K): closed form 19.5726; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 19.5652 19.5684 19.5881 19.585 19.5678 19.5853 19.5816 19.5683 19.5652
+     mean +0.01 %, spread 0.12 % (limit 2 %), worst angle 0.08 %
+== p_050: case P, voxels 0.5 mm, 7338 elements, 0.8 s
+   radial displacement at r = 81 mm (mm): closed form 0.0814604; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0845195 0.0846034 0.0840232 0.0839188 0.0834279 0.0828648 0.0819725 0.0816688 0.0808079
+     mean +2.00 %, spread 4.66 % (limit 1 %), worst angle 3.86 %   [outside the criterion]
+   radial displacement at r = 83.5 mm (mm): closed form 0.080527; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0834981 0.0837143 0.0830888 0.0829888 0.0824451 0.0819346 0.0810378 0.0807794 0.0798287
+     mean +2.01 %, spread 4.83 % (limit 1 %), worst angle 3.96 %   [outside the criterion]
+   radial displacement at r = 86 mm (mm): closed form 0.0796923; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 0.0827214 0.0828464 0.0822502 0.0821317 0.0815334 0.0810777 0.0801996 0.079912 0.0790637
+     mean +2.02 %, spread 4.75 % (limit 1 %), worst angle 3.96 %   [outside the criterion]
+== t_050: case T, voxels 0.5 mm, 7338 elements, films 1000/4000 W/(m^2 K), 3.1 s
+   rise above the outside fluid at r = 81 mm (K): closed form 126.638; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 126.634 126.694 126.73 126.755 126.747 126.756 126.734 126.709 126.73
+     mean +0.07 %, spread 0.10 % (limit 1 %), worst angle 0.09 %
+   rise above the outside fluid at r = 86 mm (K): closed form 107.066; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 106.896 107.11 107.145 107.185 107.181 107.186 107.149 107.123 106.884
+     mean +0.03 %, spread 0.28 % (limit 1 %), worst angle 0.17 %
+   drop from r = 81 to 86 mm, the local heat flow (K): closed form 19.5726; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 19.7374 19.5845 19.5847 19.5704 19.5657 19.5705 19.585 19.5856 19.8461
+     mean +0.27 %, spread 1.43 % (limit 2 %), worst angle 1.40 %
+== t_025_g19: case T, voxels 0.25 mm, 29402 elements, films 2400/50000 W/(m^2 K), 10.5 s
+   rise above the outside fluid at r = 81 mm (K): closed form 289.068; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 289.013 289.077 289.19 289.25 289.29 289.262 289.134 289.075 289.013
+     mean +0.03 %, spread 0.10 % (limit 1 %), worst angle 0.08 %
+   rise above the outside fluid at r = 86 mm (K): closed form 110.098; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 110.135 110.171 110.119 110.213 110.769 110.219 110.115 110.17 110.135
+     mean +0.12 %, spread 0.59 % (limit 1 %), worst angle 0.61 %
+   drop from r = 81 to 86 mm, the local heat flow (K): closed form 178.969; at 5, 15, 25, 35, 45, 55, 65, 75, 85 degrees: 178.877 178.906 179.071 179.037 178.521 179.043 179.018 178.906 178.877
+     mean -0.03 %, spread 0.31 % (limit 2 %), worst angle 0.25 %
+PASS (engine fcec65c-dirty)
+exit 0

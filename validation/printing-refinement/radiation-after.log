@@ -1,0 +1,10 @@
+== radiation face quadrature: independent polynomial integrals, tangent and nonlinear solve
+  R1/R2 uniform face: 0.416772519797 W outward against 0.416772519796 W, flux error 1.20e-15, nodal error 2.33e-16, area 0.0006 m2
+  R3/R4 tangent error 2.43e-10, manufactured free corner error 0.00e+00 K, energy balance 1.60e-15
+  R1/R2 affine face: 0.17909310565 W outward against 0.17909310565 W, flux error 1.08e-15, nodal error 2.27e-15, area 0.0006 m2
+  R3/R4 tangent error 3.47e-10, manufactured free corner error 5.68e-14 K, energy balance 9.30e-16
+  R1/R2 bilinear tilted/sheared face: 0.461920000957 W outward against 0.461920000957 W, flux error 1.20e-16, nodal error 7.21e-16, area 0.000698587861332 m2
+  R3/R4 tangent error 2.48e-10, manufactured free corner error 1.14e-13 K, energy balance 3.61e-16
+  R5 theta=.5: 0.719781097868 J radiated against 0.719781097868 J, flux error 0.00e+00, full energy balance 2.36e-16
+
+RADIATION VERIFICATION: 10 passed, 0 failed

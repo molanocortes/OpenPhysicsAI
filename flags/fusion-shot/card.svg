@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="240" viewBox="0 0 1280 240" font-family="-apple-system, 'Segoe UI', Inter, Helvetica, Arial, sans-serif" role="img">
+<title>Flag 11: A star in a bottle</title>
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#130c02"/><stop offset="1" stop-color="#3d2b08"/></linearGradient>
+<linearGradient id="shine" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff" stop-opacity="0"/><stop offset="0.5" stop-color="#ffffff" stop-opacity="0.10"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+<clipPath id="card"><rect x="1" y="1" width="1278" height="238" rx="22"/></clipPath>
+<radialGradient id="core-flag" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#1a4470"/><stop offset="1" stop-color="#040a14"/></radialGradient>
+<radialGradient id="core-semi-holy-grail" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#444d5e"/><stop offset="1" stop-color="#05070c"/></radialGradient>
+<radialGradient id="core-holy-grail" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#6b4e12"/><stop offset="1" stop-color="#0b0702"/></radialGradient>
+<radialGradient id="core-trial" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#1c4d2e"/><stop offset="1" stop-color="#030a05"/></radialGradient>
+<filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
+</defs>
+<g clip-path="url(#card)"><rect width="1280" height="240" fill="url(#bg)"/>
+<circle cx="507.6" cy="77.8" r="1.2" fill="#dfe8ff" opacity="0.56"><animate attributeName="opacity" values="0.56;0.05;0.56" dur="4.3s" begin="2.7s" repeatCount="indefinite"/></circle>
+<circle cx="923.1" cy="217.3" r="1.2" fill="#dfe8ff" opacity="0.25"><animate attributeName="opacity" values="0.25;0.05;0.25" dur="4.3s" begin="1.2s" repeatCount="indefinite"/></circle>
+<circle cx="622.1" cy="56.9" r="1.2" fill="#dfe8ff" opacity="0.22"><animate attributeName="opacity" values="0.22;0.05;0.22" dur="5.0s" begin="2.4s" repeatCount="indefinite"/></circle>
+<circle cx="1231.0" cy="117.4" r="0.5" fill="#dfe8ff" opacity="0.32"><animate attributeName="opacity" values="0.32;0.05;0.32" dur="5.8s" begin="1.6s" repeatCount="indefinite"/></circle>
+<circle cx="880.8" cy="221.8" r="0.5" fill="#dfe8ff" opacity="0.18"><animate attributeName="opacity" values="0.18;0.05;0.18" dur="5.8s" begin="3.5s" repeatCount="indefinite"/></circle>
+<circle cx="644.7" cy="87.4" r="0.7" fill="#dfe8ff" opacity="0.65"><animate attributeName="opacity" values="0.65;0.05;0.65" dur="4.3s" begin="1.2s" repeatCount="indefinite"/></circle>
+<circle cx="1040.8" cy="216.3" r="0.5" fill="#dfe8ff" opacity="0.40"><animate attributeName="opacity" values="0.40;0.05;0.40" dur="4.2s" begin="1.5s" repeatCount="indefinite"/></circle>
+<circle cx="1208.8" cy="166.1" r="0.7" fill="#dfe8ff" opacity="0.46"><animate attributeName="opacity" values="0.46;0.05;0.46" dur="5.9s" begin="4.0s" repeatCount="indefinite"/></circle>
+<circle cx="955.0" cy="84.6" r="1.2" fill="#dfe8ff" opacity="0.18"><animate attributeName="opacity" values="0.18;0.05;0.18" dur="3.4s" begin="2.9s" repeatCount="indefinite"/></circle>
+<circle cx="250.8" cy="25.3" r="0.7" fill="#dfe8ff" opacity="0.65"><animate attributeName="opacity" values="0.65;0.05;0.65" dur="2.7s" begin="2.2s" repeatCount="indefinite"/></circle>
+<circle cx="483.9" cy="196.6" r="0.9" fill="#dfe8ff" opacity="0.47"/>
+<circle cx="557.2" cy="182.8" r="0.7" fill="#dfe8ff" opacity="0.29"/>
+<circle cx="638.4" cy="193.8" r="0.9" fill="#dfe8ff" opacity="0.17"/>
+<circle cx="522.0" cy="23.4" r="0.7" fill="#dfe8ff" opacity="0.64"/>
+<circle cx="44.6" cy="164.0" r="1.2" fill="#dfe8ff" opacity="0.45"/>
+<circle cx="911.6" cy="29.1" r="0.7" fill="#dfe8ff" opacity="0.50"/>
+<circle cx="12.4" cy="56.3" r="0.9" fill="#dfe8ff" opacity="0.22"/>
+<circle cx="853.4" cy="2.9" r="0.7" fill="#dfe8ff" opacity="0.51"/>
+<circle cx="384.2" cy="187.7" r="1.2" fill="#dfe8ff" opacity="0.51"/>
+<circle cx="583.4" cy="12.9" r="0.5" fill="#dfe8ff" opacity="0.33"/>
+<circle cx="736.8" cy="96.1" r="1.2" fill="#dfe8ff" opacity="0.25"/>
+<circle cx="664.0" cy="17.1" r="0.7" fill="#dfe8ff" opacity="0.34"/>
+<circle cx="892.8" cy="216.9" r="0.7" fill="#dfe8ff" opacity="0.64"/>
+<circle cx="1043.5" cy="76.0" r="1.2" fill="#dfe8ff" opacity="0.47"/>
+<circle cx="1279.7" cy="135.1" r="0.9" fill="#dfe8ff" opacity="0.69"/>
+<circle cx="847.5" cy="200.4" r="0.9" fill="#dfe8ff" opacity="0.62"/>
+<circle cx="387.0" cy="114.3" r="0.7" fill="#dfe8ff" opacity="0.32"/>
+<circle cx="803.6" cy="15.2" r="0.7" fill="#dfe8ff" opacity="0.54"/>
+<circle cx="858.6" cy="186.7" r="0.9" fill="#dfe8ff" opacity="0.62"/>
+<circle cx="775.4" cy="53.5" r="1.2" fill="#dfe8ff" opacity="0.48"/>
+<circle cx="1120.6" cy="153.4" r="0.5" fill="#dfe8ff" opacity="0.70"/>
+<circle cx="935.1" cy="14.3" r="0.5" fill="#dfe8ff" opacity="0.52"/>
+<circle cx="688.8" cy="141.4" r="0.5" fill="#dfe8ff" opacity="0.67"/>
+<circle cx="217.3" cy="29.1" r="0.7" fill="#dfe8ff" opacity="0.48"/>
+<circle cx="1188.3" cy="216.2" r="0.7" fill="#dfe8ff" opacity="0.19"/>
+<circle cx="686.7" cy="112.7" r="0.7" fill="#dfe8ff" opacity="0.21"/>
+<circle cx="385.2" cy="170.0" r="0.7" fill="#dfe8ff" opacity="0.41"/>
+<circle cx="227.0" cy="28.7" r="0.5" fill="#dfe8ff" opacity="0.52"/>
+<circle cx="1200.2" cy="74.3" r="1.2" fill="#dfe8ff" opacity="0.37"/>
+<circle cx="656.0" cy="187.2" r="0.9" fill="#dfe8ff" opacity="0.33"/>
+<circle cx="378.1" cy="47.1" r="0.7" fill="#dfe8ff" opacity="0.36"/>
+<circle cx="199.0" cy="145.9" r="1.2" fill="#dfe8ff" opacity="0.27"/>
+<circle cx="751.0" cy="229.6" r="0.5" fill="#dfe8ff" opacity="0.32"/>
+<circle cx="430.3" cy="184.8" r="1.2" fill="#dfe8ff" opacity="0.31"/>
+<circle cx="253.8" cy="74.9" r="0.5" fill="#dfe8ff" opacity="0.25"/>
+<circle cx="924.4" cy="26.7" r="0.5" fill="#dfe8ff" opacity="0.34"/>
+<circle cx="759.1" cy="183.8" r="0.9" fill="#dfe8ff" opacity="0.60"/>
+<circle cx="691.2" cy="155.5" r="1.2" fill="#dfe8ff" opacity="0.69"/>
+<circle cx="871.7" cy="152.6" r="0.9" fill="#dfe8ff" opacity="0.37"/>
+<circle cx="520.0" cy="9.3" r="1.2" fill="#dfe8ff" opacity="0.55"/>
+<circle cx="227.0" cy="78.7" r="0.5" fill="#dfe8ff" opacity="0.65"/>
+<circle cx="661.2" cy="157.4" r="0.7" fill="#dfe8ff" opacity="0.18"/>
+<circle cx="945.4" cy="17.1" r="0.7" fill="#dfe8ff" opacity="0.57"/>
+<circle cx="461.3" cy="6.5" r="0.9" fill="#dfe8ff" opacity="0.23"/>
+<circle cx="915.9" cy="188.6" r="0.7" fill="#dfe8ff" opacity="0.32"/>
+<circle cx="454.8" cy="19.5" r="1.2" fill="#dfe8ff" opacity="0.34"/>
+<circle cx="589.2" cy="104.3" r="1.2" fill="#dfe8ff" opacity="0.27"/>
+<circle cx="155.8" cy="91.4" r="0.5" fill="#dfe8ff" opacity="0.53"/>
+<circle cx="1041.7" cy="67.5" r="1.2" fill="#dfe8ff" opacity="0.61"/>
+<circle cx="790.8" cy="82.9" r="0.7" fill="#dfe8ff" opacity="0.20"/>
+<rect x="-420" y="0" width="360" height="240" fill="url(#shine)" transform="skewX(-18)"><animate attributeName="x" from="-420" to="1500" dur="7s" repeatCount="indefinite"/></rect>
+</g>
+<rect x="1" y="1" width="1278" height="238" rx="22" fill="none" stroke="#f2c14e" stroke-opacity="0.4" stroke-width="1.5"/>
+<circle cx="128" cy="120" r="88" fill="#f2c14e" filter="url(#blur)" opacity="0.28"/>
+<circle cx="128" cy="120" r="80" fill="url(#core-holy-grail)"/>
+<circle cx="128" cy="120" r="79.2" fill="none" stroke="#f2c14e" stroke-width="1.5" stroke-opacity="0.75"/>
+<g transform="translate(128.0 120.0) scale(1.250)">
+<ellipse cx="-34.4" cy="-3.5" rx="3.4" ry="15" fill="none" stroke="#f3f6fb" stroke-width="1.5" opacity="0.3"/>
+<ellipse cx="-21.6" cy="-9.6" rx="4.9" ry="15" fill="none" stroke="#f3f6fb" stroke-width="1.5" opacity="0.3"/>
+<ellipse cx="-0.5" cy="-12.0" rx="5.5" ry="15" fill="none" stroke="#f3f6fb" stroke-width="1.5" opacity="0.3"/>
+<ellipse cx="20.7" cy="-9.8" rx="5.0" ry="15" fill="none" stroke="#f3f6fb" stroke-width="1.5" opacity="0.3"/>
+<ellipse cx="34.1" cy="-3.9" rx="3.5" ry="15" fill="none" stroke="#f3f6fb" stroke-width="1.5" opacity="0.3"/>
+<ellipse cx="0" cy="0" rx="30" ry="10" fill="none" stroke="#ff6ad5" stroke-width="11" opacity="0.28"><animate attributeName="opacity" values="0.18;0.45;0.18" dur="2.2s" repeatCount="indefinite"/></ellipse>
+<ellipse cx="0" cy="0" rx="30" ry="10" fill="none" stroke="#ff6ad5" stroke-width="4.5"/>
+<ellipse cx="0" cy="0" rx="30" ry="10" fill="none" stroke="#fff3fb" stroke-width="1.8" stroke-dasharray="8 10"><animate attributeName="stroke-dashoffset" from="0" to="-36" dur="0.9s" repeatCount="indefinite"/></ellipse>
+<ellipse cx="34.4" cy="3.5" rx="3.4" ry="15" fill="none" stroke="#f3f6fb" stroke-width="1.8" opacity="0.85"/>
+<ellipse cx="21.6" cy="9.6" rx="4.9" ry="15" fill="none" stroke="#f3f6fb" stroke-width="1.8" opacity="0.85"/>
+<ellipse cx="0.5" cy="12.0" rx="5.5" ry="15" fill="none" stroke="#f3f6fb" stroke-width="1.8" opacity="0.85"/>
+<ellipse cx="-20.7" cy="9.8" rx="5.0" ry="15" fill="none" stroke="#f3f6fb" stroke-width="1.8" opacity="0.85"/>
+<ellipse cx="-34.1" cy="3.9" rx="3.5" ry="15" fill="none" stroke="#f3f6fb" stroke-width="1.8" opacity="0.85"/>
+</g>
+<rect x="262" y="30" width="144" height="28" rx="14" fill="#f2c14e" fill-opacity="0.12" stroke="#f2c14e" stroke-opacity="0.55"/>
+<text x="334" y="49" text-anchor="middle" fill="#f2c14e" font-size="12" font-weight="700" letter-spacing="2.2">HOLY GRAIL 11</text>
+<rect x="417" y="30" width="152" height="28" rx="14" fill="#b9c4d6" fill-opacity="0.12" stroke="#b9c4d6" stroke-opacity="0.55"/>
+<text x="494" y="49" text-anchor="middle" fill="#b9c4d6" font-size="12" font-weight="700" letter-spacing="2.2">STONE · ENERGY</text>
+<text x="262" y="112" fill="#f4f7fb" font-size="40.0" font-weight="700">A star in a bottle</text>
+<text x="262" y="146" fill="#a9b5c8" font-size="14.3">The record fusion shots of the JET tokamak, predicted from first principles</text>
+<rect x="262" y="176" width="145" height="30" rx="15" fill="#8fa3c0" fill-opacity="0.14" stroke="#8fa3c0" stroke-opacity="0.7"/>
+<text x="334" y="196" text-anchor="middle" fill="#8fa3c0" font-size="13" font-weight="700" letter-spacing="1.8">IN PREPARATION</text>
+<rect x="910" y="22" width="346" height="196" rx="16" fill="#000000" fill-opacity="0.26" stroke="#ffffff" stroke-opacity="0.06"/>
+<text x="934" y="62" fill="#7e8aa0" font-size="11.5" font-weight="700" letter-spacing="2.4">DIFFICULTY</text>
+<text x="1232" y="64" text-anchor="end" fill="#f2c14e" font-size="26" font-weight="700">∞</text>
+<text x="934" y="106" fill="#7e8aa0" font-size="11.5" font-weight="700" letter-spacing="2.4">ATTEMPTS</text>
+<text x="1232" y="108" text-anchor="end" fill="#e9eef6" font-size="19" font-weight="700">0</text>
+<text x="934" y="150" fill="#7e8aa0" font-size="11.5" font-weight="700" letter-spacing="2.4">CHALLENGERS</text>
+<text x="1232" y="152" text-anchor="end" fill="#e9eef6" font-size="19" font-weight="700">0</text>
+<text x="934" y="194" fill="#7e8aa0" font-size="11.5" font-weight="700" letter-spacing="2.4">RECORD</text>
+<text x="1232" y="196" text-anchor="end" fill="#e9eef6" font-size="19" font-weight="700">unclaimed</text>
+</svg>

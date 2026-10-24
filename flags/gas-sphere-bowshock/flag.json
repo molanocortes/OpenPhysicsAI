@@ -1,0 +1,80 @@
+{
+ "id": "gas-sphere-bowshock",
+ "category": "compressible flow",
+ "title": "The bow shock ahead of a sphere at low supersonic speed",
+ "question": "A sphere of diameter d sits in a uniform supersonic stream of air. A detached bow shock forms ahead of it. Report where the shock crosses the axis and the shape of the shock near the axis.",
+ "conditions": {
+  "gas": "air, perfect gas with gamma 1.4; the stream is a free jet exhausting at atmospheric static pressure",
+  "sphere": "smooth, rigidly held on a sting from behind, diameter 6.35 mm to 25.4 mm; within this range the measured quantities, divided by d, did not depend on d",
+  "reynolds_number": "of order 1e4 to 1e5 on d; the shock position ahead of the sonic line was found independent of it",
+  "measurement": "interferometry of the steady flow"
+ },
+ "outputs": [
+  {
+   "name": "standoff_center_over_d",
+   "unit": "1",
+   "meaning": "axial distance from the centre of the sphere to the shock on the axis, divided by d"
+  },
+  {
+   "name": "shape_x_over_d_at_y_0.4",
+   "unit": "1",
+   "meaning": "axial distance from the shock's nose to the shock at a radial distance y = 0.4 d, divided by d"
+  },
+  {
+   "name": "shape_x_over_d_at_y_0.8",
+   "unit": "1",
+   "meaning": "the same at y = 0.8 d"
+  }
+ ],
+ "cases": [
+  {
+   "case": "m117",
+   "inputs": {
+    "mach": 1.17
+   }
+  },
+  {
+   "case": "m137",
+   "inputs": {
+    "mach": 1.37
+   }
+  },
+  {
+   "case": "m162",
+   "inputs": {
+    "mach": 1.62
+   }
+  },
+  {
+   "case": "m181",
+   "inputs": {
+    "mach": 1.81
+   }
+  }
+ ],
+ "practice": [
+  {
+   "case": "m130",
+   "inputs": {
+    "mach": 1.3
+   },
+   "answers": {
+    "standoff_center_over_d": 0.98,
+    "shape_x_over_d_at_y_0.4": 0.031,
+    "shape_x_over_d_at_y_0.8": 0.122
+   },
+   "note": "measured in the same experiment; public so that an entrant can calibrate the measurement of a shock position, not the physics"
+  }
+ ],
+ "metric": "log_ratio",
+ "sealed": {
+  "sha256": "8aecf7a29bd654ef397ac750e9cc4671000db583ec40d8d4921e147d22dcfd24",
+  "sealed_on": "2026-09-25"
+ },
+ "tier": "trial",
+ "leads_to": "reentry-fire-ii",
+ "label": "T2",
+ "subtitle": "Leads to flag 02 · standoff and shape from Mach 1.17 to 1.81",
+ "status": "rebuilding",
+ "rebuild_note": "Scored with the lab's axisymmetric solver; being rebuilt natively in 3D."
+}

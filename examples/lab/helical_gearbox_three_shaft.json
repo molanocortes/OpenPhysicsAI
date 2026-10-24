@@ -1,0 +1,174 @@
+{
+ "domain": "mechanism",
+ "model": "gear_train",
+ "title": "A two-stage helical gearbox on three shafts, 7.7:1, its intermediate shaft's thrusts balanced",
+ "provenance": {
+  "purpose": "demonstration: a parallel-shaft helical reducer (a robot's or a machine's first stage); the second stage's helix, 7.9765 degrees, is the one that makes tan(beta) / r of the intermediate shaft's two gears equal, both of one hand, so their axial thrusts cancel; not a measured gearbox",
+  "material": "steel, E = 207 GPa, nu = 0.3, a nominal value"
+ },
+ "gears": {
+  "pinion 1": {
+   "teeth": 19,
+   "module_m": 0.00125,
+   "pressure_angle_deg": 20,
+   "helix_angle_deg": 18,
+   "flank_thinning_m": 1e-05,
+   "face_width_m": 0.01,
+   "bore_diameter_m": 0.01,
+   "material": {
+    "youngs_modulus_pa": 207000000000.0,
+    "poisson_ratio": 0.3,
+    "source": "nominal steel, E = 207 GPa (demonstration)"
+   },
+   "mesh": {
+    "across": 8,
+    "flank": 10,
+    "fillet": 5,
+    "rim": 5,
+    "face": 6
+   }
+  },
+  "wheel 2": {
+   "teeth": 53,
+   "module_m": 0.00125,
+   "pressure_angle_deg": 20,
+   "helix_angle_deg": -18,
+   "flank_thinning_m": 1e-05,
+   "face_width_m": 0.01,
+   "bore_diameter_m": 0.016,
+   "material": {
+    "youngs_modulus_pa": 207000000000.0,
+    "poisson_ratio": 0.3,
+    "source": "nominal steel, E = 207 GPa (demonstration)"
+   },
+   "mesh": {
+    "across": 8,
+    "flank": 10,
+    "fillet": 5,
+    "rim": 5,
+    "face": 6
+   }
+  },
+  "pinion 3": {
+   "teeth": 17,
+   "module_m": 0.00175,
+   "pressure_angle_deg": 20,
+   "helix_angle_deg": -7.976453,
+   "flank_thinning_m": 1e-05,
+   "face_width_m": 0.014,
+   "bore_diameter_m": 0.012,
+   "material": {
+    "youngs_modulus_pa": 207000000000.0,
+    "poisson_ratio": 0.3,
+    "source": "nominal steel, E = 207 GPa (demonstration)"
+   },
+   "mesh": {
+    "across": 8,
+    "flank": 10,
+    "fillet": 5,
+    "rim": 5,
+    "face": 6
+   }
+  },
+  "wheel 4": {
+   "teeth": 47,
+   "module_m": 0.00175,
+   "pressure_angle_deg": 20,
+   "helix_angle_deg": 7.976453,
+   "flank_thinning_m": 1e-05,
+   "face_width_m": 0.014,
+   "bore_diameter_m": 0.02,
+   "material": {
+    "youngs_modulus_pa": 207000000000.0,
+    "poisson_ratio": 0.3,
+    "source": "nominal steel, E = 207 GPa (demonstration)"
+   },
+   "mesh": {
+    "across": 8,
+    "flank": 10,
+    "fillet": 5,
+    "rim": 5,
+    "face": 6
+   }
+  }
+ },
+ "shafts": [
+  {
+   "name": "input",
+   "axis_m": [
+    0,
+    0
+   ],
+   "torque_nm": 5.0
+  },
+  {
+   "name": "intermediate",
+   "axis_m": [
+    0.0473158001,
+    0
+   ]
+  },
+  {
+   "name": "output",
+   "axis_m": [
+    0.0473158001,
+    0.0565470828
+   ],
+   "locked": true
+  }
+ ],
+ "parts": [
+  {
+   "name": "pinion 1",
+   "gear": "pinion 1",
+   "shaft": "input",
+   "z_m": 0
+  },
+  {
+   "name": "wheel 2",
+   "gear": "wheel 2",
+   "shaft": "intermediate",
+   "z_m": 0
+  },
+  {
+   "name": "pinion 3",
+   "gear": "pinion 3",
+   "shaft": "intermediate",
+   "z_m": 0.016
+  },
+  {
+   "name": "wheel 4",
+   "gear": "wheel 4",
+   "shaft": "output",
+   "z_m": 0.016
+  }
+ ],
+ "meshes": [
+  [
+   "pinion 1",
+   "wheel 2"
+  ],
+  [
+   "pinion 3",
+   "wheel 4"
+  ]
+ ],
+ "input": "input",
+ "run": {
+  "positions": 36,
+  "input_from_deg": 0,
+  "input_to_deg": 60
+ },
+ "controls": [
+  {
+   "label": "torque on the input, N m",
+   "path": "shafts.0.torque_nm",
+   "min": 0.5,
+   "max": 20,
+   "log": true
+  }
+ ],
+ "picture": {
+  "film": "build/labfilm OUT.lab --out DIR --field stress --azim -70 --elev 30 --light --size 960x540"
+ }
+}

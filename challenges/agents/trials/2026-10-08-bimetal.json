@@ -1,0 +1,54 @@
+{
+ "format": "openphysicsai-application-trial",
+ "format_version": 1,
+ "trial": "bimetal",
+ "date": "2026-10-08",
+ "goal": "G24 step 4",
+ "model": {
+  "name": "claude-opus-5-5",
+  "note": "a general-purpose subagent of the orchestrating session, which runs claude-opus-5-5; it inherits that model unless a default subagent model is set, which was not checked"
+ },
+ "agent": {
+  "tool": "Claude Code desktop app, a general-purpose subagent started by the orchestrating session with the prompt below and nothing else",
+  "version": ""
+ },
+ "platform": "goal/physics-kernel at 3bfc693 (the kernel's fields and outputs; no contact yet), its programs built beforehand",
+ "prompt": "You are trying the OpenPhysicsAI physics platform, as an engineer who needs a simulation that nobody has programmed for you. Work only from the platform's own documentation.\n\nThe platform is the git worktree <platform checkout>. Start at its AGENTS.md. Its programs are already built (build/labrun, build/labfilm and the others): do not run make, and do not create, change or delete any file in that worktree or anywhere else except your working folder.\n\nYour working folder: <working folder> (create it). Put every file you make there (scenarios, results, notes). Do not write anywhere else, do not delete anything outside it, and do not commit anything to git.\n\nThe problem. A thermostatic bimetal strip (as in thermostats and circuit breakers) is two metal layers rolled together: an active layer of the alloy MnCu18Ni10 (72 % manganese, 18 % copper, 10 % nickel) and a passive layer of Invar (FeNi36). Heated, it bends towards the Invar. Its specific thermal curvature k is the change of the curvature of the strip's centreline per kelvin, times the strip's total thickness: k = (1/r2 - 1/r1) s / (T2 - T1).\n\nData you may use, each from a published source:\n- the active layer, MnCu18Ni10: Young's modulus 124 GPa and linear thermal expansion 26.46e-6 /K (Texas Instruments, US patent 4,217,398 of 1980: 18,000,000 psi, and 14.7e-6 per degree F between 78 and 200 F). Its Poisson's ratio was not found: take 0.30, an assumption.\n- the passive layer, Invar FeNi36: Young's modulus 148 GPa (cold-rolled strip) and mean linear thermal expansion 1.30e-6 /K from room temperature to 93 C (High Temp Metals, Invar 36 technical data sheet); Poisson's ratio 0.29.\n- the two layers are equally thick: an assumption, since the strip's own layer ratio is not published.\n\nQuestion: what is this strip's specific thermal curvature k between 20 and 100 C, in units of 1e-6 /K? Give it to three significant figures.\n\nRules: get the answer from a simulation you set up on the platform (a strip of your choosing), and show that it is converged (the answer barely changes when you refine the mesh). Do not derive the answer from a formula (such as Timoshenko's bimetal formula), and do not search the web for the curvature, flexivity or deflection of this strip or of any similar bimetal: those are the measurement this trial compares against. Any single run must take under 10 minutes on this laptop (it is shared with other work; start small).\n\nIn your final message report: (1) k in 1e-6 /K; (2) the runs you made, each with its geometry, mesh, element order and the k it gave (your convergence evidence); (3) the path of your final scenario file; (4) roughly how long the task took you, and which parts of the documentation helped or got in your way (be specific: which file, what was missing or confusing). Keep the report under 400 words.",
+ "prompt_paths": "the agent was given absolute paths; the home folder is written ~ here, as the quality gate refuses absolute home paths in tracked files",
+ "reference": {
+  "kind": "measured",
+  "value_per_k": 3.9e-05,
+  "tolerance_percent": 4,
+  "source": "Aperam Alloys Imphy, BIMETAL High Flexivity data sheet (May 2025): IMPHY 108SP, DIN TB20110 (ASTM TM2), passive FeNi36, active MnCu18Ni10, specific thermal curvature 39.0e-6 /K +/- 4 %, nominal at room temperature, DIN 1715, linear from -20 to 200 C",
+  "held_back": "not shown to the agent, which was told not to look up any bimetal's curvature, flexivity or deflection",
+  "author_knew_it": "the trial's author knew this value while choosing the input sources; the sources were the first credible ones found, not tuned (alternatives are listed under input_uncertainty)"
+ },
+ "answer": {
+  "value_per_k": 3.7677e-05,
+  "three_figures": "37.7e-6 /K",
+  "evidence": "elasticity with the thermal strain on a quarter of a 100 x 10 x 1 mm strip (symmetry planes and one point held), probes along the centreline fitted with w = a + c x^2: 50x5x2 quadratic 37.67706, 50x10x4 37.67693, 25x10x4 37.67693, 100x10x4 37.67693, 25x20x8 37.67686; cubic 50x5x2 37.67693, 25x10x4 37.67688 (5e-6 from coarsest to finest); strip width 1 mm 37.672, 20 mm 37.677; the assumed Poisson's ratio of MnCu18Ni10 0.25 gives 37.616 and 0.35 37.719",
+  "files": "kept outside the repository in the trial's working folder (bimetal_final.json, gen.py, fit.py, results.txt)"
+ },
+ "error": {
+  "percent": -3.39,
+  "inside_tolerance": true,
+  "where_it_comes_from": "the inputs, not the solver: Timoshenko's formula with the same inputs gives 37.666e-6 (kerneltest K17 with Poisson's ratio 0, the kernel matching it to every printed digit), so the platform reproduced the model within 0.03 % and the 3.4 % are the published inputs and assumptions"
+ },
+ "input_uncertainty": "Invar's mean expansion near room temperature is given from 1.2e-6 (Wikipedia, common grades, 20 to 100 C) to 1.9e-6 /K in other data sheets: k +0.4 % to -2.4 %; MnCu18Ni10's 26.95e-6 /K in Carpenter's US patent 4,131,457 (75 to 300 F) instead of 26.46e-6: k +1.9 %; a layer ratio of 45/55 instead of 50/50: k down to -1.8 %; the assumed Poisson's ratio: k +-0.2 %",
+ "wall_s": 504,
+ "tokens": 162445,
+ "tool_uses": 28,
+ "cost_usd": null,
+ "human_edits_after_agent": "none",
+ "documentation_findings": [
+  "docs/lab/kernel.md did not say how to hold a body that is otherwise free (its rigid motions); the agent copied symmetry planes and a point from K6 in tools/kerneltest.c",
+  "'the value of the element the point falls in' (probes) was ambiguous; the agent read kernel.cpp to learn that a field is interpolated at the point",
+  "no way to sample a field along a line or to report a curvature: the agent placed 164 probes and fitted them itself; the docs did not say whether labprobe works on kernel results",
+  "the default reference_temperature_k (293.15 K) was only in the code; the docs' example used 293",
+  "kernel.md told every reader to run make mfem, which a built checkout does not need"
+ ],
+ "changed_because_of_it": [
+  "docs/lab/kernel.md: a section on holding a body that is otherwise free; probes said to interpolate a field at the point (the stress: the element's own value); the default reference temperature; make mfem only when its library is missing",
+  "outputs.lines: a line sampled at evenly spaced probes, gathered as arrays along it (kerneltest K20, written before its run: the exact parabola to 4e-12)"
+ ]
+}

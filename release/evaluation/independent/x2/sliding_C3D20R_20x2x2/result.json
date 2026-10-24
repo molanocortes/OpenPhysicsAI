@@ -1,0 +1,31 @@
+{
+ "case": "sliding_C3D20R_20x2x2",
+ "element": "C3D20R",
+ "mesh": [
+  20,
+  2,
+  2
+ ],
+ "root": "sliding",
+ "nu": 0.3,
+ "element_size_mm": 5.0,
+ "nodes": 621,
+ "elements": 80,
+ "ccx_rc": 0,
+ "ccx_seconds": 0.032620906829833984,
+ "status": "solved",
+ "tip_mean_uz_area_weighted_mm": 0.020157780833333333,
+ "tip_mean_uz_nodal_mm": 0.020158005238095238,
+ "reaction_n": [
+  7.906564e-12,
+  -1.26205e-11,
+  10.0
+ ],
+ "reaction_balance": 0.0,
+ "reaction_print_resolution": 5e-07,
+ "strain_energy_nmm": 0.1007889,
+ "energy_displacement_mm": 0.02015778,
+ "energy_vs_work": 0.9999999586594706,
+ "weight_sum": 1.0,
+ "ccx_messages": []
+}

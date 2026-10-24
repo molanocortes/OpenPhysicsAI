@@ -1,0 +1,398 @@
+{
+  "audited_at_utc": "2026-10-03T07:22:54.264023+00:00",
+  "method": "Independent read-only parse of every declared floating result array; expected field lengths, exact file consumption, SHA-256 and recorded acceptance checks. Two thermal solves in a separate copied-geometry workspace verify fresh and repeated setup.",
+  "scope": "Numerical demonstrations; no measurement or convergence validation.",
+  "original_runs": {
+    "thermal": {
+      "record_path": "/private/tmp/openphysics-art-gallery/thermal-run.json",
+      "record_sha256": "5a64b3e7ce16c584910b5d997c1979a53a6d2789ffc5027e62fef5e13e9ca325",
+      "result_path": "/private/tmp/openphysics-art-gallery/workspace/Thermal_Corolla/runs/job-20261003-071615-7f70-1/results.nvt",
+      "result_sha256": "a76868c2cce894c4efd5a759b624ded17f6f2db91ebc6adeb6a0bcb141badedc",
+      "matches_recorded_result_hash": true,
+      "elements": 11840,
+      "nodes": 18650,
+      "states": 61,
+      "elapsed_seconds": 6.319524958031252,
+      "expected_field_counts": {
+        "xyz": 55950,
+        "times": 61,
+        "T": 1137650
+      },
+      "floating_arrays": {
+        "xyz": {
+          "count": 55950,
+          "all_finite": true,
+          "min": -0.01425,
+          "max": 0.018000000000000002
+        },
+        "fixed_T": {
+          "count": 18650,
+          "all_finite": true,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "elem_source": {
+          "count": 11840,
+          "all_finite": true,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "times": {
+          "count": 61,
+          "all_finite": true,
+          "min": 0.0,
+          "max": 150.0
+        },
+        "T": {
+          "count": 1137650,
+          "all_finite": true,
+          "min": 293.15,
+          "max": 394.819034031742
+        },
+        "tmin": {
+          "count": 61,
+          "all_finite": true,
+          "min": 293.15,
+          "max": 309.66436457270896
+        },
+        "tmax": {
+          "count": 61,
+          "all_finite": true,
+          "min": 293.15,
+          "max": 394.819034031742
+        },
+        "step_t": {
+          "count": 120,
+          "all_finite": true,
+          "min": 1.25,
+          "max": 150.0
+        },
+        "step_dt": {
+          "count": 120,
+          "all_finite": true,
+          "min": 1.25,
+          "max": 1.25
+        },
+        "step_err": {
+          "count": 120,
+          "all_finite": true,
+          "min": -1.0,
+          "max": -1.0
+        }
+      },
+      "complete_file_consumption": true,
+      "acceptance_metrics": {
+        "closure_error": 1.2657221452108545e-12,
+        "worst_step_balance_error": 5.368968003100459e-12,
+        "enthalpy_mismatch": 2.5475012681148494e-14
+      },
+      "acceptance_passed": true,
+      "geometry_approximation": [
+        {
+          "name": "sculpture",
+          "volume_stl_mm3": 4977.810162669515,
+          "volume_mesh_mm3": 4994.99999999918,
+          "volume_error_percent": 0.3453293068220515,
+          "area_stl_mm2": 5889.892832288342,
+          "area_mesh_mm2": 7622.999999998305,
+          "area_ratio_mesh_to_stl": 1.2942510529578881
+        }
+      ]
+    },
+    "fdm": {
+      "record_path": "/private/tmp/openphysics-art-gallery/fdm-run.json",
+      "record_sha256": "e59e281847ba85cf5377439626ff56d4dd807f2e787aa560af8097093e2b7720",
+      "result_path": "/private/tmp/openphysics-art-gallery/workspace/Helical_Flute/runs/job-20261003-071219-7e8c-1/results.nvt",
+      "result_sha256": "d962fccd437d9dc073d3efa2228a41bf747fed6504f3f05c6e02471bed3ed711",
+      "matches_recorded_result_hash": true,
+      "elements": 5385,
+      "nodes": 8551,
+      "states": 35,
+      "elapsed_seconds": 30.913803667062894,
+      "expected_field_counts": {
+        "xyz": 25653,
+        "times": 35,
+        "T": 299285,
+        "mech_u": 897855,
+        "mech_vm": 299285
+      },
+      "floating_arrays": {
+        "xyz": {
+          "count": 25653,
+          "all_finite": true,
+          "min": -0.009000000000000001,
+          "max": 0.024
+        },
+        "fixed_T": {
+          "count": 8551,
+          "all_finite": true,
+          "min": 333.15,
+          "max": 333.15
+        },
+        "elem_source": {
+          "count": 5385,
+          "all_finite": true,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "times": {
+          "count": 35,
+          "all_finite": true,
+          "min": 0.5621484374999983,
+          "max": 643.9746093749991
+        },
+        "T": {
+          "count": 299285,
+          "all_finite": true,
+          "min": 298.15,
+          "max": 482.43035741480395
+        },
+        "tmin": {
+          "count": 35,
+          "all_finite": true,
+          "min": 298.15,
+          "max": 333.15
+        },
+        "tmax": {
+          "count": 35,
+          "all_finite": true,
+          "min": 300.530054245278,
+          "max": 482.43035741480395
+        },
+        "mech_u": {
+          "count": 897855,
+          "all_finite": true,
+          "min": -6.519448499739866e-05,
+          "max": 5.2145533363579956e-05
+        },
+        "mech_vm": {
+          "count": 299285,
+          "all_finite": true,
+          "min": 0.0,
+          "max": 13057291.0
+        },
+        "mech_peak": {
+          "count": 35,
+          "all_finite": true,
+          "min": 0.0,
+          "max": 13057291.436951665
+        },
+        "mech_umax": {
+          "count": 35,
+          "all_finite": true,
+          "min": 0.0,
+          "max": 8.207847527513656e-05
+        }
+      },
+      "complete_file_consumption": true,
+      "acceptance_metrics": {
+        "equilibrium_error_last_solve": 5.2504208645933985e-14,
+        "worst_heat_balance_relative": 1.7301424868777662e-10
+      },
+      "acceptance_passed": true,
+      "geometry_approximation": [
+        {
+          "name": "sculpture",
+          "volume_stl_mm3": 2270.1004632489976,
+          "volume_mesh_mm3": 2271.796875000043,
+          "volume_error_percent": 0.0747284879461793,
+          "area_stl_mm2": 2549.039762728584,
+          "area_mesh_mm2": 3515.6250000002296,
+          "area_ratio_mesh_to_stl": 1.3791958255829553
+        }
+      ]
+    },
+    "lpbf": {
+      "record_path": "/private/tmp/openphysics-art-gallery/lpbf-run.json",
+      "record_sha256": "f337c2d57171bd7467a11080409a91810605b9534fab8c764cfd4357c379053a",
+      "result_path": "/private/tmp/openphysics-art-gallery/workspace/Helical_Lantern/runs/job-20261003-071336-7f31-1/results.nvt",
+      "result_sha256": "f1fc8dd11f12e34d4876ec5e80052ec7eb2ff97da2717aca325b707ae7a50f0f",
+      "matches_recorded_result_hash": true,
+      "elements": 3807,
+      "nodes": 6805,
+      "states": 17,
+      "elapsed_seconds": 5.7428547909948975,
+      "expected_field_counts": {
+        "xyz": 20415,
+        "times": 17,
+        "mech_u": 347055,
+        "mech_vm": 115685
+      },
+      "floating_arrays": {
+        "xyz": {
+          "count": 20415,
+          "all_finite": true,
+          "min": -0.00825,
+          "max": 0.024
+        },
+        "fixed_T": {
+          "count": 6805,
+          "all_finite": true,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "elem_source": {
+          "count": 3807,
+          "all_finite": true,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "times": {
+          "count": 17,
+          "all_finite": true,
+          "min": 1.0,
+          "max": 17.0
+        },
+        "mech_u": {
+          "count": 347055,
+          "all_finite": true,
+          "min": -8.883718498558016e-06,
+          "max": 7.591376441830375e-06
+        },
+        "mech_vm": {
+          "count": 115685,
+          "all_finite": true,
+          "min": 0.0,
+          "max": 198499016.79211998
+        },
+        "mech_peak": {
+          "count": 17,
+          "all_finite": true,
+          "min": 156210259.6779047,
+          "max": 198499016.79211998
+        },
+        "mech_umax": {
+          "count": 17,
+          "all_finite": true,
+          "min": 3.6352571751457247e-06,
+          "max": 9.012419072554424e-06
+        }
+      },
+      "complete_file_consumption": true,
+      "acceptance_metrics": {
+        "equilibrium_error_last_solve": 1.6132230259632974e-14
+      },
+      "acceptance_passed": true,
+      "geometry_approximation": [
+        {
+          "name": "sculpture",
+          "volume_stl_mm3": 1561.3055260930919,
+          "volume_mesh_mm3": 1606.0781250001025,
+          "volume_error_percent": 2.8676385344671664,
+          "area_stl_mm2": 2382.90706680972,
+          "area_mesh_mm2": 3090.375000000132,
+          "area_ratio_mesh_to_stl": 1.296892792440111
+        }
+      ]
+    }
+  },
+  "findings": [
+    {
+      "severity": "fixed",
+      "topic": "repeat setup",
+      "detail": "Added replace:true to material_define, selection_create and boundary_apply. Repeated thermal setup previously failed on corolla_demo."
+    },
+    {
+      "severity": "fixed",
+      "topic": "evidence preservation",
+      "detail": "Before replacing the latest run JSON, the script now makes an exclusive byte-for-byte backup in evidence-history and records its path and SHA-256."
+    },
+    {
+      "severity": "presentation",
+      "topic": "LPBF process coordinates",
+      "detail": "LPBF stored coordinates 1..17 are layer/process indices, not seconds. Native clean metadata and legend should say process step i/N, with no t or s. Root owns the HUD correction.",
+      "source": "src/ctl/lpbf_build.c:1007,1017"
+    },
+    {
+      "severity": "limitation",
+      "topic": "curved voxel surface area",
+      "detail": "Thermal, FDM and LPBF mesh/STL surface area ratios are approximately 1.2943, 1.3792 and 1.2969. Thermal boundary areas use the mesh surface. Smoothing only affects presentation."
+    },
+    {
+      "severity": "limitation",
+      "topic": "convergence and evidence",
+      "detail": "No mesh/time convergence study or measurement validation. Final mechanical equilibrium is checked; not every intermediate structural solve."
+    },
+    {
+      "severity": "limitation",
+      "topic": "FDM process resolution",
+      "detail": "1.5 mm simulation layers lump 7.5 nominal 0.2 mm printed layers. Toolpaths, resolved roads, adhesion failure, creep below relaxation and plasticity are not computed."
+    },
+    {
+      "severity": "limitation",
+      "topic": "LPBF scope",
+      "detail": "Assumed elastic inherent strain, no calibrated prediction, thermal history, melt pool, plasticity or added support structures."
+    },
+    {
+      "severity": "provenance",
+      "topic": "original record version",
+      "detail": "Original run JSONs precede latest compute script fields; no retrospective execution hash is claimed. Exact native inputs and material provenance remain in run/spec.json."
+    }
+  ],
+  "replay_verification": {
+    "directory": "/private/tmp/openphysics-art-gallery/repro-check-ucnrmp_4",
+    "syntax_compilation_passed": true,
+    "compute_script_sha256": "1749194800548d2f0bc7cf3a7650ad0a3caac0af16836746b879146bbbfaf5d4",
+    "geometry_sha256": "5c2e317dc13542f8ff43f7284fa368450147e76d6698b03e1d42c1f32e95ae96",
+    "same_geometry_as_original": true,
+    "runs": [
+      {
+        "label": "fresh",
+        "job_id": "job-20261003-072254-8379-1",
+        "run_directory": "/private/tmp/openphysics-art-gallery/repro-check-ucnrmp_4/workspace/Thermal_Corolla/runs/job-20261003-072254-8379-1",
+        "elapsed_seconds": 6.628786624991335,
+        "acceptance_passed": true,
+        "record_sha256": "ee05f3c36ed2ebe6a902b07ecd2b23f9b16e3ada958cc9c847c4d7271ac5d5fa",
+        "results_sha256": "f65de22b9dab4a7eddf7c1280898372ae2d51c863adfc67d7d35998e72912871",
+        "states": 61,
+        "energy": {
+          "sources_j": 0,
+          "boundary_j": 92.04278158206546,
+          "prescribed_nodes_j": 0,
+          "stored_j": 92.04278158194896,
+          "enthalpy_change_j": 92.04278158194661,
+          "supplied_j": 92.04278158206546,
+          "closure_error": 1.2657221452108545e-12,
+          "worst_step_balance_error": 5.368968003100459e-12,
+          "enthalpy_mismatch": 2.5475012681148494e-14,
+          "worst_step_enthalpy_mismatch": 8.204033062242323e-14,
+          "note": "accepted steps only: rejected trial steps never enter these sums. The stored energy of every step must equal the heat delivered by sources, boundary faces and prescribed-temperature nodes; enthalpy_change_j is the same energy obtained by integrating the enthalpy function over the elements, which checks the capacity model itself rather than the linear solve"
+        },
+        "log": "/private/tmp/openphysics-art-gallery/repro-check-ucnrmp_4/fresh.log"
+      },
+      {
+        "label": "repeat",
+        "job_id": "job-20261003-072301-8383-1",
+        "run_directory": "/private/tmp/openphysics-art-gallery/repro-check-ucnrmp_4/workspace/Thermal_Corolla/runs/job-20261003-072301-8383-1",
+        "elapsed_seconds": 7.146499208989553,
+        "acceptance_passed": true,
+        "record_sha256": "1b5142f0390c46aae76d6d0a325540460d2e48c2e664803eb40ec837a3c35ae0",
+        "results_sha256": "57d97058f87f67d3e2be0deef9a4ab241fdb537929ef001f50bd8e5383e9afa1",
+        "states": 61,
+        "energy": {
+          "sources_j": 0,
+          "boundary_j": 92.04278158206546,
+          "prescribed_nodes_j": 0,
+          "stored_j": 92.04278158194896,
+          "enthalpy_change_j": 92.04278158194661,
+          "supplied_j": 92.04278158206546,
+          "closure_error": 1.2657221452108545e-12,
+          "worst_step_balance_error": 5.368968003100459e-12,
+          "enthalpy_mismatch": 2.5475012681148494e-14,
+          "worst_step_enthalpy_mismatch": 8.204033062242323e-14,
+          "note": "accepted steps only: rejected trial steps never enter these sums. The stored energy of every step must equal the heat delivered by sources, boundary faces and prescribed-temperature nodes; enthalpy_change_j is the same energy obtained by integrating the enthalpy function over the elements, which checks the capacity model itself rather than the linear solve"
+        },
+        "log": "/private/tmp/openphysics-art-gallery/repro-check-ucnrmp_4/repeat.log"
+      }
+    ],
+    "prior_record_backup": "/private/tmp/openphysics-art-gallery/repro-check-ucnrmp_4/evidence-history/thermal-run-1791012181319477000-ee05f3c36ed2.json",
+    "backup_sha256": "ee05f3c36ed2ebe6a902b07ecd2b23f9b16e3ada958cc9c847c4d7271ac5d5fa",
+    "backup_exactly_matches_fresh_record": true,
+    "original_runrecords_unchanged": {
+      "thermal": true,
+      "fdm": true,
+      "lpbf": true
+    }
+  },
+  "passed": true
+}

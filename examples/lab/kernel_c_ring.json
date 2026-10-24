@@ -1,0 +1,113 @@
+{
+ "domain": "kernel",
+ "title": "A split ring pulled open, composed in the kernel (G17's C-ring; its check K7b against CalculiX)",
+ "provenance": {
+  "purpose": "the C-ring of tools/printmesh_ccx.py (GOALS.md G17 step 4) rebuilt as a scenario: inner radius 10 mm, outer 14 mm, 4 mm wide, a gap of 0.25 rad, one tip held, 10 N pulling the other along the line through the tips. A box in (r, theta, z) is mapped onto the ring by formulas; the held and pulled tips are chosen in the box's own coordinates",
+  "material": "pla_fff made isotropic as tools/printmesh_ccx.py does: E along the layers 3426.9 MPa (Polymaker PolyLite PLA data sheet), nu 0.323 (Polymers 2023, PMC10673164); the stress does not depend on E and on nu only through its variation across the width",
+  "check": "tools/kerneltest.c K7b: the hoop stress at the apex within 1 % of CalculiX on the same 3D problem at three places (+0.16, +0.08, +0.18 %); Winkler-Bach's beam gives 25.82 MPa at the inner fibre, the 3D solution 26.26 at mid-width and 25.31 on the faces"
+ },
+ "mesh": {
+  "box": {
+   "size_m": [
+    0.004,
+    6.033185307179586,
+    0.004
+   ],
+   "cells": [
+    8,
+    120,
+    4
+   ],
+   "origin_m": [
+    0.01,
+    -1.4457963267948966,
+    0
+   ]
+  },
+  "map_m": [
+   "x*cos(y)",
+   "x*sin(y)",
+   "z"
+  ]
+ },
+ "order": 2,
+ "physics": [
+  "elasticity"
+ ],
+ "materials": {
+  "pla": {
+   "youngs_modulus_pa": 3426900000.0,
+   "poisson_ratio": 0.323,
+   "source": "pla_fff made isotropic (Polymaker PolyLite PLA data sheet; PMC10673164)"
+  }
+ },
+ "boundaries": [
+  {
+   "name": "held",
+   "where": {
+    "plane": [
+     "y",
+     4.58738898038469
+    ],
+    "space": "box"
+   },
+   "fixed": true
+  },
+  {
+   "name": "pulled",
+   "where": {
+    "plane": [
+     "y",
+     -1.4457963267948966
+    ],
+    "space": "box"
+   },
+   "force_n": [
+    10,
+    0,
+    0
+   ]
+  }
+ ],
+ "outputs": {
+  "probes": [
+   {
+    "name": "apex, inner fibre, mid-width",
+    "point_m": [
+     0,
+     0.01,
+     0.002
+    ]
+   },
+   {
+    "name": "apex, inner fibre, flat face",
+    "point_m": [
+     0,
+     0.01,
+     0
+    ]
+   },
+   {
+    "name": "apex, outer fibre, mid-width",
+    "point_m": [
+     0,
+     0.014,
+     0.002
+    ]
+   }
+  ]
+ },
+ "picture": {
+  "deformation_scale": 1,
+  "film": "build/labfilm OUT.lab --out DIR --field von_mises --light"
+ },
+ "controls": [
+  {
+   "label": "the pull, N",
+   "path": "boundaries.1.force_n.0",
+   "min": 1,
+   "max": 30,
+   "log": false
+  }
+ ]
+}

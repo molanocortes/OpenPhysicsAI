@@ -1,0 +1,223 @@
+{
+ "note": "The alloys of the reference entry on flag 05, exactly as GOALS.md G20 step 2 states them (tools/g20_melt.py in625_metal and in718_metal, from the G20 curator's sourced set-ups); each record names its sources.",
+ "materials": {
+  "IN625": {
+   "density_kg_m3": 8440.0,
+   "solidus_k": 1563.15,
+   "liquidus_k": 1623.15,
+   "latent_heat_j_kg": 209200.0,
+   "specific_heat_solid_j_kgk": 669.081483,
+   "conductivity_solid_w_mk": 28.787285,
+   "specific_heat_liquid_j_kgk": 677.034363,
+   "conductivity_liquid_w_mk": 29.189039,
+   "emissivity": 0.4,
+   "solid_table": [
+    {
+     "temperature_k": 116.15,
+     "conductivity_w_mk": 7.2,
+     "specific_heat_j_kgk": 402
+    },
+    {
+     "temperature_k": 144.15,
+     "conductivity_w_mk": 7.5,
+     "specific_heat_j_kgk": 402
+    },
+    {
+     "temperature_k": 200.15,
+     "conductivity_w_mk": 8.4,
+     "specific_heat_j_kgk": 402
+    },
+    {
+     "temperature_k": 255.15,
+     "conductivity_w_mk": 9.2,
+     "specific_heat_j_kgk": 402.0
+    },
+    {
+     "temperature_k": 294.15,
+     "conductivity_w_mk": 9.8,
+     "specific_heat_j_kgk": 410.0
+    },
+    {
+     "temperature_k": 311.15,
+     "conductivity_w_mk": 10.1,
+     "specific_heat_j_kgk": 414.013889
+    },
+    {
+     "temperature_k": 366.15,
+     "conductivity_w_mk": 10.8,
+     "specific_heat_j_kgk": 427.0
+    },
+    {
+     "temperature_k": 477.15,
+     "conductivity_w_mk": 12.5,
+     "specific_heat_j_kgk": 456.0
+    },
+    {
+     "temperature_k": 589.15,
+     "conductivity_w_mk": 14.1,
+     "specific_heat_j_kgk": 481.0
+    },
+    {
+     "temperature_k": 700.15,
+     "conductivity_w_mk": 15.7,
+     "specific_heat_j_kgk": 511.0
+    },
+    {
+     "temperature_k": 811.15,
+     "conductivity_w_mk": 17.5,
+     "specific_heat_j_kgk": 536.0
+    },
+    {
+     "temperature_k": 922.15,
+     "conductivity_w_mk": 19.0,
+     "specific_heat_j_kgk": 565.0
+    },
+    {
+     "temperature_k": 1033.15,
+     "conductivity_w_mk": 20.8,
+     "specific_heat_j_kgk": 590.0
+    },
+    {
+     "temperature_k": 1144.15,
+     "conductivity_w_mk": 22.8,
+     "specific_heat_j_kgk": 620.0
+    },
+    {
+     "temperature_k": 1255.15,
+     "conductivity_w_mk": 25.2,
+     "specific_heat_j_kgk": 645.0
+    },
+    {
+     "temperature_k": 1366.15,
+     "conductivity_w_mk": 26.49282,
+     "specific_heat_j_kgk": 670.0
+    },
+    {
+     "temperature_k": 1563.15,
+     "conductivity_w_mk": 28.787285,
+     "specific_heat_j_kgk": 669.081483
+    }
+   ],
+   "source": "IN625 for GOALS.md G20 step 2: Special Metals' datasheet (density 8.44 g/cm3, melting range 1290 to 1350 C, specific heat table 2 to 1093 C, conductivity table 3 to 982 C), each continued by one point at the solidus from Lim et al. 2023's JMatPro fits (arXiv:2302.03146, Table 1), which also give the liquid's specific heat and conductivity at the liquidus and the latent heat 209.2 kJ/kg; emissivity 0.4, their model's choice"
+  },
+  "IN718": {
+   "density_kg_m3": 8193.0,
+   "solidus_k": 1533.15,
+   "liquidus_k": 1609.15,
+   "latent_heat_j_kg": 196850,
+   "specific_heat_solid_j_kgk": 634.0,
+   "conductivity_solid_w_mk": 28.27,
+   "specific_heat_liquid_j_kgk": 677.034363,
+   "conductivity_liquid_w_mk": 29.189039,
+   "emissivity": 0.4,
+   "solid_table": [
+    {
+     "temperature_k": 294.25,
+     "conductivity_w_mk": 11.11,
+     "specific_heat_j_kgk": 425
+    },
+    {
+     "temperature_k": 298,
+     "conductivity_w_mk": 11.177001,
+     "specific_heat_j_kgk": 425
+    },
+    {
+     "temperature_k": 366.45,
+     "conductivity_w_mk": 12.4,
+     "specific_heat_j_kgk": 439.763725
+    },
+    {
+     "temperature_k": 400,
+     "conductivity_w_mk": 12.922426,
+     "specific_heat_j_kgk": 447.0
+    },
+    {
+     "temperature_k": 477.55,
+     "conductivity_w_mk": 14.13,
+     "specific_heat_j_kgk": 463.2855
+    },
+    {
+     "temperature_k": 500,
+     "conductivity_w_mk": 14.50955,
+     "specific_heat_j_kgk": 468.0
+    },
+    {
+     "temperature_k": 588.75,
+     "conductivity_w_mk": 16.01,
+     "specific_heat_j_kgk": 486.6375
+    },
+    {
+     "temperature_k": 600,
+     "conductivity_w_mk": 16.18518,
+     "specific_heat_j_kgk": 489.0
+    },
+    {
+     "temperature_k": 699.85,
+     "conductivity_w_mk": 17.74,
+     "specific_heat_j_kgk": 509.9685
+    },
+    {
+     "temperature_k": 700,
+     "conductivity_w_mk": 17.742336,
+     "specific_heat_j_kgk": 510.0
+    },
+    {
+     "temperature_k": 800,
+     "conductivity_w_mk": 19.299491,
+     "specific_heat_j_kgk": 531.0
+    },
+    {
+     "temperature_k": 810.95,
+     "conductivity_w_mk": 19.47,
+     "specific_heat_j_kgk": 534.796
+    },
+    {
+     "temperature_k": 922.05,
+     "conductivity_w_mk": 21.2,
+     "specific_heat_j_kgk": 573.310667
+    },
+    {
+     "temperature_k": 1033.15,
+     "conductivity_w_mk": 23.08,
+     "specific_heat_j_kgk": 611.825333
+    },
+    {
+     "temperature_k": 1100,
+     "conductivity_w_mk": 24.205198,
+     "specific_heat_j_kgk": 635.0
+    },
+    {
+     "temperature_k": 1144.25,
+     "conductivity_w_mk": 24.95,
+     "specific_heat_j_kgk": 635.0
+    },
+    {
+     "temperature_k": 1200,
+     "conductivity_w_mk": 25.818114,
+     "specific_heat_j_kgk": 635.0
+    },
+    {
+     "temperature_k": 1255.35,
+     "conductivity_w_mk": 26.68,
+     "specific_heat_j_kgk": 635.0
+    },
+    {
+     "temperature_k": 1300,
+     "conductivity_w_mk": 27.319005,
+     "specific_heat_j_kgk": 635.0
+    },
+    {
+     "temperature_k": 1366.45,
+     "conductivity_w_mk": 28.27,
+     "specific_heat_j_kgk": 634.3355
+    },
+    {
+     "temperature_k": 1400,
+     "conductivity_w_mk": 28.27,
+     "specific_heat_j_kgk": 634.0
+    }
+   ],
+   "source": "IN718 for GOALS.md G20 step 2: density 8.193 g/cm3, melting range 1260 to 1336 C and conductivity (Special Metals' datasheet, annealed); solid specific heat and latent heat 196.85 kJ/kg measured by DSC (Agazhanov, Samoshkin and Kozlovskii 2019, J. Phys.: Conf. Ser. 1382 012175, Tables 1 and 2, CC BY 3.0), the recommended table without the solid-state peaks; the liquid's specific heat and conductivity IN625's (Lim et al. 2023's JMatPro fits at its liquidus), no open IN718 value being found (an assumption); emissivity 0.4 as for IN625"
+  }
+ }
+}

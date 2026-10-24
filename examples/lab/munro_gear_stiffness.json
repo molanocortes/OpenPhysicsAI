@@ -1,0 +1,31 @@
+{
+ "domain": "mechanism",
+ "model": "gear_pair",
+ "title": "Munro, Palmer and Morrish 2001: one tooth pair of a high contact ratio spur gear pair, loaded through its path of contact",
+ "provenance": {
+  "geometry": "Munro, Palmer, Morrish, An experimental method to measure gear tooth stiffness throughout and beyond the path of contact, Proc. IMechE Part C 215 (2001) 793-803, section 3: pinion and wheel alike, module 3.738 mm, 54 teeth, pressure angle 18 deg, face width 11 mm, outside diameter 212.344 mm, root diameter 190.575 mm, pitch circle diameter 201.854 mm, arc tooth thickness 6.220 mm on the pitch circle, contact ratio 2.16, BS 436 grade 2-3, no profile relief, 3 to 4 um lead crowning; centre distance 203.2 mm (8 in)",
+  "derived": "the tooth thickness gives the profile shift x = 0.1434 on each gear; the root and outside diameters then give the generating rack's addendum 1.652 m and the gears' addendum 1.260 m; at 203.2 mm the contact ratio is 2.163, as the paper states",
+  "assumed": "not stated in the paper: steel, E = 207 GPa, nu = 0.3; the rack's tip radius 0.25 m (it must be below 0.342 m, a full round); 3.5 um of crowning on each gear; the blanks solid to a bore 3 modules below the root (the method cancels the blanks' and bearings' deflection, which is the same with one pair or two in contact)",
+  "method": "section 5: a single pair of teeth carries the load through its path (the neighbours ground back 0.5 mm); its transmission error between two loads, delta1, and that of two pairs of the ungrounded gears sharing the load symmetrically about the pitch point, delta2, at the same distance from their pitch points, give the bearings' and blanks' stiffness c_b = N / (2 delta2 - delta1) and the tooth pair's c_t = N / (2 (delta1 - delta2))"
+ },
+ "gears": [
+  {
+   "teeth": 54, "module_m": 0.003738, "pressure_angle_deg": 18, "profile_shift": 0.1434, "addendum_coefficient": 1.2598,
+   "dedendum_coefficient": 1.652, "cutter_tip_radius_coefficient": 0.25, "tip_diameter_m": 0.212344, "lead_crown_m": 3.5e-6,
+   "face_width_m": 0.011, "bore_diameter_m": 0.1682,
+   "material": {"youngs_modulus_pa": 207e9, "poisson_ratio": 0.3, "source": "assumed steel; Munro et al. 2001 give no material"}
+  },
+  {
+   "teeth": 54, "module_m": 0.003738, "pressure_angle_deg": 18, "profile_shift": 0.1434, "addendum_coefficient": 1.2598,
+   "dedendum_coefficient": 1.652, "cutter_tip_radius_coefficient": 0.25, "tip_diameter_m": 0.212344, "lead_crown_m": 3.5e-6,
+   "face_width_m": 0.011, "bore_diameter_m": 0.1682,
+   "material": {"youngs_modulus_pa": 207e9, "poisson_ratio": 0.3, "source": "assumed steel; Munro et al. 2001 give no material"}
+  }
+ ],
+ "centre_distance_m": 0.2032,
+ "single_pinion_tooth": true,
+ "hold_sector_cuts": true,
+ "mesh": {"teeth_modelled": 7, "across": 14, "flank": 28, "fillet": 12, "rim": 12, "face": 8},
+ "load": {"pinion_torque_nm": 549.0},
+ "run": {"gauged_roll_deg": [16.547, 19.880, 23.213]}
+}

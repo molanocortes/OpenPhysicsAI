@@ -1,0 +1,14 @@
+{
+ "id": "fusion-shot",
+ "number": 11,
+ "tier": "holy-grail",
+ "stone": "energy",
+ "stone_short": "energy",
+ "difficulty": 6,
+ "title": "A star in a bottle",
+ "subtitle": "The record fusion shots of the JET tokamak, predicted from first principles",
+ "short": "Fusion",
+ "status": "preparing",
+ "hook": "In 2023 the JET tokamak held a plasma far hotter than the core of the Sun for five seconds and released 69 megajoules of fusion energy. Predict it from first principles.",
+ "note": "In preparation: the cases, the outputs and their units are written here when the flag opens, and the measured values are sealed at the same moment (tools/flags.py seal)."
+}

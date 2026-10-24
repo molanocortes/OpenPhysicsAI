@@ -1,0 +1,7 @@
+== F1. a turned box through its STL: sharp edges and corners kept (TET10)
+  with features: 4550 el, edge samples off the mesh by 3.03e-02 at most, volume error 1.61e-03, dihedral 15.13..156.00, nodes onto edges 95, onto corners 8, refused 32
+  FAIL tools/tettest.c:284: every edge kept: samples within 3.03e-02 of the mesh's surface (criterion 1e-06)
+  FAIL tools/tettest.c:285: the volume within 1.61e-03 of the box's (criterion 1e-6)
+  without features: 4550 el, edge samples off the mesh by 4.63e-02 at most, volume error 1.24e-02, dihedral 18.55..140.36, nodes onto edges 0, onto corners 0, refused 0
+
+tettest: 1 passed, 2 failed

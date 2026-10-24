@@ -1,0 +1,85 @@
+{
+ "about": "The lab page's scenarios (site/lab/, src/web/README.md). Each is an app scenario from examples/lab/ on the branch the site describes, with the changes in 'change' (paths into the scenario) that let a phone run it in seconds on one core; 'coarser' says what they are, on the page. 'view' is the first look (lw_view in src/web/labweb.c), 'camera' the first azimuth and elevation in degrees, 'legend': false hides the colour legend, 'time_unit' names what the frames step through when it is not time ('°': a rotor's angle), 'poster_at' the fraction of the run its card shows. tools/web_build.py writes the page's files from this one.",
+ "scenarios": [
+  {
+   "id": "apophis",
+   "from": "examples/lab/apophis_flyby.json",
+   "name": "Apophis passes the Earth",
+   "kind": "Orbits",
+   "text": "The asteroid's close approach of 13 April 2029, integrated from JPL Horizons positions of the Sun, the planets, the Moon and Apophis, with the first relativistic correction to the Sun's gravity.",
+   "change": {},
+   "coarser": "",
+   "view": {"focus": 3, "span": 4.5e8},
+   "legend": false,
+   "camera": [-55, 30],
+   "poster_at": 0.25
+  },
+  {
+   "id": "glass",
+   "from": "examples/lab/glass_bottle.json",
+   "name": "A glass bottle shatters",
+   "kind": "Fracture",
+   "text": "A soda-lime glass bottle hits a hard floor at 5 m/s, as after a fall of 1.3 m, and breaks. The glass is a lattice of points joined by bonds that snap when stretched too far (bond-based peridynamics).",
+   "change": {"spacing_m": 0.003, "run.frames": 24},
+   "coarser": "points 3 mm apart instead of 1 mm, 27 times fewer, so the bottle's 3 mm wall is one point thick instead of three; 24 frames instead of 60.",
+   "view": {},
+   "camera": [-55, 25]
+  },
+  {
+   "id": "black-hole",
+   "from": "examples/lab/black_hole.json",
+   "name": "Light bends around a black hole",
+   "kind": "Relativity",
+   "text": "Light traced backwards from a camera through the curved space of a black hole: the shadow, the stars behind it displaced and doubled, and a thin disk of hot gas seen above and, bent round the hole, below it.",
+   "change": {"image.width": 480, "image.height": 270, "image.samples_per_axis": 1, "run.frames": 16},
+   "coarser": "480 by 270 pixels with one ray each and 16 frames, against 640 by 360 with four rays each and 60 frames in the app.",
+   "view": {},
+   "camera": [-55, 30]
+  },
+  {
+   "id": "motor",
+   "from": "examples/lab/pm_motor.json",
+   "name": "Inside an electric motor",
+   "kind": "Magnetics",
+   "text": "The magnetic field in the cross-section of a 12-slot, 4-pole permanent-magnet motor as its rotor turns through 30 degrees, with the lines of magnetic flux and the torque on the rotor.",
+   "change": {"grid.nx": 150, "grid.ny": 150, "grid.cell_m": 0.000867, "run.frames": 10},
+   "coarser": "150 by 150 cells of 0.87 mm instead of 520 by 520 of 0.25 mm, and 10 rotor positions instead of 31.",
+   "view": {"solid": "", "field": "B", "lines": "A", "nlines": 24},
+   "time_unit": "°",
+   "camera": [-60, 55]
+  },
+  {
+   "id": "radar",
+   "from": "examples/lab/radar_pulse.json",
+   "name": "A radar pulse meets a sphere",
+   "kind": "Electromagnetics",
+   "text": "A 3 GHz radar pulse sweeps past a metal sphere and a dielectric cylinder, and the waves they scatter spread out: Maxwell's equations on a 3D grid (Yee's scheme), shown in a horizontal section.",
+   "change": {"cells": [100, 75, 30], "dx_m": 0.012, "pml_cells": 8, "plane_wave.tfsf_lo_cells": [8, 8, 8], "plane_wave.tfsf_hi_cells": [92, 67, 22], "run.frames": 33},
+   "coarser": "cells of 12 mm instead of 6 mm, eight times fewer, about eight to a wavelength at 3 GHz; 33 frames instead of 65.",
+   "view": {"field": "ez", "range": [-0.2, 0.2], "zoom": 1.6},
+   "camera": [-55, 40]
+  },
+  {
+   "id": "hall",
+   "from": "examples/lab/shoebox_hall.json",
+   "name": "A sound pulse fills a concert hall",
+   "kind": "Acoustics",
+   "text": "A pulse from the stage of a 30 by 16 by 12 m shoebox hall, seen at ear height: the wavefront, and its reflections from the walls, the ceiling and the rows of seats.",
+   "change": {"dx_m": 0.2, "sources.0.pulse_width_s": 0.003, "sources.0.delay_s": 0.008, "run.volume": false, "run.slice_z_m": 1.5, "run.wavefront_threshold_pa": 1000000.0, "run.frames": 30},
+   "coarser": "cells of 20 cm instead of 10 cm, so the pulse lasts 3 ms instead of 0.4 ms (a shorter one is too fine for these cells to carry); one horizontal section at 1.5 m is kept instead of the whole room.",
+   "view": {"zoom": 1.3},
+   "camera": [-60, 55]
+  },
+  {
+   "id": "battery",
+   "from": "examples/lab/battery_module.json",
+   "name": "Twelve battery cells warm up",
+   "kind": "Batteries",
+   "text": "Twelve LG M50 cells in parallel on a water-cooled plate, discharged at 2C: each cell's electrochemistry (the Doyle-Fuller-Newman model, Chen 2020 parameters) at its own temperature, and the heat conducted through the module into the coolant. One cell has a poorer weld than the rest.",
+   "change": {"module.grid_m": 0.003, "module.layers": 7, "run.dt_s": 20, "run.end_s": 1200, "run.frames": 30},
+   "coarser": "a thermal grid of 3 mm and 7 layers instead of 1.5 mm and 14, steps of 20 s instead of 10, and the first 20 minutes of the discharge instead of 2000 s; 30 frames instead of 60.",
+   "view": {},
+   "camera": [-55, 30]
+  }
+ ]
+}

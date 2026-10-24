@@ -1,0 +1,86 @@
+{
+ "title": "tensile bar, 1.6 x 1.6 mm gauge, heads resting in slotted plates",
+ "depth_mm": 1.6,
+ "supports": [
+  {
+   "name": "top_head",
+   "kind": "fixed",
+   "box": [
+    7.99,
+    -8.2,
+    -1,
+    8.01,
+    8.2,
+    2.6
+   ],
+   "facing": "+x",
+   "rig": "the head's step rests on a slotted plate hung from a beam"
+  }
+ ],
+ "load": {
+  "name": "bucket",
+  "box": [
+   59.41628548566856,
+   -8.2,
+   -1,
+   59.436285485668556,
+   8.2,
+   2.6
+  ],
+  "facing": "-x",
+  "direction": [
+   1,
+   0,
+   0
+  ],
+  "rig": "a second slotted plate on the lower head carries the bucket"
+ },
+ "regions": {
+  "gauge": [
+   21.71314274283428,
+   -10,
+   -1,
+   45.71314274283428,
+   10,
+   2.6
+  ],
+  "shoulder": [
+   9.0,
+   -10,
+   -1,
+   58.42628548566856,
+   10,
+   2.6
+  ],
+  "head": [
+   -1,
+   -10,
+   -1,
+   68.42628548566856,
+   10,
+   2.6
+  ]
+ },
+ "prints": {
+  "flat": {
+   "build_direction": "z",
+   "raster_reference": "x"
+  },
+  "upright": {
+   "build_direction": "x",
+   "raster_reference": "y"
+  }
+ },
+ "measure": "the gauge's width and thickness with calipers, to 0.01 mm",
+ "stl": "bar.stl",
+ "file_min_mm": [
+  0,
+  -7.2,
+  0.0
+ ],
+ "size_mm": [
+  67.42628548566856,
+  14.4,
+  1.6
+ ]
+}

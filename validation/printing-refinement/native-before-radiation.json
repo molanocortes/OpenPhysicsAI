@@ -1,0 +1,345 @@
+{
+  "date": "2026-10-03",
+  "reproduce": "make && python3 tools/demo_printing.py --capture --film",
+  "renderer_commit": "86f0701",
+  "demo_commit": "7f359e1",
+  "physics_commit": "9bf44fd",
+  "source": "Native macOS application; computed FDM and LPBF results, no generated imagery.",
+  "geometry": "Deterministic 24 x 6 x 12 mm open-cell structure from tools/demo_printing.py; 1124 one-mm hex elements, 1974 nodes.",
+  "physical_validation": "None. Demonstration material values and inferred process/strain inputs. This structure generated no supports.",
+  "models": {
+    "fdm": "Homogenised layer deposition, heat, temperature-dependent incremental (hypoelastic) stress accumulation with an instantaneous relaxation-temperature reset, and release; not deposited roads, bonding or a time-dependent viscoelastic law.",
+    "lpbf": "Elastic inherent strain, no yielding in this demonstration; no laser or melt-pool calculation."
+  },
+  "presentation": "Artificial key/fill lighting and neutral background. Data and geometry are computed. Clean views state field, units, time, range, true deformation scale and the section axis/fraction/flip (or OFF).",
+  "gif": {
+    "frames": 27,
+    "size": [
+      960,
+      600
+    ],
+    "durations_ms": [
+      180,
+      180,
+      180,
+      180,
+      180,
+      180,
+      180,
+      180,
+      180,
+      180,
+      180,
+      180,
+      180,
+      180,
+      180,
+      180,
+      180,
+      180,
+      180,
+      180,
+      180,
+      180,
+      180,
+      180,
+      180,
+      180,
+      1000
+    ],
+    "duration_ms": 5680,
+    "encoder": "Pillow 12.3.0, display resize and one shared 256-colour GIF palette; native full-resolution PNGs remain available from the reproduction command."
+  },
+  "before_after": {
+    "ui": "Same synthetic two-element result, UI comparison only.",
+    "lpbf_cut": "Same saved real LPBF wall result and camera. Before incorrectly spanned removed material with its original STL; after uses the active FE boundary. This separate wall is not the open-cell example."
+  },
+  "runs": [
+    {
+      "kind": "fdm",
+      "job_id": "job-20261003-034859-7423-1",
+      "inputs": {
+        "body": "structure",
+        "label": "FDM numerical demonstration, inferred settings",
+        "process": {
+          "layer_height": "1 mm",
+          "printed_layer_height": "0.2 mm",
+          "nozzle_temperature": "210 degC",
+          "bed_temperature": "60 degC",
+          "ambient_temperature": "30 degC",
+          "deposition_rate": "8 mm^3/s",
+          "min_layer_time": "8 s",
+          "cooldown_bed_on": "120 s",
+          "cooldown_bed_off": "300 s",
+          "thermal_substeps": 4,
+          "provenance": "inferred"
+        }
+      },
+      "summary": {
+        "analysis": "fff_print",
+        "model": {
+          "analysis": "fff_print",
+          "nodes": 1974,
+          "elements": 1124,
+          "mesh_hash": "19b64325515b39c8f916f9655ea7351974fc753e169177727161c6ae534f2b1f",
+          "element_size_mm": [
+            1,
+            1,
+            1
+          ],
+          "body": "structure",
+          "material": {
+            "id": "pla_generic_demo",
+            "name": "PLA, generic FFF filament (demonstration values)",
+            "status": "demonstration",
+            "glass_transition_c": 60,
+            "relaxation_c": 70
+          },
+          "process": {
+            "simulation_layer_mm": 1,
+            "nozzle_c": 210,
+            "bed_c": 60,
+            "ambient_c": 30,
+            "convection_w_m2k": 15,
+            "radiation": true,
+            "deposition_rate_mm3_s": 8,
+            "min_layer_time_s": 8,
+            "cooldown_bed_on_s": 120,
+            "cooldown_bed_off_s": 300,
+            "thermal_substeps_per_layer": 4,
+            "provenance": "inferred",
+            "store": "key_times"
+          },
+          "numerics": {
+            "solver": "auto",
+            "tolerance": 1e-10,
+            "skip_increment_below_k": 0,
+            "note": "auto factorises directly while the factor fits and falls back to the iterative solver when it does not; the iterative solver is faster on smaller models (measured on the truss bridge at 4 mm elements: 220 s automatic against 98 s iterative at a tolerance of 1e-8, peak stress within 2.6e-8 and warp within 3.7e-6 relative)"
+          }
+        },
+        "deposition": {
+          "simulation_layers": 12,
+          "layers_deposited": 12,
+          "elements_printed": 1124,
+          "elements_deposited_late": 0,
+          "elements_never_deposited": 0,
+          "rule": "material is deposited where it has a whole face on the bed or shares a face with printed material; an overhang waits for the layer that carries it, and a fragment that never connects is not printed",
+          "printed_volume_cm3": 1.1239999999999994
+        },
+        "timing": {
+          "print_time_h": 0.0395833333333333,
+          "total_machine_time_h": 0.15624999999999994,
+          "compute_seconds": 2.3573460000334308,
+          "compute_seconds_heat": 0.45932099979836494,
+          "compute_seconds_stress": 1.887265000375919,
+          "thermal_steps": 56,
+          "stress_increments": 27,
+          "increments_skipped": 0
+        },
+        "results": {
+          "peak_von_mises_on_bed_mpa": 9.75085701587196,
+          "peak_von_mises_released_mpa": 1.540661339472013,
+          "warp_z_min_mm": -0.050701636167667936,
+          "warp_z_max_mm": 0.0010759442022229995,
+          "worst_heat_balance_relative": 1.1179264696283902e-10,
+          "largest_bed_reaction_n": 2.708944180085382e-12,
+          "support_reaction_after_release_n": 1.3413714583521141e-11,
+          "release_check": "the support reaction after release is zero when the released part is self-equilibrated",
+          "heat_into_bed_j": 81.39571059937381,
+          "heat_into_bed_during_print_j": 81.38699278482656,
+          "supplied_nozzle_enthalpy_above_ambient_j": 448.78138678571383,
+          "deposition_enthalpy_correction_j": 98.36402685151909,
+          "stored_enthalpy_above_ambient_j": 3.123142173450414,
+          "heat_into_air_j": 364.26253401469273,
+          "enthalpy_removed_with_supports_j": 0,
+          "worst_deposition_balance_relative": 1.4212059827256448e-15,
+          "whole_print_heat_balance_relative": 4.017709511481522e-12,
+          "stress_field_definition": "element mean of eight Gauss-point von Mises values, not a Gauss-point maximum",
+          "stored_times": 27,
+          "last_stored_time": "the state after release from the bed"
+        },
+        "scope": {
+          "statement": "process simulation on demonstration material data; not a forecast for a particular printer or filament",
+          "is_forecast": false,
+          "layer_lumping": {
+            "simulation_layer_mm": 1,
+            "printed_layer_mm": 0.2,
+            "printed_layers_per_simulation_layer": 5,
+            "toolpath_within_a_layer": "not modelled: a simulation layer is activated at once with nozzle enthalpy; missing energy at conforming nodes is delivered in the first thermal substep",
+            "deposition_timing": "the enthalpy correction is a finite heat pulse during the first substep; local deposition temperatures require time refinement"
+          },
+          "creep_below_relaxation_temperature": "not modelled",
+          "bed_stresses_are_upper_bound": true,
+          "bed_stresses_note": "the part is held on the bed near the glass transition for the whole print; without creep the stress that builds up there is an upper bound",
+          "material": {
+            "id": "pla_generic_demo",
+            "status": "demonstration",
+            "measured": false
+          },
+          "compared_with_measurement": false,
+          "not_modelled": [
+            "toolpath within a layer",
+            "creep below the relaxation temperature",
+            "plasticity",
+            "raster anisotropy and interlayer strength",
+            "crystallisation shrinkage",
+            "resolved roads and inter-road thermal contact resistance",
+            "gravity",
+            "adhesion failure during the print"
+          ],
+          "use": "compare designs, process settings and trends; do not certify a part with these numbers"
+        }
+      },
+      "elapsed_seconds_under_concurrent_load": 2.3638343339553103,
+      "results_sha256": "bfa7fd1ef1a18e6ce624cb1665d2a6178155e2b3513becc694b6c239f25f0308"
+    },
+    {
+      "kind": "lpbf",
+      "job_id": "job-20261003-034902-7423-2",
+      "inputs": {
+        "body": "structure",
+        "build_orientation": "X",
+        "layer_thickness_sim": "1 mm",
+        "inherent_strain": {
+          "exx": -0.001,
+          "eyy": -0.002,
+          "ezz": -0.01,
+          "provenance": "inferred",
+          "source": "demonstration tensor, not a calibration"
+        },
+        "material": {
+          "youngs_modulus": "215000 MPa",
+          "poissons_ratio": 0.3,
+          "provenance": "inferred"
+        },
+        "supports": {
+          "stiffness_fraction": 0.1,
+          "provenance": "assumed",
+          "source": "demonstration stiffness, not measured",
+          "remove": true
+        },
+        "label": "LPBF elastic numerical demonstration, inferred inputs"
+      },
+      "summary": {
+        "analysis": "lpbf_build",
+        "model": {
+          "analysis": "lpbf_build",
+          "mode": "layer_by_layer",
+          "nodes": 1974,
+          "elements": 1124,
+          "mesh_hash": "19b64325515b39c8f916f9655ea7351974fc753e169177727161c6ae534f2b1f",
+          "element_size_mm": [
+            1,
+            1,
+            1
+          ],
+          "body": "structure",
+          "layer_thickness_mm": 1,
+          "build_orientation": "X",
+          "inherent_strain": {
+            "exx": -0.001,
+            "eyy": -0.002,
+            "ezz": -0.01,
+            "frame": "machine frame, as given",
+            "applied_to_model_axes": [
+              -0.001,
+              -0.002,
+              -0.01
+            ],
+            "source": "demonstration tensor, not a calibration",
+            "provenance": "inferred"
+          },
+          "material": {
+            "youngs_modulus_mpa": 215000,
+            "poissons_ratio": 0.3,
+            "provenance": "inferred",
+            "note": "a body loaded only by an eigenstrain has a displacement field that does not depend on the modulus; it sets the stresses"
+          }
+        },
+        "temperature": "not modelled",
+        "results": {
+          "tip_uz_before_cut_mm": 0.001515560407138745,
+          "tip_uz_after_cut_mm": 0.001515560407138745,
+          "springback_mm": 0,
+          "tip_definition": "max u_z over the nodes at the free end (largest x), +z up",
+          "free_end_x_mm": 12,
+          "peak_von_mises_before_cut_mpa": 690.733555315652,
+          "peak_von_mises_after_cut_mpa": 690.733555315652,
+          "stress_field_definition": "element mean of eight Gauss-point von Mises values, not a Gauss-point maximum",
+          "layers": 12,
+          "stored_times": 12,
+          "solves": 12,
+          "seconds": 0.6614479999989271,
+          "equilibrium_error_last_solve": 8.018924425639793e-16,
+          "max_displacement_before_cut_mm": 0.02007231734939147,
+          "max_displacement_after_cut_mm": 0.02007231734939147,
+          "max_displacement_definition": "largest total displacement over the nodes of the part (supports excluded), from the plate's reference",
+          "largest_plate_reaction_n": 392.3595921501536
+        },
+        "scope": {
+          "statement": "inherent-strain process simulation: the strain is a declared process input, not a material property. Predictive use requires calibration for the relevant process and geometry; inspect the recorded provenance, which may be inferred demonstration values",
+          "is_forecast": false,
+          "method": "layer-by-layer activation, each layer stress-free on the deformed part, then its eigenstrain, then equilibrium",
+          "plasticity": false,
+          "temperature_field": false,
+          "supports_modelled": false,
+          "compared_with_measurement": false,
+          "not_modelled": [
+            "the thermal history and the melt pool",
+            "plasticity and annealing",
+            "powder conduction",
+            "support structures other than the geometry itself",
+            "contact after the cut",
+            "residual stress from the cutting process"
+          ],
+          "use": "compare strategies, orientations and geometries; a number becomes a claim only against a measurement under a protocol written before the run"
+        }
+      },
+      "elapsed_seconds_under_concurrent_load": 0.6666005830047652,
+      "results_sha256": "f9be53753d9b3a4288e28533f563159ad368d8458f5e82648f45849b29e3541f"
+    }
+  ],
+  "assets": {
+    "fdm-clean.png": {
+      "bytes": 1029015,
+      "sha256": "4858edbedafe38364394fc9a44afc976cc7a8f366649077697cba1422549ce31"
+    },
+    "fdm-replay.gif": {
+      "bytes": 2438134,
+      "sha256": "561bb535922bf69d9ba966d341a04bcf6df6ec0391c4f211bf1afb3ac0b98489"
+    },
+    "lpbf-cut-after.png": {
+      "bytes": 820917,
+      "sha256": "59f9d78593f87e107f578d0191a9021831b3d4a177ce5902164aa9457bb4b698"
+    },
+    "lpbf-cut-before.png": {
+      "bytes": 909180,
+      "sha256": "d61d248fc1d4be32e6ef1b19104dbdb03d41732603e53689ff72533bd8fe0b47"
+    },
+    "lpbf-section.png": {
+      "bytes": 1016128,
+      "sha256": "d1358c942d254a8bb5d4b210caa50e449d9573c18c19b08cd1599da7deed1d0d"
+    },
+    "ui-after.png": {
+      "bytes": 816067,
+      "sha256": "d7b83e81b9c1be8169d249de5bb784556b4e1af8d3f0661c051de52c3864d614"
+    },
+    "ui-before.png": {
+      "bytes": 836116,
+      "sha256": "fc70c772dcbfa762e6f293e6c8755084e562541b41135e4935aed628fc422a0f"
+    }
+  },
+  "recapture": "Final clean-view stills and the film reuse the same saved results and camera; no physical fields or result hashes changed. Before/after comparisons remain their original captures.",
+  "recaptured_assets": [
+    "fdm-clean.png",
+    "lpbf-section.png",
+    "fdm-replay.gif"
+  ],
+  "historical_scope_corrections": {
+    "bed_stresses_are_upper_bound": {
+      "original_retained": true,
+      "current_value": false,
+      "reason": "Omitting creep does not establish a general local stress bound under heterogeneous temperature-dependent stiffness and stress redistribution. Historical job summaries and result hashes are preserved."
+    }
+  }
+}

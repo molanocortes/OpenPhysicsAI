@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="240" viewBox="0 0 1280 240" font-family="-apple-system, 'Segoe UI', Inter, Helvetica, Arial, sans-serif" role="img">
+<title>Flag 12: The storm that surprised everyone</title>
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#130c02"/><stop offset="1" stop-color="#3d2b08"/></linearGradient>
+<linearGradient id="shine" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffffff" stop-opacity="0"/><stop offset="0.5" stop-color="#ffffff" stop-opacity="0.10"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+<clipPath id="card"><rect x="1" y="1" width="1278" height="238" rx="22"/></clipPath>
+<radialGradient id="core-flag" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#1a4470"/><stop offset="1" stop-color="#040a14"/></radialGradient>
+<radialGradient id="core-semi-holy-grail" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#444d5e"/><stop offset="1" stop-color="#05070c"/></radialGradient>
+<radialGradient id="core-holy-grail" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#6b4e12"/><stop offset="1" stop-color="#0b0702"/></radialGradient>
+<radialGradient id="core-trial" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#1c4d2e"/><stop offset="1" stop-color="#030a05"/></radialGradient>
+<filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
+</defs>
+<g clip-path="url(#card)"><rect width="1280" height="240" fill="url(#bg)"/>
+<circle cx="1253.3" cy="166.4" r="1.2" fill="#dfe8ff" opacity="0.64"><animate attributeName="opacity" values="0.64;0.05;0.64" dur="3.8s" begin="2.3s" repeatCount="indefinite"/></circle>
+<circle cx="784.8" cy="86.0" r="0.9" fill="#dfe8ff" opacity="0.39"><animate attributeName="opacity" values="0.39;0.05;0.39" dur="5.2s" begin="4.0s" repeatCount="indefinite"/></circle>
+<circle cx="1251.2" cy="235.4" r="0.9" fill="#dfe8ff" opacity="0.20"><animate attributeName="opacity" values="0.20;0.05;0.20" dur="4.4s" begin="0.7s" repeatCount="indefinite"/></circle>
+<circle cx="620.3" cy="147.0" r="0.9" fill="#dfe8ff" opacity="0.16"><animate attributeName="opacity" values="0.16;0.05;0.16" dur="2.6s" begin="2.8s" repeatCount="indefinite"/></circle>
+<circle cx="1261.2" cy="67.0" r="0.9" fill="#dfe8ff" opacity="0.25"><animate attributeName="opacity" values="0.25;0.05;0.25" dur="4.2s" begin="4.6s" repeatCount="indefinite"/></circle>
+<circle cx="108.5" cy="88.7" r="0.7" fill="#dfe8ff" opacity="0.23"><animate attributeName="opacity" values="0.23;0.05;0.23" dur="4.1s" begin="1.5s" repeatCount="indefinite"/></circle>
+<circle cx="1077.0" cy="192.3" r="0.7" fill="#dfe8ff" opacity="0.49"><animate attributeName="opacity" values="0.49;0.05;0.49" dur="3.3s" begin="1.3s" repeatCount="indefinite"/></circle>
+<circle cx="947.0" cy="130.7" r="0.9" fill="#dfe8ff" opacity="0.31"><animate attributeName="opacity" values="0.31;0.05;0.31" dur="5.9s" begin="1.2s" repeatCount="indefinite"/></circle>
+<circle cx="561.7" cy="37.8" r="0.7" fill="#dfe8ff" opacity="0.61"><animate attributeName="opacity" values="0.61;0.05;0.61" dur="4.6s" begin="4.5s" repeatCount="indefinite"/></circle>
+<circle cx="995.2" cy="156.2" r="0.5" fill="#dfe8ff" opacity="0.66"><animate attributeName="opacity" values="0.66;0.05;0.66" dur="2.8s" begin="4.1s" repeatCount="indefinite"/></circle>
+<circle cx="136.6" cy="194.8" r="0.9" fill="#dfe8ff" opacity="0.54"/>
+<circle cx="867.7" cy="134.7" r="1.2" fill="#dfe8ff" opacity="0.55"/>
+<circle cx="357.2" cy="229.2" r="0.5" fill="#dfe8ff" opacity="0.22"/>
+<circle cx="575.8" cy="118.1" r="0.7" fill="#dfe8ff" opacity="0.64"/>
+<circle cx="758.0" cy="225.5" r="0.7" fill="#dfe8ff" opacity="0.50"/>
+<circle cx="348.7" cy="219.5" r="0.5" fill="#dfe8ff" opacity="0.20"/>
+<circle cx="892.6" cy="162.7" r="0.5" fill="#dfe8ff" opacity="0.28"/>
+<circle cx="277.7" cy="152.5" r="1.2" fill="#dfe8ff" opacity="0.67"/>
+<circle cx="518.3" cy="14.7" r="1.2" fill="#dfe8ff" opacity="0.23"/>
+<circle cx="209.0" cy="134.6" r="0.7" fill="#dfe8ff" opacity="0.53"/>
+<circle cx="710.4" cy="24.3" r="0.7" fill="#dfe8ff" opacity="0.24"/>
+<circle cx="570.9" cy="115.3" r="0.5" fill="#dfe8ff" opacity="0.64"/>
+<circle cx="374.3" cy="236.8" r="0.5" fill="#dfe8ff" opacity="0.64"/>
+<circle cx="1229.2" cy="206.5" r="0.5" fill="#dfe8ff" opacity="0.39"/>
+<circle cx="108.5" cy="155.8" r="0.5" fill="#dfe8ff" opacity="0.37"/>
+<circle cx="1109.6" cy="214.9" r="0.7" fill="#dfe8ff" opacity="0.44"/>
+<circle cx="994.0" cy="8.8" r="0.9" fill="#dfe8ff" opacity="0.55"/>
+<circle cx="1083.6" cy="37.9" r="0.9" fill="#dfe8ff" opacity="0.34"/>
+<circle cx="277.6" cy="177.0" r="0.5" fill="#dfe8ff" opacity="0.30"/>
+<circle cx="510.7" cy="76.4" r="1.2" fill="#dfe8ff" opacity="0.18"/>
+<circle cx="809.1" cy="114.3" r="0.9" fill="#dfe8ff" opacity="0.65"/>
+<circle cx="905.9" cy="212.3" r="0.9" fill="#dfe8ff" opacity="0.53"/>
+<circle cx="699.1" cy="136.4" r="0.9" fill="#dfe8ff" opacity="0.66"/>
+<circle cx="905.7" cy="101.2" r="0.9" fill="#dfe8ff" opacity="0.21"/>
+<circle cx="565.5" cy="232.6" r="0.5" fill="#dfe8ff" opacity="0.46"/>
+<circle cx="517.1" cy="130.6" r="0.9" fill="#dfe8ff" opacity="0.31"/>
+<circle cx="241.3" cy="227.6" r="0.5" fill="#dfe8ff" opacity="0.42"/>
+<circle cx="978.8" cy="216.6" r="0.9" fill="#dfe8ff" opacity="0.41"/>
+<circle cx="527.9" cy="177.6" r="1.2" fill="#dfe8ff" opacity="0.34"/>
+<circle cx="792.7" cy="72.3" r="0.7" fill="#dfe8ff" opacity="0.53"/>
+<circle cx="897.4" cy="110.5" r="0.9" fill="#dfe8ff" opacity="0.35"/>
+<circle cx="771.2" cy="151.0" r="0.7" fill="#dfe8ff" opacity="0.34"/>
+<circle cx="185.7" cy="128.6" r="0.9" fill="#dfe8ff" opacity="0.58"/>
+<circle cx="605.3" cy="50.0" r="0.9" fill="#dfe8ff" opacity="0.45"/>
+<circle cx="686.3" cy="53.5" r="0.9" fill="#dfe8ff" opacity="0.50"/>
+<circle cx="438.3" cy="164.4" r="0.5" fill="#dfe8ff" opacity="0.28"/>
+<circle cx="3.6" cy="7.9" r="0.7" fill="#dfe8ff" opacity="0.27"/>
+<circle cx="957.4" cy="95.7" r="0.7" fill="#dfe8ff" opacity="0.67"/>
+<circle cx="1066.7" cy="229.1" r="0.7" fill="#dfe8ff" opacity="0.64"/>
+<circle cx="436.0" cy="66.6" r="0.9" fill="#dfe8ff" opacity="0.46"/>
+<circle cx="682.0" cy="16.4" r="0.7" fill="#dfe8ff" opacity="0.34"/>
+<circle cx="603.3" cy="127.9" r="1.2" fill="#dfe8ff" opacity="0.62"/>
+<circle cx="62.4" cy="47.7" r="1.2" fill="#dfe8ff" opacity="0.25"/>
+<circle cx="544.1" cy="155.1" r="0.7" fill="#dfe8ff" opacity="0.39"/>
+<circle cx="560.5" cy="83.8" r="1.2" fill="#dfe8ff" opacity="0.40"/>
+<circle cx="322.7" cy="146.3" r="0.9" fill="#dfe8ff" opacity="0.61"/>
+<circle cx="763.2" cy="225.6" r="0.5" fill="#dfe8ff" opacity="0.20"/>
+<circle cx="1172.8" cy="94.3" r="1.2" fill="#dfe8ff" opacity="0.34"/>
+<circle cx="977.9" cy="31.4" r="0.9" fill="#dfe8ff" opacity="0.65"/>
+<circle cx="411.1" cy="193.6" r="1.2" fill="#dfe8ff" opacity="0.49"/>
+<rect x="-420" y="0" width="360" height="240" fill="url(#shine)" transform="skewX(-18)"><animate attributeName="x" from="-420" to="1500" dur="7s" repeatCount="indefinite"/></rect>
+</g>
+<rect x="1" y="1" width="1278" height="238" rx="22" fill="none" stroke="#f2c14e" stroke-opacity="0.4" stroke-width="1.5"/>
+<circle cx="128" cy="120" r="88" fill="#f2c14e" filter="url(#blur)" opacity="0.28"/>
+<circle cx="128" cy="120" r="80" fill="url(#core-holy-grail)"/>
+<circle cx="128" cy="120" r="79.2" fill="none" stroke="#f2c14e" stroke-width="1.5" stroke-opacity="0.75"/>
+<g transform="translate(128.0 120.0) scale(1.250)">
+<g><path d="M 4.9 0.0 L 6.5 -0.7 L 8.0 -1.6 L 9.4 -2.9 L 10.5 -4.5 L 11.5 -6.3 L 12.2 -8.3 L 12.5 -10.5 L 12.5 -12.9 L 12.2 -15.4 L 11.5 -17.9 L 10.4 -20.4 L 8.9 -22.9 L 7.0 -25.2 L 4.7 -27.4 L 2.1 -29.4 L -0.9 -31.1 L -4.2 -32.5 L -7.8 -33.5 L -11.6 -34.1 L -15.7 -34.3 L -19.8 -33.9 L -24.1 -33.1 L -28.4 -31.8 L -32.6 -29.9 L -36.7 -27.4 L -40.7 -24.5 L -41.6 -25.0 L -37.8 -28.2 L -33.8 -30.9 L -29.6 -33.1 L -25.3 -34.8 L -21.0 -36.0 L -16.8 -36.7 L -12.6 -36.9 L -8.5 -36.6 L -4.7 -35.9 L -1.0 -34.9 L 2.4 -33.4 L 5.5 -31.7 L 8.2 -29.7 L 10.7 -27.4 L 12.7 -25.0 L 14.4 -22.5 L 15.8 -19.9 L 16.7 -17.2 L 17.3 -14.6 L 17.6 -12.0 L 17.5 -9.5 L 17.1 -7.2 L 16.4 -5.1 L 15.5 -3.1 L 14.4 -1.4 L 13.1 0.0 Z" fill="#a9e4ff" opacity="0.95"/><path d="M 2.5 4.2 L 3.8 5.3 L 5.4 6.1 L 7.2 6.7 L 9.1 6.9 L 11.2 6.8 L 13.3 6.4 L 15.4 5.6 L 17.5 4.4 L 19.4 2.9 L 21.3 1.0 L 22.9 -1.2 L 24.3 -3.7 L 25.4 -6.6 L 26.1 -9.6 L 26.5 -12.9 L 26.5 -16.3 L 26.0 -19.9 L 25.1 -23.5 L 23.7 -27.1 L 21.8 -30.7 L 19.5 -34.2 L 16.6 -37.4 L 13.3 -40.4 L 9.6 -43.2 L 5.4 -45.5 L 0.9 -47.5 L 0.9 -48.5 L 5.5 -46.8 L 9.9 -44.7 L 13.9 -42.2 L 17.5 -39.3 L 20.6 -36.2 L 23.4 -32.9 L 25.6 -29.3 L 27.4 -25.7 L 28.8 -22.0 L 29.7 -18.3 L 30.1 -14.7 L 30.2 -11.1 L 29.8 -7.7 L 29.1 -4.5 L 28.0 -1.5 L 26.7 1.3 L 25.1 3.7 L 23.3 5.9 L 21.3 7.7 L 19.2 9.2 L 17.0 10.4 L 14.8 11.2 L 12.6 11.7 L 10.5 11.9 L 8.4 11.7 L 6.6 11.3 Z" fill="#f3f6fb" opacity="0.70"/><path d="M -2.4 4.2 L -2.7 6.0 L -2.6 7.8 L -2.2 9.6 L -1.4 11.4 L -0.3 13.1 L 1.1 14.7 L 2.9 16.1 L 4.9 17.3 L 7.2 18.3 L 9.8 18.9 L 12.5 19.2 L 15.4 19.2 L 18.4 18.7 L 21.4 17.8 L 24.4 16.5 L 27.4 14.8 L 30.2 12.6 L 32.9 10.0 L 35.4 7.0 L 37.5 3.6 L 39.3 -0.2 L 40.7 -4.3 L 41.7 -8.7 L 42.2 -13.3 L 42.1 -18.1 L 41.6 -23.0 L 42.4 -23.5 L 43.3 -18.6 L 43.7 -13.8 L 43.5 -9.1 L 42.8 -4.5 L 41.7 -0.2 L 40.2 3.8 L 38.2 7.5 L 36.0 10.9 L 33.5 13.9 L 30.7 16.6 L 27.8 18.8 L 24.7 20.6 L 21.6 22.0 L 18.4 23.0 L 15.3 23.5 L 12.3 23.7 L 9.3 23.6 L 6.5 23.1 L 4.0 22.3 L 1.6 21.2 L -0.5 19.9 L -2.3 18.4 L -3.8 16.8 L -5.0 15.0 L -5.9 13.2 L -6.5 11.3 Z" fill="#a9e4ff" opacity="0.95"/><path d="M -4.9 0.0 L -6.5 0.7 L -8.0 1.6 L -9.4 2.9 L -10.5 4.5 L -11.5 6.3 L -12.2 8.3 L -12.5 10.5 L -12.5 12.9 L -12.2 15.4 L -11.5 17.9 L -10.4 20.4 L -8.9 22.9 L -7.0 25.2 L -4.7 27.4 L -2.1 29.4 L 0.9 31.1 L 4.2 32.5 L 7.8 33.5 L 11.6 34.1 L 15.7 34.3 L 19.8 33.9 L 24.1 33.1 L 28.4 31.8 L 32.6 29.9 L 36.7 27.4 L 40.7 24.5 L 41.6 25.0 L 37.8 28.2 L 33.8 30.9 L 29.6 33.1 L 25.3 34.8 L 21.0 36.0 L 16.8 36.7 L 12.6 36.9 L 8.5 36.6 L 4.7 35.9 L 1.0 34.9 L -2.4 33.4 L -5.5 31.7 L -8.2 29.7 L -10.7 27.4 L -12.7 25.0 L -14.4 22.5 L -15.8 19.9 L -16.7 17.2 L -17.3 14.6 L -17.6 12.0 L -17.5 9.5 L -17.1 7.2 L -16.4 5.1 L -15.5 3.1 L -14.4 1.4 L -13.1 0.0 Z" fill="#f3f6fb" opacity="0.70"/><path d="M -2.5 -4.2 L -3.8 -5.3 L -5.4 -6.1 L -7.2 -6.7 L -9.1 -6.9 L -11.2 -6.8 L -13.3 -6.4 L -15.4 -5.6 L -17.5 -4.4 L -19.4 -2.9 L -21.3 -1.0 L -22.9 1.2 L -24.3 3.7 L -25.4 6.6 L -26.1 9.6 L -26.5 12.9 L -26.5 16.3 L -26.0 19.9 L -25.1 23.5 L -23.7 27.1 L -21.8 30.7 L -19.5 34.2 L -16.6 37.4 L -13.3 40.4 L -9.6 43.2 L -5.4 45.5 L -0.9 47.5 L -0.9 48.5 L -5.5 46.8 L -9.9 44.7 L -13.9 42.2 L -17.5 39.3 L -20.6 36.2 L -23.4 32.9 L -25.6 29.3 L -27.4 25.7 L -28.8 22.0 L -29.7 18.3 L -30.1 14.7 L -30.2 11.1 L -29.8 7.7 L -29.1 4.5 L -28.0 1.5 L -26.7 -1.3 L -25.1 -3.7 L -23.3 -5.9 L -21.3 -7.7 L -19.2 -9.2 L -17.0 -10.4 L -14.8 -11.2 L -12.6 -11.7 L -10.5 -11.9 L -8.4 -11.7 L -6.6 -11.3 Z" fill="#a9e4ff" opacity="0.95"/><path d="M 2.5 -4.2 L 2.7 -6.0 L 2.6 -7.8 L 2.2 -9.6 L 1.4 -11.4 L 0.3 -13.1 L -1.1 -14.7 L -2.9 -16.1 L -4.9 -17.3 L -7.2 -18.3 L -9.8 -18.9 L -12.5 -19.2 L -15.4 -19.2 L -18.4 -18.7 L -21.4 -17.8 L -24.4 -16.5 L -27.4 -14.8 L -30.2 -12.6 L -32.9 -10.0 L -35.4 -7.0 L -37.5 -3.6 L -39.3 0.2 L -40.7 4.3 L -41.7 8.7 L -42.2 13.3 L -42.1 18.1 L -41.6 23.0 L -42.4 23.5 L -43.3 18.6 L -43.7 13.8 L -43.5 9.1 L -42.8 4.5 L -41.7 0.2 L -40.2 -3.8 L -38.2 -7.5 L -36.0 -10.9 L -33.5 -13.9 L -30.7 -16.6 L -27.8 -18.8 L -24.7 -20.6 L -21.6 -22.0 L -18.4 -23.0 L -15.3 -23.5 L -12.3 -23.7 L -9.3 -23.6 L -6.5 -23.1 L -4.0 -22.3 L -1.6 -21.2 L 0.5 -19.9 L 2.3 -18.4 L 3.8 -16.8 L 5.0 -15.0 L 5.9 -13.2 L 6.6 -11.3 Z" fill="#f3f6fb" opacity="0.70"/><circle r="12" fill="#a9e4ff" opacity="0.55"/><animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="18s" repeatCount="indefinite"/></g>
+<circle r="4.5" fill="#050a14"/><circle r="4.5" fill="none" stroke="#f3f6fb" stroke-width="1.4"/>
+</g>
+<rect x="262" y="30" width="144" height="28" rx="14" fill="#f2c14e" fill-opacity="0.12" stroke="#f2c14e" stroke-opacity="0.55"/>
+<text x="334" y="49" text-anchor="middle" fill="#f2c14e" font-size="12" font-weight="700" letter-spacing="2.2">HOLY GRAIL 12</text>
+<rect x="417" y="30" width="344" height="28" rx="14" fill="#b9c4d6" fill-opacity="0.12" stroke="#b9c4d6" stroke-opacity="0.55"/>
+<text x="590" y="49" text-anchor="middle" fill="#b9c4d6" font-size="12" font-weight="700" letter-spacing="2.2">STONE · THE ATMOSPHERE AND THE OCEAN</text>
+<text x="262" y="112" fill="#f4f7fb" font-size="32.5" font-weight="700">The storm that surprised everyone</text>
+<text x="262" y="146" fill="#a9b5c8" font-size="16.7">Hurricane Otis, 2023: from tropical storm to Category 5 in a day</text>
+<rect x="262" y="176" width="145" height="30" rx="15" fill="#8fa3c0" fill-opacity="0.14" stroke="#8fa3c0" stroke-opacity="0.7"/>
+<text x="334" y="196" text-anchor="middle" fill="#8fa3c0" font-size="13" font-weight="700" letter-spacing="1.8">IN PREPARATION</text>
+<rect x="910" y="22" width="346" height="196" rx="16" fill="#000000" fill-opacity="0.26" stroke="#ffffff" stroke-opacity="0.06"/>
+<text x="934" y="62" fill="#7e8aa0" font-size="11.5" font-weight="700" letter-spacing="2.4">DIFFICULTY</text>
+<text x="1232" y="64" text-anchor="end" fill="#f2c14e" font-size="26" font-weight="700">∞</text>
+<text x="934" y="106" fill="#7e8aa0" font-size="11.5" font-weight="700" letter-spacing="2.4">ATTEMPTS</text>
+<text x="1232" y="108" text-anchor="end" fill="#e9eef6" font-size="19" font-weight="700">0</text>
+<text x="934" y="150" fill="#7e8aa0" font-size="11.5" font-weight="700" letter-spacing="2.4">CHALLENGERS</text>
+<text x="1232" y="152" text-anchor="end" fill="#e9eef6" font-size="19" font-weight="700">0</text>
+<text x="934" y="194" fill="#7e8aa0" font-size="11.5" font-weight="700" letter-spacing="2.4">RECORD</text>
+<text x="1232" y="196" text-anchor="end" fill="#e9eef6" font-size="19" font-weight="700">unclaimed</text>
+</svg>

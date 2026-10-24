@@ -1,0 +1,172 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="700" viewBox="0 0 1280 700" font-family="-apple-system, 'Segoe UI', Inter, Helvetica, Arial, sans-serif" role="img">
+<title>The thirteen flags</title>
+<defs>
+<radialGradient id="lift" cx="50%" cy="42%" r="70%"><stop offset="0" stop-color="#11151d"/><stop offset="1" stop-color="#000000"/></radialGradient>
+<radialGradient id="core-flag" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#1a4470"/><stop offset="1" stop-color="#040a14"/></radialGradient>
+<radialGradient id="core-semi-holy-grail" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#444d5e"/><stop offset="1" stop-color="#05070c"/></radialGradient>
+<radialGradient id="core-holy-grail" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#6b4e12"/><stop offset="1" stop-color="#0b0702"/></radialGradient>
+<radialGradient id="core-trial" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#1c4d2e"/><stop offset="1" stop-color="#030a05"/></radialGradient>
+<filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
+</defs>
+<rect width="1280" height="700" rx="28" fill="url(#lift)"/>
+<text x="640" y="104" text-anchor="middle" fill="#f5f5f7" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="60" font-weight="700" letter-spacing="-1.8">Thirteen flags. <tspan fill="#86868b">Capture one.</tspan></text>
+<circle cx="136" cy="250" r="58" fill="url(#core-flag)"/>
+<circle cx="136" cy="250" r="57.2" fill="none" stroke="#5cc8ff" stroke-width="1.5" stroke-opacity="0.75"/>
+<g transform="translate(136.0 250.0) scale(0.906)">
+<line x1="-48" y1="-24" x2="44" y2="-24" stroke="#5ce1e6" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 7" opacity="0.45"><animate attributeName="stroke-dashoffset" from="24" to="0" dur="1.2s" repeatCount="indefinite"/></line>
+<line x1="-48" y1="-34" x2="44" y2="-34" stroke="#5ce1e6" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 7" opacity="0.45"><animate attributeName="stroke-dashoffset" from="24" to="0" dur="1.2s" repeatCount="indefinite"/></line>
+<line x1="-47" y1="17" x2="47" y2="17" stroke="#f3f6fb" stroke-width="2" opacity="0.35"/>
+<path d="M -42 9 L -42 -3 Q -42 -12 -33 -12 L 6 -12 L 22 -5 L 22 9 Z" fill="#f3f6fb"/>
+<path d="M -31 9 L -31 17 M 12 9 L 12 17" stroke="#f3f6fb" stroke-width="3" stroke-linecap="round"/>
+<path d="M 6 -13 Q 26 -14 44 -6" fill="none" stroke="#5ce1e6" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 5" opacity="0.8"><animate attributeName="stroke-dashoffset" from="18" to="0" dur="0.9s" repeatCount="indefinite"/></path>
+<g opacity="0"><path d="M 39.5 -5.0 L 39.1 -6.7 L 38.3 -8.2 L 37.3 -9.5 L 36.1 -10.5 L 34.7 -11.2 L 33.3 -11.6 L 31.9 -11.7 L 30.5 -11.4 L 29.3 -11.0 L 28.2 -10.3 L 27.4 -9.4 L 26.8 -8.4 L 26.4 -7.4 L 26.2 -6.3 L 26.3 -5.3 L 26.6 -4.4 L 27.1 -3.6 L 27.7 -2.9 L 28.4 -2.5 L 29.1 -2.2 L 29.8 -2.1 L 30.4 -2.2 L 31.0 -2.4 L 31.5 -2.7 L 31.9 -3.1 L 32.1 -3.5" fill="none" stroke="#5ce1e6" stroke-width="2.8" stroke-linecap="round"/><path d="M 39.5 9.0 L 39.1 10.7 L 38.3 12.2 L 37.3 13.5 L 36.1 14.5 L 34.7 15.2 L 33.3 15.6 L 31.9 15.7 L 30.5 15.4 L 29.3 15.0 L 28.2 14.3 L 27.4 13.4 L 26.8 12.4 L 26.4 11.4 L 26.2 10.3 L 26.3 9.3 L 26.6 8.4 L 27.1 7.6 L 27.7 6.9 L 28.4 6.5 L 29.1 6.2 L 29.8 6.1 L 30.4 6.2 L 31.0 6.4 L 31.5 6.7 L 31.9 7.1 L 32.1 7.5" fill="none" stroke="#5ce1e6" stroke-width="2.8" stroke-linecap="round"/><animateTransform attributeName="transform" type="translate" from="0 0" to="18 0" dur="2.4s" begin="0.00s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.6;1" dur="2.4s" begin="0.00s" repeatCount="indefinite"/></g>
+<g opacity="0"><path d="M 39.5 -5.0 L 39.1 -6.7 L 38.3 -8.2 L 37.3 -9.5 L 36.1 -10.5 L 34.7 -11.2 L 33.3 -11.6 L 31.9 -11.7 L 30.5 -11.4 L 29.3 -11.0 L 28.2 -10.3 L 27.4 -9.4 L 26.8 -8.4 L 26.4 -7.4 L 26.2 -6.3 L 26.3 -5.3 L 26.6 -4.4 L 27.1 -3.6 L 27.7 -2.9 L 28.4 -2.5 L 29.1 -2.2 L 29.8 -2.1 L 30.4 -2.2 L 31.0 -2.4 L 31.5 -2.7 L 31.9 -3.1 L 32.1 -3.5" fill="none" stroke="#5ce1e6" stroke-width="2.8" stroke-linecap="round"/><path d="M 39.5 9.0 L 39.1 10.7 L 38.3 12.2 L 37.3 13.5 L 36.1 14.5 L 34.7 15.2 L 33.3 15.6 L 31.9 15.7 L 30.5 15.4 L 29.3 15.0 L 28.2 14.3 L 27.4 13.4 L 26.8 12.4 L 26.4 11.4 L 26.2 10.3 L 26.3 9.3 L 26.6 8.4 L 27.1 7.6 L 27.7 6.9 L 28.4 6.5 L 29.1 6.2 L 29.8 6.1 L 30.4 6.2 L 31.0 6.4 L 31.5 6.7 L 31.9 7.1 L 32.1 7.5" fill="none" stroke="#5ce1e6" stroke-width="2.8" stroke-linecap="round"/><animateTransform attributeName="transform" type="translate" from="0 0" to="18 0" dur="2.4s" begin="1.20s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.6;1" dur="2.4s" begin="1.20s" repeatCount="indefinite"/></g>
+</g>
+<text x="136" y="346" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="600" fill="#f5f5f7"><tspan fill="#86868b" font-weight="500">01</tspan>  Car wake</text>
+<text x="136" y="368" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" fill="#86868b">Turbulence</text>
+<circle cx="280" cy="250" r="58" fill="url(#core-flag)"/>
+<circle cx="280" cy="250" r="57.2" fill="none" stroke="#5cc8ff" stroke-width="1.5" stroke-opacity="0.75"/>
+<g transform="translate(280.0 250.0) scale(0.906)">
+<defs><radialGradient id="g-reentry-fire-ii-h" cx="30%" cy="50%" r="70%"><stop offset="0" stop-color="#fff6d8"/><stop offset="0.45" stop-color="#ff8c42"/><stop offset="1" stop-color="#ff8c42" stop-opacity="0"/></radialGradient></defs>
+<line x1="-50" y1="-36" x2="-30" y2="-36" stroke="#f3f6fb" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 7" opacity="0.50"><animate attributeName="stroke-dashoffset" from="24" to="0" dur="0.8s" repeatCount="indefinite"/></line>
+<line x1="-50" y1="-18" x2="-30" y2="-18" stroke="#f3f6fb" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 7" opacity="0.50"><animate attributeName="stroke-dashoffset" from="24" to="0" dur="0.8s" repeatCount="indefinite"/></line>
+<line x1="-50" y1="18" x2="-30" y2="18" stroke="#f3f6fb" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 7" opacity="0.50"><animate attributeName="stroke-dashoffset" from="24" to="0" dur="0.8s" repeatCount="indefinite"/></line>
+<line x1="-50" y1="36" x2="-30" y2="36" stroke="#f3f6fb" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 7" opacity="0.50"><animate attributeName="stroke-dashoffset" from="24" to="0" dur="0.8s" repeatCount="indefinite"/></line>
+<g transform="rotate(-10)">
+<path d="M 6 -46 Q -58 0 6 46 L 0 30 Q -24 0 0 -30 Z" fill="url(#g-reentry-fire-ii-h)" opacity="0.9"><animate attributeName="opacity" values="0.65;1;0.65" dur="1.6s" repeatCount="indefinite"/></path>
+<path d="M 6 -46 Q -58 0 6 46" fill="none" stroke="#ff8c42" stroke-width="2.4"/>
+<path d="M -8 -24 Q -20 0 -8 24 L 20 9 Q 24 8 24 4 L 24 -4 Q 24 -8 20 -9 Z" fill="#f3f6fb"/>
+<path d="M -8 -24 Q -20 0 -8 24" fill="none" stroke="#ff8c42" stroke-width="3"/>
+</g>
+</g>
+<text x="280" y="346" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="600" fill="#f5f5f7"><tspan fill="#86868b" font-weight="500">02</tspan>  Re-entry</text>
+<text x="280" y="368" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" fill="#86868b">Hypersonics</text>
+<circle cx="424" cy="250" r="58" fill="url(#core-flag)"/>
+<circle cx="424" cy="250" r="57.2" fill="none" stroke="#5cc8ff" stroke-width="1.5" stroke-opacity="0.75"/>
+<g transform="translate(424.0 250.0) scale(0.906)">
+<defs><linearGradient id="g-jet-flame-f" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#7cc8ff"/><stop offset="0.3" stop-color="#ffc145"/><stop offset="1" stop-color="#ff5a2a"/></linearGradient></defs>
+<g transform="translate(0 26)"><g><animateTransform attributeName="transform" type="scale" values="1 1;1.07 0.93;0.94 1.06;1.03 0.97;1 1" dur="1.3s" repeatCount="indefinite"/><g transform="translate(0 -26)">
+<path d="M -10 26 C -22 6 -12 -22 0 -48 C 12 -22 22 6 10 26 Z" fill="url(#g-jet-flame-f)"/>
+<path d="M -4 26 C -10 12 -6 -6 0 -24 C 6 -6 10 12 4 26 Z" fill="#fff7dd" opacity="0.9"/>
+</g></g></g>
+<rect x="-6" y="26" width="12" height="22" rx="1.5" fill="#f3f6fb"/>
+<path d="M -13 30 L -13 48 M 13 30 L 13 48" stroke="#f3f6fb" stroke-width="3" opacity="0.6"/>
+</g>
+<text x="424" y="346" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="600" fill="#f5f5f7"><tspan fill="#86868b" font-weight="500">03</tspan>  Jet flame</text>
+<text x="424" y="368" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" fill="#86868b">Combustion</text>
+<circle cx="568" cy="250" r="58" fill="url(#core-flag)"/>
+<circle cx="568" cy="250" r="57.2" fill="none" stroke="#5cc8ff" stroke-width="1.5" stroke-opacity="0.75"/>
+<g transform="translate(568.0 250.0) scale(0.906)">
+<ellipse cx="0" cy="24" rx="46" ry="5" fill="#4fb3ff" opacity="0.25"/>
+<path d="M -31 24 Q -31 6 -26 -6 L -20 -16 L -13 -5 L -6.5 -18 L 0 -6 L 6.5 -18 L 13 -5 L 20 -16 L 26 -6 Q 31 6 31 24 Z" fill="#4fb3ff" opacity="0.92"/>
+<ellipse cx="0" cy="24" rx="31" ry="6" fill="#f3f6fb"/>
+<circle cx="-22" cy="-24" r="2.6" fill="#4fb3ff"><animate attributeName="cy" values="-24;-30;-24" dur="1.8s" begin="0.0s" repeatCount="indefinite"/></circle><circle cx="-8" cy="-29" r="2.9" fill="#4fb3ff"><animate attributeName="cy" values="-29;-35;-29" dur="1.8s" begin="0.3s" repeatCount="indefinite"/></circle><circle cx="8" cy="-29" r="2.9" fill="#4fb3ff"><animate attributeName="cy" values="-29;-35;-29" dur="1.8s" begin="0.6s" repeatCount="indefinite"/></circle><circle cx="22" cy="-24" r="2.6" fill="#4fb3ff"><animate attributeName="cy" values="-24;-30;-24" dur="1.8s" begin="0.9s" repeatCount="indefinite"/></circle>
+<path d="M 0 -50 Q 5 -42 0 -38 Q -5 -42 0 -50 Z" fill="#f3f6fb" opacity="0.8"/>
+</g>
+<text x="568" y="346" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="600" fill="#f5f5f7"><tspan fill="#86868b" font-weight="500">04</tspan>  Splash</text>
+<text x="568" y="368" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" fill="#86868b">Interfaces</text>
+<circle cx="712" cy="250" r="58" fill="url(#core-flag)"/>
+<circle cx="712" cy="250" r="57.2" fill="none" stroke="#5cc8ff" stroke-width="1.5" stroke-opacity="0.75"/>
+<g transform="translate(712.0 250.0) scale(0.906)">
+<defs><linearGradient id="g-metal-printing-t" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f3f6fb" stop-opacity="0.5"/><stop offset="1" stop-color="#ff6a3d"/></linearGradient></defs>
+<path d="M -48 16 L 48 16 L 48 28 L -48 28 Z" fill="#f3f6fb" opacity="0.28"/>
+<line x1="-48" y1="16" x2="48" y2="16" stroke="#f3f6fb" stroke-width="2" opacity="0.6"/>
+<rect x="-42" y="12.5" width="12" height="4" rx="2" fill="url(#g-metal-printing-t)"><animate attributeName="width" from="12" to="74" dur="3.2s" repeatCount="indefinite"/></rect>
+<g><animateTransform attributeName="transform" type="translate" from="-30 0" to="32 0" dur="3.2s" repeatCount="indefinite"/><path d="M -3 -48 L 3 -48 L 0.9 14 L -0.9 14 Z" fill="#ff6a3d" opacity="0.9"><animate attributeName="opacity" values="0.6;1;0.6" dur="0.4s" repeatCount="indefinite"/></path><ellipse cx="0" cy="15" rx="7" ry="3.2" fill="#fff1c4"/><ellipse cx="0" cy="15" rx="11" ry="5" fill="#ff6a3d" opacity="0.45"/><circle cx="4" cy="8" r="1.2" fill="#fff1c4"><animate attributeName="cy" values="12;-2" dur="0.8s" repeatCount="indefinite"/></circle><circle cx="-5" cy="6" r="1" fill="#fff1c4"><animate attributeName="cy" values="12;0" dur="1.1s" repeatCount="indefinite"/></circle></g>
+</g>
+<text x="712" y="346" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="600" fill="#f5f5f7"><tspan fill="#86868b" font-weight="500">05</tspan>  Metal printing</text>
+<text x="712" y="368" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" fill="#86868b">Phase change</text>
+<circle cx="856" cy="250" r="58" fill="url(#core-flag)"/>
+<circle cx="856" cy="250" r="57.2" fill="none" stroke="#5cc8ff" stroke-width="1.5" stroke-opacity="0.75"/>
+<g transform="translate(856.0 250.0) scale(0.906)">
+<path d="M -20 -48 L 20 -48 L 20 -30 Q 11 -26 11 -17 L 11 17 Q 11 26 20 30 L 20 48 L -20 48 L -20 30 Q -11 26 -11 17 L -11 -17 Q -11 -26 -20 -30 Z" fill="#f3f6fb"/>
+<circle cx="0" cy="-10" r="3.4" fill="#0a1220"/><circle cx="0" cy="12" r="3.4" fill="#0a1220"/>
+<path d="M -11 1 L -7 3 L -4 0 L 0 2 L 3 -1 L 7 2 L 11 0" fill="none" stroke="#ff5c5c" stroke-width="2.6" stroke-linejoin="round" stroke-dasharray="30" stroke-dashoffset="30"><animate attributeName="stroke-dashoffset" values="30;30;0;0" keyTimes="0;0.35;0.55;1" dur="3s" repeatCount="indefinite"/></path>
+<path d="M -26 -40 L -26 -50 M -30 -45 L -26 -50 L -22 -45 M -26 40 L -26 50 M -30 45 L -26 50 L -22 45" stroke="#ff5c5c" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7"/>
+</g>
+<text x="856" y="346" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="600" fill="#f5f5f7"><tspan fill="#86868b" font-weight="500">06</tspan>  Fracture</text>
+<text x="856" y="368" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" fill="#86868b">Solids</text>
+<circle cx="1000" cy="250" r="58" fill="url(#core-flag)"/>
+<circle cx="1000" cy="250" r="57.2" fill="none" stroke="#5cc8ff" stroke-width="1.5" stroke-opacity="0.75"/>
+<g transform="translate(1000.0 250.0) scale(0.906)">
+<g><path d="M -48 -26 Q -43 0 -48 26" fill="none" stroke="#7cffa4" stroke-width="2.2" stroke-linecap="round"/><path d="M -40 -26 Q -35 0 -40 26" fill="none" stroke="#7cffa4" stroke-width="2.2" stroke-linecap="round"/><animateTransform attributeName="transform" type="translate" values="0 0;12 0" dur="1.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur="1.4s" repeatCount="indefinite"/></g>
+<circle cx="-30" cy="0" r="6" fill="none" stroke="#7cffa4" stroke-width="1.6" stroke-dasharray="3 5" opacity="0"><animate attributeName="r" values="6;40" dur="2.8s" begin="0.0s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.9;0" dur="2.8s" begin="0.0s" repeatCount="indefinite"/></circle>
+<circle cx="-30" cy="0" r="6" fill="none" stroke="#7cffa4" stroke-width="1.6" stroke-dasharray="3 5" opacity="0"><animate attributeName="r" values="6;40" dur="2.8s" begin="1.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.9;0" dur="2.8s" begin="1.4s" repeatCount="indefinite"/></circle>
+<path d="M -32 0 C -22 -9 4 -14 22 -11 C 36 -8 36 8 22 11 C 4 14 -22 9 -32 0 Z" fill="#f3f6fb"/>
+</g>
+<text x="1000" y="346" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="600" fill="#f5f5f7"><tspan fill="#86868b" font-weight="500">07</tspan>  Radar</text>
+<text x="1000" y="368" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" fill="#86868b">EM waves</text>
+<circle cx="1144" cy="250" r="58" fill="url(#core-flag)"/>
+<circle cx="1144" cy="250" r="57.2" fill="none" stroke="#5cc8ff" stroke-width="1.5" stroke-opacity="0.75"/>
+<g transform="translate(1144.0 250.0) scale(0.906)">
+<path d="M -8 -50 L 8 -50 L 8 -44 L 1.2 -28 L -1.2 -28 L -8 -44 Z" fill="#f3f6fb"/>
+<rect x="-34" y="36" width="68" height="7" rx="2" fill="#f3f6fb"/>
+<path d="M 0 -28 L -3 -17 L 2 -8 L -2 3 L 3 13 L -1 23 L 1 33 M 2 -8 L 9 1 L 12 11 M -2 3 L -9 12 L -11 21 M 3 13 L 8 20" fill="none" stroke="#b99cff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/>
+<g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="80" stroke-dashoffset="80"><path d="M 0 -28 L -3 -17 L 2 -8 L -2 3 L 3 13 L -1 23 L 1 33 M 2 -8 L 9 1 L 12 11 M -2 3 L -9 12 L -11 21 M 3 13 L 8 20" stroke="#b99cff" stroke-width="7" opacity="0.3"><animate attributeName="stroke-dashoffset" values="80;0;0;0" keyTimes="0;0.35;0.8;1" dur="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;1;0" keyTimes="0;0.35;0.8;1" dur="2.4s" repeatCount="indefinite"/></path><path d="M 0 -28 L -3 -17 L 2 -8 L -2 3 L 3 13 L -1 23 L 1 33 M 2 -8 L 9 1 L 12 11 M -2 3 L -9 12 L -11 21 M 3 13 L 8 20" stroke="#f1eaff" stroke-width="2.2"><animate attributeName="stroke-dashoffset" values="80;0;0;0" keyTimes="0;0.35;0.8;1" dur="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;1;0" keyTimes="0;0.35;0.8;1" dur="2.4s" repeatCount="indefinite"/></path></g>
+</g>
+<text x="1144" y="346" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="600" fill="#f5f5f7"><tspan fill="#86868b" font-weight="500">08</tspan>  Spark</text>
+<text x="1144" y="368" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" fill="#86868b">Plasma</text>
+<text x="350" y="438" text-anchor="middle" fill="#dfe7f2" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="17" font-weight="600">Semi holy grails</text>
+<circle cx="250" cy="548" r="66" fill="url(#core-semi-holy-grail)"/>
+<circle cx="250" cy="548" r="65.2" fill="none" stroke="#dfe7f2" stroke-width="1.5" stroke-opacity="0.75"/>
+<g transform="translate(250.0 548.0) scale(1.031)">
+<defs><path id="g-apophis-2029-p" d="M -44 42 Q 66 8 -30 -48"/><radialGradient id="g-apophis-2029-e" cx="35%" cy="35%" r="70%"><stop offset="0" stop-color="#8fd0ff"/><stop offset="1" stop-color="#1f5fa8"/></radialGradient></defs>
+<circle cx="-6" cy="4" r="25" fill="none" stroke="#f3f6fb" stroke-width="1.4" stroke-dasharray="2 4" opacity="0.55"/>
+<circle cx="-6" cy="4" r="13" fill="url(#g-apophis-2029-e)"/>
+<path d="M -44 42 Q 66 8 -30 -48" fill="none" stroke="#d5dcea" stroke-width="1.8" stroke-dasharray="4 4" opacity="0.8"/>
+<g><animateMotion dur="5s" repeatCount="indefinite" rotate="0"><mpath href="#g-apophis-2029-p"/></animateMotion><path d="M -5 -2 Q -4 -6 1 -5 Q 6 -4 5 1 Q 4 6 -1 5 Q -6 4 -5 -2 Z" fill="#f3f6fb"><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="2.2s" repeatCount="indefinite"/></path></g>
+</g>
+<text x="250" y="660" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="600" fill="#f5f5f7"><tspan fill="#86868b" font-weight="500">09</tspan>  Apophis 2029</text>
+<text x="250" y="682" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" fill="#86868b">Gravity</text>
+<circle cx="450" cy="548" r="66" fill="url(#core-semi-holy-grail)"/>
+<circle cx="450" cy="548" r="65.2" fill="none" stroke="#dfe7f2" stroke-width="1.5" stroke-opacity="0.75"/>
+<g transform="translate(450.0 548.0) scale(1.031)">
+<defs><radialGradient id="g-corona-2027-g" cx="50%" cy="50%" r="50%"><stop offset="0.42" stop-color="#ffffff" stop-opacity="0.95"/><stop offset="0.6" stop-color="#fff1c9" stop-opacity="0.6"/><stop offset="1" stop-color="#fff1c9" stop-opacity="0"/></radialGradient><linearGradient id="g-corona-2027-s" x1="0.25" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff1c9" stop-opacity="0.95"/><stop offset="1" stop-color="#fff1c9" stop-opacity="0"/></linearGradient></defs>
+<g><path d="M 13 -8 C 24 -8 34 -2 50 0 C 34 2 24 8 13 8 Z" fill="url(#g-corona-2027-s)" transform="rotate(16) scale(1.00 1.00)"/><path d="M 13 -8 C 24 -8 34 -2 50 0 C 34 2 24 8 13 8 Z" fill="url(#g-corona-2027-s)" transform="rotate(165) scale(0.96 0.90)"/><path d="M 13 -8 C 24 -8 34 -2 50 0 C 34 2 24 8 13 8 Z" fill="url(#g-corona-2027-s)" transform="rotate(200) scale(0.80 0.75)"/><path d="M 13 -8 C 24 -8 34 -2 50 0 C 34 2 24 8 13 8 Z" fill="url(#g-corona-2027-s)" transform="rotate(340) scale(0.88 0.85)"/><path d="M 13 -8 C 24 -8 34 -2 50 0 C 34 2 24 8 13 8 Z" fill="url(#g-corona-2027-s)" transform="rotate(122) scale(0.60 0.50)"/><path d="M 13 -8 C 24 -8 34 -2 50 0 C 34 2 24 8 13 8 Z" fill="url(#g-corona-2027-s)" transform="rotate(58) scale(0.56 0.45)"/><line x1="2.2" y1="15.8" x2="4.0" y2="28.7" stroke="#fff1c9" stroke-width="1.1" opacity="0.6"/><line x1="0.0" y1="16.0" x2="0.0" y2="29.0" stroke="#fff1c9" stroke-width="1.1" opacity="0.6"/><line x1="-2.2" y1="15.8" x2="-4.0" y2="28.7" stroke="#fff1c9" stroke-width="1.1" opacity="0.6"/><line x1="-2.2" y1="-15.8" x2="-4.0" y2="-28.7" stroke="#fff1c9" stroke-width="1.1" opacity="0.6"/><line x1="-0.0" y1="-16.0" x2="-0.0" y2="-29.0" stroke="#fff1c9" stroke-width="1.1" opacity="0.6"/><line x1="2.2" y1="-15.8" x2="4.0" y2="-28.7" stroke="#fff1c9" stroke-width="1.1" opacity="0.6"/><animateTransform attributeName="transform" type="rotate" values="-2;2;-2" dur="14s" repeatCount="indefinite"/></g>
+<circle r="27" fill="url(#g-corona-2027-g)"><animate attributeName="opacity" values="0.8;1;0.8" dur="5s" repeatCount="indefinite"/></circle>
+<circle r="15.5" fill="#020308"/>
+<circle cx="11" cy="-11" r="2" fill="#ffffff" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;0.8;0.86;0.92;1" dur="6s" repeatCount="indefinite"/><animate attributeName="r" values="1;1;4.5;1;1" keyTimes="0;0.8;0.86;0.92;1" dur="6s" repeatCount="indefinite"/></circle>
+</g>
+<text x="450" y="660" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="600" fill="#f5f5f7"><tspan fill="#86868b" font-weight="500">10</tspan>  Corona 2027</text>
+<text x="450" y="682" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" fill="#86868b">Solar magnetism</text>
+<text x="910" y="438" text-anchor="middle" fill="#f2c14e" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="17" font-weight="600">Holy grails</text>
+<circle cx="700" cy="548" r="82" fill="#f2c14e" filter="url(#blur)" opacity="0.28"/>
+<circle cx="700" cy="548" r="74" fill="url(#core-holy-grail)"/>
+<circle cx="700" cy="548" r="73.2" fill="none" stroke="#f2c14e" stroke-width="1.5" stroke-opacity="0.75"/>
+<g transform="translate(700.0 548.0) scale(1.156)">
+<ellipse cx="-34.4" cy="-3.5" rx="3.4" ry="15" fill="none" stroke="#f3f6fb" stroke-width="1.5" opacity="0.3"/>
+<ellipse cx="-21.6" cy="-9.6" rx="4.9" ry="15" fill="none" stroke="#f3f6fb" stroke-width="1.5" opacity="0.3"/>
+<ellipse cx="-0.5" cy="-12.0" rx="5.5" ry="15" fill="none" stroke="#f3f6fb" stroke-width="1.5" opacity="0.3"/>
+<ellipse cx="20.7" cy="-9.8" rx="5.0" ry="15" fill="none" stroke="#f3f6fb" stroke-width="1.5" opacity="0.3"/>
+<ellipse cx="34.1" cy="-3.9" rx="3.5" ry="15" fill="none" stroke="#f3f6fb" stroke-width="1.5" opacity="0.3"/>
+<ellipse cx="0" cy="0" rx="30" ry="10" fill="none" stroke="#ff6ad5" stroke-width="11" opacity="0.28"><animate attributeName="opacity" values="0.18;0.45;0.18" dur="2.2s" repeatCount="indefinite"/></ellipse>
+<ellipse cx="0" cy="0" rx="30" ry="10" fill="none" stroke="#ff6ad5" stroke-width="4.5"/>
+<ellipse cx="0" cy="0" rx="30" ry="10" fill="none" stroke="#fff3fb" stroke-width="1.8" stroke-dasharray="8 10"><animate attributeName="stroke-dashoffset" from="0" to="-36" dur="0.9s" repeatCount="indefinite"/></ellipse>
+<ellipse cx="34.4" cy="3.5" rx="3.4" ry="15" fill="none" stroke="#f3f6fb" stroke-width="1.8" opacity="0.85"/>
+<ellipse cx="21.6" cy="9.6" rx="4.9" ry="15" fill="none" stroke="#f3f6fb" stroke-width="1.8" opacity="0.85"/>
+<ellipse cx="0.5" cy="12.0" rx="5.5" ry="15" fill="none" stroke="#f3f6fb" stroke-width="1.8" opacity="0.85"/>
+<ellipse cx="-20.7" cy="9.8" rx="5.0" ry="15" fill="none" stroke="#f3f6fb" stroke-width="1.8" opacity="0.85"/>
+<ellipse cx="-34.1" cy="3.9" rx="3.5" ry="15" fill="none" stroke="#f3f6fb" stroke-width="1.8" opacity="0.85"/>
+</g>
+<text x="700" y="660" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="600" fill="#f5f5f7"><tspan fill="#86868b" font-weight="500">11</tspan>  Fusion</text>
+<text x="700" y="682" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" fill="#86868b">Energy</text>
+<circle cx="910" cy="548" r="82" fill="#f2c14e" filter="url(#blur)" opacity="0.28"/>
+<circle cx="910" cy="548" r="74" fill="url(#core-holy-grail)"/>
+<circle cx="910" cy="548" r="73.2" fill="none" stroke="#f2c14e" stroke-width="1.5" stroke-opacity="0.75"/>
+<g transform="translate(910.0 548.0) scale(1.156)">
+<g><path d="M 4.9 0.0 L 6.5 -0.7 L 8.0 -1.6 L 9.4 -2.9 L 10.5 -4.5 L 11.5 -6.3 L 12.2 -8.3 L 12.5 -10.5 L 12.5 -12.9 L 12.2 -15.4 L 11.5 -17.9 L 10.4 -20.4 L 8.9 -22.9 L 7.0 -25.2 L 4.7 -27.4 L 2.1 -29.4 L -0.9 -31.1 L -4.2 -32.5 L -7.8 -33.5 L -11.6 -34.1 L -15.7 -34.3 L -19.8 -33.9 L -24.1 -33.1 L -28.4 -31.8 L -32.6 -29.9 L -36.7 -27.4 L -40.7 -24.5 L -41.6 -25.0 L -37.8 -28.2 L -33.8 -30.9 L -29.6 -33.1 L -25.3 -34.8 L -21.0 -36.0 L -16.8 -36.7 L -12.6 -36.9 L -8.5 -36.6 L -4.7 -35.9 L -1.0 -34.9 L 2.4 -33.4 L 5.5 -31.7 L 8.2 -29.7 L 10.7 -27.4 L 12.7 -25.0 L 14.4 -22.5 L 15.8 -19.9 L 16.7 -17.2 L 17.3 -14.6 L 17.6 -12.0 L 17.5 -9.5 L 17.1 -7.2 L 16.4 -5.1 L 15.5 -3.1 L 14.4 -1.4 L 13.1 0.0 Z" fill="#a9e4ff" opacity="0.95"/><path d="M 2.5 4.2 L 3.8 5.3 L 5.4 6.1 L 7.2 6.7 L 9.1 6.9 L 11.2 6.8 L 13.3 6.4 L 15.4 5.6 L 17.5 4.4 L 19.4 2.9 L 21.3 1.0 L 22.9 -1.2 L 24.3 -3.7 L 25.4 -6.6 L 26.1 -9.6 L 26.5 -12.9 L 26.5 -16.3 L 26.0 -19.9 L 25.1 -23.5 L 23.7 -27.1 L 21.8 -30.7 L 19.5 -34.2 L 16.6 -37.4 L 13.3 -40.4 L 9.6 -43.2 L 5.4 -45.5 L 0.9 -47.5 L 0.9 -48.5 L 5.5 -46.8 L 9.9 -44.7 L 13.9 -42.2 L 17.5 -39.3 L 20.6 -36.2 L 23.4 -32.9 L 25.6 -29.3 L 27.4 -25.7 L 28.8 -22.0 L 29.7 -18.3 L 30.1 -14.7 L 30.2 -11.1 L 29.8 -7.7 L 29.1 -4.5 L 28.0 -1.5 L 26.7 1.3 L 25.1 3.7 L 23.3 5.9 L 21.3 7.7 L 19.2 9.2 L 17.0 10.4 L 14.8 11.2 L 12.6 11.7 L 10.5 11.9 L 8.4 11.7 L 6.6 11.3 Z" fill="#f3f6fb" opacity="0.70"/><path d="M -2.4 4.2 L -2.7 6.0 L -2.6 7.8 L -2.2 9.6 L -1.4 11.4 L -0.3 13.1 L 1.1 14.7 L 2.9 16.1 L 4.9 17.3 L 7.2 18.3 L 9.8 18.9 L 12.5 19.2 L 15.4 19.2 L 18.4 18.7 L 21.4 17.8 L 24.4 16.5 L 27.4 14.8 L 30.2 12.6 L 32.9 10.0 L 35.4 7.0 L 37.5 3.6 L 39.3 -0.2 L 40.7 -4.3 L 41.7 -8.7 L 42.2 -13.3 L 42.1 -18.1 L 41.6 -23.0 L 42.4 -23.5 L 43.3 -18.6 L 43.7 -13.8 L 43.5 -9.1 L 42.8 -4.5 L 41.7 -0.2 L 40.2 3.8 L 38.2 7.5 L 36.0 10.9 L 33.5 13.9 L 30.7 16.6 L 27.8 18.8 L 24.7 20.6 L 21.6 22.0 L 18.4 23.0 L 15.3 23.5 L 12.3 23.7 L 9.3 23.6 L 6.5 23.1 L 4.0 22.3 L 1.6 21.2 L -0.5 19.9 L -2.3 18.4 L -3.8 16.8 L -5.0 15.0 L -5.9 13.2 L -6.5 11.3 Z" fill="#a9e4ff" opacity="0.95"/><path d="M -4.9 0.0 L -6.5 0.7 L -8.0 1.6 L -9.4 2.9 L -10.5 4.5 L -11.5 6.3 L -12.2 8.3 L -12.5 10.5 L -12.5 12.9 L -12.2 15.4 L -11.5 17.9 L -10.4 20.4 L -8.9 22.9 L -7.0 25.2 L -4.7 27.4 L -2.1 29.4 L 0.9 31.1 L 4.2 32.5 L 7.8 33.5 L 11.6 34.1 L 15.7 34.3 L 19.8 33.9 L 24.1 33.1 L 28.4 31.8 L 32.6 29.9 L 36.7 27.4 L 40.7 24.5 L 41.6 25.0 L 37.8 28.2 L 33.8 30.9 L 29.6 33.1 L 25.3 34.8 L 21.0 36.0 L 16.8 36.7 L 12.6 36.9 L 8.5 36.6 L 4.7 35.9 L 1.0 34.9 L -2.4 33.4 L -5.5 31.7 L -8.2 29.7 L -10.7 27.4 L -12.7 25.0 L -14.4 22.5 L -15.8 19.9 L -16.7 17.2 L -17.3 14.6 L -17.6 12.0 L -17.5 9.5 L -17.1 7.2 L -16.4 5.1 L -15.5 3.1 L -14.4 1.4 L -13.1 0.0 Z" fill="#f3f6fb" opacity="0.70"/><path d="M -2.5 -4.2 L -3.8 -5.3 L -5.4 -6.1 L -7.2 -6.7 L -9.1 -6.9 L -11.2 -6.8 L -13.3 -6.4 L -15.4 -5.6 L -17.5 -4.4 L -19.4 -2.9 L -21.3 -1.0 L -22.9 1.2 L -24.3 3.7 L -25.4 6.6 L -26.1 9.6 L -26.5 12.9 L -26.5 16.3 L -26.0 19.9 L -25.1 23.5 L -23.7 27.1 L -21.8 30.7 L -19.5 34.2 L -16.6 37.4 L -13.3 40.4 L -9.6 43.2 L -5.4 45.5 L -0.9 47.5 L -0.9 48.5 L -5.5 46.8 L -9.9 44.7 L -13.9 42.2 L -17.5 39.3 L -20.6 36.2 L -23.4 32.9 L -25.6 29.3 L -27.4 25.7 L -28.8 22.0 L -29.7 18.3 L -30.1 14.7 L -30.2 11.1 L -29.8 7.7 L -29.1 4.5 L -28.0 1.5 L -26.7 -1.3 L -25.1 -3.7 L -23.3 -5.9 L -21.3 -7.7 L -19.2 -9.2 L -17.0 -10.4 L -14.8 -11.2 L -12.6 -11.7 L -10.5 -11.9 L -8.4 -11.7 L -6.6 -11.3 Z" fill="#a9e4ff" opacity="0.95"/><path d="M 2.5 -4.2 L 2.7 -6.0 L 2.6 -7.8 L 2.2 -9.6 L 1.4 -11.4 L 0.3 -13.1 L -1.1 -14.7 L -2.9 -16.1 L -4.9 -17.3 L -7.2 -18.3 L -9.8 -18.9 L -12.5 -19.2 L -15.4 -19.2 L -18.4 -18.7 L -21.4 -17.8 L -24.4 -16.5 L -27.4 -14.8 L -30.2 -12.6 L -32.9 -10.0 L -35.4 -7.0 L -37.5 -3.6 L -39.3 0.2 L -40.7 4.3 L -41.7 8.7 L -42.2 13.3 L -42.1 18.1 L -41.6 23.0 L -42.4 23.5 L -43.3 18.6 L -43.7 13.8 L -43.5 9.1 L -42.8 4.5 L -41.7 0.2 L -40.2 -3.8 L -38.2 -7.5 L -36.0 -10.9 L -33.5 -13.9 L -30.7 -16.6 L -27.8 -18.8 L -24.7 -20.6 L -21.6 -22.0 L -18.4 -23.0 L -15.3 -23.5 L -12.3 -23.7 L -9.3 -23.6 L -6.5 -23.1 L -4.0 -22.3 L -1.6 -21.2 L 0.5 -19.9 L 2.3 -18.4 L 3.8 -16.8 L 5.0 -15.0 L 5.9 -13.2 L 6.6 -11.3 Z" fill="#f3f6fb" opacity="0.70"/><circle r="12" fill="#a9e4ff" opacity="0.55"/><animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="18s" repeatCount="indefinite"/></g>
+<circle r="4.5" fill="#050a14"/><circle r="4.5" fill="none" stroke="#f3f6fb" stroke-width="1.4"/>
+</g>
+<text x="910" y="660" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="600" fill="#f5f5f7"><tspan fill="#86868b" font-weight="500">12</tspan>  Hurricane</text>
+<text x="910" y="682" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" fill="#86868b">The Earth</text>
+<circle cx="1120" cy="548" r="82" fill="#f2c14e" filter="url(#blur)" opacity="0.28"/>
+<circle cx="1120" cy="548" r="74" fill="url(#core-holy-grail)"/>
+<circle cx="1120" cy="548" r="73.2" fill="none" stroke="#f2c14e" stroke-width="1.5" stroke-opacity="0.75"/>
+<g transform="translate(1120.0 548.0) scale(1.156)">
+<g transform="translate(0 -4)"><g><animateTransform attributeName="transform" type="scale" values="1;1.09;1;1.05;1;1" keyTimes="0;0.1;0.2;0.3;0.4;1" dur="1.1s" repeatCount="indefinite"/><path d="M 0 20 C -30 0 -32 -22 -15 -27 C -7 -29 -2 -24 0 -18 C 2 -24 7 -29 15 -27 C 32 -22 30 0 0 20 Z" fill="#ff4d6d"/></g></g>
+<path d="M -48 24 L -24 24 L -20 20 L -16 24 L -11 24 L -8 29 L -4 -8 L 0 36 L 4 24 L 12 24 L 17 18 L 22 24 L 48 24" fill="none" stroke="#f3f6fb" stroke-width="1.6" stroke-linejoin="round" opacity="0.35"/>
+<path d="M -48 24 L -24 24 L -20 20 L -16 24 L -11 24 L -8 29 L -4 -8 L 0 36 L 4 24 L 12 24 L 17 18 L 22 24 L 48 24" fill="none" stroke="#f3f6fb" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="190" stroke-dashoffset="190"><animate attributeName="stroke-dashoffset" from="190" to="-190" dur="2.2s" repeatCount="indefinite"/></path>
+</g>
+<text x="1120" y="660" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="600" fill="#f5f5f7"><tspan fill="#86868b" font-weight="500">13</tspan>  Heartbeat</text>
+<text x="1120" y="682" text-anchor="middle" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" fill="#86868b">Life</text>
+</svg>

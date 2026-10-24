@@ -1,0 +1,15 @@
+== 1. distorted element: rigid-body modes and constant strain
+== 2. patch test with distorted elements
+== 3. uniaxial tension (exact)
+== 4. cantilever, end shear load (L/h = 10, nu = 0)
+  Euler-Bernoulli 4, Timoshenko 4.024
+  mesh         full           incompatible   error (IM)  
+  10x1x1       2.68           4.01           -0.348%
+  20x2x2       3.57333        4.0175         -0.162%
+  40x4x4       3.90083        4.0222         -0.045%
+  80x8x8       3.99251        4.02358        -0.011%
+== 5. gravity
+== 6. initial (thermal) strain
+== 7. constraint analysis
+
+ALL FEM VERIFICATION TESTS PASSED: 42 passed, 0 failed

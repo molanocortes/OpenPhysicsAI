@@ -1,0 +1,62 @@
+{
+ "domain": "water",
+ "title": "A dam breaks and the surge hits a block",
+ "note": "Demonstration geometry (not the SPHERIC Test 2 dimensions). Weakly compressible SPH: see docs/lab/water.md for what is verified (hydrostatics within 1.65 %, the sloshing period within 0.21 %).",
+ "particle_spacing_m": 0.02,
+ "gravity_m_s2": 9.80665,
+ "water": {
+  "density_kg_m3": 997.0,
+  "source": "Incropera, DeWitt, Bergman and Lavine, Fundamentals of Heat and Mass Transfer, 6th ed. (2007), table A.6 (saturated water), 300 K; typed from the table, not re-checked against a copy in this session"
+ },
+ "tank": {
+  "size_m": [
+   1.6,
+   0.6,
+   0.6
+  ]
+ },
+ "columns": [
+  {
+   "box_m": [
+    1.0,
+    0.0,
+    0.0,
+    1.6,
+    0.6,
+    0.4
+   ]
+  }
+ ],
+ "obstacles": [
+  {
+   "box_m": [
+    0.4,
+    0.22,
+    0.0,
+    0.52,
+    0.38,
+    0.12
+   ]
+  }
+ ],
+ "run": {
+  "end_s": 2.0,
+  "frames": 81
+ },
+ "controls": [
+  {
+   "label": "height of the water column, m",
+   "path": "columns.0.box_m.5",
+   "min": 0.1,
+   "max": 0.55,
+   "log": false
+  },
+  {
+   "label": "height of the block, m",
+   "path": "obstacles.0.box_m.5",
+   "min": 0.02,
+   "max": 0.4,
+   "log": false
+  }
+ ]
+}

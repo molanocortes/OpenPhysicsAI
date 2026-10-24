@@ -1,0 +1,320 @@
+{
+ "navier": {
+  "C10_nu0.3": {
+   "test": "baseline",
+   "design": "C10",
+   "L_mm": 100,
+   "b_mm": 10,
+   "h_mm": 10,
+   "nu": 0.3,
+   "timoshenko_mm": 0.020156,
+   "levels": [
+    {
+     "element_size_mm": 2.5,
+     "value_mm": 0.019962175087268913,
+     "relative_to_timoshenko": -0.009616238972568358
+    },
+    {
+     "element_size_mm": 1.25,
+     "value_mm": 0.019997251134530117,
+     "relative_to_timoshenko": -0.007876010392433241
+    },
+    {
+     "element_size_mm": 0.625,
+     "value_mm": 0.020011462915574724,
+     "relative_to_timoshenko": -0.007170921037173872
+    }
+   ],
+   "finest_relative_to_timoshenko": -0.007170921037173872
+  },
+  "C20_nu0.3": {
+   "test": "baseline",
+   "design": "C20",
+   "L_mm": 100,
+   "b_mm": 10,
+   "h_mm": 5,
+   "nu": 0.3,
+   "timoshenko_mm": 0.160312,
+   "levels": [
+    {
+     "element_size_mm": 2.5,
+     "value_mm": 0.15881269253800517,
+     "relative_to_timoshenko": -0.00935243439040645
+    },
+    {
+     "element_size_mm": 1.25,
+     "value_mm": 0.15906183831691226,
+     "relative_to_timoshenko": -0.007798303826836106
+    },
+    {
+     "element_size_mm": 0.625,
+     "value_mm": 0.1591833802325845,
+     "relative_to_timoshenko": -0.007040145263083941
+    }
+   ],
+   "finest_relative_to_timoshenko": -0.007040145263083941
+  },
+  "C10_nu0.0": {
+   "test": "T1",
+   "design": "C10",
+   "L_mm": 100,
+   "b_mm": 10,
+   "h_mm": 10,
+   "nu": 0.0,
+   "timoshenko_mm": 0.02012,
+   "levels": [
+    {
+     "element_size_mm": 2.5,
+     "value_mm": 0.020110884116031874,
+     "relative_to_timoshenko": -0.0004530757439425992
+    },
+    {
+     "element_size_mm": 1.25,
+     "value_mm": 0.020117760569610163,
+     "relative_to_timoshenko": -0.00011130369730794065
+    },
+    {
+     "element_size_mm": 0.625,
+     "value_mm": 0.020119571822485804,
+     "relative_to_timoshenko": -2.1281188578248234e-05
+    }
+   ],
+   "finest_relative_to_timoshenko": -2.1281188578248234e-05
+  },
+  "C20_nu0.0": {
+   "test": "T1",
+   "design": "C20",
+   "L_mm": 100,
+   "b_mm": 10,
+   "h_mm": 5,
+   "nu": 0.0,
+   "timoshenko_mm": 0.16024,
+   "levels": [
+    {
+     "element_size_mm": 2.5,
+     "value_mm": 0.16017500000297202,
+     "relative_to_timoshenko": -0.0004056415191461271
+    },
+    {
+     "element_size_mm": 1.25,
+     "value_mm": 0.16022182162996745,
+     "relative_to_timoshenko": -0.00011344464573481705
+    },
+    {
+     "element_size_mm": 0.625,
+     "value_mm": 0.16023543643113594,
+     "relative_to_timoshenko": -2.847958602125722e-05
+    }
+   ],
+   "finest_relative_to_timoshenko": -2.847958602125722e-05
+  },
+  "C10L_nu0.3": {
+   "test": "T2/T3",
+   "design": "C10L",
+   "L_mm": 200,
+   "b_mm": 10,
+   "h_mm": 10,
+   "nu": 0.3,
+   "timoshenko_mm": 0.160312,
+   "levels": [
+    {
+     "element_size_mm": 2.5,
+     "value_mm": 0.1595578136178368,
+     "relative_to_timoshenko": -0.004704491130814947
+    },
+    {
+     "element_size_mm": 1.25,
+     "value_mm": 0.15968408830599315,
+     "relative_to_timoshenko": -0.003916810307443397
+    },
+    {
+     "element_size_mm": 0.625,
+     "value_mm": 0.1597369301943477,
+     "relative_to_timoshenko": -0.0035871912623652857
+    }
+   ],
+   "finest_relative_to_timoshenko": -0.0035871912623652857
+  },
+  "C10W_nu0.3": {
+   "test": "T2/T3",
+   "design": "C10W",
+   "L_mm": 100,
+   "b_mm": 20,
+   "h_mm": 10,
+   "nu": 0.3,
+   "timoshenko_mm": 0.010078,
+   "levels": [
+    {
+     "element_size_mm": 2.5,
+     "value_mm": 0.00992161537984386,
+     "relative_to_timoshenko": -0.01551742609209572
+    },
+    {
+     "element_size_mm": 1.25,
+     "value_mm": 0.009938465790538415,
+     "relative_to_timoshenko": -0.01384542661853394
+    },
+    {
+     "element_size_mm": 0.625,
+     "value_mm": 0.009945183646594776,
+     "relative_to_timoshenko": -0.013178840385515422
+    }
+   ],
+   "finest_relative_to_timoshenko": -0.013178840385515422
+  }
+ },
+ "calculix": {
+  "clamped_C3D20R_20x2x2": {
+   "case": "clamped_C3D20R_20x2x2",
+   "tip_mean_mm": 0.019963445833333336,
+   "vs_timoshenko_5_6": -0.009553193424621161,
+   "vs_navier_finest": -0.0023994788608891248,
+   "nodal_mean_mm": 0.019963669523809527,
+   "energy_vs_work": 0.9999999081654865,
+   "reaction_balance_printed": 0.0,
+   "ccx_seconds": 0.0290372371673584,
+   "ccx_messages": []
+  },
+  "clamped_C3D20R_40x4x4": {
+   "case": "clamped_C3D20R_40x4x4",
+   "tip_mean_mm": 0.019998907499999996,
+   "vs_timoshenko_5_6": -0.007793833101806124,
+   "vs_navier_finest": -0.0006274111806666843,
+   "nodal_mean_mm": 0.019999065692307687,
+   "energy_vs_work": 1.0000000250013659,
+   "reaction_balance_printed": 0.0,
+   "ccx_seconds": 0.2586331367492676,
+   "ccx_messages": []
+  },
+  "clamped_C3D20R_80x8x8": {
+   "case": "clamped_C3D20R_80x8x8",
+   "tip_mean_mm": 0.02001176140624999,
+   "vs_timoshenko_5_6": -0.00715611201379286,
+   "vs_navier_finest": 1.491598472966895e-05,
+   "nodal_mean_mm": 0.02001185128888889,
+   "energy_vs_work": 0.9999999297288248,
+   "reaction_balance_printed": 0.0,
+   "ccx_seconds": 5.0457868576049805,
+   "ccx_messages": []
+  },
+  "clamped_C3D8I_160x16x16": {
+   "case": "clamped_C3D8I_160x16x16",
+   "tip_mean_mm": 0.02001146273437502,
+   "vs_timoshenko_5_6": -0.007170930027038127,
+   "vs_navier_finest": -9.05479550949851e-09,
+   "nodal_mean_mm": 0.02001152093425607,
+   "energy_vs_work": 0.9999998633595627,
+   "reaction_balance_printed": 0.0,
+   "ccx_seconds": 16.306112051010132,
+   "ccx_messages": []
+  },
+  "sliding_C3D20R_20x2x2": {
+   "case": "sliding_C3D20R_20x2x2",
+   "tip_mean_mm": 0.020157780833333333,
+   "vs_timoshenko_5_6": 8.835251703377316e-05,
+   "vs_navier_finest": null,
+   "nodal_mean_mm": 0.020158005238095238,
+   "energy_vs_work": 0.9999999586594706,
+   "reaction_balance_printed": 0.0,
+   "ccx_seconds": 0.032620906829833984,
+   "ccx_messages": []
+  },
+  "sliding_C3D20R_40x4x4": {
+   "case": "sliding_C3D20R_40x4x4",
+   "tip_mean_mm": 0.020162830416666663,
+   "vs_timoshenko_5_6": 0.0003388775881455802,
+   "vs_navier_finest": null,
+   "nodal_mean_mm": 0.020162987384615385,
+   "energy_vs_work": 1.0000004752970262,
+   "reaction_balance_printed": 0.0,
+   "ccx_seconds": 0.2704019546508789,
+   "ccx_messages": []
+  },
+  "sliding_C3D20R_80x8x8": {
+   "case": "sliding_C3D20R_80x8x8",
+   "tip_mean_mm": 0.020166002968750023,
+   "vs_timoshenko_5_6": 0.0004962774732101202,
+   "vs_navier_finest": null,
+   "nodal_mean_mm": 0.020166093066666665,
+   "energy_vs_work": 0.9999998527844101,
+   "reaction_balance_printed": 0.0,
+   "ccx_seconds": 5.116721868515015,
+   "ccx_messages": []
+  },
+  "s1_nu0_clamped_C3D20R_80x8x8": {
+   "case": "s1_nu0_clamped_C3D20R_80x8x8",
+   "tip_mean_mm": 0.020120186666666685,
+   "vs_timoshenko_5_6": 9.27766733033672e-06,
+   "vs_navier_finest": null,
+   "nodal_mean_mm": 0.020120307822222242,
+   "energy_vs_work": 0.9999996686578114,
+   "reaction_balance_printed": 0.0,
+   "ccx_seconds": 5.057845115661621,
+   "ccx_messages": []
+  },
+  "s2_minimal_C3D20R_80x8x8": {
+   "case": "s2_minimal_C3D20R_80x8x8",
+   "tip_mean_mm": 0.020262539218749993,
+   "vs_timoshenko_5_6": 0.005285732226135794,
+   "vs_navier_finest": null,
+   "nodal_mean_mm": 0.02026262937777778,
+   "energy_vs_work": 1.0000000385563725,
+   "reaction_balance_printed": 0.0,
+   "ccx_seconds": 5.100825071334839,
+   "ccx_messages": []
+  }
+ },
+ "reading": [
+  {
+   "item": "T1: |discrepancy| with nu = 0 below 0.1 %",
+   "observed": 2.847958602125722e-05,
+   "met": true
+  },
+  {
+   "item": "T2: L = 200 mm discrepancy about half of C10's, within +-0.15 percentage points",
+   "observed": -0.0035871912623652857,
+   "half_of_c10": -0.003585460518586936,
+   "met": true
+  },
+  {
+   "item": "T3: b = 20 mm discrepancy larger than C10's",
+   "observed": -0.013178840385515422,
+   "c10": -0.007170921037173872,
+   "met": true
+  },
+  {
+   "item": "CalculiX clamped C3D20R within 0.2 % of NAVIER",
+   "observed": 1.491598472966895e-05,
+   "met": true
+  },
+  {
+   "item": "T4: CalculiX sliding-root C3D20R within 0.2 % of Timoshenko",
+   "observed": 0.0004962774732101202,
+   "met": true
+  }
+ ],
+ "conclusion": "H1 supported, H2 and H3 not indicated",
+ "implied_root_zone_if_h1": {
+  "C10_nu0.3": {
+   "c_mm": 2.655896680434767,
+   "c_over_b": 0.2655896680434767
+  },
+  "C20_nu0.3": {
+   "c_mm": 2.6074612085496076,
+   "c_over_b": 0.26074612085496074
+  },
+  "C10L_nu0.3": {
+   "c_mm": 2.6571787128631743,
+   "c_over_b": 0.2657178712863174
+  },
+  "C10W_nu0.3": {
+   "c_mm": 4.8810519946353415,
+   "c_over_b": 0.24405259973176707
+  }
+ },
+ "notes": [
+  "Timoshenko reference with shear coefficient 5/6, as in rc1 case R1.",
+  "T4's support restrains u_z along the root line z = h/2, which carries the shear reaction as a line load; its value rose by +0.025 % and +0.016 % per mesh halving (20x2x2 to 80x8x8).",
+  "The supplementary minimal-support case s2 carries the whole shear reaction at one node (a point support) and is not informative about the Poisson effect; it is not used."
+ ]
+}

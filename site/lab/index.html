@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The lab in your browser · %BRAND%</title>
+<meta name="description" content="Run %BRAND%'s physics solvers in your browser, on your phone or computer: the same C code as the app, compiled to WebAssembly. Nothing is installed and nothing is sent anywhere.">
+<meta property="og:title" content="The lab in your browser · %BRAND%">
+<meta property="og:description" content="The same solvers as the app, compiled to WebAssembly: pick a scenario, change it, run it on your own device and turn the result in 3D.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="%URL%/lab/">
+<meta property="og:image" content="%URL%/media/card.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="%URL%/media/card.jpg">
+<link rel="canonical" href="%URL%/lab/">
+<meta name="theme-color" content="#F2F1EE">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/lab/lab.css">
+</head>
+<body>
+<a class="skip" href="#viewer">Skip to the lab</a>
+
+<header class="top" id="top">
+  <div class="wrap top-row">
+    <a class="wordmark" href="/" aria-label="%BRAND%, the home page"><img src="/favicon.svg" alt="" width="26" height="26"><span>%BRAND%</span></a>
+    <nav class="nav" aria-label="Pages">
+      <a href="/">Home</a>
+      <a href="/lab/" aria-current="page">Lab in the browser</a>
+      <a href="/#flags">Flags</a>
+      <a href="%REPO%">GitHub</a>
+    </nav>
+    <details class="menu">
+      <summary>Menu</summary>
+      <nav class="menu-panel" aria-label="Pages">
+        <a href="/">Home</a>
+        <a href="/#download">Download</a>
+        <a href="/#flags">Flags</a>
+        <a href="%REPO%">GitHub</a>
+      </nav>
+    </details>
+    <a class="btn btn-primary btn-small" href="/#download">Download</a>
+  </div>
+</header>
+
+<main class="lab"
+  data-worker="/lab/worker.js" data-wasi="/lab/wasi.js" data-wasm="/lab/lab.wasm" data-catalogue="/lab/scenarios.json">
+
+<section class="lab-intro">
+  <div class="wrap">
+    <p class="label">The lab in your browser</p>
+    <h1>Run the solvers here, on this device.</h1>
+    <p class="lead">The same C code as the app, compiled to WebAssembly. Pick a scenario, change what it lets you change,
+      and run it: the physics is computed in this page, on your phone or computer, and nothing is sent anywhere.
+      Drag the result to turn it.</p>
+  </div>
+</section>
+
+<section class="wrap lab-body" aria-label="The lab">
+  <div class="picker" role="list" id="picker" aria-label="Scenarios"></div>
+
+  <div class="bench">
+    <figure class="screen viewer" id="viewer">
+      <div class="stage" id="stage" tabindex="0" aria-label="The result: drag or use the arrow keys to turn it, space to pause">
+        <canvas id="canvas" width="960" height="540" aria-label="The result of the run" role="img"></canvas>
+        <div class="veil" id="veil">
+          <p class="veil-title" id="veil-title">Choose a scenario</p>
+          <div class="bar" id="bar" hidden><span id="bar-fill"></span></div>
+          <p class="veil-line" id="veil-line"></p>
+          <button class="btn btn-primary" id="run-big" type="button" hidden>Run it here</button>
+        </div>
+        <p class="hint" id="hint" hidden>Drag to turn · pinch or scroll to zoom</p>
+      </div>
+      <div class="transport" id="transport" hidden>
+        <button class="round" id="play" type="button" aria-label="Pause">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path class="i-pause" d="M6 4h3v12H6zM11 4h3v12h-3z"/><path class="i-play" d="M6 4l10 6-10 6z"/></svg>
+        </button>
+        <input type="range" id="scrub" min="0" max="0" value="0" step="1" aria-label="Frame">
+        <span class="clock" id="clock">0 s</span>
+      </div>
+      <div class="legend" id="legend" hidden>
+        <label class="field-pick"><span class="sr">Field shown</span><select id="field"></select></label>
+        <div class="ramp"><span id="lo"></span><i id="ramp"></i><span id="hi"></span></div>
+      </div>
+    </figure>
+
+    <aside class="card panel" id="panel" aria-labelledby="sc-name">
+      <p class="label" id="sc-kind">Scenario</p>
+      <h2 id="sc-name">Loading the lab</h2>
+      <p class="sc-text" id="sc-text"></p>
+      <div class="controls" id="controls"></div>
+      <div class="run-row">
+        <button class="btn btn-primary" id="run" type="button" disabled>Run</button>
+        <button class="btn btn-secondary" id="stop" type="button" hidden>Stop</button>
+        <span class="estimate" id="estimate"></span>
+      </div>
+      <p class="coarser" id="coarser" hidden></p>
+      <dl class="record" id="record" hidden></dl>
+    </aside>
+  </div>
+
+  <noscript><p class="note">The lab runs in JavaScript and WebAssembly, so it needs JavaScript switched on.</p></noscript>
+  <p class="note" id="unsupported" hidden>This browser cannot run WebAssembly in a background worker, which the lab
+    needs. Any current version of Safari, Chrome, Firefox or Edge can.</p>
+</section>
+
+<section class="section lab-more">
+  <div class="wrap">
+    <p class="label">What runs here, and what does not</p>
+    <h2>The app's solvers, made smaller so that a phone can run them.</h2>
+    <div class="facts">
+      <div class="card fact"><b>The same code</b><p>Every scenario runs through the lab's own C solvers and renderer,
+        compiled from the repository to WebAssembly with IEEE arithmetic, as the app builds them. The numbers the
+        solver reports are under the picture.</p></div>
+      <div class="card fact"><b>Smaller than the app</b><p>Here the lab runs on one processor core and without a GPU,
+        so each scenario is coarser or shorter than the app's own, and says by how much. The app runs them at full size,
+        on every core, and on the GPU where a solver has a GPU engine.</p></div>
+      <div class="card fact"><b>Nothing leaves the page</b><p>The scenario, the run and the result stay in this
+        browser tab and are gone when it closes. The page sets no cookies and sends nothing anywhere.</p></div>
+    </div>
+    <div class="actions">
+      <a class="btn btn-primary" href="/#download">Download the full lab</a>
+      <a class="btn btn-secondary" href="%REPO%">Source on GitHub</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-row">
+    <a class="wordmark" href="/"><img src="/favicon.svg" alt="" width="22" height="22"><span>%BRAND%</span></a>
+    <p class="dim small">Code <a href="%REPO%/blob/main/LICENSE">Apache 2.0</a> · data
+      <a href="%REPO%/blob/main/LICENSE-DATA">CC BY 4.0</a> · <a href="%REPO%">source on GitHub</a> ·
+      <a href="/lab/NOTICES.txt">notices of the libraries in the lab's module</a></p>
+    <p class="dim small">This site sets no cookies, loads nothing from other sites and collects nothing. It is served by
+      Cloudflare Pages, which processes visitors' IP addresses to deliver it.</p>
+  </div>
+</footer>
+
+<script src="/site.js" defer></script>
+<script src="/lab/lab.js" type="module"></script>
+</body>
+</html>

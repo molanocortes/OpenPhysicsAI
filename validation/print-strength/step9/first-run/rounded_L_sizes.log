@@ -1,0 +1,6 @@
+vox1.25   hex8   R 10.501  at [-1.25, 0, 10]  peak flag none, mode 1t (tension along axis 1)  [0.9 s]
+auto      tet10  R 9.6503  at [-2.84, 0.74, 10.9]  peak flag none, mode s31 (interlayer shear, plane 31); mesh_choice TET10 at 2.5 mm, 9734 elements  [3.7 s]
+tet1.25   tet10  R 8.9007  at [-2.85, -0.62, 10.9]  peak flag none, mode s31 (interlayer shear, plane 31)  [43.0 s]
+tet0.625  None   R nan  at []  peak flag None, mode None  [605.8 s]
+
+[exited with code 0]

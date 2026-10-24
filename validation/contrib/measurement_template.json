@@ -1,0 +1,40 @@
+{
+  "format": "openphysicsai-measurement-campaign",
+  "format_version": 1,
+  "campaign": {
+    "id": "2026-yourlab-cantilever",
+    "date": "2026-01-01",
+    "contact": "name and how to reach you (no personal data beyond that)",
+    "rights": "I may publish this data; it contains no personal data"
+  },
+  "process": {
+    "technology": "LPBF",
+    "machine": {"value": "machine model and laser configuration", "source": "lab record"},
+    "material": {"value": "alloy name", "source": "supplier and batch if known"},
+    "powder": {"value": "size range", "source": "supplier data sheet"},
+    "layer_thickness_um": {"value": null, "source": "job file"},
+    "laser_power_w": {"value": null, "source": "job file"},
+    "scan_speed_mm_s": {"value": null, "source": "job file"},
+    "hatch_spacing_um": {"value": null, "source": "job file"},
+    "scan_strategy": {"value": "for example stripes, rotated per layer", "source": "job file"},
+    "shielding_gas": {"value": "argon", "source": "lab record"},
+    "preheating_c": {"value": null, "source": ""}
+  },
+  "specimen": {
+    "geometry_file": "samples/cantilever.stl",
+    "geometry_note": "the calibration cantilever cited in samples/samples.json; if not this geometry, add a geometry file with every dimension and its source",
+    "orientation": "X",
+    "separation": {"tool": "wire erosion", "height_above_plate_mm": null, "kerf_mm": null, "source": ""},
+    "heat_treatment": {"value": "none", "source": ""}
+  },
+  "measurement": {
+    "instrument": {"value": "for example a coordinate measuring machine with a small ball tip", "resolution_mm": null, "source": ""},
+    "quantity": "tip_uz_after_cut_mm",
+    "definition": "vertical displacement of the free end after separation, relative to before separation, origin on the plate",
+    "values_mm": [],
+    "specimens_per_value": 1,
+    "scatter_mm": null,
+    "scatter_note": "state the standard deviation or range when more than one specimen was measured"
+  },
+  "attachments": ["photos/before.jpg", "photos/after.jpg", "raw/cmm_output.csv"]
+}

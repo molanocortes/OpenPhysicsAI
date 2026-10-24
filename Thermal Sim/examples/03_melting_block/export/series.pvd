@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<VTKFile type="Collection" version="1.0" byte_order="LittleEndian">
+  <Collection>
+    <DataSet timestep="0" group="" part="0" file="time_0000.vtu"/>
+    <DataSet timestep="2" group="" part="0" file="time_0001.vtu"/>
+    <DataSet timestep="4" group="" part="0" file="time_0002.vtu"/>
+    <DataSet timestep="6" group="" part="0" file="time_0003.vtu"/>
+    <DataSet timestep="8" group="" part="0" file="time_0004.vtu"/>
+    <DataSet timestep="10" group="" part="0" file="time_0005.vtu"/>
+    <DataSet timestep="12" group="" part="0" file="time_0006.vtu"/>
+    <DataSet timestep="14" group="" part="0" file="time_0007.vtu"/>
+    <DataSet timestep="16" group="" part="0" file="time_0008.vtu"/>
+    <DataSet timestep="18" group="" part="0" file="time_0009.vtu"/>
+    <DataSet timestep="20" group="" part="0" file="time_0010.vtu"/>
+  </Collection>
+</VTKFile>

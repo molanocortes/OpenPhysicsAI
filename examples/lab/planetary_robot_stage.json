@@ -1,0 +1,33 @@
+{
+ "domain": "mechanism",
+ "model": "planetary",
+ "title": "A 5:1 planetary stage of a robot joint: sun 18, three planets 27, ring 72, module 1 mm, 10 N m on the sun",
+ "provenance": {
+  "purpose": "demonstration: the proportions of the single planetary stages in quasi-direct-drive robot actuators (a 5 to 9:1 ratio, module about 1 mm, a thin ring); not a measured stage",
+  "material": "steel, E = 207 GPa, nu = 0.3, a nominal value"
+ },
+ "sun": {
+  "teeth": 18, "module_m": 0.001, "pressure_angle_deg": 20, "profile_shift": 0, "addendum_coefficient": 1.0, "dedendum_coefficient": 1.25,
+  "cutter_tip_radius_coefficient": 0.38, "flank_thinning_m": 1e-5, "face_width_m": 0.010, "bore_diameter_m": 0.008,
+  "material": {"youngs_modulus_pa": 207e9, "poisson_ratio": 0.3, "source": "nominal steel (demonstration)"}
+ },
+ "planet": {
+  "teeth": 27, "module_m": 0.001, "pressure_angle_deg": 20, "profile_shift": 0, "addendum_coefficient": 1.0, "dedendum_coefficient": 1.25,
+  "cutter_tip_radius_coefficient": 0.38, "flank_thinning_m": 1e-5, "face_width_m": 0.010, "bore_diameter_m": 0.010,
+  "material": {"youngs_modulus_pa": 207e9, "poisson_ratio": 0.3, "source": "nominal steel (demonstration)"}
+ },
+ "ring": {
+  "teeth": 72, "module_m": 0.001, "pressure_angle_deg": 20, "profile_shift": 0, "addendum_coefficient": 1.0, "tip_diameter_m": 0.070,
+  "flank_thinning_m": 1e-5, "face_width_m": 0.010, "bore_diameter_m": 0.082,
+  "cutter": {"teeth": 24, "addendum_coefficient": 1.25, "dedendum_coefficient": 1.25, "cutter_tip_radius_coefficient": 0.25},
+  "material": {"youngs_modulus_pa": 207e9, "poisson_ratio": 0.3, "source": "nominal steel (demonstration)"}
+ },
+ "planets": 3,
+ "mesh": {
+  "sun": {"across": 8, "flank": 12, "fillet": 6, "rim": 6, "face": 4},
+  "planet": {"across": 8, "flank": 12, "fillet": 6, "rim": 6, "face": 4},
+  "ring": {"across": 6, "flank": 10, "fillet": 4, "rim": 6, "face": 4}
+ },
+ "load": {"sun_torque_nm": 10.0},
+ "run": {"positions": 1, "carrier_from_deg": 0, "carrier_to_deg": 0}
+}

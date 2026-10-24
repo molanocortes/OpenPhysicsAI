@@ -1,0 +1,25 @@
+{
+ "job_id": "job-20260921-020147-8911-1",
+ "mesh": {
+  "method": "tet",
+  "order": 2,
+  "elements": 65754,
+  "nodes": 101340
+ },
+ "prescribed": {
+  "force_n": 500.0,
+  "fixed": "underside of the base"
+ },
+ "material": "ss316l_lpbf (published record)",
+ "computed": {
+  "max_displacement_mm": 0.07075673765076489,
+  "von_mises_p99_mpa": 74.21977658423174,
+  "von_mises_max_mpa": 121.01803196661966
+ },
+ "colour_range_mpa": [
+  0,
+  75.0
+ ],
+ "deformation_scale": 40,
+ "equilibrium": null
+}

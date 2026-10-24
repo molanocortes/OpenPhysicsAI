@@ -1,0 +1,16 @@
+== G17 step 6: pointing, the setup in colour, confirming, the answer
+  ok   the script ran to the end in the window
+  ok   the back face and the arm's top are two faces in the view (patches [2, 3])
+  FAIL the question named the two pointed patches in the order clicked (None, against [2, 3])
+  FAIL the selections made of them have the area the question states (None mm2, None mm2)
+  FAIL with the conditions applied the back face is drawn held and the arm loaded ([(2, 'plain'), (3, 'plain')])
+  ok   and before them both were plain ([(2, 'plain'), (3, 'plain')])
+  FAIL the setup card is shown with Run it and Not right while the agent waits ()
+  FAIL the card carries the agent's summary and the window logs the confirmation
+  FAIL Run it returned confirmed, and the analysis was submitted after the answer (None)
+  FAIL Not right returned not confirmed and no analysis was submitted (0 analyses in all)
+  FAIL the analysis succeeded and the window shows its sentence: ""
+  kept for diagnosis: /tmp/navier-g17s6-26z7v5vx (app.log, s6.nav, out/, card.png)
+
+PLAIN-LANGUAGE SETUP (G17 step 6): 3 passed, 8 failed
+python3 tools/plain_setup.py  3.52s user 0.36s system 58% cpu 6.691 total

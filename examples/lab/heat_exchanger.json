@@ -1,0 +1,99 @@
+{
+ "domain": "heat",
+ "title": "Counter-flow heat exchanger: hot water over cold through copper",
+ "provenance": {
+  "geometry": "demonstration"
+ },
+ "grid": {
+  "nx": 1000,
+  "ny": 90,
+  "cell_m": 5e-05
+ },
+ "fluid": {
+  "kinematic_viscosity_m2_s": 8.575727181544633e-07,
+  "thermal_diffusivity_m2_s": 1.4712719157712428e-07,
+  "volumetric_heat_capacity_j_m3k": 4166463.0,
+  "expansion_1_k": 0.0002761,
+  "density_kg_m3": 997.0,
+  "source": "Incropera, DeWitt, Bergman and Lavine, Fundamentals of Heat and Mass Transfer, 6th ed. (2007), table A.6 (saturated water), 300 K; typed from the table, not re-checked against a copy in this session"
+ },
+ "gravity_m_s2": [
+  0,
+  0
+ ],
+ "reference_temperature_k": 310.0,
+ "initial_temperature_k": 310.0,
+ "largest_speed_m_s": 0.04,
+ "materials": [
+  {
+   "name": "copper",
+   "kind": "solid",
+   "conductivity_w_mk": 401.0,
+   "volumetric_heat_capacity_j_m3k": 3439205.0,
+   "source": "Incropera, DeWitt, Bergman and Lavine, Fundamentals of Heat and Mass Transfer, 6th ed. (2007), table A.1 (pure copper), 300 K; typed from the table, not re-checked against a copy in this session"
+  }
+ ],
+ "regions": [
+  {
+   "box_m": [
+    0,
+    0.002,
+    0.05,
+    0.0025
+   ],
+   "material": "copper"
+  }
+ ],
+ "boundaries": [
+  {
+   "side": "x+",
+   "from_m": 0.0025,
+   "to_m": 0.0045,
+   "type": "inlet",
+   "speed_m_s": 0.02,
+   "parabolic": true,
+   "temperature_k": 330.0
+  },
+  {
+   "side": "x-",
+   "from_m": 0.0025,
+   "to_m": 0.0045,
+   "type": "outlet"
+  },
+  {
+   "side": "x-",
+   "from_m": 0.0,
+   "to_m": 0.002,
+   "type": "inlet",
+   "speed_m_s": 0.02,
+   "parabolic": true,
+   "temperature_k": 290.0
+  },
+  {
+   "side": "x+",
+   "from_m": 0.0,
+   "to_m": 0.002,
+   "type": "outlet"
+  }
+ ],
+ "run": {
+  "end_time_s": 5.0,
+  "frames": 50
+ },
+ "controls": [
+  {
+   "label": "hot water speed, m/s",
+   "path": "boundaries.0.speed_m_s",
+   "min": 0.005,
+   "max": 0.03,
+   "log": false
+  },
+  {
+   "label": "cold water speed, m/s",
+   "path": "boundaries.2.speed_m_s",
+   "min": 0.005,
+   "max": 0.03,
+   "log": false
+  }
+ ]
+}

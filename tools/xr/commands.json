@@ -1,0 +1,27 @@
+{
+  "about": "The view commands the headset may give the app (docs/xr.md). The bridge (tools/xr/xr_bridge.py) and the app with openphysics-mcp (src/core/xrlink.c, xrlink_command_allowed) must both allow every line of 'allowed' and refuse every line of 'refused'; tools/xr/xr_test.py checks both against this list.",
+  "allowed": [
+    "lab play", "lab pause", "lab next", "lab prev",
+    "lab frame 0", "lab frame 45", "lab frame -1",
+    "lab field p", "lab field speed", "lab field T", "lab field Q", "lab field magnets.N", "lab field u_x",
+    "lab range auto",
+    "lab section x 0.5", "lab section y 0", "lab section z 1", "lab section off", "lab section flip",
+    "fem play", "fem pause",
+    "fem step 1", "fem step 12", "fem step next", "fem step prev", "fem step last", "fem step first",
+    "fem field von_mises", "fem field displacement", "fem field temperature", "fem field failure_index",
+    "fem deform auto", "fem deform true", "fem deform 20",
+    "fem section z 0.25", "fem section off", "fem section flip"
+  ],
+  "refused": [
+    "", "lab", "fem", "quit", "lab open /etc/passwd", "lab run examples/lab/fire.json", "lab close",
+    "lab frame 3; quit", "lab frame 3;quit", "lab field p;quit", "lab field a b", "lab field ../x", "lab field $HOME",
+    "lab frame x", "lab frame 1.5", "lab section w 0.5", "lab section x 2", "lab section x -0.1", "lab section x 0.5 0.5",
+    "lab range 0 1", "lab cmap turbo", "lab view top", "lab fps 60", "lab renderer cpu",
+    "fem field Pressure", "fem field von-mises", "fem step", "fem step 3 4", "fem deform -1", "fem deform 0", "fem export /tmp/x.png",
+    "fem job abc", "fem show", "fem section x", "fem play now",
+    "fem deform 20abc", "lab section x 0x0.8", "lab section x nan", "lab section x inf",
+    "exec script.nav", "xr export /tmp/x.glb", "uiclickat 10 10", "shell ls",
+    "lab play\nquit", "lab field été",
+    "lab frame 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001"
+  ]
+}

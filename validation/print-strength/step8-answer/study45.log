@@ -1,0 +1,19 @@
+  cring    voxel h 0.5      9296 elements  R 1.7508    (point 1.7019, peak flag none, zone 1 mm)  2t (tension along axis 2) at (   9.50    3.50   0.50) mm  radius 10.12 mm, 24.8 deg from the apex; closed form at the applied load 2.0303  [6.0 s]
+           at a voxel staircase (GOALS.md G17 step 8): yes; the answer names TET10: yes
+  cring    voxel h 0.25    74240 elements  R 1.7114    (point 1.651, peak flag none, zone 1 mm)  2t (tension along axis 2) at (   9.75    2.50   0.25) mm  radius 10.07 mm, 30.6 deg from the apex; closed form at the applied load 2.0303  [46.3 s]
+           at a voxel staircase (GOALS.md G17 step 8): yes; the answer names TET10: yes
+  bracket  voxel h 1         600 elements  R 3.2164    (point 2.9231, peak flag sharp_inside_corner, zone 1.5 mm)  3t (interlayer tension)  at (  -8.00    3.00   4.00) mm  [0.1 s]
+           at a voxel staircase (GOALS.md G17 step 8): no; the answer names TET10: no
+  bracket  voxel h 0.5      4800 elements  R 3.0756    (point 2.1625, peak flag sharp_inside_corner, zone 1 mm)  3c (compression across layers) at (  -5.00   -3.00   4.00) mm  [6.3 s]
+           at a voxel staircase (GOALS.md G17 step 8): no; the answer names TET10: no
+  bracket  voxel h 0.25    38400 elements  R 3.0419    (point 1.6265, peak flag sharp_inside_corner, zone 1 mm)  3t (interlayer tension)  at (  -8.00    3.50   3.50) mm  [6.7 s]
+           at a voxel staircase (GOALS.md G17 step 8): no; the answer names TET10: no
+  cring    tet   h 1       16204 elements  R 2.0136    (point 2.0869, peak flag none, zone 1.5 mm)  s12 (in-plane shear)     at (   6.82    7.32   1.74) mm  radius 10.00 mm, -2.0 deg from the apex; closed form at the applied load 2.027  [4.5 s]
+           at a voxel staircase (GOALS.md G17 step 8): not reported; the answer names TET10: no
+  C-ring closed form (Winkler-Bach): inner-fibre stress 25.82 MPa at the apex under the requested 10 N, Xt 52.3 MPa, R 2.0252
+  ok   cring on voxel: R moves -2.3 % from 0.5 to 0.25 mm (criterion 5 %)
+  ok   cring on voxel: the governing point moves 1.06 mm (criterion 2 mm)
+  FAIL C-ring on voxel: R at 0.25 mm is -15.5 % from the closed form (criterion 5 %)
+  ok   bracket on voxel: R moves -1.1 % from 0.5 to 0.25 mm (criterion 5 %)
+  FAIL bracket on voxel: the governing point moves 7.18 mm (criterion 2 mm)
+PRINT MESH STUDY: 3 passed, 2 failed

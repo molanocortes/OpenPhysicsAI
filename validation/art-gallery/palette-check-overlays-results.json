@@ -1,0 +1,67 @@
+{
+  "passed": 34,
+  "failed": 0,
+  "native_returncode": 0,
+  "field": "displacement",
+  "marker_geometry": "final STL surface",
+  "outline_stored_time": 23,
+  "result": "Helical_Flute",
+  "pixel_checks": [
+    {
+      "before": "overlays_default",
+      "after": "marker_off",
+      "minimum_changed_pixels": 4,
+      "model_changed_pixels": 360,
+      "legend_changed_pixels": 0
+    },
+    {
+      "before": "marker_off",
+      "after": "marker_invalid",
+      "minimum_changed_pixels": 0,
+      "model_changed_pixels": 0,
+      "legend_changed_pixels": 0
+    },
+    {
+      "before": "marker_off",
+      "after": "marker_extra_args",
+      "minimum_changed_pixels": 0,
+      "model_changed_pixels": 0,
+      "legend_changed_pixels": 0
+    },
+    {
+      "before": "overlays_default",
+      "after": "marker_on",
+      "minimum_changed_pixels": 0,
+      "model_changed_pixels": 0,
+      "legend_changed_pixels": 0
+    },
+    {
+      "before": "outline_baseline",
+      "after": "outline_off",
+      "minimum_changed_pixels": 100,
+      "model_changed_pixels": 30293,
+      "legend_changed_pixels": 0
+    },
+    {
+      "before": "outline_off",
+      "after": "outline_invalid",
+      "minimum_changed_pixels": 0,
+      "model_changed_pixels": 0,
+      "legend_changed_pixels": 0
+    },
+    {
+      "before": "outline_off",
+      "after": "outline_extra_args",
+      "minimum_changed_pixels": 0,
+      "model_changed_pixels": 0,
+      "legend_changed_pixels": 0
+    },
+    {
+      "before": "outline_baseline",
+      "after": "outline_on",
+      "minimum_changed_pixels": 0,
+      "model_changed_pixels": 0,
+      "legend_changed_pixels": 0
+    }
+  ]
+}

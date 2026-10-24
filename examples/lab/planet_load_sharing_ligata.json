@@ -1,0 +1,221 @@
+{
+ "domain": "mechanism",
+ "model": "gear_train",
+ "title": "Four helical planets share a load unevenly when one carrier pin is 70 um out of place (the Ligata 2007 set, 1000 N m)",
+ "provenance": {
+  "source": "H. Ligata, Impact of system-level factors on planetary gear set behavior, PhD thesis, The Ohio State University, 2007: Table 2.1 (gears), Table 2.2 (planet angles), section 2.2 (pin errors, floating sun, 500 rpm), the thick ring (rim 13 mm, 11 splines)",
+  "assumed": "normal pressure angle 22.5 deg (the dissertation's 23.04 deg is its transverse value); the profile shift sums +0.0685 split as sun 0.0685, planet 0, ring 0.0685; standard addenda and a 1.25 / 0.38 rack; a 31-tooth shaper for the ring; 25 um of thinning on every flank (a normal backlash of about 0.1 mm a mesh); bores (sun 90 mm, planets 28 mm); steel, E = 207 GPa, nu = 0.3; the ring held at its 11 splines, each 6 deg wide, free radially there; the planets' needle bearings 2e5 N/mm in every direction (the bearing maker's value the dissertation's own model used; a later model of the rig used 1.3e5)",
+  "material": "steel, assumed",
+  "purpose": "the four-planet set of H. Ligata, PhD dissertation, The Ohio State University, 2007, as trial T6 models it (flags/planet-load-sharing): sun 73, planets 26, ring 125, normal module 1.81 mm, helix 13.12 deg; what the dissertation does not state is assumed as listed under \"assumed\""
+ },
+ "gears": {
+  "sun": {
+   "teeth": 73,
+   "module_m": 0.00181,
+   "pressure_angle_deg": 22.5,
+   "helix_angle_deg": 13.12,
+   "profile_shift": 0.0685,
+   "addendum_coefficient": 1.0,
+   "dedendum_coefficient": 1.25,
+   "cutter_tip_radius_coefficient": 0.38,
+   "flank_thinning_m": 2.5e-05,
+   "face_width_m": 0.025,
+   "bore_diameter_m": 0.09,
+   "material": {
+    "youngs_modulus_pa": 207000000000.0,
+    "poisson_ratio": 0.3,
+    "source": "assumed: steel, E = 207 GPa, nu = 0.3 (the thesis gives no material for the test gears)"
+   },
+   "mesh": {
+    "across": 4,
+    "flank": 6,
+    "fillet": 3,
+    "rim": 3,
+    "face": 4
+   }
+  },
+  "planet": {
+   "teeth": 26,
+   "module_m": 0.00181,
+   "pressure_angle_deg": 22.5,
+   "helix_angle_deg": -13.12,
+   "profile_shift": 0.0,
+   "addendum_coefficient": 1.0,
+   "dedendum_coefficient": 1.25,
+   "cutter_tip_radius_coefficient": 0.38,
+   "flank_thinning_m": 2.5e-05,
+   "face_width_m": 0.025,
+   "bore_diameter_m": 0.028,
+   "material": {
+    "youngs_modulus_pa": 207000000000.0,
+    "poisson_ratio": 0.3,
+    "source": "assumed: steel, E = 207 GPa, nu = 0.3 (the thesis gives no material for the test gears)"
+   },
+   "mesh": {
+    "across": 4,
+    "flank": 6,
+    "fillet": 3,
+    "rim": 4,
+    "face": 4
+   }
+  },
+  "ring": {
+   "teeth": 125,
+   "module_m": 0.00181,
+   "pressure_angle_deg": 22.5,
+   "helix_angle_deg": -13.12,
+   "profile_shift": 0.0685,
+   "addendum_coefficient": 1.0,
+   "dedendum_coefficient": 1.25,
+   "cutter_tip_radius_coefficient": 0.38,
+   "flank_thinning_m": 2.5e-05,
+   "face_width_m": 0.025,
+   "bore_diameter_m": 0.263087,
+   "material": {
+    "youngs_modulus_pa": 207000000000.0,
+    "poisson_ratio": 0.3,
+    "source": "assumed: steel, E = 207 GPa, nu = 0.3 (the thesis gives no material for the test gears)"
+   },
+   "mesh": {
+    "across": 4,
+    "flank": 6,
+    "fillet": 3,
+    "rim": 4,
+    "face": 4
+   },
+   "internal": true,
+   "cutter": {
+    "teeth": 31,
+    "addendum_coefficient": 1.25,
+    "dedendum_coefficient": 1.25,
+    "cutter_tip_radius_coefficient": 0.25
+   },
+   "hold": {
+    "lugs": 11,
+    "lug_width_deg": 6,
+    "phase_deg": 0,
+    "radial_free": true
+   }
+  }
+ },
+ "shafts": [
+  {
+   "name": "sun",
+   "axis_m": [
+    0,
+    0
+   ],
+   "torque_nm": -1000,
+   "floating": true
+  },
+  {
+   "name": "carrier",
+   "axis_m": [
+    0,
+    0
+   ],
+   "locked": true
+  },
+  {
+   "name": "planet",
+   "axis_m": [
+    0.09212,
+    0
+   ],
+   "carrier": "carrier",
+   "angles_deg": [
+    0,
+    90.9090909090909,
+    180,
+    270.90909090909093
+   ],
+   "pin_errors_m": [
+    [
+     7e-05,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     0
+    ]
+   ],
+   "support_n_per_m": 200000000.0
+  },
+  {
+   "name": "housing",
+   "axis_m": [
+    0,
+    0
+   ],
+   "fixed": true
+  }
+ ],
+ "parts": [
+  {
+   "name": "sun",
+   "gear": "sun",
+   "shaft": "sun"
+  },
+  {
+   "name": "planet",
+   "gear": "planet",
+   "shaft": "planet"
+  },
+  {
+   "name": "ring",
+   "gear": "ring",
+   "shaft": "housing"
+  }
+ ],
+ "meshes": [
+  [
+   "sun",
+   "planet"
+  ],
+  [
+   "planet",
+   "ring"
+  ]
+ ],
+ "input": "sun",
+ "run": {
+  "positions": 30,
+  "input_from_deg": 0,
+  "input_to_deg": -40,
+  "frames": true
+ },
+ "controls": [
+  {
+   "label": "torque on the sun, clockwise, N m",
+   "path": "shafts.0.torque_nm",
+   "min": -1000,
+   "max": -200,
+   "log": false
+  },
+  {
+   "label": "planet 1's pin out of place, m",
+   "path": "shafts.2.pin_errors_m.0.0",
+   "min": -7e-05,
+   "max": 7e-05,
+   "log": false
+  },
+  {
+   "label": "the planets' bearing stiffness, N/m",
+   "path": "shafts.2.support_n_per_m",
+   "min": 50000000.0,
+   "max": 1000000000.0,
+   "log": true
+  }
+ ],
+ "picture": {
+  "film": "build/labfilm OUT.lab --out DIR --field stress --range 0 2e8 --azim -90 --elev 70 --light --size 960x540"
+ }
+}

@@ -1,0 +1,25 @@
+{
+ "domain": "mechanism",
+ "model": "gear_tooth",
+ "title": "Lisle, Shaw and Frazer 2017: a 50 mm module spur gear tooth loaded by an anvil, root stress by strain gauges",
+ "provenance": {
+  "geometry": "Lisle, Shaw, Frazer, External spur gear root bending stress: a comparison of ISO 6336:2006, AGMA 2101-D04, ANSYS finite element analysis and strain gauge techniques, Mechanism and Machine Theory 111 (2017) 1-9, Table 1: face width 10 mm, normal module 50 mm, pressure angle 20 deg, reference diameter 1150 mm (23 teeth), tip diameter 1283.593 mm, root diameter 1000.365 mm, base diameter 1080.646 mm; Fig. 8: the load at radius 635 mm with load angle 30.4554 deg, ISO 30 degree section 103.0532 mm with fillet radius 30.2784 mm and bending arm 119.4778 mm, AGMA minimum fillet radius 20.6522 mm",
+  "reconstructed": "the generating rack is not tabulated; it follows from the published numbers: the load angle at R635 gives the profile shift x = 0.0858, the root diameter then gives the rack addendum 1.5821 m, the tip diameter the gear addendum 1.2502 m, and a rack tip radius of 0.30 m reproduces the ISO fillet radius (30.27 vs 30.28 mm), section (103.10 vs 103.05 mm), bending arm (119.42 vs 119.48 mm) and the AGMA minimum fillet radius (20.64 vs 20.65 mm) to 0.08 per cent",
+  "rig": "the tooth was cut by wire EDM from an exact profile (+-50 um) with portions of the adjacent teeth, held in a stiff jig and loaded by a flat anvil along the base tangent on a UKAS-calibrated Instron; constantan foil gauges at three positions in the loaded fillet, quarter bridge, shunt calibrated; expanded uncertainty about 1.5 per cent; stresses reported as E x strain with E = 207 GPa",
+  "assumed": "the jig is not modelled: the sector (three teeth) is held at a bore 2.5 modules below the root and at its cut faces, as the paper's first finite element model held the bore; anvil friction (mu 0.125 in the paper's second model) is left out"
+ },
+ "gear": {
+  "teeth": 23, "module_m": 0.05, "pressure_angle_deg": 20, "profile_shift": 0.08577,
+  "addendum_coefficient": 1.25016, "dedendum_coefficient": 1.58212, "cutter_tip_radius_coefficient": 0.30,
+  "tip_diameter_m": 1.283593, "face_width_m": 0.010, "bore_diameter_m": 0.75036,
+  "material": {"youngs_modulus_pa": 207e9, "poisson_ratio": 0.3, "source": "Lisle et al. 2017: steel, E = 207 GPa (Callister), used to turn the gauges' strain into stress"}
+ },
+ "mesh": {"teeth_modelled": 3, "across": 14, "flank": 28, "fillet": 12, "rim": 12, "face": 2},
+ "hold_sector_cuts": true,
+ "load": {"radius_m": 0.635, "normal_force_n": [5000, 10000, 15000]},
+ "gauges": [
+  {"name": "A_agma", "side": "loaded", "position": "arc", "arc_from_tip_m": 0.1307},
+  {"name": "B_max", "side": "loaded", "position": "max"},
+  {"name": "C_iso30", "side": "loaded", "position": "30deg"}
+ ]
+}

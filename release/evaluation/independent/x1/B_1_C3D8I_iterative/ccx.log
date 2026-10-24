@@ -1,0 +1,298 @@
+
+************************************************************
+
+CalculiX Version 2.23, Copyright(C) 1998-2025 Guido Dhondt
+CalculiX comes with ABSOLUTELY NO WARRANTY. This is free
+software, and you are welcome to redistribute it under
+certain conditions, see gpl.htm
+
+************************************************************
+
+You are using an executable made on Wed Aug 12 10:49:40 UTC 2026
+ Decascading the MPC's
+
+ Determining the structure of the matrix:
+ Using up to 4 cpu(s) for setting up the structure of the matrix.
+ number of equations
+ 653196
+ number of nonzero lower triangular matrix elements
+ 19541559
+
+ Using up to 4 cpu(s) for the stress calculation.
+
+ Using up to 4 cpu(s) for the symmetric stiffness/mass contributions.
+
+Cholesky preconditioning
+
+alpha=0.000000
+Solving the system of equations using the iterative solver
+
+iteration= 0, error= 0.000000e+00, limit=1.971450e-06
+iteration= 1, error= 3.826953e-04, limit=1.971450e-06
+iteration= 2, error= 2.864145e-04, limit=1.971450e-06
+iteration= 3, error= 4.957703e-04, limit=1.971450e-06
+iteration= 4, error= 5.005862e-04, limit=1.971450e-06
+iteration= 5, error= 4.786505e-04, limit=1.971450e-06
+iteration= 6, error= 5.591641e-04, limit=1.971450e-06
+iteration= 7, error= 5.989944e-04, limit=1.971450e-06
+iteration= 8, error= 4.748329e-04, limit=1.971450e-06
+iteration= 9, error= 5.220197e-04, limit=1.971450e-06
+iteration= 10, error= 3.342241e-04, limit=1.971450e-06
+iteration= 11, error= 4.391749e-04, limit=1.971450e-06
+iteration= 12, error= 4.423831e-04, limit=1.971450e-06
+iteration= 13, error= 4.121579e-04, limit=1.971450e-06
+iteration= 14, error= 4.451829e-04, limit=1.971450e-06
+iteration= 15, error= 1.116546e-03, limit=1.971450e-06
+iteration= 16, error= 9.300764e-04, limit=1.971450e-06
+iteration= 17, error= 9.348877e-04, limit=1.971450e-06
+iteration= 18, error= 9.818161e-04, limit=1.971450e-06
+iteration= 19, error= 6.501331e-04, limit=1.971450e-06
+iteration= 20, error= 1.017947e-03, limit=1.971450e-06
+iteration= 21, error= 1.237218e-03, limit=1.971450e-06
+iteration= 22, error= 9.189401e-04, limit=1.971450e-06
+iteration= 23, error= 1.064839e-03, limit=1.971450e-06
+iteration= 24, error= 8.623950e-04, limit=1.971450e-06
+iteration= 25, error= 9.611253e-04, limit=1.971450e-06
+iteration= 26, error= 1.303232e-03, limit=1.971450e-06
+iteration= 27, error= 1.439204e-03, limit=1.971450e-06
+iteration= 28, error= 1.414064e-03, limit=1.971450e-06
+iteration= 29, error= 1.407142e-03, limit=1.971450e-06
+iteration= 30, error= 1.242821e-03, limit=1.971450e-06
+iteration= 31, error= 1.064841e-03, limit=1.971450e-06
+iteration= 32, error= 1.046307e-03, limit=1.971450e-06
+iteration= 33, error= 9.016218e-04, limit=1.971450e-06
+iteration= 34, error= 7.725467e-04, limit=1.971450e-06
+iteration= 35, error= 6.826994e-04, limit=1.971450e-06
+iteration= 36, error= 7.051237e-04, limit=1.971450e-06
+iteration= 37, error= 8.846968e-04, limit=1.971450e-06
+iteration= 38, error= 6.544142e-04, limit=1.971450e-06
+iteration= 39, error= 1.135616e-03, limit=1.971450e-06
+iteration= 40, error= 7.203471e-04, limit=1.971450e-06
+iteration= 41, error= 7.124955e-04, limit=1.971450e-06
+iteration= 42, error= 8.345041e-04, limit=1.971450e-06
+iteration= 43, error= 7.128675e-04, limit=1.971450e-06
+iteration= 44, error= 8.667528e-04, limit=1.971450e-06
+iteration= 45, error= 6.016444e-04, limit=1.971450e-06
+iteration= 46, error= 8.502335e-04, limit=1.971450e-06
+iteration= 47, error= 5.546822e-04, limit=1.971450e-06
+iteration= 48, error= 9.978988e-04, limit=1.971450e-06
+iteration= 49, error= 1.451515e-03, limit=1.971450e-06
+iteration= 50, error= 1.604372e-03, limit=1.971450e-06
+iteration= 51, error= 1.931912e-03, limit=1.971450e-06
+iteration= 52, error= 1.387084e-03, limit=1.971450e-06
+iteration= 53, error= 1.375205e-03, limit=1.971450e-06
+iteration= 54, error= 1.316031e-03, limit=1.971450e-06
+iteration= 55, error= 1.222926e-03, limit=1.971450e-06
+iteration= 56, error= 1.406920e-03, limit=1.971450e-06
+iteration= 57, error= 1.246929e-03, limit=1.971450e-06
+iteration= 58, error= 1.222670e-03, limit=1.971450e-06
+iteration= 59, error= 1.166520e-03, limit=1.971450e-06
+iteration= 60, error= 1.097292e-03, limit=1.971450e-06
+iteration= 61, error= 6.276879e-04, limit=1.971450e-06
+iteration= 62, error= 7.583725e-04, limit=1.971450e-06
+iteration= 63, error= 5.959348e-04, limit=1.971450e-06
+iteration= 64, error= 6.211713e-04, limit=1.971450e-06
+iteration= 65, error= 6.664989e-04, limit=1.971450e-06
+iteration= 66, error= 5.907111e-04, limit=1.971450e-06
+iteration= 67, error= 5.213685e-04, limit=1.971450e-06
+iteration= 68, error= 5.381040e-04, limit=1.971450e-06
+iteration= 69, error= 5.576326e-04, limit=1.971450e-06
+iteration= 70, error= 5.431038e-04, limit=1.971450e-06
+iteration= 71, error= 5.597982e-04, limit=1.971450e-06
+iteration= 72, error= 4.800433e-04, limit=1.971450e-06
+iteration= 73, error= 4.803737e-04, limit=1.971450e-06
+iteration= 74, error= 5.169581e-04, limit=1.971450e-06
+iteration= 75, error= 3.942222e-04, limit=1.971450e-06
+iteration= 76, error= 4.226588e-04, limit=1.971450e-06
+iteration= 77, error= 4.161687e-04, limit=1.971450e-06
+iteration= 78, error= 3.082570e-04, limit=1.971450e-06
+iteration= 79, error= 4.613585e-04, limit=1.971450e-06
+iteration= 80, error= 3.448429e-04, limit=1.971450e-06
+iteration= 81, error= 3.792558e-04, limit=1.971450e-06
+iteration= 82, error= 3.117249e-04, limit=1.971450e-06
+iteration= 83, error= 2.927617e-04, limit=1.971450e-06
+iteration= 84, error= 2.240522e-04, limit=1.971450e-06
+iteration= 85, error= 2.733268e-04, limit=1.971450e-06
+iteration= 86, error= 2.378989e-04, limit=1.971450e-06
+iteration= 87, error= 3.112976e-04, limit=1.971450e-06
+iteration= 88, error= 2.739143e-04, limit=1.971450e-06
+iteration= 89, error= 2.154841e-04, limit=1.971450e-06
+iteration= 90, error= 1.974511e-04, limit=1.971450e-06
+iteration= 91, error= 1.952798e-04, limit=1.971450e-06
+iteration= 92, error= 2.693190e-04, limit=1.971450e-06
+iteration= 93, error= 2.420238e-04, limit=1.971450e-06
+iteration= 94, error= 2.013807e-04, limit=1.971450e-06
+iteration= 95, error= 2.488236e-04, limit=1.971450e-06
+iteration= 96, error= 1.907708e-04, limit=1.971450e-06
+iteration= 97, error= 2.170680e-04, limit=1.971450e-06
+iteration= 98, error= 1.915806e-04, limit=1.971450e-06
+iteration= 99, error= 1.538564e-04, limit=1.971450e-06
+iteration= 100, error= 1.545613e-04, limit=1.971450e-06
+iteration= 101, error= 1.396312e-04, limit=1.971450e-06
+iteration= 102, error= 1.574606e-04, limit=1.971450e-06
+iteration= 103, error= 1.372395e-04, limit=1.971450e-06
+iteration= 104, error= 1.795120e-04, limit=1.971450e-06
+iteration= 105, error= 1.982403e-04, limit=1.971450e-06
+iteration= 106, error= 1.723754e-04, limit=1.971450e-06
+iteration= 107, error= 2.173736e-04, limit=1.971450e-06
+iteration= 108, error= 2.107220e-04, limit=1.971450e-06
+iteration= 109, error= 2.256485e-04, limit=1.971450e-06
+iteration= 110, error= 2.701666e-04, limit=1.971450e-06
+iteration= 111, error= 3.224595e-04, limit=1.971450e-06
+iteration= 112, error= 2.800829e-04, limit=1.971450e-06
+iteration= 113, error= 2.310174e-04, limit=1.971450e-06
+iteration= 114, error= 2.397493e-04, limit=1.971450e-06
+iteration= 115, error= 2.538138e-04, limit=1.971450e-06
+iteration= 116, error= 2.493207e-04, limit=1.971450e-06
+iteration= 117, error= 2.583080e-04, limit=1.971450e-06
+iteration= 118, error= 2.338426e-04, limit=1.971450e-06
+iteration= 119, error= 2.272405e-04, limit=1.971450e-06
+iteration= 120, error= 3.203290e-04, limit=1.971450e-06
+iteration= 121, error= 2.550705e-04, limit=1.971450e-06
+iteration= 122, error= 2.596887e-04, limit=1.971450e-06
+iteration= 123, error= 3.136211e-04, limit=1.971450e-06
+iteration= 124, error= 2.376022e-04, limit=1.971450e-06
+iteration= 125, error= 2.375943e-04, limit=1.971450e-06
+iteration= 126, error= 2.247864e-04, limit=1.971450e-06
+iteration= 127, error= 2.684471e-04, limit=1.971450e-06
+iteration= 128, error= 2.421491e-04, limit=1.971450e-06
+iteration= 129, error= 3.825494e-04, limit=1.971450e-06
+iteration= 130, error= 2.543196e-04, limit=1.971450e-06
+iteration= 131, error= 2.855973e-04, limit=1.971450e-06
+iteration= 132, error= 2.410298e-04, limit=1.971450e-06
+iteration= 133, error= 2.841817e-04, limit=1.971450e-06
+iteration= 134, error= 2.492232e-04, limit=1.971450e-06
+iteration= 135, error= 2.479134e-04, limit=1.971450e-06
+iteration= 136, error= 2.929448e-04, limit=1.971450e-06
+iteration= 137, error= 3.379436e-04, limit=1.971450e-06
+iteration= 138, error= 2.900501e-04, limit=1.971450e-06
+iteration= 139, error= 3.295217e-04, limit=1.971450e-06
+iteration= 140, error= 2.869260e-04, limit=1.971450e-06
+iteration= 141, error= 2.619409e-04, limit=1.971450e-06
+iteration= 142, error= 2.095440e-04, limit=1.971450e-06
+iteration= 143, error= 1.725198e-04, limit=1.971450e-06
+iteration= 144, error= 1.066492e-04, limit=1.971450e-06
+iteration= 145, error= 1.305940e-04, limit=1.971450e-06
+iteration= 146, error= 9.773796e-05, limit=1.971450e-06
+iteration= 147, error= 7.677148e-05, limit=1.971450e-06
+iteration= 148, error= 6.272489e-05, limit=1.971450e-06
+iteration= 149, error= 9.272943e-05, limit=1.971450e-06
+iteration= 150, error= 6.027136e-05, limit=1.971450e-06
+iteration= 151, error= 5.018541e-05, limit=1.971450e-06
+iteration= 152, error= 4.186820e-05, limit=1.971450e-06
+iteration= 153, error= 3.309788e-05, limit=1.971450e-06
+iteration= 154, error= 3.178725e-05, limit=1.971450e-06
+iteration= 155, error= 3.376144e-05, limit=1.971450e-06
+iteration= 156, error= 3.262791e-05, limit=1.971450e-06
+iteration= 157, error= 3.649220e-05, limit=1.971450e-06
+iteration= 158, error= 2.863155e-05, limit=1.971450e-06
+iteration= 159, error= 4.525456e-05, limit=1.971450e-06
+iteration= 160, error= 3.344518e-05, limit=1.971450e-06
+iteration= 161, error= 3.560762e-05, limit=1.971450e-06
+iteration= 162, error= 2.527250e-05, limit=1.971450e-06
+iteration= 163, error= 2.524532e-05, limit=1.971450e-06
+iteration= 164, error= 1.839868e-05, limit=1.971450e-06
+iteration= 165, error= 1.726986e-05, limit=1.971450e-06
+iteration= 166, error= 1.499901e-05, limit=1.971450e-06
+iteration= 167, error= 1.729448e-05, limit=1.971450e-06
+iteration= 168, error= 1.912568e-05, limit=1.971450e-06
+iteration= 169, error= 2.104572e-05, limit=1.971450e-06
+iteration= 170, error= 2.084663e-05, limit=1.971450e-06
+iteration= 171, error= 2.776248e-05, limit=1.971450e-06
+iteration= 172, error= 3.624201e-05, limit=1.971450e-06
+iteration= 173, error= 4.140514e-05, limit=1.971450e-06
+iteration= 174, error= 7.149687e-05, limit=1.971450e-06
+iteration= 175, error= 5.946855e-05, limit=1.971450e-06
+iteration= 176, error= 7.903179e-05, limit=1.971450e-06
+iteration= 177, error= 5.630392e-05, limit=1.971450e-06
+iteration= 178, error= 4.570384e-05, limit=1.971450e-06
+iteration= 179, error= 3.691306e-05, limit=1.971450e-06
+iteration= 180, error= 2.624543e-05, limit=1.971450e-06
+iteration= 181, error= 2.325360e-05, limit=1.971450e-06
+iteration= 182, error= 1.936513e-05, limit=1.971450e-06
+iteration= 183, error= 2.166781e-05, limit=1.971450e-06
+iteration= 184, error= 1.691393e-05, limit=1.971450e-06
+iteration= 185, error= 1.975978e-05, limit=1.971450e-06
+iteration= 186, error= 1.671475e-05, limit=1.971450e-06
+iteration= 187, error= 2.113396e-05, limit=1.971450e-06
+iteration= 188, error= 2.482994e-05, limit=1.971450e-06
+iteration= 189, error= 1.658429e-05, limit=1.971450e-06
+iteration= 190, error= 2.093347e-05, limit=1.971450e-06
+iteration= 191, error= 3.056633e-05, limit=1.971450e-06
+iteration= 192, error= 1.832623e-05, limit=1.971450e-06
+iteration= 193, error= 2.350834e-05, limit=1.971450e-06
+iteration= 194, error= 2.047487e-05, limit=1.971450e-06
+iteration= 195, error= 1.531931e-05, limit=1.971450e-06
+iteration= 196, error= 1.860982e-05, limit=1.971450e-06
+iteration= 197, error= 1.949525e-05, limit=1.971450e-06
+iteration= 198, error= 2.168075e-05, limit=1.971450e-06
+iteration= 199, error= 2.117684e-05, limit=1.971450e-06
+iteration= 200, error= 2.467736e-05, limit=1.971450e-06
+iteration= 201, error= 2.486514e-05, limit=1.971450e-06
+iteration= 202, error= 2.924210e-05, limit=1.971450e-06
+iteration= 203, error= 3.593124e-05, limit=1.971450e-06
+iteration= 204, error= 3.690941e-05, limit=1.971450e-06
+iteration= 205, error= 4.178173e-05, limit=1.971450e-06
+iteration= 206, error= 3.749989e-05, limit=1.971450e-06
+iteration= 207, error= 3.005330e-05, limit=1.971450e-06
+iteration= 208, error= 2.238816e-05, limit=1.971450e-06
+iteration= 209, error= 1.744722e-05, limit=1.971450e-06
+iteration= 210, error= 8.176938e-06, limit=1.971450e-06
+iteration= 211, error= 6.108022e-06, limit=1.971450e-06
+iteration= 212, error= 3.846315e-06, limit=1.971450e-06
+iteration= 213, error= 3.222524e-06, limit=1.971450e-06
+iteration= 214, error= 2.930506e-06, limit=1.971450e-06
+iteration= 215, error= 2.491861e-06, limit=1.971450e-06
+iteration= 216, error= 2.121010e-06, limit=1.971450e-06
+iteration= 217, error= 2.160668e-06, limit=1.971450e-06
+iteration= 218, error= 1.448769e-06, limit=1.971450e-06
+error condition (0=good, 1=bad) = 0
+# of iterations = 218
+ Using up to 4 cpu(s) for the stress calculation.
+
+
+  The numbers below are estimated upper bounds
+
+  number of:
+
+   nodes:       220233
+   elements:        53280
+   one-dimensional elements:            0
+   two-dimensional elements:            0
+   integration points per element:            8
+   degrees of freedom per node:            3
+   layers per element:            1
+
+   distributed facial loads:            0
+   distributed volumetric loads:            0
+   concentrated loads:          289
+   single point constraints:         7503
+   multiple point constraints:            1
+   terms in all multiple point constraints:            1
+   tie constraints:            0
+   dependent nodes tied by cyclic constraints:            0
+   dependent nodes in pre-tension constraints:            0
+
+   sets:            6
+   terms in all sets:       230137
+
+   materials:            1
+   constants per material and temperature:            2
+   temperature points per material:            1
+   plastic data points per material:            0
+
+   orientations:            0
+   amplitudes:            2
+   data points in all amplitudes:            2
+   print requests:            5
+   transformations:            0
+   property cards:            0
+
+
+ STEP            1
+
+ Static analysis was selected
+
+
+ Job finished
+

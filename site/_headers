@@ -1,0 +1,36 @@
+# Cloudflare Pages response headers. The policy makes the footer's promise binding in the browser: nothing may be
+# loaded from another site, nothing may frame the page, and no form may send data anywhere. The lab page (/lab/)
+# fetches its own files from this site and compiles the lab's WebAssembly module ('wasm-unsafe-eval' permits exactly
+# that, not JavaScript's eval), in a worker from this site.
+/*
+  Content-Security-Policy: default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self'; connect-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Content-Type-Options: nosniff
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+
+# The stylesheet, the script and the icons are named by a hash of their content in the page, so a browser may keep
+# them for a year; films and posters keep their names, so a week.
+/style.css
+  Cache-Control: public, max-age=31536000, immutable
+/site.js
+  Cache-Control: public, max-age=31536000, immutable
+/favicon.svg
+  Cache-Control: public, max-age=31536000, immutable
+/media/*
+  Cache-Control: public, max-age=604800
+# the lab page's files are named by a hash of their content too (in the page, and in its list of scenarios); the page
+# itself, /lab/, is not listed here, so a browser asks for it again
+/lab/lab.css
+  Cache-Control: public, max-age=31536000, immutable
+/lab/lab.js
+  Cache-Control: public, max-age=31536000, immutable
+/lab/worker.js
+  Cache-Control: public, max-age=31536000, immutable
+/lab/wasi.js
+  Cache-Control: public, max-age=31536000, immutable
+/lab/lab.wasm
+  Cache-Control: public, max-age=31536000, immutable
+/lab/scenarios.json
+  Cache-Control: public, max-age=31536000, immutable
+/lab/scenarios/*
+  Cache-Control: public, max-age=31536000, immutable

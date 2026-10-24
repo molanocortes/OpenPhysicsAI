@@ -1,0 +1,308 @@
+{
+ "domain": "magnet",
+ "title": "Permanent-magnet motor: 12 slots, 4 poles, 5 A/mm2",
+ "provenance": {
+  "design": "demonstration, not a product",
+  "steel": "linear, relative permeability 4000 assumed"
+ },
+ "grid": {
+  "nx": 520,
+  "ny": 520,
+  "cell_m": 0.00025
+ },
+ "materials": [
+  {
+   "name": "n42",
+   "relative_permeability": 1.11,
+   "remanence_t": 1.315,
+   "source": "Arnold Magnetic Technologies, N42 sintered NdFeB datasheet (rev. 210607): nominal Br 1315 mT and HcB 943 kA/m; relative permeability of the straight demagnetisation line through them, Br / (mu0 HcB) = 1.11"
+  },
+  {
+   "name": "steel",
+   "relative_permeability": 4000.0,
+   "source": "assumed linear lamination steel; with a 1 mm air gap the torque is insensitive to this above about a thousand (checked in docs/lab/magnet.md); saturation not modelled"
+  },
+  {
+   "name": "copper",
+   "relative_permeability": 1.0,
+   "conductivity_s_m": 58000000.0,
+   "source": "International Annealed Copper Standard: 100 % IACS = 5.8e7 S/m at 20 C"
+  }
+ ],
+ "regions": [
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.06,
+    0,
+    360
+   ],
+   "material": "steel"
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    -7.5,
+    7.5
+   ],
+   "material": "copper",
+   "phase": "A",
+   "phase_sign": 1
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    22.5,
+    37.5
+   ],
+   "material": "copper",
+   "phase": "C",
+   "phase_sign": -1
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    52.5,
+    67.5
+   ],
+   "material": "copper",
+   "phase": "B",
+   "phase_sign": 1
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    82.5,
+    97.5
+   ],
+   "material": "copper",
+   "phase": "A",
+   "phase_sign": -1
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    112.5,
+    127.5
+   ],
+   "material": "copper",
+   "phase": "C",
+   "phase_sign": 1
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    142.5,
+    157.5
+   ],
+   "material": "copper",
+   "phase": "B",
+   "phase_sign": -1
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    172.5,
+    187.5
+   ],
+   "material": "copper",
+   "phase": "A",
+   "phase_sign": 1
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    202.5,
+    217.5
+   ],
+   "material": "copper",
+   "phase": "C",
+   "phase_sign": -1
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    232.5,
+    247.5
+   ],
+   "material": "copper",
+   "phase": "B",
+   "phase_sign": 1
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    262.5,
+    277.5
+   ],
+   "material": "copper",
+   "phase": "A",
+   "phase_sign": -1
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    292.5,
+    307.5
+   ],
+   "material": "copper",
+   "phase": "C",
+   "phase_sign": 1
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.031,
+    0.048,
+    322.5,
+    337.5
+   ],
+   "material": "copper",
+   "phase": "B",
+   "phase_sign": -1
+  },
+  {
+   "circle_m": [
+    0.065,
+    0.065,
+    0.026
+   ],
+   "material": "steel",
+   "rotor": true
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.026,
+    0.03,
+    -40.0,
+    40.0
+   ],
+   "material": "n42",
+   "magnetisation": "radial",
+   "magnetisation_angle_deg": 1,
+   "rotor": true
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.026,
+    0.03,
+    50.0,
+    130.0
+   ],
+   "material": "n42",
+   "magnetisation": "radial",
+   "magnetisation_angle_deg": -1,
+   "rotor": true
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.026,
+    0.03,
+    140.0,
+    220.0
+   ],
+   "material": "n42",
+   "magnetisation": "radial",
+   "magnetisation_angle_deg": 1,
+   "rotor": true
+  },
+  {
+   "sector_m_deg": [
+    0.065,
+    0.065,
+    0.026,
+    0.03,
+    230.0,
+    310.0
+   ],
+   "material": "n42",
+   "magnetisation": "radial",
+   "magnetisation_angle_deg": -1,
+   "rotor": true
+  },
+  {
+   "circle_m": [
+    0.065,
+    0.065,
+    0.008
+   ],
+   "material": "air",
+   "rotor": true
+  }
+ ],
+ "rotor": {
+  "centre_m": [
+   0.065,
+   0.065
+  ],
+  "torque_radius_m": 0.0305,
+  "pole_pairs": 2
+ },
+ "currents": {
+  "peak_density_a_m2": 5000000.0,
+  "electrical_angle_at_zero_deg": 0.0
+ },
+ "run": {
+  "angle_from_deg": 0.0,
+  "angle_to_deg": 30.0,
+  "frames": 31
+ },
+ "controls": [
+  {
+   "label": "current density, A/m^2",
+   "path": "currents.peak_density_a_m2",
+   "min": 0,
+   "max": 10000000.0,
+   "log": false
+  },
+  {
+   "label": "current angle, electrical degrees",
+   "path": "currents.electrical_angle_at_zero_deg",
+   "min": -90,
+   "max": 90,
+   "log": false
+  }
+ ]
+}

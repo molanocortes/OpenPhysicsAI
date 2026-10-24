@@ -1,0 +1,118 @@
+{
+ "domain": "heat",
+ "title": "Microfluidic mixer: dye and water around three baffles at Re 1",
+ "provenance": {
+  "geometry": "demonstration",
+  "diffusivity": "1e-9 m^2/s, the order of small molecules in water, assumed"
+ },
+ "grid": {
+  "nx": 400,
+  "ny": 200,
+  "cell_m": 5e-06
+ },
+ "fluid": {
+  "kinematic_viscosity_m2_s": 8.575727181544633e-07,
+  "thermal_diffusivity_m2_s": 1.4712719157712428e-07,
+  "volumetric_heat_capacity_j_m3k": 4166463.0,
+  "expansion_1_k": 0.0002761,
+  "density_kg_m3": 997.0,
+  "source": "Incropera, DeWitt, Bergman and Lavine, Fundamentals of Heat and Mass Transfer, 6th ed. (2007), table A.6 (saturated water), 300 K; typed from the table, not re-checked against a copy in this session"
+ },
+ "gravity_m_s2": [
+  0,
+  0
+ ],
+ "reference_temperature_k": 300.0,
+ "initial_temperature_k": 300.0,
+ "largest_speed_m_s": 0.002,
+ "scalar": {
+  "diffusivity_m2_s": 1e-09,
+  "initial": 0.0
+ },
+ "materials": [
+  {
+   "name": "glass",
+   "kind": "solid",
+   "conductivity_w_mk": 1.4,
+   "volumetric_heat_capacity_j_m3k": 1857875.0,
+   "source": "Incropera, DeWitt, Bergman and Lavine, Fundamentals of Heat and Mass Transfer, 6th ed. (2007), table A.3 (plate glass), 300 K; typed from the table, not re-checked against a copy in this session"
+  }
+ ],
+ "regions": [
+  {
+   "box_m": [
+    0.0003,
+    0.0,
+    0.00035,
+    0.00065
+   ],
+   "material": "glass"
+  },
+  {
+   "box_m": [
+    0.0007999999999999999,
+    0.00035,
+    0.00085,
+    0.001
+   ],
+   "material": "glass"
+  },
+  {
+   "box_m": [
+    0.0013,
+    0.0,
+    0.0013499999999999999,
+    0.00065
+   ],
+   "material": "glass"
+  }
+ ],
+ "boundaries": [
+  {
+   "side": "x-",
+   "from_m": 0.0,
+   "to_m": 0.0005,
+   "type": "inlet",
+   "speed_m_s": 0.001,
+   "parabolic": true,
+   "temperature_k": 300.0,
+   "scalar": 1.0
+  },
+  {
+   "side": "x-",
+   "from_m": 0.0005,
+   "to_m": 0.001,
+   "type": "inlet",
+   "speed_m_s": 0.001,
+   "parabolic": true,
+   "temperature_k": 300.0,
+   "scalar": 0.0
+  },
+  {
+   "side": "x+",
+   "from_m": 0.0,
+   "to_m": 0.001,
+   "type": "outlet"
+  }
+ ],
+ "run": {
+  "end_time_s": 6.0,
+  "frames": 60
+ },
+ "controls": [
+  {
+   "label": "dye inlet speed, m/s",
+   "path": "boundaries.0.speed_m_s",
+   "min": 0.0001,
+   "max": 0.002,
+   "log": true
+  },
+  {
+   "label": "water inlet speed, m/s",
+   "path": "boundaries.1.speed_m_s",
+   "min": 0.0001,
+   "max": 0.002,
+   "log": true
+  }
+ ]
+}

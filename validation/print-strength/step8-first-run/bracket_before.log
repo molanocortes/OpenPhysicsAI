@@ -1,0 +1,7 @@
+  bracket  voxel h 1         600 elements  R 3.2164    (point 2.9231, peak flag sharp_inside_corner, zone 1.5 mm)  3t (interlayer tension)  at (  -8.00    3.00   4.00) mm  [0.1 s]
+  bracket  voxel h 0.5      4800 elements  R 3.0756    (point 2.1625, peak flag sharp_inside_corner, zone 1 mm)  3c (compression across layers) at (  -5.00   -3.00   4.00) mm  [3.6 s]
+  bracket  voxel h 0.25    38400 elements  R 3.0419    (point 1.6265, peak flag sharp_inside_corner, zone 1 mm)  3t (interlayer tension)  at (  -8.00    3.50   3.50) mm  [4.0 s]
+  C-ring closed form (Winkler-Bach): inner-fibre stress 25.82 MPa at the apex under the requested 10 N, Xt 52.3 MPa, R 2.0252
+  ok   bracket on voxel: R moves -1.1 % from 0.5 to 0.25 mm (criterion 5 %)
+  FAIL bracket on voxel: the governing point moves 7.18 mm (criterion 2 mm)
+PRINT MESH STUDY: 1 passed, 1 failed

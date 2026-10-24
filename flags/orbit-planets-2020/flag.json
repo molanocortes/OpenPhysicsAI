@@ -1,0 +1,77 @@
+{
+ "id": "orbit-planets-2020",
+ "category": "orbits",
+ "title": "Where the planets are ten and twenty years later",
+ "question": "From the positions and velocities of the Sun, the planets and the Moon on 2000-01-01 (given in inputs.json), predict where Mercury, Mars and Jupiter are seen from the Sun at later dates: their heliocentric ecliptic longitude, in degrees.",
+ "conditions": {
+  "inputs": "inputs.json: barycentric state vectors and GM values of the Sun, Mercury, Venus, the Earth, the Moon, and the barycentres of the Mars, Jupiter, Saturn, Uranus, Neptune and Pluto systems, 2000-01-01 00:00 TDB",
+  "frame": "ecliptic and mean equinox of J2000; longitude measured from the x axis of that frame, counter-clockwise about its z axis, of the planet's position minus the Sun's",
+  "what_is_measured": "positions of the planets as determined from decades of optical, radar and spacecraft observations; the answer is the position in the Solar System on that date, not a model's"
+ },
+ "outputs": [
+  {
+   "name": "longitude_deg",
+   "unit": "deg",
+   "meaning": "heliocentric ecliptic longitude, in [0, 360)"
+  }
+ ],
+ "cases": [
+  {
+   "case": "mercury_2010",
+   "inputs": {
+    "body": "mercury",
+    "date_tdb": "2010-01-01",
+    "days_after_epoch": 3653
+   }
+  },
+  {
+   "case": "mercury_2020",
+   "inputs": {
+    "body": "mercury",
+    "date_tdb": "2020-01-01",
+    "days_after_epoch": 7305
+   }
+  },
+  {
+   "case": "mars_2020",
+   "inputs": {
+    "body": "mars",
+    "date_tdb": "2020-01-01",
+    "days_after_epoch": 7305
+   }
+  },
+  {
+   "case": "jupiter_2020",
+   "inputs": {
+    "body": "jupiter",
+    "date_tdb": "2020-01-01",
+    "days_after_epoch": 7305
+   }
+  }
+ ],
+ "practice": [
+  {
+   "case": "venus_2020",
+   "inputs": {
+    "body": "venus",
+    "date_tdb": "2020-01-01",
+    "days_after_epoch": 7305
+   },
+   "answers": {
+    "longitude_deg": 4.155859
+   },
+   "note": "from the same source as the hidden cases; public so that an entrant can check frames and dates"
+  }
+ ],
+ "metric": "absolute",
+ "sealed": {
+  "sha256": "901b6d4cfcf5b05c592efd747902ec20a6e6681e14437579158540e44406e3a0",
+  "sealed_on": "2026-09-25"
+ },
+ "tier": "trial",
+ "leads_to": "apophis-2029",
+ "label": "T4",
+ "subtitle": "Leads to flag 09 · Mercury, Mars and Jupiter in 2010 and 2020",
+ "status": "rebuilding",
+ "rebuild_note": "Its physics is already three-dimensional (every body pulls on every other); its pictures and page are being rebuilt with the others."
+}

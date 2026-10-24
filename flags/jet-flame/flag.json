@@ -1,0 +1,19 @@
+{
+ "id": "jet-flame",
+ "number": 3,
+ "tier": "flag",
+ "stone": "combustion",
+ "stone_short": "combustion",
+ "difficulty": 3,
+ "title": "A turbulent jet flame",
+ "subtitle": "Sandia Flame D: methane and air, Reynolds number 22 400",
+ "short": "Jet flame",
+ "status": "preparing",
+ "hook": "The flame every combustion model in the world is judged against.",
+ "media": {
+  "src": "docs/media/lab/fire.gif",
+  "alt": "A 100 kW methane fire on a square burner: the flame sways and breaks up, and the hot plume rises",
+  "caption": "The lab today: a 100 kW methane fire and its plume, low-Mach reacting flow in 3D, burning as fast as fuel and air mix. This flag needs the chemistry itself."
+ },
+ "note": "In preparation: the cases, the outputs and their units are written here when the flag opens, and the measured values are sealed at the same moment (tools/flags.py seal)."
+}

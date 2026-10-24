@@ -1,0 +1,187 @@
+[ ok ] lattice 192x64x224  (2.75M cells, 488 MB)
+[ ok ] NAVIER — real-time lattice-Boltzmann water tunnel
+[info] GPU Apple M2 · OpenGL 4.1 Metal - 89.4 · 8 CPU threads
+[info] type 'help' for commands, 'scene' for experiments, drop an .stl onto the window to test your own shape
+[ ok ] model 'glider': 18932 triangles, extent 0.459 x 0.115 x 1, watertight
+[ ok ] scene 'glider': sailplane at 4 deg AoA - wingtip vortices
+[ >> ] exec "/private/tmp/openphysics-art-gallery/lpbf-build-capture.nav"
+[info] script /private/tmp/openphysics-art-gallery/lpbf-build-capture.nav: 98 commands queued
+[ ok ] geometry: 6810 solid cells, 32690 boundary links (curved, 82% on the surface), frontal 578 cells  (33 ms, walls 15 ms)
+[data]   walls: bvh 3.6 ms, 32690 rays 10.9 ms, rest 0.1 ms
+[ >> ] mode manual
+[ ok ] mode advanced
+[ >> ] workspace solid
+[ ok ] SOLID workspace - finite-element analysis (the same operations as 'am' and the control socket)
+[ >> ] solid open "/private/tmp/openphysics-art-gallery/workspace/Helical_Lantern"
+[ ok ] opened /private/tmp/openphysics-art-gallery/workspace/Helical_Lantern
+[ >> ] frames 30
+[ >> ] fem job job-20261003-071336-7f31-1
+[ ok ] analysis finished (job-20261003-071336-7f31-1)
+[info] surface map: 30674 vertices onto 3807 elements in 5 ms; 16059 snapped (mean 0.149 mm, largest 0.502 mm), 0 not drawn
+[ ok ] result surface built for job-20261003-071336-7f31-1 (lpbf_build): 1856 triangles, von Mises stress
+[ ok ] showing job-20261003-071336-7f31-1 · von Mises stress · 1856 triangles
+[ >> ] frames 30
+[ >> ] fem pause
+[ ok ] playback paused at stored time 1 of 17
+[ >> ] fem deform true
+[ ok ] deformation scale ×1
+[ >> ] fem range all
+[ ok ] colour range over all stored times: 0.212405 to 198.499 MPa
+[ >> ] fem range peak
+[ ok ] colour range to the peak: 0.212405 to 198.499 MPa
+[ >> ] fem surface on
+[info] drawing the voxel mesh (no surface map): 1856 triangles, largest snap 0.502 mm, 16059 vertices snapped, 0 not drawn, mapping 5 ms
+[ >> ] fem edges off
+[info] feature edges off
+[ >> ] fem outline off
+[info] undeformed outline off
+[ >> ] fem marker off
+[info] peak marker off
+[ >> ] fem shadows on
+[info] ambient occlusion on
+[ >> ] fem field von_mises
+[ ok ] showing von Mises stress [MPa]
+[ >> ] fem cmap viridis
+[ ok ] result colour map viridis
+[ >> ] floorgrid off
+[info] floor grid off
+[ >> ] box off
+[info] tunnel box off
+[ >> ] bloom 0.06
+[info] bloom = 0.06
+[ >> ] exposure 1
+[info] exposure = 1.00
+[ >> ] backdrop 0.008 0.012 0.020 0.002 0.003 0.007
+[info] backdrop neutral
+[ >> ] camera fov 30
+[ >> ] hud clean
+[info] clean view: computed field, stored time, scale and legend; H restores the interface
+[ >> ] fem fit
+[ ok ] framed the analysed part
+[ >> ] camera orbit 30 28
+[ >> ] camera zoom 0.76
+[ >> ] frames 120
+[ >> ] fem step 16
+[ ok ] stored time 16 of 17 (t = 16 s)
+[ >> ] frames 60
+[ >> ] fem export "/private/tmp/openphysics-art-gallery/lpbf.png" 2
+[ ok ] image exported: /private/tmp/openphysics-art-gallery/lpbf.png (2000x2000, 2x the window)
+[ >> ] frames 8
+[ >> ] hud off
+[info] HUD off
+[ >> ] frames 8
+[ >> ] fem export "/private/tmp/openphysics-art-gallery/lpbf-art.png" 2
+[ ok ] image exported: /private/tmp/openphysics-art-gallery/lpbf-art.png (2000x2000, 2x the window)
+[ >> ] frames 8
+[ >> ] hud clean
+[info] clean view: computed field, stored time, scale and legend; H restores the interface
+[ >> ] frames 8
+[ >> ] fem step 16
+[ ok ] stored time 16 of 17 (t = 16 s)
+[ >> ] camera orbit 30.000000 28
+[ >> ] frames 36
+[ >> ] fem surface off
+[info] drawing the voxel mesh: 10988 triangles, largest snap 0.502 mm, 16059 vertices snapped, 0 not drawn, mapping 5 ms
+[ >> ] camera orbit 30 28
+[ >> ] frames 100
+[ >> ] fem step 1
+[ ok ] stored time 1 of 17 (t = 1 s)
+[ >> ] frames 12
+[ >> ] screenshot "/private/tmp/openphysics-art-gallery/frames/lpbf/build-01.png"
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/frames/lpbf/build-01.png (1000x1000)
+[ >> ] fem step 2
+[ ok ] stored time 2 of 17 (t = 2 s)
+[ >> ] frames 12
+[ >> ] screenshot "/private/tmp/openphysics-art-gallery/frames/lpbf/build-02.png"
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/frames/lpbf/build-02.png (1000x1000)
+[ >> ] fem step 3
+[ ok ] stored time 3 of 17 (t = 3 s)
+[ >> ] frames 12
+[ >> ] screenshot "/private/tmp/openphysics-art-gallery/frames/lpbf/build-03.png"
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/frames/lpbf/build-03.png (1000x1000)
+[ >> ] fem step 4
+[ ok ] stored time 4 of 17 (t = 4 s)
+[ >> ] frames 12
+[ >> ] screenshot "/private/tmp/openphysics-art-gallery/frames/lpbf/build-04.png"
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/frames/lpbf/build-04.png (1000x1000)
+[ >> ] fem step 5
+[ ok ] stored time 5 of 17 (t = 5 s)
+[ >> ] frames 12
+[ >> ] screenshot "/private/tmp/openphysics-art-gallery/frames/lpbf/build-05.png"
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/frames/lpbf/build-05.png (1000x1000)
+[ >> ] fem step 6
+[ ok ] stored time 6 of 17 (t = 6 s)
+[ >> ] frames 12
+[ >> ] screenshot "/private/tmp/openphysics-art-gallery/frames/lpbf/build-06.png"
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/frames/lpbf/build-06.png (1000x1000)
+[ >> ] fem step 7
+[ ok ] stored time 7 of 17 (t = 7 s)
+[ >> ] frames 12
+[ >> ] screenshot "/private/tmp/openphysics-art-gallery/frames/lpbf/build-07.png"
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/frames/lpbf/build-07.png (1000x1000)
+[ >> ] fem step 8
+[ ok ] stored time 8 of 17 (t = 8 s)
+[ >> ] frames 12
+[ >> ] screenshot "/private/tmp/openphysics-art-gallery/frames/lpbf/build-08.png"
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/frames/lpbf/build-08.png (1000x1000)
+[ >> ] fem step 9
+[ ok ] stored time 9 of 17 (t = 9 s)
+[ >> ] frames 12
+[ >> ] screenshot "/private/tmp/openphysics-art-gallery/frames/lpbf/build-09.png"
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/frames/lpbf/build-09.png (1000x1000)
+[ >> ] fem step 10
+[ ok ] stored time 10 of 17 (t = 10 s)
+[ >> ] frames 12
+[ >> ] screenshot "/private/tmp/openphysics-art-gallery/frames/lpbf/build-10.png"
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/frames/lpbf/build-10.png (1000x1000)
+[ >> ] fem step 11
+[ ok ] stored time 11 of 17 (t = 11 s)
+[ >> ] frames 12
+[ >> ] screenshot "/private/tmp/openphysics-art-gallery/frames/lpbf/build-11.png"
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/frames/lpbf/build-11.png (1000x1000)
+[ >> ] fem step 12
+[ ok ] stored time 12 of 17 (t = 12 s)
+[ >> ] frames 12
+[ >> ] screenshot "/private/tmp/openphysics-art-gallery/frames/lpbf/build-12.png"
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/frames/lpbf/build-12.png (1000x1000)
+[ >> ] fem step 13
+[ ok ] stored time 13 of 17 (t = 13 s)
+[ >> ] frames 12
+[ >> ] screenshot "/private/tmp/openphysics-art-gallery/frames/lpbf/build-13.png"
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/frames/lpbf/build-13.png (1000x1000)
+[ >> ] fem step 14
+[ ok ] stored time 14 of 17 (t = 14 s)
+[ >> ] frames 12
+[ >> ] screenshot "/private/tmp/openphysics-art-gallery/frames/lpbf/build-14.png"
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/frames/lpbf/build-14.png (1000x1000)
+[ >> ] fem step 15
+[ ok ] stored time 15 of 17 (t = 15 s)
+[ >> ] frames 12
+[ >> ] screenshot "/private/tmp/openphysics-art-gallery/frames/lpbf/build-15.png"
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/frames/lpbf/build-15.png (1000x1000)
+[ >> ] fem step 16
+[ ok ] stored time 16 of 17 (t = 16 s)
+[ >> ] frames 12
+[ >> ] screenshot "/private/tmp/openphysics-art-gallery/frames/lpbf/build-16.png"
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/frames/lpbf/build-16.png (1000x1000)
+[ >> ] fem step 17
+[ ok ] stored time 17 of 17 (t = 17 s)
+[ >> ] frames 12
+[ >> ] screenshot "/private/tmp/openphysics-art-gallery/frames/lpbf/build-17.png"
+[ ok ] screenshot saved: /private/tmp/openphysics-art-gallery/frames/lpbf/build-17.png (1000x1000)
+[ >> ] fem status
+[info] project Helical_Lantern · 1 bodies · 0 elements · 0 conditions · material ss316l_lpbf_demo
+[info] result job-20261003-071336-7f31-1: lpbf_build, built on body 'sculpture'
+[info] job job-20261003-071336-7f31-1: succeeded 100% 
+[info] result job-20261003-071336-7f31-1 · von Mises stress · 0.212405 to 198.499 MPa · 11116 triangles · rebuild 1.11 ms
+[info] shown displacement max 0.00901241907 mm; deformation scale 1; stored index 16
+[info] result colour map viridis
+[info] groups part 1 support 1 plate 1
+[info] usage: fem field <von_mises|displacement|temperature> | cmap <name> | deform <x|auto|true> | step <i|next|prev|last> | range <all|step> | play | pause | speed <n> | surface <on|off|toggle> | section <x|y|z fraction|off|flip> | glass <piece> <opacity> | explode <0..1.5> | edges on|off | marker on|off | outline on|off | shadows on|off | export <file.png> [scale] | job <id> | follow | show [part|support|plate on|off] | hide | fit | debug: grow <x|y|z|off>, cut z <mm> [at <i>], groups z <h1> <h2>
+[ >> ] uitext
+[info] panel text:
+[data]   Clean view: Helical_Lantern · von Mises stress [MPa]
+[data]   process step 17/17 · deformation ×1 · max displacement 0.0090124 mm · range: all process steps
+[data]   LPBF: elastic (no yielding) inherent strain; input inferred; no measurement comparison.
+[data]   SECTION OFF
+[ >> ] quit

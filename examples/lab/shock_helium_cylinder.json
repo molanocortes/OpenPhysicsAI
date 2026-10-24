@@ -1,0 +1,86 @@
+{
+ "domain": "gas",
+ "title": "Mach 1.22 shock through a helium cylinder",
+ "provenance": {
+  "experiment": "Haas and Sturtevant, J. Fluid Mech. 181 (1987): cylinder 50 mm, tube 89 mm wide, Mach 1.22",
+  "bubble_gas": "helium with 28 % air by mass (the experimenters' estimate): gamma 1.648, R 1578 J/(kg K), Quirk and Karni, ICASE Report 94-75 (1994), table 1",
+  "air": "1.20 kg/m^3 at 101325 Pa ahead of the shock, So et al., CTR Summer Program 2010"
+ },
+ "geometry": "planar",
+ "gas_constant_j_kgk": 287.05,
+ "grid": {
+  "x0_m": 0.0,
+  "y0_m": 0.0,
+  "length_m": 0.356,
+  "root_blocks": [
+   16,
+   2
+  ],
+  "max_level": 3
+ },
+ "boundaries": {
+  "x_low": "inflow",
+  "x_high": "outflow",
+  "y_low": "wall",
+  "y_high": "wall"
+ },
+ "initial": {
+  "density_kg_m3": 1.2,
+  "velocity_m_s": [
+   0,
+   0
+  ],
+  "pressure_pa": 101325.0,
+  "gamma": 1.4
+ },
+ "freestream": {
+  "density_kg_m3": 1.6516367671536896,
+  "velocity_m_s": [
+   114.7007557885304,
+   0.0
+  ],
+  "pressure_pa": 159059.985,
+  "gamma": 1.4
+ },
+ "regions": [
+  {
+   "box_m": [
+    -1,
+    -1,
+    0.02,
+    1
+   ],
+   "state": {
+    "density_kg_m3": 1.6516367671536896,
+    "velocity_m_s": [
+     114.7007557885304,
+     0.0
+    ],
+    "pressure_pa": 159059.985,
+    "gamma": 1.4
+   }
+  },
+  {
+   "circle_m": [
+    0.06,
+    0.0,
+    0.025
+   ],
+   "state": {
+    "density_kg_m3": 0.21828897338403042,
+    "velocity_m_s": [
+     0,
+     0
+    ],
+    "pressure_pa": 101325.0,
+    "gamma": 1.648
+   }
+  }
+ ],
+ "run": {
+  "end_time_s": 0.0006,
+  "frames": 60,
+  "fields": "rho,p,gamma,vorticity",
+  "cfl": 0.4
+ }
+}

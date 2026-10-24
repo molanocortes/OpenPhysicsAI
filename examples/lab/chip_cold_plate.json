@@ -1,0 +1,219 @@
+{
+ "domain": "heat",
+ "title": "Liquid cold plate: water over copper ribs, a die at 50 W/cm2",
+ "provenance": {
+  "geometry": "demonstration, not a product",
+  "die": "50 W/cm^2 assumed for the demonstration"
+ },
+ "grid": {
+  "nx": 600,
+  "ny": 80,
+  "cell_m": 0.0001
+ },
+ "fluid": {
+  "kinematic_viscosity_m2_s": 8.575727181544633e-07,
+  "thermal_diffusivity_m2_s": 1.4712719157712428e-07,
+  "volumetric_heat_capacity_j_m3k": 4166463.0,
+  "expansion_1_k": 0.0002761,
+  "density_kg_m3": 997.0,
+  "source": "Incropera, DeWitt, Bergman and Lavine, Fundamentals of Heat and Mass Transfer, 6th ed. (2007), table A.6 (saturated water), 300 K; typed from the table, not re-checked against a copy in this session"
+ },
+ "gravity_m_s2": [
+  0,
+  0
+ ],
+ "reference_temperature_k": 300.0,
+ "initial_temperature_k": 300.0,
+ "largest_speed_m_s": 0.1,
+ "materials": [
+  {
+   "name": "copper",
+   "kind": "solid",
+   "conductivity_w_mk": 401.0,
+   "volumetric_heat_capacity_j_m3k": 3439205.0,
+   "source": "Incropera, DeWitt, Bergman and Lavine, Fundamentals of Heat and Mass Transfer, 6th ed. (2007), table A.1 (pure copper), 300 K; typed from the table, not re-checked against a copy in this session"
+  },
+  {
+   "name": "silicon",
+   "kind": "solid",
+   "conductivity_w_mk": 148.0,
+   "volumetric_heat_capacity_j_m3k": 1658960.0,
+   "source": "Incropera, DeWitt, Bergman and Lavine, Fundamentals of Heat and Mass Transfer, 6th ed. (2007), table A.1 (silicon), 300 K; typed from the table, not re-checked against a copy in this session"
+  }
+ ],
+ "regions": [
+  {
+   "box_m": [
+    0,
+    0,
+    0.060000000000000005,
+    0.003
+   ],
+   "material": "copper"
+  },
+  {
+   "box_m": [
+    0.02,
+    0,
+    0.04,
+    0.001
+   ],
+   "material": "silicon",
+   "heat_w_m3": 500000000.0
+  },
+  {
+   "box_m": [
+    0,
+    0.006,
+    0.060000000000000005,
+    0.008
+   ],
+   "material": "copper"
+  },
+  {
+   "box_m": [
+    0.012,
+    0.003,
+    0.013000000000000001,
+    0.0045
+   ],
+   "material": "copper"
+  },
+  {
+   "box_m": [
+    0.015,
+    0.003,
+    0.016,
+    0.0045
+   ],
+   "material": "copper"
+  },
+  {
+   "box_m": [
+    0.018000000000000002,
+    0.003,
+    0.019000000000000003,
+    0.0045
+   ],
+   "material": "copper"
+  },
+  {
+   "box_m": [
+    0.021,
+    0.003,
+    0.022000000000000002,
+    0.0045
+   ],
+   "material": "copper"
+  },
+  {
+   "box_m": [
+    0.024,
+    0.003,
+    0.025,
+    0.0045
+   ],
+   "material": "copper"
+  },
+  {
+   "box_m": [
+    0.027,
+    0.003,
+    0.028,
+    0.0045
+   ],
+   "material": "copper"
+  },
+  {
+   "box_m": [
+    0.030000000000000002,
+    0.003,
+    0.031000000000000003,
+    0.0045
+   ],
+   "material": "copper"
+  },
+  {
+   "box_m": [
+    0.033,
+    0.003,
+    0.034,
+    0.0045
+   ],
+   "material": "copper"
+  },
+  {
+   "box_m": [
+    0.036000000000000004,
+    0.003,
+    0.037000000000000005,
+    0.0045
+   ],
+   "material": "copper"
+  },
+  {
+   "box_m": [
+    0.039,
+    0.003,
+    0.04,
+    0.0045
+   ],
+   "material": "copper"
+  },
+  {
+   "box_m": [
+    0.041999999999999996,
+    0.003,
+    0.043,
+    0.0045
+   ],
+   "material": "copper"
+  },
+  {
+   "box_m": [
+    0.045,
+    0.003,
+    0.046,
+    0.0045
+   ],
+   "material": "copper"
+  }
+ ],
+ "boundaries": [
+  {
+   "side": "x-",
+   "from_m": 0.003,
+   "to_m": 0.006,
+   "type": "inlet",
+   "speed_m_s": 0.05,
+   "parabolic": true,
+   "temperature_k": 300.0
+  },
+  {
+   "side": "x+",
+   "from_m": 0.003,
+   "to_m": 0.006,
+   "type": "outlet"
+  }
+ ],
+ "run": {
+  "end_time_s": 4.0,
+  "frames": 60
+ },
+ "controls": [
+  {
+   "label": "coolant speed, m/s",
+   "path": "boundaries.0.speed_m_s",
+   "min": 0.02,
+   "max": 0.08,
+   "log": false
+  },
+  {
+   "label": "die heat, W/m^3",
+   "path": "regions.1.heat_w_m3",
+   "min": 100000000.0,
+   "max": 1000000000.0,
+   "log": true
+  }
+ ]
+}

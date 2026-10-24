@@ -1,0 +1,35 @@
+{
+ "domain": "mechanism",
+ "model": "gear_pair",
+ "title": "NASA gear noise rig: one tooth pair loaded statically, fillet strain at the 30 degree tangent",
+ "provenance": {
+  "geometry": "Oswald, Townsend, Rebbechi, Lin, Dynamic Forces in Spur Gears: Measurement, Prediction, and Code Validation, NASA TM-107223 (1996), Table 1: 28/28 teeth, module 3.175 mm (diametral pitch 8), pressure angle 20 deg, face width 6.35 mm; Oswald, Lin, Delgado, DANST PC version 3.00 user manual, NASA TM-107291 (1996), test case 1 (the same rig): cutter edge radius ratio 0.40, tooth clearance 0.25/P (dedendum 1.25 m), outside diameter modelled 3.738 in for a 0.006 in edge break, backlash 0.007 in, linear tip relief 0.0010 in from 24.5 deg roll, E = 30e6 psi, nu = 0.3",
+  "rig": "NASA TM-107223: the calibration rig loads a single tooth (the mating gear's other teeth ground away) statically, one gear-shaft assembly on linear bearings so that friction is cancelled; strain gauges 0.38 mm long in the driven gear's root fillets at the 30 degree tangency location, on the loaded (tensile) and unloaded (compressive) sides",
+  "assumed": "not stated in the sources, chosen here: the gear blank is solid to a bore of 25.4 mm held rigidly (the gears are press-fitted and keyed, 'thick-rim'); the gauges sit at mid-face; the tip relief of test case 1 on both gears"
+ },
+ "gears": [
+  {
+   "teeth": 28, "module_m": 0.003175, "pressure_angle_deg": 20, "profile_shift": 0, "addendum_coefficient": 1.0,
+   "dedendum_coefficient": 1.25, "cutter_tip_radius_coefficient": 0.40, "tip_diameter_m": 0.0949452,
+   "flank_thinning_m": 4.18e-5, "tip_relief_m": 2.54e-5, "tip_relief_start_roll_deg": 24.5,
+   "face_width_m": 0.00635, "bore_diameter_m": 0.0254,
+   "material": {"youngs_modulus_pa": 206.8e9, "poisson_ratio": 0.3, "source": "NASA TM-107291 (DANST), E = 30e6 psi, nu = 0.3"}
+  },
+  {
+   "teeth": 28, "module_m": 0.003175, "pressure_angle_deg": 20, "profile_shift": 0, "addendum_coefficient": 1.0,
+   "dedendum_coefficient": 1.25, "cutter_tip_radius_coefficient": 0.40, "tip_diameter_m": 0.0949452,
+   "flank_thinning_m": 4.18e-5, "tip_relief_m": 2.54e-5, "tip_relief_start_roll_deg": 24.5,
+   "face_width_m": 0.00635, "bore_diameter_m": 0.0254,
+   "material": {"youngs_modulus_pa": 206.8e9, "poisson_ratio": 0.3, "source": "NASA TM-107291 (DANST), E = 30e6 psi, nu = 0.3"}
+  }
+ ],
+ "single_pinion_tooth": true,
+ "hold_sector_cuts": true,
+ "mesh": {"teeth_modelled": 5, "across": 14, "flank": 28, "fillet": 12, "rim": 12, "face": 8},
+ "load": {"pinion_torque_nm": 61.0},
+ "gauges": [
+  {"name": "tensile", "gear": 1, "tooth": 0, "side": "loaded", "position": "30deg", "length_m": 0.00038},
+  {"name": "compressive", "gear": 1, "tooth": 0, "side": "unloaded", "position": "30deg", "length_m": 0.00038}
+ ],
+ "run": {"gauged_roll_deg": [20, 26]}
+}

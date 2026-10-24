@@ -1,0 +1,255 @@
+{
+  "analysis": "thermomechanical",
+  "energy": {
+    "boundary_j": -24752.724852083127,
+    "closure_error": 1.2019898595637421e-11,
+    "enthalpy_change_j": 9767.692307693813,
+    "enthalpy_mismatch": 0,
+    "note": "the stored energy of every step must equal the heat delivered by sources, boundary faces and prescribed-temperature nodes; enthalpy_change_j is the same energy obtained by integrating the enthalpy function over the elements, which checks the capacity model itself rather than the linear solve",
+    "prescribed_nodes_j": 34520.41715965953,
+    "sources_j": 0,
+    "stored_j": 9767.692307693813,
+    "supplied_j": 9767.692307576406,
+    "worst_step_balance_error": 5.751385394682317e-12,
+    "worst_step_enthalpy_mismatch": 0
+  },
+  "files": [
+    {
+      "bytes": 936787,
+      "format": "navier-am-thermal-results 1: JSON header and little-endian arrays",
+      "name": "results.nvt",
+      "sha256": "36f36111f29e5384cc75b8d8b27704cce2fde4982b1b6605c2477041092b836b"
+    }
+  ],
+  "history": [
+    {
+      "max_c": 300,
+      "max_displacement_mm": 0.008402051514106553,
+      "min_c": 20,
+      "peak_von_mises_mpa": 512.1155105151424,
+      "time_s": 0
+    },
+    {
+      "max_c": 300,
+      "max_displacement_mm": 0.24691632940816294,
+      "min_c": 168.35361710789903,
+      "peak_von_mises_mpa": 1184.1682387721107,
+      "time_s": 1000
+    },
+    {
+      "max_c": 300,
+      "max_displacement_mm": 0.2892444185299393,
+      "min_c": 219.83552837640013,
+      "peak_von_mises_mpa": 1191.0681746983344,
+      "time_s": 2000
+    },
+    {
+      "max_c": 300,
+      "max_displacement_mm": 0.2990624059720392,
+      "min_c": 231.7784700826013,
+      "peak_von_mises_mpa": 1192.6672344861404,
+      "time_s": 3000
+    },
+    {
+      "max_c": 300,
+      "max_displacement_mm": 0.3013394826330387,
+      "min_c": 234.54827801615642,
+      "peak_von_mises_mpa": 1193.0380885303987,
+      "time_s": 4000
+    },
+    {
+      "max_c": 300,
+      "max_displacement_mm": 0.30186758691821647,
+      "min_c": 235.19065198740452,
+      "peak_von_mises_mpa": 1193.1240970251372,
+      "time_s": 5000
+    },
+    {
+      "max_c": 300,
+      "max_displacement_mm": 0.3019900651295027,
+      "min_c": 235.33963138554776,
+      "peak_von_mises_mpa": 1193.1440441193288,
+      "time_s": 6000
+    },
+    {
+      "max_c": 300,
+      "max_displacement_mm": 0.3020184702944265,
+      "min_c": 235.3741826937628,
+      "peak_von_mises_mpa": 1193.1486702502677,
+      "time_s": 7000
+    },
+    {
+      "max_c": 300,
+      "max_displacement_mm": 0.3020250580221578,
+      "min_c": 235.38219583460216,
+      "peak_von_mises_mpa": 1193.1497431427529,
+      "time_s": 8000
+    },
+    {
+      "max_c": 300,
+      "max_displacement_mm": 0.3020265858482892,
+      "min_c": 235.3840542425596,
+      "peak_von_mises_mpa": 1193.149991968026,
+      "time_s": 9000
+    },
+    {
+      "max_c": 300,
+      "max_displacement_mm": 0.3020269401817802,
+      "min_c": 235.38448524460807,
+      "peak_von_mises_mpa": 1193.1500496755675,
+      "time_s": 10000
+    },
+    {
+      "max_c": 300,
+      "max_displacement_mm": 0.30202702235882206,
+      "min_c": 235.38458520262066,
+      "peak_von_mises_mpa": 1193.1500630591152,
+      "time_s": 11000
+    },
+    {
+      "max_c": 300,
+      "max_displacement_mm": 0.3020270414173237,
+      "min_c": 235.38460838488965,
+      "peak_von_mises_mpa": 1193.1500661630216,
+      "time_s": 12000
+    },
+    {
+      "max_c": 300,
+      "max_displacement_mm": 0.30202704583737916,
+      "min_c": 235.38461376132142,
+      "peak_von_mises_mpa": 1193.150066882894,
+      "time_s": 13000
+    },
+    {
+      "max_c": 300,
+      "max_displacement_mm": 0.30202704686247006,
+      "min_c": 235.38461500822285,
+      "peak_von_mises_mpa": 1193.15006704983,
+      "time_s": 14000
+    },
+    {
+      "max_c": 300,
+      "max_displacement_mm": 0.30202704710021605,
+      "min_c": 235.3846152974018,
+      "peak_von_mises_mpa": 1193.15006708857,
+      "time_s": 15000
+    },
+    {
+      "max_c": 300,
+      "max_displacement_mm": 0.3020270471553553,
+      "min_c": 235.38461536446795,
+      "peak_von_mises_mpa": 1193.150067097559,
+      "time_s": 16000
+    },
+    {
+      "max_c": 300,
+      "max_displacement_mm": 0.3020270471681433,
+      "min_c": 235.38461538002656,
+      "peak_von_mises_mpa": 1193.1500670996336,
+      "time_s": 17000
+    },
+    {
+      "max_c": 300,
+      "max_displacement_mm": 0.30202704717110807,
+      "min_c": 235.38461538363697,
+      "peak_von_mises_mpa": 1193.1500671001065,
+      "time_s": 18000
+    },
+    {
+      "max_c": 300,
+      "max_displacement_mm": 0.3020270471717919,
+      "min_c": 235.38461538446785,
+      "peak_von_mises_mpa": 1193.1500671002204,
+      "time_s": 19000
+    },
+    {
+      "max_c": 300,
+      "max_displacement_mm": 0.3020270471719495,
+      "min_c": 235.38461538465748,
+      "peak_von_mises_mpa": 1193.1500671002464,
+      "time_s": 20000
+    }
+  ],
+  "interpretation": ["Heat conduction only: no convection inside the material, no phase change and no latent heat; convection and radiation act as boundary conditions with coefficients the user supplies.", "Material properties are evaluated per element at its mean temperature, and the voxel mesh has a staircase boundary, so surface temperatures on curved or inclined faces depend on the element size.", "The structural step is sequential (temperatures drive the structure, not the other way round) and linear elastic: with no plasticity or element activation it is not a residual-stress prediction, and stresses return to zero once the part is uniformly back at the stress-free temperature."],
+  "model": {
+    "analysis": "thermomechanical",
+    "boundary_faces": 16,
+    "element_size_mm": [2.5, 2.5, 2.5],
+    "elements": 640,
+    "initial_temperature_c": 20,
+    "materials": [
+      {
+        "conductivity_at_20c": 20,
+        "density_at_20c": 8000,
+        "material": "verification_alloy",
+        "specific_heat_at_20c": 500,
+        "status": "user_supplied",
+        "target": "bar"
+      }
+    ],
+    "mesh_hash": "115d5133c5d1864e859b558bdfcaad52ab76c9acd10845bb59c69223cf74522f",
+    "nodes": 1025,
+    "stress_free_temperature_c": 20,
+    "thermal_conditions": [
+      {
+        "applies_to": "hot_end",
+        "kind": "temperature",
+        "mesh_area_mm2": 100.00000000000003,
+        "mesh_faces": 16,
+        "name": "hot",
+        "stl_area_mm2": 100,
+        "temperature_c": 300
+      },
+      {
+        "applies_to": "cold_end",
+        "kind": "convection",
+        "mesh_area_mm2": 100.00000000000003,
+        "mesh_faces": 16,
+        "name": "cooled",
+        "nominal_power_w": 0,
+        "stl_area_mm2": 100
+      }
+    ],
+    "time": {
+      "capacity": "lumped",
+      "end_s": 20000,
+      "integration": "backward Euler",
+      "step_s": 50,
+      "steps": 400,
+      "stored_times": 21
+    }
+  },
+  "setup_warnings": [
+    {
+      "code": "THERMAL_CONDITIONS_IGNORED",
+      "message": "2 thermal conditions (temperature, flux, convection, radiation or heat source) are part of the setup but do not act in a static structural analysis; run a thermal or thermomechanical analysis to use them"
+    },
+    {
+      "code": "NO_LOADS",
+      "message": "there are no loads, gravity or nonzero prescribed displacements: every displacement and stress will be zero"
+    },
+    {
+      "code": "STAIRCASE_BOUNDARY",
+      "message": "the voxel mesh approximates inclined and curved surfaces by steps (boundary faces lie up to 2.78e-13 mm from the STL surface); stresses at those surfaces and at re-entrant steps depend on the mesh"
+    }
+  ],
+  "solver": {
+    "largest_picard_iterations": 1,
+    "steps": 400,
+    "total_cg_iterations": 20084
+  },
+  "temperature": {
+    "final_max_c": 300,
+    "final_min_c": 235.38461538465748,
+    "max_at_s": 0,
+    "max_c": 300,
+    "min_c": 20
+  },
+  "units": {
+    "energy": "J",
+    "length": "mm",
+    "stress": "MPa",
+    "temperature": "degC",
+    "time": "s"
+  }
+}

@@ -1,0 +1,101 @@
+{
+ "id": "planet-load-sharing",
+ "category": "solid mechanics and contact",
+ "title": "How four planets share the load when one pin is out of place",
+ "question": "A helical planetary gear set with four planets runs slowly under torque on a floating sun, with the ring held and the carrier the output. The carrier's hole for planet 1 is out of place along the circumference by the case's error, so that planet 1 leads and is pressed into mesh first. The share of the load each planet carried was measured as the peak tooth-root strain of the ring as it passed, over the sum of the four. Report the mean share of planets 1 and 3 (the diametral pair that the error loads) at the case's sun torque.",
+ "conditions": {
+  "gears": "sun 73, planets 26, ring 125 teeth; normal module 1.81 mm; pressure angle 23.04 deg in the source's table, which is the transverse value of a 22.5 deg normal angle at this helix; helix 13.12 deg; operating centre distance 92.12 mm, so the profile shifts sum to x_sun + x_planet = x_ring - x_planet = +0.0685 (their split is not stated); face width 25 mm; all ground, with small planet tooth-thickness and run-out errors; the planets' outside diameters reduced slightly (by an amount not stated); no profile or lead modification stated",
+  "assembly": "four planets at 0, 90.91, 180 and 270.91 deg (multiples of 360 / 198 deg: 198 / 4 is not whole), numbered counter-clockwise from planet 1; each planet on needle bearings on a pin in the carrier; the sun floating (a three-planet test with a large error gave equal shares); the ring a thick one (rim 13 mm below the roots) held by 11 external splines, 32.7 deg apart, in an adaptor in which it floats radially to some extent",
+  "error": "a tangential position error of planet 1's carrier hole only, positive when planet 1 leads into mesh and carries more (the source's clockwise tests); the actual hole positions were not measured",
+  "operation": "a power-recirculating rig with an identical reaction set; the sun at 500 rpm; automatic transmission fluid at room temperature; 26 carrier rotations (the hunting period) averaged in each of three segments",
+  "measurement": "foil strain gauges in the ring's tooth roots (groups of three consecutive roots about the ring); each planet's share L_i is its peak root strain as it passes over the sum of the four (the shares sum to 1, 1/4 each when equal); the output is (L_1 + L_3) / 2",
+  "not_stated": "tip and root diameters, the split of the profile shifts, the material (steel), the planets' needle-bearing stiffness (two published models of this rig used 2e5 N/mm and 1.3e5 N/mm), the carrier's and pins' compliance, the splines' geometry and clearance, the gauges' exact place in the root"
+ },
+ "outputs": [
+  {
+   "name": "overloaded_pair_share",
+   "unit": "1",
+   "meaning": "(L_1 + L_3) / 2: the mean share of planet 1 and planet 3, from the ring's root strain"
+  }
+ ],
+ "cases": [
+  {
+   "case": "e70_t1000",
+   "inputs": {
+    "pin_error_um": 70,
+    "sun_torque_nm": 1000
+   }
+  },
+  {
+   "case": "e70_t800",
+   "inputs": {
+    "pin_error_um": 70,
+    "sun_torque_nm": 800
+   }
+  },
+  {
+   "case": "e70_t600",
+   "inputs": {
+    "pin_error_um": 70,
+    "sun_torque_nm": 600
+   }
+  },
+  {
+   "case": "e70_t400",
+   "inputs": {
+    "pin_error_um": 70,
+    "sun_torque_nm": 400
+   }
+  },
+  {
+   "case": "e35_t1000",
+   "inputs": {
+    "pin_error_um": 35,
+    "sun_torque_nm": 1000
+   }
+  },
+  {
+   "case": "e35_t800",
+   "inputs": {
+    "pin_error_um": 35,
+    "sun_torque_nm": 800
+   }
+  },
+  {
+   "case": "e35_t600",
+   "inputs": {
+    "pin_error_um": 35,
+    "sun_torque_nm": 600
+   }
+  },
+  {
+   "case": "e35_t400",
+   "inputs": {
+    "pin_error_um": 35,
+    "sun_torque_nm": 400
+   }
+  }
+ ],
+ "practice": [
+  {
+   "case": "e70_lagging_t1000",
+   "inputs": {
+    "pin_error_um": -70,
+    "sun_torque_nm": 1000
+   },
+   "answers": {
+    "overloaded_pair_share": 0.171
+   },
+   "note": "the same carrier run the other way, so planet 1 lags and carries less: (L_1 + L_3) / 2 = 0.171 measured (L_2 and L_4 carry 0.331); public so that an entrant can check the sign and the reduction, not tune the physics"
+  }
+ ],
+ "metric": "absolute",
+ "tier": "trial",
+ "leads_to": "metal-fracture",
+ "label": "T6",
+ "subtitle": "Leads to flag 06 · four helical planets, one pin out of place, load sharing from the ring's root strain",
+ "sealed": {
+  "sha256": "3be51ab118fdf908f519e5b074f8fabd1472e22dbef54759b0d80b2e53a8a124",
+  "sealed_on": "2026-10-08"
+ }
+}

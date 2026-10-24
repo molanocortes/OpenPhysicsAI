@@ -1,0 +1,22 @@
+{
+ "id": "reentry-fire-ii",
+ "number": 2,
+ "tier": "flag",
+ "stone": "hypersonics",
+ "stone_short": "hypersonics",
+ "difficulty": 4,
+ "title": "Re-entry from space",
+ "subtitle": "NASA's FIRE II probe enters the atmosphere at 11 km/s",
+ "short": "Re-entry",
+ "status": "preparing",
+ "hook": "In 1965 NASA sent a probe back into the Earth's atmosphere at eleven kilometres a second and measured the heat that reached it. Predict that heat.",
+ "trials": [
+  "gas-sphere-bowshock"
+ ],
+ "media": {
+  "src": "docs/media/lab/capsule-3d-view.gif",
+  "alt": "An Apollo-shaped capsule at its trim angle in a hypersonic stream, its bow shock and wake in 3D",
+  "caption": "The lab today: an Apollo-shaped capsule at its trim angle in a hypersonic stream, the shock layer in 3D (inviscid, a perfect gas). The glow, the chemistry and the heat on the wall are what this flag adds."
+ },
+ "note": "In preparation: the cases, the outputs and their units are written here when the flag opens, and the measured values are sealed at the same moment (tools/flags.py seal)."
+}

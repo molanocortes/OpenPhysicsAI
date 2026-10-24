@@ -1,0 +1,25 @@
+{
+ "format": "openphysicsai-break-record",
+ "format_version": 1,
+ "part": "bracket",
+ "print": "side",
+ "specimen": "bracket-side-1",
+ "date": "2026-10-10",
+ "printer": "printer model, nozzle diameter",
+ "slicer": "slicer and version",
+ "filament": {"brand": "brand", "material": "PLA", "colour": "colour", "library": "pla_fff"},
+ "settings": {"layer_height_mm": 0.2, "line_width_mm": 0.45, "perimeters": 2, "top_layers": 4, "bottom_layers": 4,
+              "infill_density": "100 %", "infill_pattern": "gyroid", "nozzle_c": null, "bed_c": null, "notes": ""},
+ "printed_mass_g": null,
+ "measured_dimensions_mm": {"arm thickness at the corner": null},
+ "break": {
+  "mass_kg": null,
+  "how_weighed": "luggage scale with peak hold, or the bucket weighed after the break",
+  "first_damage_kg": null,
+  "time_to_break_s": null,
+  "region": "corner",
+  "description": "where and how it broke, in your words"
+ },
+ "photos": [],
+ "notes": ""
+}

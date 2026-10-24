@@ -1,0 +1,26 @@
+== capabilities
+== E5a setup and refusals
+== E5b partitioned adaptive study
+  42 steps, 7.1 s wall; flow: tau 0.5280, Mach 0.0430, Re_h 13.3, density range 0.0169, section scale 1.0964..1.1935
+  interface: 417.7448 J into the air, jump 1.95e-08 K, conservation 1.4e-15; closure 1.7e-11; coupling 5.45 iterations per step
+== schema-to-solver wiring of the coupling and flow settings (600 s runs)
+== E5c conservation of the whole study (criterion amended, see stageE-criteria.md)
+  source 720 J = stored 302.426 J - advected into the fluid -417.574 J (discrete closure 7e-12)
+  enthalpy-flux form: stored + (out - in) = 720.17 J, closure 0.000237 (original E5c criterion 1e-6: NOT met)
+== E5g results through MCP
+== E5d monolithic against partitioned
+  partitioned 42 steps (7.1 s), monolithic 42 steps (2.9 s); max stored-temperature difference 1.03e-06 K
+== E5e pause and resume
+  paused at t = 3277.2185208557607 s; frames bitwise identical, energies True, interface heat True
+== E5f save, reopen in a new server process, reproduce
+== E5h discretization evidence
+  2 mm, tolerance 1e-3 / 0.05 K: plate peak 45.9133 degC, mean outlet face 37.9517 degC; 42 steps, 7.0 s; closure 1.7e-11, interface conservation 1.4e-15
+    enthalpy-flux closure 0.000237; unexplained advective energy 0.1705 J (0.000237 of the source)
+  2 mm, tolerance 1e-4 / 0.005 K: plate peak 45.9791 degC, mean outlet face 37.9973 degC; 83 steps, 12.2 s; closure 1.7e-11, interface conservation 4.1e-16
+    enthalpy-flux closure 0.000236; unexplained advective energy 0.1702 J (0.000236 of the source)
+  1 mm, tolerance 1e-3 / 0.05 K: plate peak 45.9717 degC, mean outlet face 37.9282 degC; 42 steps, 77.9 s; closure 3.3e-11, interface conservation 1.4e-16
+    enthalpy-flux closure 0.00013; unexplained advective energy 0.09336 J (0.00013 of the source)
+  temporal: tolerance / 10 changes the plate peak by +0.0658 K and the outlet mean by +0.0456 K
+  spatial: 1 mm cells change the plate peak by +0.0585 K and the outlet mean by -0.0235 K (two levels: no order is claimed)
+
+ALL CONJUGATE FLOW TESTS PASSED: 102 passed, 0 failed

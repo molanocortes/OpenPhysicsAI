@@ -1,0 +1,40 @@
+{
+ "domain": "flow",
+ "title": "Circular cylinder at Re 0.5",
+ "provenance": {
+  "photograph": "Van Dyke, An Album of Fluid Motion (1982): cylinder at Re below 1, at 26, and at 105",
+  "units": "water, cylinder of 1 cm: the pictures in seconds"
+ },
+ "reynolds": 0.5,
+ "shape": "cylinder",
+ "body_cells": 24,
+ "lattice_velocity": 0.01,
+ "fluid_kinematic_viscosity_m2_s": 1e-06,
+ "body_size_m": 0.01,
+ "tunnel": {
+  "width_d": 16,
+  "length_d": 28,
+  "upstream_d": 6
+ },
+ "dye_every_steps": 2,
+ "run": {
+  "convective_times": 30,
+  "frames": 60,
+  "film_from_convective_time": 15.0
+ },
+ "dye_rake": {
+  "x_d": -2.5,
+  "y_from_d": -1.2,
+  "y_to_d": 1.2,
+  "count": 25
+ },
+ "controls": [
+  {
+   "label": "Reynolds number",
+   "path": "reynolds",
+   "min": 0.5,
+   "max": 200,
+   "log": true
+  }
+ ]
+}

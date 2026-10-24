@@ -1,0 +1,60 @@
+{
+ "id": "gas-shock-bubble",
+ "category": "compressible flow",
+ "title": "A weak shock passes a cylinder of light or heavy gas",
+ "question": "A planar shock at Mach 1.22 runs through air in a shock tube and meets a cylinder of another gas, held by a thin membrane, its axis across the tube. The shock refracts into the cylinder, a transmitted shock emerges behind it, and the cylinder is set in motion and deformed. Report three speeds measured along the tube's axis of symmetry, in the laboratory frame.",
+ "conditions": {
+  "tube": "square shock tube 89 mm wide; the cylinder, 50 mm in diameter, spans the tube with its centre on the tube's axis",
+  "air_ahead_of_the_shock": "at rest, 101325 Pa, 1.20 kg/m^3 (perfect gas, gamma 1.4, R 287 J/(kg K))",
+  "shock": "Mach 1.22 into the still air; the incident shock speeds measured in the experiments were 410 m/s (light-gas run) and 415 m/s (heavy-gas run), for calibration",
+  "cylinder": "at the pressure and temperature of the air ahead of the shock; the membrane (a few tenths of a micrometre of nitrocellulose) may be neglected",
+  "measurement": "spark shadowgraphs at many delays, one per run; positions read from the images and fitted into speeds on x-t diagrams; the experimenters estimated an uncertainty of about 11 per cent, larger for the refracted shock in the light gas"
+ },
+ "outputs": [
+  {
+   "name": "v_refracted",
+   "unit": "m/s",
+   "meaning": "speed of the refracted shock inside the cylinder, on the axis"
+  },
+  {
+   "name": "v_transmitted",
+   "unit": "m/s",
+   "meaning": "speed of the transmitted shock that leaves the cylinder downstream, on the axis, over the first cylinder diameter behind it"
+  },
+  {
+   "name": "v_upstream_interface",
+   "unit": "m/s",
+   "meaning": "speed of the cylinder's upstream edge on the axis, in the first phase after the incident shock has passed it"
+  }
+ ],
+ "cases": [
+  {
+   "case": "helium",
+   "inputs": {
+    "gas": "helium contaminated with air, 28 per cent air by mass by the experimenters' estimate (an estimate others place between about 6 and 48 per cent)",
+    "gamma": 1.648,
+    "gas_constant_j_kgk": 1578.0
+   }
+  },
+  {
+   "case": "r22",
+   "inputs": {
+    "gas": "Refrigerant 22 (CHClF2), contamination with air estimated at 3.4 per cent by mass and neglected",
+    "gamma": 1.249,
+    "gas_constant_j_kgk": 91.0
+   }
+  }
+ ],
+ "practice": [],
+ "metric": "log_ratio",
+ "sealed": {
+  "sha256": "e12ae7883aa480cf444d20adf21d5aac3a8cf569174d58992747bc634221012f",
+  "sealed_on": "2026-09-26"
+ },
+ "tier": "trial",
+ "leads_to": "drop-splash",
+ "label": "T3",
+ "subtitle": "Leads to flag 04 · a Mach 1.22 shock through helium and R22",
+ "status": "rebuilding",
+ "rebuild_note": "Scored with the lab's two-dimensional solver; being rebuilt natively in 3D."
+}

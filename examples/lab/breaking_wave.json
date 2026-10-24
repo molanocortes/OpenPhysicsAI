@@ -1,0 +1,44 @@
+{
+ "domain": "water",
+ "title": "A wave breaks on a beach around a pier",
+ "note": "Demonstration geometry: a solitary wave 0.12 m high on 0.25 m of water (H/d = 0.48) meets a 1 in 8 beach and a cylindrical pier. The initial wave is the Boussinesq solitary wave; see docs/lab/water.md for what is verified.",
+ "particle_spacing_m": 0.015,
+ "gravity_m_s2": 9.80665,
+ "water": {
+  "density_kg_m3": 997.0,
+  "source": "Incropera, DeWitt, Bergman and Lavine, Fundamentals of Heat and Mass Transfer, 6th ed. (2007), table A.6 (saturated water), 300 K; typed from the table, not re-checked against a copy in this session"
+ },
+ "tank": {
+  "size_m": [
+   4.0,
+   1.0,
+   0.55
+  ]
+ },
+ "beach": {
+  "toe_x_m": 1.8,
+  "slope": 0.125
+ },
+ "bodies": [
+  {
+   "shape": "cylinder",
+   "centre_m": [
+    2.75,
+    0.5,
+    0.275
+   ],
+   "radius_m": 0.06,
+   "length_m": 0.55,
+   "axis": "z"
+  }
+ ],
+ "solitary_wave": {
+  "height_m": 0.12,
+  "depth_m": 0.25,
+  "crest_x_m": 0.9
+ },
+ "run": {
+  "end_s": 3.0,
+  "frames": 91
+ }
+}

@@ -1,0 +1,123 @@
+{
+ "domain": "kernel",
+ "title": "A copper busbar heating up under 200 A in still air, written as two fields (demonstration)",
+ "provenance": {
+  "purpose": "the kernel's own equations in time: an electric potential and a temperature, coupled both ways (the Joule heat warms the bar, the warm copper conducts less); nothing about busbars is programmed. A demonstration, not checked against a measurement (tools/kerneltest.c K11 to K13 check the pieces against exact solutions)",
+  "material": "copper: electrical conductivity 58.0 MS/m at 20 C and its temperature coefficient of resistance 0.00393 /K, the International Annealed Copper Standard (IEC 60028); density 8933 kg/m^3, specific heat 385 J/(kg K), thermal conductivity 401 W/(m K) for pure copper at 300 K (Incropera and DeWitt, Fundamentals of Heat and Mass Transfer, table A.1)",
+  "assumptions": "still air exchanges 10 W/(m^2 K) with every face, a typical value assumed for a small bar, not measured; the bar's ends are insulated terminals; radiation is left out"
+ },
+ "mesh": {
+  "box": {
+   "size_m": [
+    0.1,
+    0.01,
+    0.003
+   ],
+   "cells": [
+    20,
+    4,
+    2
+   ]
+  }
+ },
+ "order": 2,
+ "materials": {
+  "copper": {
+   "electrical_conductivity_s_m": 58000000.0,
+   "conductivity_w_mk": 401,
+   "density_kg_m3": 8933,
+   "specific_heat_j_kgk": 385,
+   "source": "IEC 60028 (electrical); Incropera and DeWitt, table A.1 (thermal)"
+  }
+ },
+ "fields": {
+  "phi": {
+   "diffusion": "electrical_conductivity_s_m / (1 + 0.00393*(T - 293.15))",
+   "unit": "V"
+  },
+  "T": {
+   "mass": "density_kg_m3*specific_heat_j_kgk",
+   "diffusion": "conductivity_w_mk",
+   "initial": 293.15,
+   "unit": "K",
+   "source": "electrical_conductivity_s_m / (1 + 0.00393*(T - 293.15)) * (dx(phi)^2 + dy(phi)^2 + dz(phi)^2)"
+  }
+ },
+ "boundaries": [
+  {
+   "name": "current in",
+   "where": {
+    "plane": [
+     "x",
+     0
+    ]
+   },
+   "flux": {
+    "phi": 6666666.666667
+   }
+  },
+  {
+   "name": "current out",
+   "where": {
+    "plane": [
+     "x",
+     0.1
+    ]
+   },
+   "value": {
+    "phi": 0
+   }
+  },
+  {
+   "name": "still air",
+   "where": "all",
+   "exchange": {
+    "T": {
+     "h": 10,
+     "ambient": 293.15
+    }
+   }
+  }
+ ],
+ "time": {
+  "end_s": 3600,
+  "step_s": 30,
+  "method": "bdf2",
+  "outputs": 24
+ },
+ "outputs": {
+  "probes": [
+   {
+    "name": "middle",
+    "point_m": [
+     0.05,
+     0.005,
+     0.0015
+    ]
+   },
+   {
+    "name": "end",
+    "point_m": [
+     0.0,
+     0.005,
+     0.0015
+    ]
+   }
+  ]
+ },
+ "picture": {
+  "film": "build/labfilm OUT.lab --out DIR --field T --light"
+ },
+ "controls": [
+  {
+   "label": "the current density at the end, A/m^2 (200 A is 6.67e6)",
+   "path": "boundaries.0.flux.phi",
+   "min": 1000000.0,
+   "max": 10000000.0,
+   "log": false
+  }
+ ],
+ "solver": {
+  "tolerance": 1e-08
+ }
+}

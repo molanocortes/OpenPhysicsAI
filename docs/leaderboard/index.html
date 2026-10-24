@@ -1,0 +1,113 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>OpenPhysicsAI leaderboards</title><style>
+:root{--bg:#f7f7f5;--fg:#1a1a1a;--muted:#5a5a5a;--line:#d8d8d3;--accent:#0b6e8f;--card:#ffffff}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#111417;--fg:#e8e8e4;--muted:#9a9a94;--line:#2b3036;--accent:#5fb3d3;--card:#181c21}}
+:root[data-theme="dark"]{--bg:#111417;--fg:#e8e8e4;--muted:#9a9a94;--line:#2b3036;--accent:#5fb3d3;--card:#181c21}
+body{margin:0;padding:24px 16px;background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;max-width:1100px;margin-inline:auto}
+h1{font-size:26px;margin:0 0 4px}h2{font-size:19px;margin:28px 0 8px}h3{font-size:16px;margin:18px 0 6px}
+p.muted{color:var(--muted);margin:0 0 16px}
+table{border-collapse:collapse;width:100%;background:var(--card);border:1px solid var(--line);margin:8px 0 16px;display:block;overflow-x:auto}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}th{color:var(--muted);font-weight:600}
+td.num{font-variant-numeric:tabular-nums}code{font-size:13px}
+.rank{font-weight:700;color:var(--accent)}.tag{display:inline-block;padding:1px 7px;border:1px solid var(--line);border-radius:10px;font-size:12px;color:var(--muted)}
+
+body{max-width:1200px;background:#0b1220;color:#e4edf7;padding:48px 24px;--muted:#a6b8cb;--card:#121e30;--line:#293b50;--accent:#72e4d3}
+h1{font-size:clamp(30px,5vw,58px);letter-spacing:-.045em;line-height:1.1;margin-bottom:16px}
+.challenge{border:1px solid var(--line);border-radius:18px;padding:24px;margin:24px 0;background:var(--card)}
+.challenge h2{margin-top:0}nav{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:20px 0}
+input,select{font:inherit;background:#121e30;color:#e4edf7;border:1px solid #526880;border-radius:8px;padding:10px;max-width:100%;box-sizing:border-box}
+button{font:inherit;background:none;color:inherit;border:0;cursor:pointer;padding:4px;text-align:left}button:hover{color:#72e4d3}
+summary{cursor:pointer;padding:14px 0;color:#72e4d3}details{border-top:1px solid var(--line)}
+[hidden]{display:none!important}a{color:#72e4d3}nav p{color:var(--muted)}
+</style></head><body>
+<p class='muted'>OPENPHYSICSAI / THE CHALLENGE BOARD</p><h1>How close can we get to reality?</h1><p>Inspect a prediction. Replay an entry. Improve the next result.</p><p><a href='../../challenges/agents/AGENT_LEADERBOARD.md'>Agent rankings</a> · <a href='../../challenges/README.md'>Challenge rules</a> · <a href='../../CONTRIBUTING.md'>Enter a result</a></p>
+<p class='muted'>Simulation against measured reality. Any solver may enter. Generated 2026-09-27 03:07 UTC from the result files in the repository.</p>
+<p>No challenge with measured data is open yet. <a href='../../challenges/README.md'>How to add one</a>.</p>
+<script>
+const body = document.body;
+const headings = [...body.querySelectorAll('h2')];
+headings.forEach((heading, i) => {
+  const section = document.createElement('section');
+  section.className = 'challenge';
+  section.id = 'challenge-' + i;
+  heading.before(section);
+  section.append(heading);
+  while (section.nextSibling && !(section.nextSibling.nodeType === 1 &&
+         ['H2', 'SCRIPT'].includes(section.nextSibling.tagName))) {
+    section.append(section.nextSibling);
+  }
+  section.querySelectorAll('h3').forEach(heading => {
+    const details = document.createElement('details');
+    const summary = document.createElement('summary');
+    summary.textContent = heading.textContent;
+    heading.before(details);
+    heading.remove();
+    details.append(summary);
+    let next = details.nextElementSibling;
+    if (next?.tagName === 'P') {
+      details.append(next);
+      next = details.nextElementSibling;
+    }
+    if (next?.tagName === 'TABLE') details.append(next);
+  });
+});
+const nav = document.createElement('nav');
+nav.setAttribute('aria-label', 'Challenge selection');
+const label = document.createElement('label');
+label.textContent = 'Search entries ';
+const input = document.createElement('input');
+input.type = 'search';
+input.placeholder = 'Solver, commit or case';
+label.append(input);
+nav.append(label);
+const select = document.createElement('select');
+select.setAttribute('aria-label', 'Choose challenge');
+select.add(new Option('All challenges', 'all'));
+headings.forEach((heading, i) => select.add(new Option(heading.textContent, 'challenge-' + i)));
+nav.append(select);
+const status = document.createElement('p');
+status.setAttribute('aria-live', 'polite');
+nav.append(status);
+headings[0]?.parentElement.before(nav);
+function filter() {
+  let count = 0;
+  document.querySelectorAll('.challenge').forEach(section => {
+    section.hidden = select.value !== 'all' && section.id !== select.value;
+    section.querySelectorAll('tbody tr').forEach(row => {
+      row.hidden = !row.textContent.toLowerCase().includes(input.value.toLowerCase());
+      if (!section.hidden && !row.hidden) count++;
+    });
+    section.querySelectorAll('details').forEach(details => {
+      details.hidden = !!input.value &&
+        ![...details.querySelectorAll('tbody tr')].some(row => !row.hidden);
+      if (input.value && !details.hidden) details.open = true;
+    });
+  });
+  status.textContent = count + ' matching rows';
+}
+input.addEventListener('input', filter);
+select.addEventListener('change', filter);
+document.querySelectorAll('table').forEach(table => {
+  table.querySelectorAll('th').forEach((heading, index) => {
+    const button = document.createElement('button');
+    button.textContent = heading.textContent + ' ↕';
+    heading.textContent = '';
+    heading.append(button);
+    let ascending = true;
+    button.onclick = () => {
+      const rows = [...table.tBodies[0].rows];
+      rows.sort((a, b) => {
+        const x = a.cells[index]?.textContent.trim() || '';
+        const y = b.cells[index]?.textContent.trim() || '';
+        const nx = parseFloat(x), ny = parseFloat(y);
+        return (ascending ? 1 : -1) *
+          (Number.isFinite(nx) && Number.isFinite(ny) ? nx - ny : x.localeCompare(y));
+      });
+      rows.forEach(row => table.tBodies[0].append(row));
+      table.querySelectorAll('th').forEach(h => h.removeAttribute('aria-sort'));
+      heading.setAttribute('aria-sort', ascending ? 'ascending' : 'descending');
+      ascending = !ascending;
+    };
+  });
+});
+filter();
+</script></body></html>

@@ -1,0 +1,90 @@
+{
+ "domain": "kernel",
+ "title": "A steel ring heated on one side, cooled by air, held on the other: composed, not programmed",
+ "mesh": {
+  "file": "build/third_party/mfem-4.8/data/toroid-hex.mesh",
+  "scale": 0.05,
+  "refine": 3
+ },
+ "order": 2,
+ "physics": [
+  "heat",
+  "elasticity"
+ ],
+ "materials": {
+  "steel": {
+   "youngs_modulus_pa": 200000000000.0,
+   "poisson_ratio": 0.3,
+   "conductivity_w_mk": 45,
+   "expansion_per_k": 1.2e-05,
+   "source": "nominal carbon steel (demonstration)"
+  }
+ },
+ "reference_temperature_k": 293,
+ "boundaries": [
+  {
+   "name": "air",
+   "where": "all",
+   "convection": {
+    "h_w_m2k": 15,
+    "ambient_k": 293
+   }
+  },
+  {
+   "name": "flame",
+   "where": {
+    "box": [
+     [
+      -0.08,
+      -0.08,
+      -0.03
+     ],
+     [
+      -0.058,
+      0.08,
+      0.03
+     ]
+    ]
+   },
+   "temperature_k": 520
+  },
+  {
+   "name": "mount",
+   "where": {
+    "box": [
+     [
+      0.052,
+      -0.08,
+      -0.03
+     ],
+     [
+      0.08,
+      0.08,
+      0.03
+     ]
+    ]
+   },
+   "fixed": true
+  }
+ ],
+ "picture": {
+  "deformation_scale": 60,
+  "film": "build/labfilm OUT.lab --out DIR --field von_mises --range 0 6e8 --azim -55 --elev 35 --light"
+ },
+ "outputs": {
+  "probes": [
+   {
+    "name": "far side",
+    "point_m": [
+     0.0,
+     0.05,
+     0.0
+    ]
+   }
+  ]
+ },
+ "provenance": {
+  "purpose": "demonstration of the kernel (G24): a problem composed from the library, not programmed; the shape is MFEM's sample torus scaled to a 50 mm ring",
+  "material": "nominal carbon steel"
+ }
+}

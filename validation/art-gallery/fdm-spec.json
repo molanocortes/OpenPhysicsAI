@@ -1,0 +1,50 @@
+{
+  "analysis": "fff_print",
+  "created": "2026-10-03T07:12:19Z",
+  "job_id": "job-20261003-071219-7e8c-1",
+  "material": "pla_generic_demo",
+  "material_status": "demonstration",
+  "mesh_hash": "7e3088ef3914267cac075ea3f99e0cf02603f97e342f6d8f85b1a11bdaba1546",
+  "model": {
+    "analysis": "fff_print",
+    "body": "sculpture",
+    "defaults_used": ["convection", "relaxation_offset"],
+    "element_size_mm": [0.75, 0.75, 0.75],
+    "elements": 5385,
+    "material": {
+      "glass_transition_c": 60,
+      "id": "pla_generic_demo",
+      "name": "PLA, generic FFF filament (demonstration values)",
+      "relaxation_c": 70,
+      "status": "demonstration"
+    },
+    "mesh_hash": "7e3088ef3914267cac075ea3f99e0cf02603f97e342f6d8f85b1a11bdaba1546",
+    "nodes": 8551,
+    "numerics": {
+      "note": "auto factorises directly while the factor fits and falls back to the iterative solver when it does not; the iterative solver is faster on smaller models (measured on the truss bridge at 4 mm elements: 220 s automatic against 98 s iterative at a tolerance of 1e-8, peak stress within 2.6e-8 and warp within 3.7e-6 relative)",
+      "skip_increment_below_k": 0,
+      "solver": "auto",
+      "tolerance": 1e-10
+    },
+    "process": {
+      "ambient_c": 25,
+      "bed_c": 60,
+      "convection_w_m2k": 15,
+      "cooldown_bed_off_s": 240,
+      "cooldown_bed_on_s": 120,
+      "deposition_rate_mm3_s": 8,
+      "min_layer_time_s": 8,
+      "nozzle_c": 210,
+      "provenance": "inferred",
+      "radiation": true,
+      "simulation_layer_mm": 1.5,
+      "store": "key_times",
+      "thermal_substeps_per_layer": 4
+    }
+  },
+  "probes": [],
+  "project": "Helical_Flute",
+  "project_revision": 5,
+  "spec_hash": "c3b44e344f6378a0077c50e3e931ea09618ace453737d226218de841f9eaf653",
+  "spec_hash_covers": "every field except job_id, created, project_revision and spec_hash"
+}

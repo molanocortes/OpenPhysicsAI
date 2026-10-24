@@ -1,0 +1,100 @@
+{
+ "title": "L bracket, clamped at the top of its back plate, a cord at the end of its arm",
+ "depth_mm": 15.0,
+ "supports": [
+  {
+   "name": "clamp",
+   "kind": "fixed",
+   "box": [
+    -0.01,
+    44.99,
+    -1,
+    0.01,
+    71.0,
+    16.0
+   ],
+   "facing": "-x",
+   "rig": "the top 25 mm of the back plate clamped flat to the wall block"
+  },
+  {
+   "name": "wall",
+   "kind": "frictionless_support",
+   "box": [
+    -0.01,
+    -1,
+    -1,
+    0.01,
+    45.01,
+    16.0
+   ],
+   "facing": "-x",
+   "rig": "the rest of the back plate pressed against the wall block by the load"
+  }
+ ],
+ "load": {
+  "name": "cord",
+  "box": [
+   35.99,
+   4.49,
+   -1,
+   42.01,
+   4.51,
+   16.0
+  ],
+  "facing": "+y",
+  "direction": [
+   0,
+   -1,
+   0
+  ],
+  "rig": "a cord over the arm against the lip, the bucket below"
+ },
+ "regions": {
+  "corner": [
+   -1,
+   -1,
+   -1,
+   15.0,
+   13.5,
+   16.0
+  ],
+  "arm": [
+   6.0,
+   -1,
+   -1,
+   46.0,
+   9.5,
+   16.0
+  ],
+  "back plate": [
+   -1,
+   -1,
+   -1,
+   7.0,
+   71.0,
+   16.0
+  ]
+ },
+ "prints": {
+  "side": {
+   "build_direction": "z",
+   "raster_reference": "x"
+  },
+  "standing": {
+   "build_direction": "x",
+   "raster_reference": "y"
+  }
+ },
+ "measure": "the arm's thickness at the corner, with calipers",
+ "stl": "bracket.stl",
+ "file_min_mm": [
+  0,
+  0,
+  0.0
+ ],
+ "size_mm": [
+  45.0,
+  70.0,
+  15.0
+ ]
+}

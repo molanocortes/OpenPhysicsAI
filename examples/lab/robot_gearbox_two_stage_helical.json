@@ -1,0 +1,291 @@
+{
+ "domain": "mechanism",
+ "model": "gear_train",
+ "title": "A two-stage helical planetary gearbox, 25:1, for a robot joint: 14 elastic gears, 2 N m in",
+ "provenance": {
+  "purpose": "demonstration: the layout of the two-stage planetary reducers in robot joints (module 1 mm, 15 degree helical teeth, three planets a stage, the second stage wider for five times the torque); not a measured gearbox",
+  "material": "steel, E = 207 GPa, nu = 0.3, a nominal value"
+ },
+ "gears": {
+  "sun 1": {
+   "teeth": 18,
+   "module_m": 0.001,
+   "pressure_angle_deg": 20,
+   "helix_angle_deg": 15.0,
+   "flank_thinning_m": 1e-05,
+   "face_width_m": 0.008,
+   "bore_diameter_m": 0.008,
+   "material": {
+    "youngs_modulus_pa": 207000000000.0,
+    "poisson_ratio": 0.3,
+    "source": "nominal steel, E = 207 GPa (demonstration)"
+   },
+   "mesh": {
+    "across": 8,
+    "flank": 10,
+    "fillet": 5,
+    "rim": 5,
+    "face": 6
+   }
+  },
+  "planet 1": {
+   "teeth": 27,
+   "module_m": 0.001,
+   "pressure_angle_deg": 20,
+   "helix_angle_deg": -15.0,
+   "flank_thinning_m": 1e-05,
+   "face_width_m": 0.008,
+   "bore_diameter_m": 0.01,
+   "material": {
+    "youngs_modulus_pa": 207000000000.0,
+    "poisson_ratio": 0.3,
+    "source": "nominal steel, E = 207 GPa (demonstration)"
+   },
+   "mesh": {
+    "across": 8,
+    "flank": 10,
+    "fillet": 5,
+    "rim": 5,
+    "face": 6
+   }
+  },
+  "ring 1": {
+   "teeth": 72,
+   "module_m": 0.001,
+   "pressure_angle_deg": 20,
+   "helix_angle_deg": -15.0,
+   "flank_thinning_m": 1e-05,
+   "face_width_m": 0.008,
+   "bore_diameter_m": 0.085,
+   "material": {
+    "youngs_modulus_pa": 207000000000.0,
+    "poisson_ratio": 0.3,
+    "source": "nominal steel, E = 207 GPa (demonstration)"
+   },
+   "tip_diameter_m": 0.0725399,
+   "internal": true,
+   "cutter": {
+    "teeth": 24,
+    "addendum_coefficient": 1.25,
+    "dedendum_coefficient": 1.25,
+    "cutter_tip_radius_coefficient": 0.25
+   },
+   "mesh": {
+    "across": 6,
+    "flank": 8,
+    "fillet": 4,
+    "rim": 5,
+    "face": 6
+   }
+  },
+  "sun 2": {
+   "teeth": 18,
+   "module_m": 0.001,
+   "pressure_angle_deg": 20,
+   "helix_angle_deg": 15.0,
+   "flank_thinning_m": 1e-05,
+   "face_width_m": 0.014,
+   "bore_diameter_m": 0.008,
+   "material": {
+    "youngs_modulus_pa": 207000000000.0,
+    "poisson_ratio": 0.3,
+    "source": "nominal steel, E = 207 GPa (demonstration)"
+   },
+   "mesh": {
+    "across": 8,
+    "flank": 10,
+    "fillet": 5,
+    "rim": 5,
+    "face": 8
+   }
+  },
+  "planet 2": {
+   "teeth": 27,
+   "module_m": 0.001,
+   "pressure_angle_deg": 20,
+   "helix_angle_deg": -15.0,
+   "flank_thinning_m": 1e-05,
+   "face_width_m": 0.014,
+   "bore_diameter_m": 0.01,
+   "material": {
+    "youngs_modulus_pa": 207000000000.0,
+    "poisson_ratio": 0.3,
+    "source": "nominal steel, E = 207 GPa (demonstration)"
+   },
+   "mesh": {
+    "across": 8,
+    "flank": 10,
+    "fillet": 5,
+    "rim": 5,
+    "face": 8
+   }
+  },
+  "ring 2": {
+   "teeth": 72,
+   "module_m": 0.001,
+   "pressure_angle_deg": 20,
+   "helix_angle_deg": -15.0,
+   "flank_thinning_m": 1e-05,
+   "face_width_m": 0.014,
+   "bore_diameter_m": 0.085,
+   "material": {
+    "youngs_modulus_pa": 207000000000.0,
+    "poisson_ratio": 0.3,
+    "source": "nominal steel, E = 207 GPa (demonstration)"
+   },
+   "tip_diameter_m": 0.0725399,
+   "internal": true,
+   "cutter": {
+    "teeth": 24,
+    "addendum_coefficient": 1.25,
+    "dedendum_coefficient": 1.25,
+    "cutter_tip_radius_coefficient": 0.25
+   },
+   "mesh": {
+    "across": 6,
+    "flank": 8,
+    "fillet": 4,
+    "rim": 5,
+    "face": 8
+   }
+  }
+ },
+ "shafts": [
+  {
+   "name": "input",
+   "axis_m": [
+    0,
+    0
+   ],
+   "torque_nm": 2.0
+  },
+  {
+   "name": "carrier 1",
+   "axis_m": [
+    0,
+    0
+   ],
+   "plate": "front"
+  },
+  {
+   "name": "planet A",
+   "axis_m": [
+    0,
+    0.023293714
+   ],
+   "carrier": "carrier 1",
+   "copies": 3
+  },
+  {
+   "name": "output",
+   "axis_m": [
+    0,
+    0
+   ],
+   "locked": true,
+   "plate": "front"
+  },
+  {
+   "name": "planet B",
+   "axis_m": [
+    0,
+    0.023293714
+   ],
+   "carrier": "output",
+   "copies": 3
+  },
+  {
+   "name": "housing",
+   "axis_m": [
+    0,
+    0
+   ],
+   "fixed": true
+  }
+ ],
+ "parts": [
+  {
+   "name": "sun 1",
+   "gear": "sun 1",
+   "shaft": "input",
+   "z_m": 0
+  },
+  {
+   "name": "planet A",
+   "gear": "planet 1",
+   "shaft": "planet A",
+   "z_m": 0
+  },
+  {
+   "name": "ring 1",
+   "gear": "ring 1",
+   "shaft": "housing",
+   "z_m": 0
+  },
+  {
+   "name": "sun 2",
+   "gear": "sun 2",
+   "shaft": "carrier 1",
+   "z_m": 0.02
+  },
+  {
+   "name": "planet B",
+   "gear": "planet 2",
+   "shaft": "planet B",
+   "z_m": 0.02
+  },
+  {
+   "name": "ring 2",
+   "gear": "ring 2",
+   "shaft": "housing",
+   "z_m": 0.02
+  }
+ ],
+ "meshes": [
+  [
+   "sun 1",
+   "planet A"
+  ],
+  [
+   "planet A",
+   "ring 1"
+  ],
+  [
+   "sun 2",
+   "planet B"
+  ],
+  [
+   "planet B",
+   "ring 2"
+  ]
+ ],
+ "input": "input",
+ "run": {
+  "positions": 36,
+  "input_from_deg": 0,
+  "input_to_deg": 105
+ },
+ "picture": {
+  "cutaway_deg": [
+   -110,
+   -10
+  ],
+  "film": "build/labfilm OUT.lab --out DIR --field stress --range 0 3.5e7 --azim -60 --elev 26 --zoom 1.12 --light --size 960x540"
+ },
+ "controls": [
+  {
+   "label": "torque on the input sun, N m",
+   "path": "shafts.0.torque_nm",
+   "min": 0.2,
+   "max": 10,
+   "log": true
+  },
+  {
+   "label": "the input's last angle, deg",
+   "path": "run.input_to_deg",
+   "min": 0,
+   "max": 360,
+   "log": false
+  }
+ ]
+}

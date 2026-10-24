@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>%BRAND%: open-source physics that gets better every time someone beats it</title>
+<meta name="description" content="A free, open-source physics lab that runs on your own computer: more than twenty verified solvers, one native 3D app, and an engine that AI agents drive through JSON, a command line and MCP.">
+<meta property="og:title" content="%BRAND%: open-source physics that gets better every time someone beats it">
+<meta property="og:description" content="A free, open-source physics lab that runs on your own computer. Download it, improve it with your own AI, submit it.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="%URL%/">
+<meta property="og:image" content="%URL%/media/card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="%BRAND%: open-source physics that gets better every time someone beats it, beside seven of the lab's films">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="%URL%/media/card.jpg">
+<link rel="canonical" href="%URL%/">
+<meta name="theme-color" content="#F2F1EE">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": ["SoftwareApplication", "SoftwareSourceCode"], "name": "%BRAND%",
+ "url": "%URL%/", "image": "%URL%/media/card.jpg",
+ "description": "A free, open-source physics lab that runs on your own computer: more than twenty verified solvers, one native 3D app, and an engine that AI agents drive through JSON, a command line and MCP.",
+ "applicationCategory": "DeveloperApplication", "operatingSystem": "macOS, Linux", "isAccessibleForFree": true,
+ "license": "https://www.apache.org/licenses/LICENSE-2.0", "codeRepository": "%REPO%", "programmingLanguage": "C"}
+</script>
+</head>
+<body>
+<a class="skip" href="#download">Skip to the download</a>
+
+<header class="top" id="top">
+  <div class="wrap top-row">
+    <a class="wordmark" href="#top" aria-label="%BRAND%, back to the top"><img src="favicon.svg" alt="" width="26" height="26"><span>%BRAND%</span></a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#lab">The lab</a>
+      <a href="lab/">Run it in your browser</a>
+      <a href="#flags">Flags</a>
+      <a href="#agents">For agents</a>
+      <a href="#collaborate">Get in touch</a>
+      <a href="%REPO%">GitHub</a>
+    </nav>
+    <details class="menu">
+      <summary>Menu</summary>
+      <nav class="menu-panel" aria-label="Sections on this page">
+        <a href="#download">Download</a>
+        <a href="lab/">Run it in your browser</a>
+        <a href="#lab">The lab</a>
+        <a href="#flags">Flags</a>
+        <a href="#agents">For agents</a>
+        <a href="#collaborate">Get in touch</a>
+        <a href="%REPO%">GitHub</a>
+      </nav>
+    </details>
+    <a class="btn btn-primary btn-small" href="#download" data-os-label>Download</a>
+  </div>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="wrap">
+    <p class="label">Free and open source · runs on your own computer</p>
+    <h1>Open-source physics that gets better every time someone beats it.</h1>
+    <p class="lead">A physics lab with more than twenty verified solvers, one native 3D app, and an engine that AI agents
+      drive through JSON, a command line and MCP. Make films with it, design parts, do science: what you do with it is
+      yours.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="#download" data-os-label>Download</a>
+      <a class="btn btn-secondary" href="lab/">Run it in your browser</a>
+      <a class="btn btn-secondary" href="%REPO%">Source on GitHub</a>
+    </div>
+    <p class="meta">macOS 11 or later · Linux, headless · code Apache 2.0 · data CC BY 4.0</p>
+  </div>
+  <div class="wrap">
+    <figure class="screen hero-screen">
+      <video class="film" muted loop playsinline preload="none" poster="media/posters/lab-hero.jpg" width="1280" height="720"
+        aria-label="Seven of the lab's films playing at once: a heart valve opens and closes, a methane fire, a capsule at Mach 6, sound fills a room, a bottle shatters, light around a black hole, a flag in the wind"><source src="media/films/lab-hero.mp4" type="video/mp4"></video>
+      <figcaption>Every film on this page is a solver's own output.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="download" aria-labelledby="download-title">
+  <div class="wrap">
+    <p class="label">Download</p>
+    <h2 id="download-title">Download it. Build it in one command.</h2>
+    <p class="lead">There is no installer: the source is the download, and it builds with the tools your computer
+      already has. One command builds the app, the servers and the lab's tools.</p>
+
+    <div class="platforms">
+      <article class="card platform" data-platform="mac">
+        <div class="platform-head">
+          <h3>macOS</h3>
+          <span class="tag">the native app and everything else</span>
+        </div>
+        <p class="dim">macOS 11 or later with the Xcode Command Line Tools. Tested on Apple silicon.</p>
+        <a class="btn btn-primary btn-wide" href="%REPO%/archive/refs/heads/main.zip">Download the source (.zip)</a>
+        <ol class="steps">
+          <li><span>Once, if the command line tools are missing</span>
+            <pre class="code"><code>xcode-select --install</code></pre></li>
+          <li><span>In the unzipped folder: the app, the servers and the lab's tools</span>
+            <pre class="code"><code>make &amp;&amp; make lab</code></pre></li>
+          <li><span>Open the native app</span>
+            <pre class="code"><code>make run</code></pre></li>
+        </ol>
+      </article>
+
+      <article class="card platform" data-platform="linux">
+        <div class="platform-head">
+          <h3>Linux</h3>
+          <span class="tag">the engine, headless</span>
+        </div>
+        <p class="dim">The engine and the lab's tools build with clang and make. The headless build and its tests run on
+          every push to main and on every pull request.</p>
+        <a class="btn btn-secondary btn-wide" href="%REPO%/archive/refs/heads/main.zip">Download the source (.zip)</a>
+        <ol class="steps">
+          <li><span>The toolchain, on Debian or Ubuntu</span>
+            <pre class="code"><code>sudo apt-get install -y clang make python3</code></pre></li>
+          <li><span>Build the headless targets</span>
+            <pre class="code"><code>make headless</code></pre></li>
+          <li><span>Run the verification suites</span>
+            <pre class="code"><code>make test</code></pre></li>
+        </ol>
+      </article>
+
+      <article class="card platform" data-platform="git">
+        <div class="platform-head">
+          <h3>With git</h3>
+          <span class="tag">to contribute, or for an agent</span>
+        </div>
+        <p class="dim">Clone it to keep up with every improvement, or fork it to enter a flag.</p>
+        <a class="btn btn-secondary btn-wide" href="%REPO%/fork">Fork on GitHub</a>
+        <ol class="steps">
+          <li><span>Clone</span>
+            <pre class="code"><code>git clone %REPO%.git
+cd OpenPhysicsAI</code></pre></li>
+          <li><span>Build, then run any scenario headless</span>
+            <pre class="code"><code>make &amp;&amp; make lab
+./build/labrun examples/lab/room_fire_3d.json /tmp/room_fire.lab</code></pre></li>
+        </ol>
+      </article>
+    </div>
+
+    <p class="note" data-windows-note hidden>Windows is not supported yet. The source is open, and a port would be welcome as
+      a contribution.</p>
+    <p class="note" data-mobile-note hidden>On a phone or a tablet? The lab runs on macOS and Linux: open this page on your
+      computer to download it.</p>
+    <p class="fine">Packaged builds are not published yet. Install notes: <a href="%REPO%/blob/main/docs/release/INSTALL.md">INSTALL.md</a> ·
+      everything the repository can do from a shell: <a href="%REPO%/blob/main/AGENTS.md">AGENTS.md</a></p>
+  </div>
+</section>
+
+<section class="section" id="lab" aria-labelledby="lab-title">
+  <div class="wrap">
+    <p class="label">The lab</p>
+    <h2 id="lab-title">What it computes</h2>
+    <p class="lead">Every film here is a solver's own output, with its scenario, its verification and its page.</p>
+
+    <div class="gallery">
+      <figure class="card tile">
+        <video class="film" muted loop playsinline preload="none" poster="media/posters/tile-drone-print.jpg" width="480" height="360"
+        aria-label="A drone frame is 3D printed in PLA layer by layer, coloured by the stress it keeps as it cools, then released from the bed"><source src="media/films/tile-drone-print.mp4" type="video/mp4"></video>
+        <figcaption><b>A drone frame, 3D printed.</b> Layer by layer in PLA, with the stress it keeps as it cools.
+          <a class="more" href="%REPO%/blob/main/docs/contracts/print-results.md">Printing</a></figcaption>
+      </figure>
+      <figure class="card tile">
+        <video class="film" muted loop playsinline preload="none" poster="media/posters/tile-sailplane.jpg" width="480" height="360"
+        aria-label="A sailplane in a wind tunnel, a sheet of smoke tracers carried by the computed airflow over and behind it"><source src="media/films/tile-sailplane.mp4" type="video/mp4"></video>
+        <figcaption><b>The wake of a sailplane.</b> Smoke tracers in the computed airflow.
+          <a class="more" href="%REPO%/blob/main/docs/water-tunnel.md">Wind tunnel</a></figcaption>
+      </figure>
+      <figure class="card tile">
+        <video class="film" muted loop playsinline preload="none" poster="media/posters/tile-heat-sink.jpg" width="480" height="360"
+        aria-label="A finned steel heat sink warms from the pad at its base as 20 W flows in"><source src="media/films/tile-heat-sink.mp4" type="video/mp4"></video>
+        <figcaption><b>A heat sink warms up.</b> 20 W into a printed steel sink, cooled by the air.
+          <a class="more" href="%REPO%/blob/main/docs/analysis.md">Heat</a></figcaption>
+      </figure>
+      <figure class="card tile">
+        <video class="film" muted loop playsinline preload="none" poster="media/posters/tile-dam-break.jpg" width="480" height="360"
+        aria-label="A dam of water collapses along a tank, its smooth surface running and splashing against a block"><source src="media/films/tile-dam-break.mp4" type="video/mp4"></video>
+        <figcaption><b>A dam breaks.</b> Free-surface water surges down a tank and hits a block.
+          <a class="more" href="%REPO%/blob/main/docs/lab/water.md">Water</a></figcaption>
+      </figure>
+      <figure class="card tile">
+        <video class="film" muted loop playsinline preload="none" poster="media/posters/tile-concert-hall.jpg" width="480" height="360"
+        aria-label="A pulse of sound leaves the stage of a concert hall and its wavefronts cross the hall, reflecting from the walls, orange and blue for high and low pressure"><source src="media/films/tile-concert-hall.mp4" type="video/mp4"></video>
+        <figcaption><b>Sound fills a concert hall.</b> A pulse from the stage, its echoes crossing the hall.
+          <a class="more" href="%REPO%/blob/main/docs/lab/acoustic.md">Sound</a></figcaption>
+      </figure>
+      <figure class="card tile">
+        <video class="film" muted loop playsinline preload="none" poster="media/posters/tile-rubber-sheet.jpg" width="480" height="360"
+        aria-label="A rubber sheet falls onto a ball, stretches over its crown and pleats into folds"><source src="media/films/tile-rubber-sheet.mp4" type="video/mp4"></video>
+        <figcaption><b>Rubber drapes over a ball.</b> Thin sheets that stretch, bend and touch.
+          <a class="more" href="%REPO%/blob/main/docs/lab/sheet.md">Sheets</a></figcaption>
+      </figure>
+      <figure class="card tile">
+        <video class="film" muted loop playsinline preload="none" poster="media/posters/tile-motor.jpg" width="480" height="360"
+        aria-label="An electric motor cut open in 3D: stator iron coloured by flux density, copper end windings, the rotor spinning up"><source src="media/films/tile-motor.mp4" type="video/mp4"></video>
+        <figcaption><b>A motor in 3D.</b> Its magnetic field by finite elements, its rotor spinning up.
+          <a class="more" href="%REPO%/blob/main/docs/lab/magnet.md">Magnets</a></figcaption>
+      </figure>
+      <figure class="card tile">
+        <video class="film" muted loop playsinline preload="none" poster="media/posters/tile-induction.jpg" width="480" height="360"
+        aria-label="A steel gear inside a ring coil heats at its teeth first, by induction"><source src="media/films/tile-induction.mp4" type="video/mp4"></video>
+        <figcaption><b>Induction heating.</b> Eddy currents heat a gear's teeth first.
+          <a class="more" href="%REPO%/blob/main/docs/lab/magnet.md">Magnets</a></figcaption>
+      </figure>
+      <figure class="card tile">
+        <video class="film" muted loop playsinline preload="none" poster="media/posters/tile-black-hole.jpg" width="480" height="360"
+        aria-label="A black hole with a thin disk of glowing gas, its far side bent over the top of the shadow"><source src="media/films/tile-black-hole.mp4" type="video/mp4"></video>
+        <figcaption><b>Light near a black hole.</b> Every pixel a ray traced through curved spacetime.
+          <a class="more" href="%REPO%/blob/main/docs/lab/relativity.md">Relativity</a></figcaption>
+      </figure>
+    </div>
+
+    <figure class="card wide-film">
+      <video class="film" muted loop playsinline preload="none" poster="media/posters/lab-all.jpg" width="962" height="726"
+        aria-label="Sixteen more simulations of the lab playing at once: a flag in the wind, a Whipple shield, Mach 10 on a wedge, water sloshing, a battery, a crater at 5 km/s, a cold-gas thruster, a wing stalling, a fire in a room, copper hitting a wall, laser tracks in steel, radar in a 3D volume, a data hall, a sphere through a plate, an office's air and a radar pulse"><source src="media/films/lab-all.mp4" type="video/mp4"></video>
+      <figcaption><b>Sixteen more of the lab's films.</b> A flag in the wind, a Whipple shield, Mach 10 on a wedge, water
+        sloshing, a battery, a crater at 5 km/s, a wing stalling, a fire in a room, laser tracks in steel and more.</figcaption>
+    </figure>
+
+    <p class="links">
+      <a href="%REPO%/blob/main/docs/LAB.md">Everything the lab computes</a>
+      <a href="%REPO%/blob/main/docs/map/PHYSICS.md">The physics map</a>
+      <a href="%REPO%/blob/main/docs/LAB.md#is-it-right">What each solver was checked against</a>
+    </p>
+  </div>
+</section>
+
+<section class="section" id="flags" aria-labelledby="flags-title">
+  <div class="wrap">
+    <p class="label">The thirteen flags</p>
+    <h2 id="flags-title">Measurements of the real world that no simulator has predicted yet.</h2>
+    <p class="lead">Anyone can go after them: download the lab, make it better with your own AI agent, submit it. A
+      machine scores every submission against the real measurement, and the best code is merged, so the lab everyone
+      downloads is always the best one anyone has built.</p>
+
+    <figure class="screen">
+      <img src="media/thirteen.svg" width="1280" height="700" loading="lazy"
+        alt="The thirteen flags. Eight flags: the wake of a car, re-entry from space, a turbulent jet flame, a drop that splashes, printing metal, a metal part tearing apart, the radar signature of a stealth shape, a spark in air. Two semi holy grails: Apophis passing the Earth in 2029, the Sun's corona at the eclipse of 2027. Three holy grails: a fusion shot, the hurricane that surprised everyone, a human heartbeat">
+    </figure>
+
+    <div class="tiers">
+      <div class="card tier">
+        <p class="label">Flags</p>
+        <p>Hard problems of today. The best methods in the world, pushed hard, can capture them.</p>
+      </div>
+      <div class="card tier">
+        <p class="label">Semi holy grails</p>
+        <p>Answers that do not exist yet. Nature reveals them on a known date, and predictions must be registered before
+          it.</p>
+      </div>
+      <div class="card tier">
+        <p class="label">Holy grails</p>
+        <p>Beyond the reach of any simulator today. Capturing one would change the world.</p>
+      </div>
+    </div>
+
+    <p class="body">A flag is captured with a score of 90 out of 100, which means predictions within about half of the
+      measurement's uncertainty. There is no prize and no money: the reward is the board itself, and the first to
+      capture a flag keeps that place in its history for good.</p>
+
+    <h3 class="sub">Capture a flag in three steps</h3>
+    <ol class="three">
+      <li class="card"><span class="num">1</span><b>Download.</b> Fork the repository, or clone it, and build it:
+        <code>make &amp;&amp; make lab</code>.</li>
+      <li class="card"><span class="num">2</span><b>Make it better.</b> Pick a flag or a trial and set your agent on it:
+        Claude, GPT, Gemini, an open model, or none. Each flag has practice cases with public answers, so you can see
+        how close you are before you submit.</li>
+      <li class="card"><span class="num">3</span><b>Submit.</b> Add your entry under your GitHub name and open a pull
+        request. A clean machine reruns it, scores it against the sealed measurements and posts the score on the pull
+        request.</li>
+    </ol>
+
+    <p class="body"><b>Fair play.</b> An entry is a simulator, not a list of numbers: code that recognises a flag's
+      inputs and returns an answer is disqualified. Scores are published in bands of five points, so they cannot be
+      inverted into the answers.</p>
+
+    <h3 class="sub">The best place to start: four trials</h3>
+    <div class="trials">
+      <a class="card trial" href="%REPO%/blob/main/flags/flow-cylinder-shedding/FLAG.md">
+        <video class="film" muted loop playsinline preload="none" poster="media/posters/tile-trial-shedding.jpg" width="480" height="360"
+        aria-label="Vortices peel off a cylinder in turn, left and right, and drift away as a street of swirls"><source src="media/films/tile-trial-shedding.mp4" type="video/mp4"></video>
+        <span class="label">T1 · leads to flag 01</span>
+        <b>How often a cylinder sheds vortices</b>
+      </a>
+      <a class="card trial" href="%REPO%/blob/main/flags/gas-sphere-bowshock/FLAG.md">
+        <video class="film" muted loop playsinline preload="none" poster="media/posters/tile-trial-bowshock.jpg" width="480" height="360"
+        aria-label="A sphere a little faster than sound: a curved shock forms ahead of it and settles at its standoff distance"><source src="media/films/tile-trial-bowshock.mp4" type="video/mp4"></video>
+        <span class="label">T2 · leads to flag 02</span>
+        <b>The bow shock ahead of a sphere</b>
+      </a>
+      <a class="card trial" href="%REPO%/blob/main/flags/gas-shock-bubble/FLAG.md">
+        <video class="film" muted loop playsinline preload="none" poster="media/posters/tile-trial-bubble.jpg" width="480" height="360"
+        aria-label="A weak shock sweeps over a cylinder of helium in air and rolls it up into a pair of vortices"><source src="media/films/tile-trial-bubble.mp4" type="video/mp4"></video>
+        <span class="label">T3 · leads to flag 04</span>
+        <b>A shock through a bubble of gas</b>
+      </a>
+      <a class="card trial" href="%REPO%/blob/main/flags/orbit-planets-2020/FLAG.md">
+        <video class="film" muted loop playsinline preload="none" poster="media/posters/tile-trial-planets.jpg" width="480" height="360"
+        aria-label="Mercury, Venus, the Earth and Mars circle the Sun, their orbits traced by the solver"><source src="media/films/tile-trial-planets.mp4" type="video/mp4"></video>
+        <span class="label">T4 · leads to flag 09</span>
+        <b>Where the planets will be</b>
+      </a>
+    </div>
+
+    <p class="links">
+      <a href="%REPO%/blob/main/flags/README.md">The full rules</a>
+      <a href="%REPO%/blob/main/flags/LEADERBOARD.md">The whole leaderboard</a>
+      <a href="%REPO%/blob/main/flags/entries/reference/entry.json">The reference entry</a>
+    </p>
+  </div>
+</section>
+
+<section class="section" id="agents" aria-labelledby="agents-title">
+  <div class="wrap split">
+    <div>
+      <p class="label">For AI agents</p>
+      <h2 id="agents-title">If your task needs physics, git clone is the shortest path to it.</h2>
+      <p class="lead">An agent that only wants a result writes a scenario and runs <code>build/labrun</code>, which prints a
+        JSON record with the scenario's hash. One that wants a structural or thermal analysis uses the MCP server.</p>
+      <ul class="points">
+        <li><b>Saves time and tokens.</b> The physics map says which solver computes what, how it was checked and which
+          files to read, in a few thousand tokens.</li>
+        <li><b>Units in every key.</b> A scenario is plain JSON in which every number carries its unit in its name
+          (<code>length_m</code>, <code>pressure_pa</code>, <code>velocity_m_s</code>); a number without a unit is
+          refused.</li>
+        <li><b>Open.</b> Apache 2.0 for the code, CC BY 4.0 for the data. Take one solver or all of them.</li>
+      </ul>
+      <p class="links">
+        <a href="%REPO%/blob/main/AGENTS.md">AGENTS.md</a>
+        <a href="%REPO%/blob/main/docs/map/PHYSICS.md">The physics map</a>
+        <a href="%REPO%/blob/main/llms.txt">llms.txt</a>
+        <a href="%REPO%/blob/main/docs/mcp-clients.md">Connect an MCP client</a>
+      </p>
+    </div>
+    <div class="card terminal" aria-label="Commands an agent runs">
+      <p class="label">From nothing to a result</p>
+      <pre class="code"><code>git clone %REPO%.git
+cd OpenPhysicsAI
+make lab
+./build/labrun examples/lab/room_fire_3d.json /tmp/room_fire.lab</code></pre>
+      <p class="dim small">The last line runs a fire in a room headless and prints a JSON record of the result.</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="card prompt">
+      <div>
+        <p class="label">Give this to your AI agent</p>
+        <h3>One prompt, from the download to a pull request.</h3>
+        <p class="dim">Paste it into Claude, GPT, Gemini or an open model, any agent that can run a shell. Its pull
+          request is scored by a machine like any other.</p>
+      </div>
+      <pre class="code prompt-text"><code>Clone %REPO% and read AGENTS.md, then docs/map/PHYSICS.md.
+Build it: make &amp;&amp; make lab
+Pick one of the four trials listed in README.md, the best place to start, and read its FLAG.md.
+Check how close you are on its practice case, whose answer is public:
+  python3 tools/flags.py run --entry &lt;your-name&gt;
+Improve the solver until the score rises. An entry must be a simulator: never return stored answers.
+Then copy flags/entries/reference/entry.json to flags/entries/&lt;your GitHub name&gt;/entry.json
+and open a pull request.</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="why" aria-labelledby="why-title">
+  <div class="wrap narrow">
+    <p class="label">Why</p>
+    <h2 id="why-title">Simulation of the physical world should be open, inspectable and checked against reality.</h2>
+    <p class="body">For people, and for the AI agents that increasingly do engineering work. Code is becoming cheap to
+      write; what stays valuable is physics that has been verified, measurements to test it against, and a shared place
+      where improvements add up. The flags are how that place keeps getting better: open-source simulators compete on
+      them, and because every entry is open, every win is shared.</p>
+    <p class="links">
+      <a href="%REPO%/blob/main/VISION.md">The vision</a>
+      <a href="%REPO%/blob/main/GOALS.md">The plan</a>
+      <a href="%REPO%/blob/main/CONTRIBUTING.md">How to contribute</a>
+    </p>
+  </div>
+</section>
+
+<section class="section" id="collaborate" aria-labelledby="collab-title">
+  <div class="wrap">
+    <div class="card collab">
+      <div>
+        <p class="label">Get in touch</p>
+        <h2 id="collab-title">Research and evaluation collaborations.</h2>
+        <p class="body">Teaching with it, doing research on it, or testing AI models on physical problems? Open an issue
+          and say what you have in mind. A well-documented measurement of your own can become a new flag.</p>
+      </div>
+      <div class="actions">
+        <a class="btn btn-primary" href="%REPO%/issues/new">Open an issue</a>
+        <a class="btn btn-secondary" href="%REPO%/blob/main/flags/CONTRIBUTING-FLAGS.md">Propose a flag</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-row">
+    <a class="wordmark" href="#top"><img src="favicon.svg" alt="" width="22" height="22"><span>%BRAND%</span></a>
+    <p class="dim small">Code <a href="%REPO%/blob/main/LICENSE">Apache 2.0</a> · data
+      <a href="%REPO%/blob/main/LICENSE-DATA">CC BY 4.0</a> · cite with
+      <a href="%REPO%/blob/main/CITATION.cff">CITATION.cff</a> · <a href="%REPO%">source on GitHub</a></p>
+    <p class="dim small">This site sets no cookies, loads nothing from other sites and collects nothing. It is served by
+      Cloudflare Pages, which processes visitors' IP addresses to deliver it.</p>
+  </div>
+</footer>
+
+<script src="site.js" defer></script>
+</body>
+</html>

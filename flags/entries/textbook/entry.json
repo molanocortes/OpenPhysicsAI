@@ -1,0 +1,18 @@
+{
+ "title": "Textbook formulas",
+ "who": "molanocortes",
+ "ai": "none",
+ "libraries": [
+  "closed-form correlations"
+ ],
+ "open": true,
+ "baseline": true,
+ "builds_on": "closed-form correlations, no simulation",
+ "description": "A baseline: the answers a person gives from the classic formulas without simulating. Bow shock: Billig's correlations for spheres (Billig, J. Spacecraft Rockets 4, 1967, 822) for the standoff and the shock shape. Orbits: each planet on its own Kepler ellipse about the Sun, from the given state, with no other body. Cylinder shedding: the textbook value St = 0.2 at every Reynolds number.",
+ "commands": {
+  "gas-sphere-bowshock": "python3 flags/entries/textbook/bowshock.py",
+  "orbit-planets-2020": "python3 flags/entries/textbook/kepler.py",
+  "flow-cylinder-shedding": "python3 flags/entries/textbook/strouhal.py",
+  "gas-shock-bubble": "python3 flags/entries/textbook/shockbubble.py"
+ }
+}

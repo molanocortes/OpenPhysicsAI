@@ -1,0 +1,56 @@
+== Tsai-Hill: a stress of zero never switches the criterion
+  ok   the strength ratio does not change when a zero normal stress changes sign (largest jump 1.901e-13)
+  ok   with equal tension and compression strengths it is the 3D Hill form (0.0e+00)
+  ok   index 1 at each tensile, compressive and shear strength (0.0e+00)
+== a. isotropic limit
+  ok   cantilever (2, 3, -10) N on 1280 elements: displacements equal the isotropic solver's to 5.19e-10 relative (largest 13.2721 mm); Gauss-point stresses to 8.28e-10
+  ok   uniaxial bar, 1000 N on 10 x 10 mm against 50 MPa: maximum-stress index 0.2 at every Gauss point (3.04e-14) and in the summary (0.2), mode 1t everywhere
+== b. off-axis bar, Tsai-Hill
+  layers at  0 deg: closed form 5.000000; gauge length (2048 points) within 1.367e-08, bar free to shear within 1.394e-12; whole clamped bar smallest 4.731204 (1t (tension along axis 1) at x = -54.5 mm, beside the clamp)
+  layers at 30 deg: closed form 5.173567; gauge length (2048 points) within 1.614e-08, bar free to shear within 1.241e-12; whole clamped bar smallest 4.815281 (s31 (interlayer shear, plane 31) at x = -58.0 mm, beside the clamp)
+  layers at 60 deg: closed form 3.703280; gauge length (2048 points) within 8.874e-09, bar free to shear within 1.309e-12; whole clamped bar smallest 3.239952 (3t (interlayer tension) at x = -58.0 mm, beside the clamp)
+  layers at 90 deg: closed form 3.000000; gauge length (2048 points) within 2.407e-09, bar free to shear within 2.363e-12; whole clamped bar smallest 2.827953 (3t (interlayer tension) at x = -54.5 mm, beside the clamp)
+  ok   clamped bar through analysis_run: gauge-length strength ratio equals the closed form within 1.614e-08 (criterion 5e-3)
+  ok   bar free to shear: every Gauss point within 2.363e-12 (criterion 5e-3)
+  ok   governing mode 1t at 0 degrees and 3t (interlayer tension) at 90 degrees in the gauge length
+== c. printed cantilever, layers along the beam (printed flat)
+  ok   tip deflection 9.96630 mm against Timoshenko 10.02182 mm with E = 3.20 GPa along the beam (-0.554 %)
+  ok   largest failure index 0.229767 in element 960, which touches the clamped root (the summary names the same element and value)
+  ok   mid-span: 64 outermost Gauss points within 7.584e-03 of beam theory at those points (criterion 2e-2)
+  ok   their governing mode is tension 1t or compression 1c along the raster
+== c. printed cantilever, layers across the beam (printed upright)
+  ok   tip deflection 12.27509 mm against Timoshenko 12.32951 mm with E = 2.60 GPa along the beam (-0.441 %)
+  ok   largest failure index 0.37715 in element 0, which touches the clamped root (the summary names the same element and value)
+  ok   mid-span: 64 outermost Gauss points within 7.513e-03 of beam theory at those points (criterion 2e-2)
+  ok   their governing mode is interlayer tension 3t or compression 3c
+== step 2: library records with strengths along and across the layers
+  pla_fff      along  52.30 MPa: ratio 1.000000000 (max stress), 1.000000000 (Tsai-Wu); across  40.50 MPa: 1.000000000, 1.000000000
+  abs_fff      along  33.40 MPa: ratio 1.000000000 (max stress), 1.000000000 (Tsai-Wu); across  29.70 MPa: 1.000000000, 1.000000000
+  petg_fff     along  50.80 MPa: ratio 1.000000000 (max stress), 1.000000000 (Tsai-Wu); across  42.80 MPa: 1.000000000, 1.000000000
+  asa_fff      along  43.80 MPa: ratio 1.000000000 (max stress), 1.000000000 (Tsai-Wu); across  32.00 MPa: 1.000000000, 1.000000000
+  pc_fff       along  69.10 MPa: ratio 1.000000000 (max stress), 1.000000000 (Tsai-Wu); across  52.80 MPa: 1.000000000, 1.000000000
+  pa12_fff     along  49.30 MPa: ratio 1.000000000 (max stress), 1.000000000 (Tsai-Wu); across  41.80 MPa: 1.000000000, 1.000000000
+  pa6_66_fff   along  78.00 MPa: ratio 1.000000000 (max stress), 1.000000000 (Tsai-Wu); across  45.80 MPa: 1.000000000, 1.000000000
+  pa6cf_fff    along 109.30 MPa: ratio 1.000000000 (max stress), 1.000000000 (Tsai-Wu); across  54.00 MPa: 1.000000000, 1.000000000
+  pei9085_fff  along  69.20 MPa: ratio 1.000000000 (max stress), 1.000000000 (Tsai-Wu); across  39.40 MPa: 1.000000000, 1.000000000
+  ok   9 records, 36 solves: a model built from each record is at strength ratio 1 at its stated strengths along and across the layers within 4.69e-14 (criterion 1e-6)
+  ok   the governing mode is 1t along the layers and 3t (interlayer tension) across them
+  ok   every result states the rules for what no document gives (Poisson, interlayer shear modulus, compression, shear)
+  ok   a part assigned petg_fff (no Poisson's ratio) is ready and solves as a printed part, and the result says 0.35 was assumed (ready 1, solved 1, said 1)
+== step 3: walls and infill
+  ok   box 20 x 10 x 6 mm, walls 0.9 mm, top 0.8 mm, bottom 0.6 mm on 0.5 mm elements: wall volume fraction 0.427913333333 against the box less its core 0.427913333333 (2760 elements in walls, 4608 in the infill, 2232 mixed)
+  FAIL tools/printstrengthtest.c:623: infill alone at 20 % along the layers: modulus inf MPa against Eq. 12, 0.07793 x 3426.9 MPa = 267.052 MPa (+inf; criterion 1.13 %)
+  ok   and its strength ratio 3.49313129 against the rule's 0.06679 x 52.3 MPa / 1 MPa = 3.49313129 (-2.3e-14; criterion 1e-6), governed by the infill, the rule in the result
+  FAIL tools/printstrengthtest.c:623: infill alone at 50 % along the layers: modulus inf MPa against Eq. 12, 0.24475 x 3426.9 MPa = 838.723 MPa (+inf; criterion 1.13 %)
+  ok   and its strength ratio 12.8002665 against the rule's 0.2447 x 52.3 MPa / 1 MPa = 12.8002665 (-1.8e-14; criterion 1e-6), governed by the infill, the rule in the result
+  FAIL tools/printstrengthtest.c:623: infill alone at 100 % along the layers: modulus inf MPa against Eq. 12, 1.00000 x 3426.9 MPa = 3426.9 MPa (+inf; criterion 1.13 %)
+  ok   and its strength ratio 52.3 against the rule's 1 x 52.3 MPa / 1 MPa = 52.3 (-1.3e-14; criterion 1e-6), governed by the infill, the rule in the result
+  FAIL tools/printstrengthtest.c:623: infill alone at 20 % across the layers: modulus inf MPa against Eq. 12, 0.07793 x 3064.9 MPa = 238.842 MPa (+inf; criterion 1.13 %)
+  ok   and its strength ratio 2.70500607 against the rule's 0.06679 x 40.5 MPa / 1 MPa = 2.70500607 (-9.7e-15; criterion 1e-6), governed by the infill, the rule in the result
+  ok   8 % infill with strengths is refused, not guessed ("no measured strength of printed gyroid infill below 10 % was found, so the strength of a 8")
+  ok   sandwich 160 x 16 x 16 mm, 1 mm walls and skins, 20 % gyroid core (E1 0.2671 GPa): bending stiffness from the mid-span curvature 8.5997 N m2 against E_wall I_shell + E_core I_core 8.5997 N m2 (+0.000 %)
+  ok   100 % infill inside the walls: displacements equal the solid model's to 1.26e-10 (criterion 1e-9)
+  workspace kept for diagnosis: /var/folders/x4/xsz53mxd3j9f9txp7wy8_bdc0000gn/T//navier-printstrength-60133
+
+PRINTED-PART STRENGTH (G17 step 1 a-c, steps 2 and 3): 28 passed, 4 failed
+./build/printstrengthtest  85.02s user 8.43s system 48% cpu 3:13.16 total

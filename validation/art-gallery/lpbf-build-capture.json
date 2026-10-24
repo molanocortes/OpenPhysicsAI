@@ -1,0 +1,23 @@
+{
+  "surface_representation": "active finite-element boundary throughout all 17 process steps",
+  "result_sha256": "f1fc8dd11f12e34d4876ec5e80052ec7eb2ff97da2717aca325b707ae7a50f0f",
+  "frames": {
+    "build-01.png": "572ebd718cf88c78228ca3744986ce7cc463a187d4d95577a1ca815b09d7dfca",
+    "build-02.png": "c97ab808c463c85fcc9f41fee120e538ec26c5bb1b24415aca1e5eba9628a2d8",
+    "build-03.png": "c8fa071c0d3ebbad0bebeef5e44937d8c85cca7dc04b513a33f6b5cc10e8510b",
+    "build-04.png": "8096d3466ae82b644d1dc36e5c5d41a5e21ff15898a43154058746ca9540863f",
+    "build-05.png": "3c32c5dd31e78d567c89ad2a636f22b7e6069c1e240ecc4a5b60bf3152c4c540",
+    "build-06.png": "ec5a09ab4c0743bdfa7669078e11f033b1b450d9e73080b0ecd02430b5ea1826",
+    "build-07.png": "601f4a34a914e3ced2aaaa145f2ad5c67d33fb2722e8ad6291f1962679d45c33",
+    "build-08.png": "1aa131770bd1c2a0b0388908a85aad996ab9ed4a0b0021a88f4db114606aa528",
+    "build-09.png": "bbeeb78ce17dee56cc325329cfb19337cb23d51a9b9a2fa316031757242c1974",
+    "build-10.png": "296e90f125311f8ee39e04342486f2576adffd8499185cf1e512264a97ee1fbc",
+    "build-11.png": "b65af7967e86bee8a2e53daa0daa5723ac796fbc4434a332331619258b333c35",
+    "build-12.png": "49bcb57e9079b7ffa390f3866dd646265ca44409d92ea9592134a10d86e8b7fa",
+    "build-13.png": "806cc497acd285ce209273bcb928171f858b0c98532283495b8801645e669313",
+    "build-14.png": "dd5882951219f78bffe69635eb148d6aa827b655c6b2e3ba79751474280c90be",
+    "build-15.png": "d3680901434fb88599bcc88809d61426e8346b5d2055246892b19c8dec86faf5",
+    "build-16.png": "dabdc78c901d8aa12c7570a469ba1cf84ddf3efb9394f792efbff09fe40b7bf2",
+    "build-17.png": "01eabf1328c197c96d50648d3a47cf1eaa156c993a482fa6302b69878ca1667f"
+  }
+}

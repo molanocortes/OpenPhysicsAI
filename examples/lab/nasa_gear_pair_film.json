@@ -1,0 +1,28 @@
+{
+ "domain": "mechanism",
+ "model": "gear_pair",
+ "title": "NASA gear noise rig pair, whole gears, rolling through two mesh cycles at 85 per cent torque",
+ "provenance": {
+  "geometry": "as examples/lab/nasa_gear_single_tooth.json (NASA TM-107223 Table 1, DANST test case 1)",
+  "purpose": "a film: both gears whole, a coarser mesh than the gauge comparison, every tooth free to carry load"
+ },
+ "gears": [
+  {
+   "teeth": 28, "module_m": 0.003175, "pressure_angle_deg": 20, "profile_shift": 0, "addendum_coefficient": 1.0,
+   "dedendum_coefficient": 1.25, "cutter_tip_radius_coefficient": 0.40, "tip_diameter_m": 0.0949452,
+   "flank_thinning_m": 4.18e-5, "tip_relief_m": 2.54e-5, "tip_relief_start_roll_deg": 24.5,
+   "face_width_m": 0.00635, "bore_diameter_m": 0.0254,
+   "material": {"youngs_modulus_pa": 206.8e9, "poisson_ratio": 0.3, "source": "NASA TM-107291 (DANST), E = 30e6 psi, nu = 0.3"}
+  },
+  {
+   "teeth": 28, "module_m": 0.003175, "pressure_angle_deg": 20, "profile_shift": 0, "addendum_coefficient": 1.0,
+   "dedendum_coefficient": 1.25, "cutter_tip_radius_coefficient": 0.40, "tip_diameter_m": 0.0949452,
+   "flank_thinning_m": 4.18e-5, "tip_relief_m": 2.54e-5, "tip_relief_start_roll_deg": 24.5,
+   "face_width_m": 0.00635, "bore_diameter_m": 0.0254,
+   "material": {"youngs_modulus_pa": 206.8e9, "poisson_ratio": 0.3, "source": "NASA TM-107291 (DANST), E = 30e6 psi, nu = 0.3"}
+  }
+ ],
+ "mesh": {"teeth_modelled": 28, "across": 8, "flank": 14, "fillet": 6, "rim": 8, "face": 4},
+ "load": {"pinion_torque_nm": 61.0},
+ "run": {"positions": 48, "pinion_turn_from_deg": -6.43, "pinion_turn_to_deg": 19.29}
+}

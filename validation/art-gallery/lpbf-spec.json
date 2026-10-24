@@ -1,0 +1,45 @@
+{
+  "analysis": "lpbf_build",
+  "created": "2026-10-03T07:13:36Z",
+  "job_id": "job-20261003-071336-7f31-1",
+  "mesh_hash": "9167d167df5d34979cd5f307aa3b816b1c71cb311719787a27261b552c6be60a",
+  "model": {
+    "analysis": "lpbf_build",
+    "body": "sculpture",
+    "build_orientation": "X",
+    "cut": {
+      "elements_removed": 531,
+      "from_x_measured_from": "the part's own minimum x (its fixed end), not the build frame origin",
+      "from_x_mm": 0,
+      "height_mm": 1.5,
+      "kerf_mm": 0.75,
+      "provenance": "assumed",
+      "rule": "every element beyond from_x whose z extent crosses the kerf band is removed; what lies before it keeps the part on the plate"
+    },
+    "element_size_mm": [0.75, 0.75, 0.75],
+    "elements": 3807,
+    "inherent_strain": {
+      "applied_to_model_axes": [-0.0004, -0.0006, -0.002],
+      "exx": -0.0004,
+      "eyy": -0.0006,
+      "ezz": -0.002,
+      "frame": "machine frame, as given",
+      "provenance": "inferred",
+      "source": "Demonstration eigenstrain tensor; not a calibrated machine or material"
+    },
+    "layer_thickness_mm": 1.5,
+    "material": {
+      "note": "a body loaded only by an eigenstrain has a displacement field that does not depend on the modulus; it sets the stresses",
+      "poissons_ratio": 0.3,
+      "provenance": "inferred",
+      "youngs_modulus_mpa": 215000
+    },
+    "mesh_hash": "9167d167df5d34979cd5f307aa3b816b1c71cb311719787a27261b552c6be60a",
+    "mode": "layer_by_layer",
+    "nodes": 6805
+  },
+  "project": "Helical_Lantern",
+  "project_revision": 5,
+  "spec_hash": "05b4172c0be1aadd218ef844819052e04e4b67fc1789784ae0b178f7e9344e4a",
+  "spec_hash_covers": "every field except job_id, created, project_revision and spec_hash"
+}

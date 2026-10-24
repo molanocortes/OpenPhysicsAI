@@ -1,0 +1,50 @@
+== M1. cube on lattice planes
+  cube h=1/8                 TET4      6408 el     1543 nodes  dihedral  45.00..120.00  aspect   1.56  node dist 0.00e+00/0.00e+00  face dist 0.00e+00/0.00e+00  vol err -0.0000%  regions 1  warped 0  steiner 0  thin 0  curved 0/0  0.03 s
+  cube h=1/8                 TET10     6408 el    10261 nodes  dihedral  45.00..120.00  aspect   1.56  node dist 0.00e+00/0.00e+00  face dist 0.00e+00/0.00e+00  vol err -0.0000%  regions 1  warped 0  steiner 0  thin 0  curved 2304/2304  0.03 s
+== F1. a turned box through its STL: sharp edges and corners kept (TET10)
+  with features: 4551 el, edge samples off the mesh by 4.44e-16 at most, volume error 1.89e-14, dihedral 15.03..159.62, nodes onto edges 110, onto corners 8, refused 2
+  criterion (a) of GOALS.md G20 step 5, edges and volume within 1e-6: met
+  without features: 4550 el, edge samples off the mesh by 4.63e-02 at most, volume error 1.24e-02, dihedral 18.55..140.36, nodes onto edges 0, onto corners 0, refused 0
+== F2. two parts' sharp edges and corners (GOALS.md G17 step 9): a C-ring and a plate with a hole
+  C-ring, apex along an axis at 1 mm: 16150 elements, 8 of 8 true corners on a node, 0 boundary faces more than 30 degrees off the surface (the worst 6.9), dihedral 15.01..162.80, 2 elements added at features, 0 corners given a node
+  plate with a hole at 0.75 mm: 71244 elements, 10 of 10 true corners on a node, 0 boundary faces more than 30 degrees off the surface (the worst 4.4), dihedral 15.94..151.45, 4 elements added at features, 2 corners given a node
+== M2. sphere, analytic distance: volume convergence
+  sphere h=r/4               TET4      2976 el      739 nodes  dihedral  27.19..123.73  aspect   2.49  node dist 1.20e-13/1.47e-14  face dist 9.61e-03/6.52e-03  vol err -1.5951%  regions 1  warped 236  steiner 0  thin 0  curved 0/0  0.02 s
+  sphere h=r/8               TET4     17184 el     3795 nodes  dihedral  18.81..138.26  aspect   3.68  node dist 1.48e-13/9.62e-15  face dist 3.03e-03/1.63e-03  vol err -0.4021%  regions 1  warped 968  steiner 0  thin 0  curved 0/0  0.14 s
+  sphere h=r/16              TET4     84192 el    17855 nodes  dihedral  21.06..139.27  aspect   4.77  node dist 1.95e-13/1.15e-14  face dist 9.78e-04/4.01e-04  vol err -0.0984%  regions 1  warped 3864  steiner 0  thin 0  curved 0/0  0.61 s
+  sphere h=r/4               TET10     2976 el     4861 nodes  dihedral  27.19..123.73  aspect   2.49  node dist 1.20e-13/1.47e-14  face dist 3.33e-05/1.52e-05  vol err -0.0031%  regions 1  warped 236  steiner 0  thin 0  curved 1224/1224  0.03 s
+  sphere h=r/8               TET10    17184 el    26393 nodes  dihedral  18.81..138.26  aspect   3.68  node dist 1.48e-13/9.62e-15  face dist 2.89e-06/9.64e-07  vol err -0.0002%  regions 1  warped 968  steiner 0  thin 0  curved 4860/4860  0.18 s
+  sphere h=r/16              TET10    84192 el   126537 nodes  dihedral  21.06..139.27  aspect   4.77  node dist 1.95e-13/1.15e-14  face dist 3.29e-07/5.73e-08  vol err -0.0000%  regions 1  warped 3864  steiner 0  thin 0  curved 19908/19908  0.70 s
+  TET4 volume error 1.595e-02 4.021e-03 9.840e-04, observed order 1.99 2.03
+  TET10 (curved) volume error 3.117e-05 1.956e-06 1.162e-07, observed order 3.99 4.07 (reported)
+== M3. thin plate with a hole, wall thickness = surface cell
+  plate axis-aligned         TET4     23466 el     6163 nodes  dihedral  15.20..152.53  aspect   7.03  node dist 7.30e-14/8.99e-17  face dist 1.75e-04/3.59e-06  vol err -1.1700%  regions 1  warped 1882  steiner 0  thin 420  curved 0/0  0.22 s
+  angles 15.20..152.53 (target 10..165; reported)
+  plate tilted 30 deg        TET4     23718 el     6245 nodes  dihedral  15.42..157.50  aspect   9.50  node dist 5.78e-14/7.64e-17  face dist 2.99e-04/9.03e-06  vol err -3.1061%  regions 1  warped 2055  steiner 0  thin 587  curved 0/0  0.27 s
+  angles 15.42..157.50 (target 10..165; reported)
+== T1. single distorted element: rigid-body modes and constant strain
+  TET4: 6 rigid-body modes, constant strain error 8.7e-19, volume 0.136439
+  TET10: 6 rigid-body modes, constant strain error 3.5e-18, volume 0.159875
+== T2. patch test: distorted interior node, linear displacement on the boundary
+  TET4: displacement error 4.3e-19 m, stress error 9.5e-07 Pa (of 6.3e+08 Pa)
+  TET10: displacement error 3.9e-18 m, stress error 7.2e-06 Pa (of 6.3e+08 Pa)
+== T3. cantilever, end shear load (L/h = 10, nu = 0), Kuhn tetrahedra
+  Timoshenko 4.024
+  mesh       TET4           error      TET10          error     
+  10x1x1      0.980927         -75.62%  4.01779           -0.15%
+  20x2x2      2.21158          -45.04%  4.02345           -0.01%
+  40x4x4      3.31692          -17.57%  4.024             +0.00%
+== T4. Kirsch: plate with a circular hole, exact tractions on the outer faces, quarter model
+  TET10  nu=0.0 h=a/8     51628 el   79558 nodes  min dihedral 20.86  Kt = 2.9600  (-1.33%, 5 nodes on the hole at x = 0)  equilibrium 2.9e-13  19.7 s
+  TET4   nu=0.0 h=a/8     51628 el   11521 nodes  min dihedral 20.86  Kt = 2.7462  (-8.46%, 3 nodes on the hole at x = 0)  equilibrium 2.7e-13  11.6 s
+  TET4 on the same mesh: 2.7462 (reported)
+  TET10  nu=0.3 h=a/8     51628 el   79558 nodes  min dihedral 20.86  Kt = 2.9995  (-0.02%, 5 nodes on the hole at x = 0)  equilibrium 4.0e-13  18.5 s
+  TET10, nu = 0.3: 2.9995 (reported; the three-dimensional plate is not the plane-stress solution then)
+== T5. stepped flat bar with shoulder fillets in tension, against a published curve fit
+  D/d = 1.50, r/d = 0.25, h/r = 1.00: Kt (curve fit) = 1.7448
+  TET10 h = r/5: 57712 el 89916 nodes, min dihedral 26.47, Kt = 1.6981 (-2.68% against 1.7448), equilibrium 1.1e-12, 12.2 s
+== T6. equilibrium, energy, gravity, eigenstrain, constraints
+  TET4 tension: displacement error 4.9e-19 m, equilibrium 2.0e-15, work - 2U = -5.1e-11 J
+  TET10 tension: displacement error 7.7e-18 m, equilibrium 1.1e-14, work - 2U = 3.3e-10 J
+
+tettest: 105 passed, 0 failed

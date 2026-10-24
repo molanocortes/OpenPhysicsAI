@@ -1,0 +1,190 @@
+{
+ "domain": "kernel",
+ "title": "A borosilicate glass plate quenched from 90 C into 20 C water: thermal shock, the surface in tension (demonstration)",
+ "provenance": {
+  "purpose": "the library's elasticity driven by a field in time (G24): the plate's temperature written as a field with water exchanging heat at its faces, the solid strained by it at every output time. An eighth of a plate 40 x 40 x 4 mm by symmetry. A demonstration: the water's heat transfer coefficient is assumed, and Manson's estimate for an infinite plate is the textbook comparison, not a measurement (on 2026-10-09 the face's centre peaked at 7.13 MPa, 3.1 % under Manson's 7.37 MPa, and the plate's edge, cooled from two sides, at 9.02 MPa)",
+  "material": "SCHOTT BOROFLOAT 33: density 2.23 g/cm3, E 64 GPa, Poisson's ratio 0.2, cp 0.83 kJ/(kg K) at 20 to 100 C, conductivity 1.2 W/(m K) at 90 C (schott.com, BOROFLOAT 33 technical details); expansion 3.25e-6 /K, 20 to 300 C (SCHOTT BOROFLOAT 33 technical data sheet, ISO 7991)",
+  "assumed": "the water's heat transfer coefficient, 2000 W/(m^2 K), still water without boiling (the glass starts below 100 C)"
+ },
+ "mesh": {
+  "box": {
+   "size_m": [
+    1,
+    1,
+    1
+   ],
+   "cells": [
+    12,
+    12,
+    6
+   ]
+  },
+  "map_m": [
+   "0.02*(0.3*x + 0.7*(1 - (1 - x)^2))",
+   "0.02*(0.3*y + 0.7*(1 - (1 - y)^2))",
+   "0.002*(0.3*z + 0.7*(1 - (1 - z)^2))"
+  ]
+ },
+ "order": 2,
+ "physics": [
+  "elasticity"
+ ],
+ "materials": {
+  "borofloat 33": {
+   "youngs_modulus_pa": 64000000000.0,
+   "poisson_ratio": 0.2,
+   "expansion_per_k": 3.25e-06,
+   "density_kg_m3": 2230,
+   "specific_heat_j_kgk": 830,
+   "conductivity_w_mk": 1.2,
+   "source": "SCHOTT BOROFLOAT 33: schott.com technical details (density, E, Poisson's ratio, cp at 20 to 100 C, conductivity at 90 C) and its technical data sheet (expansion 20 to 300 C, ISO 7991)"
+  }
+ },
+ "fields": {
+  "T": {
+   "mass": "density_kg_m3*specific_heat_j_kgk",
+   "diffusion": "conductivity_w_mk",
+   "initial": 363.15,
+   "unit": "K"
+  }
+ },
+ "loads": {
+  "temperature_k": "T"
+ },
+ "reference_temperature_k": 363.15,
+ "boundaries": [
+  {
+   "name": "symmetry x",
+   "where": {
+    "plane": [
+     "x",
+     0
+    ],
+    "space": "box"
+   },
+   "fix": [
+    "x"
+   ]
+  },
+  {
+   "name": "symmetry y",
+   "where": {
+    "plane": [
+     "y",
+     0
+    ],
+    "space": "box"
+   },
+   "fix": [
+    "y"
+   ]
+  },
+  {
+   "name": "mid-plane",
+   "where": {
+    "plane": [
+     "z",
+     0
+    ],
+    "space": "box"
+   },
+   "fix": [
+    "z"
+   ]
+  },
+  {
+   "name": "face",
+   "where": {
+    "plane": [
+     "z",
+     1
+    ],
+    "space": "box"
+   },
+   "exchange": {
+    "T": {
+     "h": 2000,
+     "ambient": 293.15
+    }
+   }
+  },
+  {
+   "name": "edge x",
+   "where": {
+    "plane": [
+     "x",
+     1
+    ],
+    "space": "box"
+   },
+   "exchange": {
+    "T": {
+     "h": 2000,
+     "ambient": 293.15
+    }
+   }
+  },
+  {
+   "name": "edge y",
+   "where": {
+    "plane": [
+     "y",
+     1
+    ],
+    "space": "box"
+   },
+   "exchange": {
+    "T": {
+     "h": 2000,
+     "ambient": 293.15
+    }
+   }
+  }
+ ],
+ "time": {
+  "end_s": 10,
+  "step_s": 0.02,
+  "method": "bdf2",
+  "outputs": 50
+ },
+ "outputs": {
+  "probes": [
+   {
+    "name": "face centre",
+    "point_m": [
+     0,
+     0,
+     0.002
+    ]
+   },
+   {
+    "name": "mid-plane centre",
+    "point_m": [
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "name": "edge, mid-thickness",
+    "point_m": [
+     0.02,
+     0,
+     0
+    ]
+   },
+   {
+    "name": "corner",
+    "point_m": [
+     0.02,
+     0.02,
+     0.002
+    ]
+   }
+  ]
+ },
+ "picture": {
+  "deformation_scale": 2000,
+  "film": "build/labfilm OUT.lab --out DIR --field max_principal --range 0 9e6 --light --mirror"
+ }
+}

@@ -1,0 +1,40 @@
+{
+ "brand": "OpenPhysicsAI",
+ "url": "https://openphysicsai.org",
+ "repo": "https://github.com/molanocortes/OpenPhysicsAI",
+ "publish_ref": "origin/main",
+ "pages": [
+  "index.html",
+  "lab/index.html",
+  "404.html",
+  "robots.txt",
+  "sitemap.xml",
+  "llms.txt"
+ ],
+ "copy": [
+  "style.css",
+  "site.js",
+  "favicon.svg",
+  "apple-touch-icon.png",
+  "_headers",
+  "media/posters",
+  "media/films",
+  "media/card.jpg",
+  "_worker.js",
+  "_routes.json",
+  "lab/lab.css",
+  "lab/lab.js",
+  "lab/worker.js",
+  "lab/wasi.js",
+  "lab/NOTICES.txt"
+ ],
+ "films": {
+  "media/thirteen.svg": "flags/thirteen.svg"
+ },
+ "web": {
+  "from": "build/web/site",
+  "build": "lab/build.json",
+  "module": "lab/lab.wasm",
+  "catalogue": "site/lab/catalogue.json"
+ }
+}

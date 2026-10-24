@@ -1,0 +1,501 @@
+clang -std=c11 -O2 -mcpu=native -ffp-contract=off -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -pthread tools/meshtest.c build/obj/core/base64.o build/obj/core/errors.o build/obj/core/jschema.o build/obj/core/json.o build/obj/core/paths.o build/obj/core/png.o build/obj/core/sbuf.o build/obj/core/sha256.o build/obj/core/units.o build/obj/ctl/contact.o build/obj/ctl/engine.o build/obj/ctl/jobs.o build/obj/ctl/matlib.o build/obj/ctl/ops.o build/obj/ctl/ops_analysis.o build/obj/ctl/ops_contact.o build/obj/ctl/ops_geometry.o build/obj/ctl/ops_mesh.o build/obj/ctl/ops_project.o build/obj/ctl/ops_results.o build/obj/ctl/ops_setup.o build/obj/ctl/ops_surface.o build/obj/ctl/ops_transient.o build/obj/ctl/ops_view.o build/obj/ctl/project.o build/obj/ctl/selection.o build/obj/ctl/setup.o build/obj/ctl/static_io.o build/obj/ctl/static_model.o build/obj/ctl/static_run.o build/obj/ctl/thermal_checkpoint.o build/obj/ctl/thermal_io.o build/obj/ctl/thermal_model.o build/obj/ctl/thermal_run.o build/obj/ctl/viewrender.o build/obj/ctl/views.o build/obj/net/ctlclient.o build/obj/net/ctlserver.o build/obj/net/mcp.o build/obj/net/netutil.o build/obj/fem/dense.o build/obj/fem/flow.o build/obj/fem/hex8.o build/obj/fem/krylov.o build/obj/fem/orchestrator.o build/obj/fem/solid.o build/obj/fem/sparse.o build/obj/fem/thermal.o build/obj/fem/thermal_integrator.o build/obj/fem/thermal_participant.o build/obj/fem/timestep.o build/obj/render/swrender.o build/obj/geom/mesh.o build/obj/geom/bvh.o build/obj/geom/surface.o build/obj/geom/patches.o build/obj/geom/hexmesh.o build/obj/gen/ops_schema.o build/obj/gen/materials_data.o build/obj/common.o build/obj/threads.o build/obj/headless/lbm.o build/obj/mech/assembly.o build/obj/mech/contact.o build/obj/mech/flexbody.o build/obj/mech/loads.o build/obj/mech/massprops.o build/obj/mech/mech_flex.o build/obj/mech/mech_ops.o build/obj/mech/mech_struct.o build/obj/mech/mech_vib.o build/obj/mech/mechdiag.o build/obj/mech/mechsim.o build/obj/mech/mechspec.o build/obj/mech/mechunits.o build/obj/mech/mmath.o build/obj/mech/modal.o build/obj/mech/multibody.o build/obj/mech/ortho.o build/obj/mech/urdf.o build/obj/mech/xml.o build/obj/gen/mech_ops_schema.o -o build/meshtest -pthread -lm
+clang -std=c11 -O2 -mcpu=native -ffp-contract=off -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -pthread tools/femtest.c build/obj/core/base64.o build/obj/core/errors.o build/obj/core/jschema.o build/obj/core/json.o build/obj/core/paths.o build/obj/core/png.o build/obj/core/sbuf.o build/obj/core/sha256.o build/obj/core/units.o build/obj/ctl/contact.o build/obj/ctl/engine.o build/obj/ctl/jobs.o build/obj/ctl/matlib.o build/obj/ctl/ops.o build/obj/ctl/ops_analysis.o build/obj/ctl/ops_contact.o build/obj/ctl/ops_geometry.o build/obj/ctl/ops_mesh.o build/obj/ctl/ops_project.o build/obj/ctl/ops_results.o build/obj/ctl/ops_setup.o build/obj/ctl/ops_surface.o build/obj/ctl/ops_transient.o build/obj/ctl/ops_view.o build/obj/ctl/project.o build/obj/ctl/selection.o build/obj/ctl/setup.o build/obj/ctl/static_io.o build/obj/ctl/static_model.o build/obj/ctl/static_run.o build/obj/ctl/thermal_checkpoint.o build/obj/ctl/thermal_io.o build/obj/ctl/thermal_model.o build/obj/ctl/thermal_run.o build/obj/ctl/viewrender.o build/obj/ctl/views.o build/obj/net/ctlclient.o build/obj/net/ctlserver.o build/obj/net/mcp.o build/obj/net/netutil.o build/obj/fem/dense.o build/obj/fem/flow.o build/obj/fem/hex8.o build/obj/fem/krylov.o build/obj/fem/orchestrator.o build/obj/fem/solid.o build/obj/fem/sparse.o build/obj/fem/thermal.o build/obj/fem/thermal_integrator.o build/obj/fem/thermal_participant.o build/obj/fem/timestep.o build/obj/render/swrender.o build/obj/geom/mesh.o build/obj/geom/bvh.o build/obj/geom/surface.o build/obj/geom/patches.o build/obj/geom/hexmesh.o build/obj/gen/ops_schema.o build/obj/gen/materials_data.o build/obj/common.o build/obj/threads.o build/obj/headless/lbm.o build/obj/mech/assembly.o build/obj/mech/contact.o build/obj/mech/flexbody.o build/obj/mech/loads.o build/obj/mech/massprops.o build/obj/mech/mech_flex.o build/obj/mech/mech_ops.o build/obj/mech/mech_struct.o build/obj/mech/mech_vib.o build/obj/mech/mechdiag.o build/obj/mech/mechsim.o build/obj/mech/mechspec.o build/obj/mech/mechunits.o build/obj/mech/mmath.o build/obj/mech/modal.o build/obj/mech/multibody.o build/obj/mech/ortho.o build/obj/mech/urdf.o build/obj/mech/xml.o build/obj/gen/mech_ops_schema.o -o build/femtest -pthread -lm
+clang -std=c11 -O2 -mcpu=native -ffp-contract=off -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -pthread tools/rendertest.c build/obj/core/base64.o build/obj/core/errors.o build/obj/core/jschema.o build/obj/core/json.o build/obj/core/paths.o build/obj/core/png.o build/obj/core/sbuf.o build/obj/core/sha256.o build/obj/core/units.o build/obj/ctl/contact.o build/obj/ctl/engine.o build/obj/ctl/jobs.o build/obj/ctl/matlib.o build/obj/ctl/ops.o build/obj/ctl/ops_analysis.o build/obj/ctl/ops_contact.o build/obj/ctl/ops_geometry.o build/obj/ctl/ops_mesh.o build/obj/ctl/ops_project.o build/obj/ctl/ops_results.o build/obj/ctl/ops_setup.o build/obj/ctl/ops_surface.o build/obj/ctl/ops_transient.o build/obj/ctl/ops_view.o build/obj/ctl/project.o build/obj/ctl/selection.o build/obj/ctl/setup.o build/obj/ctl/static_io.o build/obj/ctl/static_model.o build/obj/ctl/static_run.o build/obj/ctl/thermal_checkpoint.o build/obj/ctl/thermal_io.o build/obj/ctl/thermal_model.o build/obj/ctl/thermal_run.o build/obj/ctl/viewrender.o build/obj/ctl/views.o build/obj/net/ctlclient.o build/obj/net/ctlserver.o build/obj/net/mcp.o build/obj/net/netutil.o build/obj/fem/dense.o build/obj/fem/flow.o build/obj/fem/hex8.o build/obj/fem/krylov.o build/obj/fem/orchestrator.o build/obj/fem/solid.o build/obj/fem/sparse.o build/obj/fem/thermal.o build/obj/fem/thermal_integrator.o build/obj/fem/thermal_participant.o build/obj/fem/timestep.o build/obj/render/swrender.o build/obj/geom/mesh.o build/obj/geom/bvh.o build/obj/geom/surface.o build/obj/geom/patches.o build/obj/geom/hexmesh.o build/obj/gen/ops_schema.o build/obj/gen/materials_data.o build/obj/common.o build/obj/threads.o build/obj/headless/lbm.o build/obj/mech/assembly.o build/obj/mech/contact.o build/obj/mech/flexbody.o build/obj/mech/loads.o build/obj/mech/massprops.o build/obj/mech/mech_flex.o build/obj/mech/mech_ops.o build/obj/mech/mech_struct.o build/obj/mech/mech_vib.o build/obj/mech/mechdiag.o build/obj/mech/mechsim.o build/obj/mech/mechspec.o build/obj/mech/mechunits.o build/obj/mech/mmath.o build/obj/mech/modal.o build/obj/mech/multibody.o build/obj/mech/ortho.o build/obj/mech/urdf.o build/obj/mech/xml.o build/obj/gen/mech_ops_schema.o -o build/rendertest -pthread -lm
+clang -std=c11 -O2 -mcpu=native -ffp-contract=off -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -pthread tools/opstest.c build/obj/core/base64.o build/obj/core/errors.o build/obj/core/jschema.o build/obj/core/json.o build/obj/core/paths.o build/obj/core/png.o build/obj/core/sbuf.o build/obj/core/sha256.o build/obj/core/units.o build/obj/ctl/contact.o build/obj/ctl/engine.o build/obj/ctl/jobs.o build/obj/ctl/matlib.o build/obj/ctl/ops.o build/obj/ctl/ops_analysis.o build/obj/ctl/ops_contact.o build/obj/ctl/ops_geometry.o build/obj/ctl/ops_mesh.o build/obj/ctl/ops_project.o build/obj/ctl/ops_results.o build/obj/ctl/ops_setup.o build/obj/ctl/ops_surface.o build/obj/ctl/ops_transient.o build/obj/ctl/ops_view.o build/obj/ctl/project.o build/obj/ctl/selection.o build/obj/ctl/setup.o build/obj/ctl/static_io.o build/obj/ctl/static_model.o build/obj/ctl/static_run.o build/obj/ctl/thermal_checkpoint.o build/obj/ctl/thermal_io.o build/obj/ctl/thermal_model.o build/obj/ctl/thermal_run.o build/obj/ctl/viewrender.o build/obj/ctl/views.o build/obj/net/ctlclient.o build/obj/net/ctlserver.o build/obj/net/mcp.o build/obj/net/netutil.o build/obj/fem/dense.o build/obj/fem/flow.o build/obj/fem/hex8.o build/obj/fem/krylov.o build/obj/fem/orchestrator.o build/obj/fem/solid.o build/obj/fem/sparse.o build/obj/fem/thermal.o build/obj/fem/thermal_integrator.o build/obj/fem/thermal_participant.o build/obj/fem/timestep.o build/obj/render/swrender.o build/obj/geom/mesh.o build/obj/geom/bvh.o build/obj/geom/surface.o build/obj/geom/patches.o build/obj/geom/hexmesh.o build/obj/gen/ops_schema.o build/obj/gen/materials_data.o build/obj/common.o build/obj/threads.o build/obj/headless/lbm.o build/obj/mech/assembly.o build/obj/mech/contact.o build/obj/mech/flexbody.o build/obj/mech/loads.o build/obj/mech/massprops.o build/obj/mech/mech_flex.o build/obj/mech/mech_ops.o build/obj/mech/mech_struct.o build/obj/mech/mech_vib.o build/obj/mech/mechdiag.o build/obj/mech/mechsim.o build/obj/mech/mechspec.o build/obj/mech/mechunits.o build/obj/mech/mmath.o build/obj/mech/modal.o build/obj/mech/multibody.o build/obj/mech/ortho.o build/obj/mech/urdf.o build/obj/mech/xml.o build/obj/gen/mech_ops_schema.o -o build/opstest -pthread -lm
+clang -std=c11 -O2 -mcpu=native -ffp-contract=off -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -pthread tools/ctltest.c build/obj/core/base64.o build/obj/core/errors.o build/obj/core/jschema.o build/obj/core/json.o build/obj/core/paths.o build/obj/core/png.o build/obj/core/sbuf.o build/obj/core/sha256.o build/obj/core/units.o build/obj/ctl/contact.o build/obj/ctl/engine.o build/obj/ctl/jobs.o build/obj/ctl/matlib.o build/obj/ctl/ops.o build/obj/ctl/ops_analysis.o build/obj/ctl/ops_contact.o build/obj/ctl/ops_geometry.o build/obj/ctl/ops_mesh.o build/obj/ctl/ops_project.o build/obj/ctl/ops_results.o build/obj/ctl/ops_setup.o build/obj/ctl/ops_surface.o build/obj/ctl/ops_transient.o build/obj/ctl/ops_view.o build/obj/ctl/project.o build/obj/ctl/selection.o build/obj/ctl/setup.o build/obj/ctl/static_io.o build/obj/ctl/static_model.o build/obj/ctl/static_run.o build/obj/ctl/thermal_checkpoint.o build/obj/ctl/thermal_io.o build/obj/ctl/thermal_model.o build/obj/ctl/thermal_run.o build/obj/ctl/viewrender.o build/obj/ctl/views.o build/obj/net/ctlclient.o build/obj/net/ctlserver.o build/obj/net/mcp.o build/obj/net/netutil.o build/obj/fem/dense.o build/obj/fem/flow.o build/obj/fem/hex8.o build/obj/fem/krylov.o build/obj/fem/orchestrator.o build/obj/fem/solid.o build/obj/fem/sparse.o build/obj/fem/thermal.o build/obj/fem/thermal_integrator.o build/obj/fem/thermal_participant.o build/obj/fem/timestep.o build/obj/render/swrender.o build/obj/geom/mesh.o build/obj/geom/bvh.o build/obj/geom/surface.o build/obj/geom/patches.o build/obj/geom/hexmesh.o build/obj/gen/ops_schema.o build/obj/gen/materials_data.o build/obj/common.o build/obj/threads.o build/obj/headless/lbm.o build/obj/mech/assembly.o build/obj/mech/contact.o build/obj/mech/flexbody.o build/obj/mech/loads.o build/obj/mech/massprops.o build/obj/mech/mech_flex.o build/obj/mech/mech_ops.o build/obj/mech/mech_struct.o build/obj/mech/mech_vib.o build/obj/mech/mechdiag.o build/obj/mech/mechsim.o build/obj/mech/mechspec.o build/obj/mech/mechunits.o build/obj/mech/mmath.o build/obj/mech/modal.o build/obj/mech/multibody.o build/obj/mech/ortho.o build/obj/mech/urdf.o build/obj/mech/xml.o build/obj/gen/mech_ops_schema.o -o build/ctltest -pthread -lm
+clang -std=c11 -O2 -mcpu=native -ffp-contract=off -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -pthread tools/amtest.c build/obj/core/base64.o build/obj/core/errors.o build/obj/core/jschema.o build/obj/core/json.o build/obj/core/paths.o build/obj/core/png.o build/obj/core/sbuf.o build/obj/core/sha256.o build/obj/core/units.o build/obj/ctl/contact.o build/obj/ctl/engine.o build/obj/ctl/jobs.o build/obj/ctl/matlib.o build/obj/ctl/ops.o build/obj/ctl/ops_analysis.o build/obj/ctl/ops_contact.o build/obj/ctl/ops_geometry.o build/obj/ctl/ops_mesh.o build/obj/ctl/ops_project.o build/obj/ctl/ops_results.o build/obj/ctl/ops_setup.o build/obj/ctl/ops_surface.o build/obj/ctl/ops_transient.o build/obj/ctl/ops_view.o build/obj/ctl/project.o build/obj/ctl/selection.o build/obj/ctl/setup.o build/obj/ctl/static_io.o build/obj/ctl/static_model.o build/obj/ctl/static_run.o build/obj/ctl/thermal_checkpoint.o build/obj/ctl/thermal_io.o build/obj/ctl/thermal_model.o build/obj/ctl/thermal_run.o build/obj/ctl/viewrender.o build/obj/ctl/views.o build/obj/net/ctlclient.o build/obj/net/ctlserver.o build/obj/net/mcp.o build/obj/net/netutil.o build/obj/fem/dense.o build/obj/fem/flow.o build/obj/fem/hex8.o build/obj/fem/krylov.o build/obj/fem/orchestrator.o build/obj/fem/solid.o build/obj/fem/sparse.o build/obj/fem/thermal.o build/obj/fem/thermal_integrator.o build/obj/fem/thermal_participant.o build/obj/fem/timestep.o build/obj/render/swrender.o build/obj/geom/mesh.o build/obj/geom/bvh.o build/obj/geom/surface.o build/obj/geom/patches.o build/obj/geom/hexmesh.o build/obj/gen/ops_schema.o build/obj/gen/materials_data.o build/obj/common.o build/obj/threads.o build/obj/headless/lbm.o build/obj/mech/assembly.o build/obj/mech/contact.o build/obj/mech/flexbody.o build/obj/mech/loads.o build/obj/mech/massprops.o build/obj/mech/mech_flex.o build/obj/mech/mech_ops.o build/obj/mech/mech_struct.o build/obj/mech/mech_vib.o build/obj/mech/mechdiag.o build/obj/mech/mechsim.o build/obj/mech/mechspec.o build/obj/mech/mechunits.o build/obj/mech/mmath.o build/obj/mech/modal.o build/obj/mech/multibody.o build/obj/mech/ortho.o build/obj/mech/urdf.o build/obj/mech/xml.o build/obj/gen/mech_ops_schema.o -o build/amtest -pthread -lm
+clang -std=c11 -O2 -mcpu=native -ffp-contract=off -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -pthread tools/thermtest.c build/obj/core/base64.o build/obj/core/errors.o build/obj/core/jschema.o build/obj/core/json.o build/obj/core/paths.o build/obj/core/png.o build/obj/core/sbuf.o build/obj/core/sha256.o build/obj/core/units.o build/obj/ctl/contact.o build/obj/ctl/engine.o build/obj/ctl/jobs.o build/obj/ctl/matlib.o build/obj/ctl/ops.o build/obj/ctl/ops_analysis.o build/obj/ctl/ops_contact.o build/obj/ctl/ops_geometry.o build/obj/ctl/ops_mesh.o build/obj/ctl/ops_project.o build/obj/ctl/ops_results.o build/obj/ctl/ops_setup.o build/obj/ctl/ops_surface.o build/obj/ctl/ops_transient.o build/obj/ctl/ops_view.o build/obj/ctl/project.o build/obj/ctl/selection.o build/obj/ctl/setup.o build/obj/ctl/static_io.o build/obj/ctl/static_model.o build/obj/ctl/static_run.o build/obj/ctl/thermal_checkpoint.o build/obj/ctl/thermal_io.o build/obj/ctl/thermal_model.o build/obj/ctl/thermal_run.o build/obj/ctl/viewrender.o build/obj/ctl/views.o build/obj/net/ctlclient.o build/obj/net/ctlserver.o build/obj/net/mcp.o build/obj/net/netutil.o build/obj/fem/dense.o build/obj/fem/flow.o build/obj/fem/hex8.o build/obj/fem/krylov.o build/obj/fem/orchestrator.o build/obj/fem/solid.o build/obj/fem/sparse.o build/obj/fem/thermal.o build/obj/fem/thermal_integrator.o build/obj/fem/thermal_participant.o build/obj/fem/timestep.o build/obj/render/swrender.o build/obj/geom/mesh.o build/obj/geom/bvh.o build/obj/geom/surface.o build/obj/geom/patches.o build/obj/geom/hexmesh.o build/obj/gen/ops_schema.o build/obj/gen/materials_data.o build/obj/common.o build/obj/threads.o build/obj/headless/lbm.o build/obj/mech/assembly.o build/obj/mech/contact.o build/obj/mech/flexbody.o build/obj/mech/loads.o build/obj/mech/massprops.o build/obj/mech/mech_flex.o build/obj/mech/mech_ops.o build/obj/mech/mech_struct.o build/obj/mech/mech_vib.o build/obj/mech/mechdiag.o build/obj/mech/mechsim.o build/obj/mech/mechspec.o build/obj/mech/mechunits.o build/obj/mech/mmath.o build/obj/mech/modal.o build/obj/mech/multibody.o build/obj/mech/ortho.o build/obj/mech/urdf.o build/obj/mech/xml.o build/obj/gen/mech_ops_schema.o -o build/thermtest -pthread -lm
+clang -std=c11 -O2 -mcpu=native -ffp-contract=off -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -pthread tools/tsteptest.c build/obj/core/base64.o build/obj/core/errors.o build/obj/core/jschema.o build/obj/core/json.o build/obj/core/paths.o build/obj/core/png.o build/obj/core/sbuf.o build/obj/core/sha256.o build/obj/core/units.o build/obj/ctl/contact.o build/obj/ctl/engine.o build/obj/ctl/jobs.o build/obj/ctl/matlib.o build/obj/ctl/ops.o build/obj/ctl/ops_analysis.o build/obj/ctl/ops_contact.o build/obj/ctl/ops_geometry.o build/obj/ctl/ops_mesh.o build/obj/ctl/ops_project.o build/obj/ctl/ops_results.o build/obj/ctl/ops_setup.o build/obj/ctl/ops_surface.o build/obj/ctl/ops_transient.o build/obj/ctl/ops_view.o build/obj/ctl/project.o build/obj/ctl/selection.o build/obj/ctl/setup.o build/obj/ctl/static_io.o build/obj/ctl/static_model.o build/obj/ctl/static_run.o build/obj/ctl/thermal_checkpoint.o build/obj/ctl/thermal_io.o build/obj/ctl/thermal_model.o build/obj/ctl/thermal_run.o build/obj/ctl/viewrender.o build/obj/ctl/views.o build/obj/net/ctlclient.o build/obj/net/ctlserver.o build/obj/net/mcp.o build/obj/net/netutil.o build/obj/fem/dense.o build/obj/fem/flow.o build/obj/fem/hex8.o build/obj/fem/krylov.o build/obj/fem/orchestrator.o build/obj/fem/solid.o build/obj/fem/sparse.o build/obj/fem/thermal.o build/obj/fem/thermal_integrator.o build/obj/fem/thermal_participant.o build/obj/fem/timestep.o build/obj/render/swrender.o build/obj/geom/mesh.o build/obj/geom/bvh.o build/obj/geom/surface.o build/obj/geom/patches.o build/obj/geom/hexmesh.o build/obj/gen/ops_schema.o build/obj/gen/materials_data.o build/obj/common.o build/obj/threads.o build/obj/headless/lbm.o build/obj/mech/assembly.o build/obj/mech/contact.o build/obj/mech/flexbody.o build/obj/mech/loads.o build/obj/mech/massprops.o build/obj/mech/mech_flex.o build/obj/mech/mech_ops.o build/obj/mech/mech_struct.o build/obj/mech/mech_vib.o build/obj/mech/mechdiag.o build/obj/mech/mechsim.o build/obj/mech/mechspec.o build/obj/mech/mechunits.o build/obj/mech/mmath.o build/obj/mech/modal.o build/obj/mech/multibody.o build/obj/mech/ortho.o build/obj/mech/urdf.o build/obj/mech/xml.o build/obj/gen/mech_ops_schema.o -o build/tsteptest -pthread -lm
+clang -std=c11 -O2 -mcpu=native -ffp-contract=off -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -pthread tools/orchtest.c build/obj/core/base64.o build/obj/core/errors.o build/obj/core/jschema.o build/obj/core/json.o build/obj/core/paths.o build/obj/core/png.o build/obj/core/sbuf.o build/obj/core/sha256.o build/obj/core/units.o build/obj/ctl/contact.o build/obj/ctl/engine.o build/obj/ctl/jobs.o build/obj/ctl/matlib.o build/obj/ctl/ops.o build/obj/ctl/ops_analysis.o build/obj/ctl/ops_contact.o build/obj/ctl/ops_geometry.o build/obj/ctl/ops_mesh.o build/obj/ctl/ops_project.o build/obj/ctl/ops_results.o build/obj/ctl/ops_setup.o build/obj/ctl/ops_surface.o build/obj/ctl/ops_transient.o build/obj/ctl/ops_view.o build/obj/ctl/project.o build/obj/ctl/selection.o build/obj/ctl/setup.o build/obj/ctl/static_io.o build/obj/ctl/static_model.o build/obj/ctl/static_run.o build/obj/ctl/thermal_checkpoint.o build/obj/ctl/thermal_io.o build/obj/ctl/thermal_model.o build/obj/ctl/thermal_run.o build/obj/ctl/viewrender.o build/obj/ctl/views.o build/obj/net/ctlclient.o build/obj/net/ctlserver.o build/obj/net/mcp.o build/obj/net/netutil.o build/obj/fem/dense.o build/obj/fem/flow.o build/obj/fem/hex8.o build/obj/fem/krylov.o build/obj/fem/orchestrator.o build/obj/fem/solid.o build/obj/fem/sparse.o build/obj/fem/thermal.o build/obj/fem/thermal_integrator.o build/obj/fem/thermal_participant.o build/obj/fem/timestep.o build/obj/render/swrender.o build/obj/geom/mesh.o build/obj/geom/bvh.o build/obj/geom/surface.o build/obj/geom/patches.o build/obj/geom/hexmesh.o build/obj/gen/ops_schema.o build/obj/gen/materials_data.o build/obj/common.o build/obj/threads.o build/obj/headless/lbm.o build/obj/mech/assembly.o build/obj/mech/contact.o build/obj/mech/flexbody.o build/obj/mech/loads.o build/obj/mech/massprops.o build/obj/mech/mech_flex.o build/obj/mech/mech_ops.o build/obj/mech/mech_struct.o build/obj/mech/mech_vib.o build/obj/mech/mechdiag.o build/obj/mech/mechsim.o build/obj/mech/mechspec.o build/obj/mech/mechunits.o build/obj/mech/mmath.o build/obj/mech/modal.o build/obj/mech/multibody.o build/obj/mech/ortho.o build/obj/mech/urdf.o build/obj/mech/xml.o build/obj/gen/mech_ops_schema.o -o build/orchtest -pthread -lm
+clang -std=c11 -O2 -mcpu=native -ffp-contract=off -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -pthread tools/advtest.c build/obj/core/base64.o build/obj/core/errors.o build/obj/core/jschema.o build/obj/core/json.o build/obj/core/paths.o build/obj/core/png.o build/obj/core/sbuf.o build/obj/core/sha256.o build/obj/core/units.o build/obj/ctl/contact.o build/obj/ctl/engine.o build/obj/ctl/jobs.o build/obj/ctl/matlib.o build/obj/ctl/ops.o build/obj/ctl/ops_analysis.o build/obj/ctl/ops_contact.o build/obj/ctl/ops_geometry.o build/obj/ctl/ops_mesh.o build/obj/ctl/ops_project.o build/obj/ctl/ops_results.o build/obj/ctl/ops_setup.o build/obj/ctl/ops_surface.o build/obj/ctl/ops_transient.o build/obj/ctl/ops_view.o build/obj/ctl/project.o build/obj/ctl/selection.o build/obj/ctl/setup.o build/obj/ctl/static_io.o build/obj/ctl/static_model.o build/obj/ctl/static_run.o build/obj/ctl/thermal_checkpoint.o build/obj/ctl/thermal_io.o build/obj/ctl/thermal_model.o build/obj/ctl/thermal_run.o build/obj/ctl/viewrender.o build/obj/ctl/views.o build/obj/net/ctlclient.o build/obj/net/ctlserver.o build/obj/net/mcp.o build/obj/net/netutil.o build/obj/fem/dense.o build/obj/fem/flow.o build/obj/fem/hex8.o build/obj/fem/krylov.o build/obj/fem/orchestrator.o build/obj/fem/solid.o build/obj/fem/sparse.o build/obj/fem/thermal.o build/obj/fem/thermal_integrator.o build/obj/fem/thermal_participant.o build/obj/fem/timestep.o build/obj/render/swrender.o build/obj/geom/mesh.o build/obj/geom/bvh.o build/obj/geom/surface.o build/obj/geom/patches.o build/obj/geom/hexmesh.o build/obj/gen/ops_schema.o build/obj/gen/materials_data.o build/obj/common.o build/obj/threads.o build/obj/headless/lbm.o build/obj/mech/assembly.o build/obj/mech/contact.o build/obj/mech/flexbody.o build/obj/mech/loads.o build/obj/mech/massprops.o build/obj/mech/mech_flex.o build/obj/mech/mech_ops.o build/obj/mech/mech_struct.o build/obj/mech/mech_vib.o build/obj/mech/mechdiag.o build/obj/mech/mechsim.o build/obj/mech/mechspec.o build/obj/mech/mechunits.o build/obj/mech/mmath.o build/obj/mech/modal.o build/obj/mech/multibody.o build/obj/mech/ortho.o build/obj/mech/urdf.o build/obj/mech/xml.o build/obj/gen/mech_ops_schema.o -o build/advtest -pthread -lm
+clang -std=c11 -O2 -mcpu=native -ffp-contract=off -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -pthread src/bin/navier_server.c build/obj/core/base64.o build/obj/core/errors.o build/obj/core/jschema.o build/obj/core/json.o build/obj/core/paths.o build/obj/core/png.o build/obj/core/sbuf.o build/obj/core/sha256.o build/obj/core/units.o build/obj/ctl/contact.o build/obj/ctl/engine.o build/obj/ctl/jobs.o build/obj/ctl/matlib.o build/obj/ctl/ops.o build/obj/ctl/ops_analysis.o build/obj/ctl/ops_contact.o build/obj/ctl/ops_geometry.o build/obj/ctl/ops_mesh.o build/obj/ctl/ops_project.o build/obj/ctl/ops_results.o build/obj/ctl/ops_setup.o build/obj/ctl/ops_surface.o build/obj/ctl/ops_transient.o build/obj/ctl/ops_view.o build/obj/ctl/project.o build/obj/ctl/selection.o build/obj/ctl/setup.o build/obj/ctl/static_io.o build/obj/ctl/static_model.o build/obj/ctl/static_run.o build/obj/ctl/thermal_checkpoint.o build/obj/ctl/thermal_io.o build/obj/ctl/thermal_model.o build/obj/ctl/thermal_run.o build/obj/ctl/viewrender.o build/obj/ctl/views.o build/obj/net/ctlclient.o build/obj/net/ctlserver.o build/obj/net/mcp.o build/obj/net/netutil.o build/obj/fem/dense.o build/obj/fem/flow.o build/obj/fem/hex8.o build/obj/fem/krylov.o build/obj/fem/orchestrator.o build/obj/fem/solid.o build/obj/fem/sparse.o build/obj/fem/thermal.o build/obj/fem/thermal_integrator.o build/obj/fem/thermal_participant.o build/obj/fem/timestep.o build/obj/render/swrender.o build/obj/geom/mesh.o build/obj/geom/bvh.o build/obj/geom/surface.o build/obj/geom/patches.o build/obj/geom/hexmesh.o build/obj/gen/ops_schema.o build/obj/gen/materials_data.o build/obj/common.o build/obj/threads.o build/obj/headless/lbm.o build/obj/mech/assembly.o build/obj/mech/contact.o build/obj/mech/flexbody.o build/obj/mech/loads.o build/obj/mech/massprops.o build/obj/mech/mech_flex.o build/obj/mech/mech_ops.o build/obj/mech/mech_struct.o build/obj/mech/mech_vib.o build/obj/mech/mechdiag.o build/obj/mech/mechsim.o build/obj/mech/mechspec.o build/obj/mech/mechunits.o build/obj/mech/mmath.o build/obj/mech/modal.o build/obj/mech/multibody.o build/obj/mech/ortho.o build/obj/mech/urdf.o build/obj/mech/xml.o build/obj/gen/mech_ops_schema.o -o navier-server -pthread -lm
+clang -std=c11 -O2 -mcpu=native -ffp-contract=off -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -pthread src/bin/navier_ctl.c build/obj/core/base64.o build/obj/core/errors.o build/obj/core/jschema.o build/obj/core/json.o build/obj/core/paths.o build/obj/core/png.o build/obj/core/sbuf.o build/obj/core/sha256.o build/obj/core/units.o build/obj/ctl/contact.o build/obj/ctl/engine.o build/obj/ctl/jobs.o build/obj/ctl/matlib.o build/obj/ctl/ops.o build/obj/ctl/ops_analysis.o build/obj/ctl/ops_contact.o build/obj/ctl/ops_geometry.o build/obj/ctl/ops_mesh.o build/obj/ctl/ops_project.o build/obj/ctl/ops_results.o build/obj/ctl/ops_setup.o build/obj/ctl/ops_surface.o build/obj/ctl/ops_transient.o build/obj/ctl/ops_view.o build/obj/ctl/project.o build/obj/ctl/selection.o build/obj/ctl/setup.o build/obj/ctl/static_io.o build/obj/ctl/static_model.o build/obj/ctl/static_run.o build/obj/ctl/thermal_checkpoint.o build/obj/ctl/thermal_io.o build/obj/ctl/thermal_model.o build/obj/ctl/thermal_run.o build/obj/ctl/viewrender.o build/obj/ctl/views.o build/obj/net/ctlclient.o build/obj/net/ctlserver.o build/obj/net/mcp.o build/obj/net/netutil.o build/obj/fem/dense.o build/obj/fem/flow.o build/obj/fem/hex8.o build/obj/fem/krylov.o build/obj/fem/orchestrator.o build/obj/fem/solid.o build/obj/fem/sparse.o build/obj/fem/thermal.o build/obj/fem/thermal_integrator.o build/obj/fem/thermal_participant.o build/obj/fem/timestep.o build/obj/render/swrender.o build/obj/geom/mesh.o build/obj/geom/bvh.o build/obj/geom/surface.o build/obj/geom/patches.o build/obj/geom/hexmesh.o build/obj/gen/ops_schema.o build/obj/gen/materials_data.o build/obj/common.o build/obj/threads.o build/obj/headless/lbm.o build/obj/mech/assembly.o build/obj/mech/contact.o build/obj/mech/flexbody.o build/obj/mech/loads.o build/obj/mech/massprops.o build/obj/mech/mech_flex.o build/obj/mech/mech_ops.o build/obj/mech/mech_struct.o build/obj/mech/mech_vib.o build/obj/mech/mechdiag.o build/obj/mech/mechsim.o build/obj/mech/mechspec.o build/obj/mech/mechunits.o build/obj/mech/mmath.o build/obj/mech/modal.o build/obj/mech/multibody.o build/obj/mech/ortho.o build/obj/mech/urdf.o build/obj/mech/xml.o build/obj/gen/mech_ops_schema.o -o navier-ctl -pthread -lm
+./build/mechtest
+== math: quaternions, rotations, SO(3) exponential, dense solvers
+== mass properties: closed-mesh checks, polyhedral integrals, parallel axis, cavities, printed fill models
+  icosphere    320 triangles: I/(2/5 m r^2) - 1 = 2.264e-02, anisotropy 0.0e+00, |com| 6.3e-18 m
+  icosphere   1280 triangles: I/(2/5 m r^2) - 1 = 5.743e-03, anisotropy 6.8e-16, |com| 4.5e-18 m
+  icosphere   5120 triangles: I/(2/5 m r^2) - 1 = 1.441e-03, anisotropy 1.8e-15, |com| 9.3e-18 m
+  icosphere  20480 triangles: I/(2/5 m r^2) - 1 = 3.605e-04, anisotropy 2.0e-15, |com| 4.8e-17 m
+  shell 1.2 mm + 20% infill: mass 89.0419 g (exact box shell 87.9128 g, error 1.28%), Ixx error 3.95%, walls 12.4% of volume
+  shell 0.6 mm + 20% infill: mass 74.2810 g (exact box shell 73.9970 g, error 0.38%), Ixx error 1.28%, walls 6.2% of volume
+== free body: parabolic flight of the centre of mass and torque-free rotation (Jacobi elliptic solution)
+  h = 4e-03 s: body rate error 2.738e-09 rad/s, centre-of-mass error 5.28e-08 m, |dL_com| 8.93e-11 kg m^2/s, energy residual 1.37e-07 J
+  h = 2e-03 s: body rate error 1.713e-10 rad/s, centre-of-mass error 3.29e-09 m, |dL_com| 5.61e-12 kg m^2/s, energy residual 9.44e-09 J
+  h = 1e-03 s: body rate error 1.072e-11 rad/s, centre-of-mass error 2.06e-10 m, |dL_com| 2.93e-13 kg m^2/s, energy residual 6.17e-10 J
+  observed order 4.00, 4.00 (RKMK4: 4)
+== compound pendulum, 143 deg amplitude: elliptic-function solution and period 4K(k)/w0
+  h = 8e-03 s: max angle error over 3 s 1.711e-07 rad, energy residual 1.12e-07 J, period error (interpolated crossing) 9.51e-08
+  h = 4e-03 s: max angle error over 3 s 1.721e-08 rad, energy residual 3.63e-09 J, period error (interpolated crossing) 1.23e-08
+  h = 2e-03 s: max angle error over 3 s 1.284e-09 rad, energy residual 1.21e-10 J, period error (interpolated crossing) 1.10e-09
+  h = 1e-03 s: max angle error over 3 s 8.521e-11 rad, energy residual 4.28e-12 J, period error (interpolated crossing) 2.32e-10
+  h = 5e-04 s: max angle error over 3 s 5.456e-12 rad, energy residual 1.73e-13 J, period error (interpolated crossing) 6.55e-12
+  observed orders 3.31, 3.74, 3.91, 3.97 (pre-asymptotic at coarse steps: the swing nearly stops at 143 deg)
+== damped spring-mass on a prismatic joint: analytic response, energy ledger, support reaction
+  max displacement error over 3 s: 1.26e-11 m; dissipated 0.055963 J of 0.062500 J; balance residual 4.35e-12 J
+== two-link planar arm: recursive Newton-Euler and CRBA against the closed-form Lagrange equations
+  50 random states: max |tau - tau_ref| 3.11e-15 N m, |M - M_ref| 2.22e-16 kg m^2, |qdd_FD - qdd| 6.39e-14 rad/s^2, shoulder force 1.42e-14 N
+  chaotic double pendulum, 5 s: energy residual 9.20e-06 J (h = 2 ms), 2.85e-07 J (h = 1 ms), ratio 32.2
+== joint limits: event location, Newton restitution, persistent contact and its reaction, release
+  impact located: kinetic energy before 1.488924 J, dissipated 0.952911 J, rebound speed ratio 0.600000000 (restitution 0.6)
+  resting on the lower limit: q = 0.400000000000 rad, limit torque 1.719087272 N m (static 1.719087272), state -1
+== four-bar linkage (closed loop): assembly, redundancy, Freudenstein kinematics, energy, static reactions
+  diag: info LOOP_CLOSURE C: joint 'C' closes a kinematic loop and is enforced as a bilateral constraint with explicit multipliers
+  diag: warning INITIAL_CONFIGURATION_ADJUSTED: initial configuration did not satisfy the constraints (scaled residual 0.0286); moved to the nearest mass-weighted solution: A +0.8423 deg, B -0.8639 deg, D -2.47 deg | hint: give an initial configuration that closes the loops to avoid the adjustment
+  diag: warning INITIAL_VELOCITY_ADJUSTED: initial velocities violated the constraints (scaled residual 12.2); the kinetic-energy-minimal consistent velocity is used
+  diag: warning REDUNDANT_CONSTRAINTS: 3 of 5 constraint rows are redundant at the assembled configuration (C moment row 0, C moment row 1, C force row 4) | hint: reactions along these directions are statically indeterminate for rigid bodies: the minimum-norm solution is reported. Use joints that do not over-constrain the mechanism (for example a spherical joint in a planar loop) or model the compliance
+  diag: info CONSTRAINT_SUMMARY: 5 constraint rows, rank 2, 3 redundant, mobility 1 of 3 coordinates, smallest singular value ratio 0.246, length scale 0.35 m
+  1 s of motion (crank turned 3.3 rev): max angle error vs closed form 2.69e-11 rad, max residual 9.80e-12, energy change 5.37e-07 J of 0.9947 J
+  holding torque from virtual work 0.331763595 N m: accelerations 1.92e-09 rad/s^2, ground reactions + weight = (1.20e-10, -6.33e-11, 0.00e+00) N
+== gear coupling: reflected inertia and ratio constraint
+== determinism and rollback: identical runs are bitwise equal; a restored state replays exactly
+== fixed joint reaction and model validation
+== assembly: native format with units, named frames, provenance; canonical round trip; validation
+== assembly: STL parts with printed fill, mesh-sourced mass properties in the native format
+== URDF subset: links, joints, mimic, massless frames, unsupported elements, explicit root connection
+== actuators: DC motor spin-up (analytic), gearbox efficiency, effort saturation and torque-speed envelope
+  speed 12.000000000 rad/s (analytic 12.000000000, time constant 0.0024 s), current 0.000000 A (from speed 0.000000 A)
+  electrical 0.043200 J = copper 0.021600 J + kinetic 0.021600 J (mismatch -1.39e-09 J; losses integrated with the dynamics)
+  steady speed 11.881188 rad/s (analytic 11.881188), gearbox loss 0.035291 W = (1 - eta) P_motor 0.035291 W
+  envelope speed 12.000000 rad/s (analytic 12.000000), saturated 100% of the time, peak/rated 1.33
+== controllers and sensors: sample-and-hold with delay, noise statistics, seeds, latency, quantisation, IMU, rollback
+  reference steps at 10.5 ms, first sample sees it at 11 ms, effort applied at 14.0000 ms (3 samples later)
+  5001 samples: mean 0.00202 (bias 0.002, standard error 0.00014), standard deviation 0.01014 (0.01)
+  IMU 50 mm off the spin axis at 3 rad/s: accel x -0.450000000 (-w^2 r = -0.45), z 9.806650000 (+g), gyro z 3.000000000
+  no anti-windup: overshoot 0.2246 rad, final error -0.00264 rad, saturated 8% of samples
+  clamping anti-windup: overshoot 0.0145 rad, final error 0.00043 rad, saturated 7% of samples
+== load transfer to FEM: exact wrench distribution, spinning bar (centrifugal stress), cantilever (bending), isostatic supports
+  20 elements along: support reactions 2.74e-13 N (load 24.800 N); mean sxx at x = 105.0 mm 44898.3 Pa, analytic 44911.3 Pa (-0.03%)
+  40 elements along: support reactions 4.97e-12 N (load 24.800 N); mean sxx at x = 102.5 mm 45712.1 Pa, analytic 45715.3 Pa (-0.01%)
+  mid-span bending gradient 1.6638e+09 Pa/m, beam theory 1.6638e+09 Pa/m (-0.00%), mean sxx 1.17e-07 Pa, support reactions 3.0e-10 N
+== contact: resting, slip threshold, sliding, restitution, grasp, tunnelling (Moreau-Jean time stepping)
+  box at rest: 4 contact points, total force 19.620000000 N (m g = 19.62000 N), height drift -4.9e-15 m, penetration 4.9e-15 m
+  25 deg (below the threshold): displacement after 1 s 5.28e-16 m, contacts sticking 1
+  28 deg (above): displacement 0.137466 m, analytic 0.5 g (sin - mu cos) t^2 = 0.137329 m (0.10%), sliding 1
+  sliding stop: distance 0.679479 m (analytic 0.679579, -0.015%), stop time 0.6796 s (0.6796), friction dissipated 2.000000 J of 2.000000 J
+  bounce e = 0.8 from 0.5 m: apex 0.32112 m (h = 1 ms), 0.32005 m (h = 0.1 ms), analytic 0.32000 m; impulse 0.56251 / 0.56374 N s (analytic 0.56378); average force 563 / 5637 N (depends on h)
+  grasp mu = 0.6, m = 0.2 kg: F = 2.5 N (2 mu F = 3.0 N > m g = 1.96 N) moves 2.63e-21 m in 0.1 s; F = 1.2 N slides with -2.6126 m/s^2 (analytic -2.6100)
+  pellet at 30 m/s against a 1 mm plate: furthest centre position -0.005500 m (plate face at -0.0005 m, radius 0.005 m)
+  stack of 4 boxes for 1 s at h = 1 ms: cold start 500000 sweeps, 1000 unconverged steps, top drift -2.24e-07 m, penetration 8.23e-08 m; warm start 2326 sweeps, 1 unconverged steps (0 after the first 20 ms), top drift -2.24e-10 m, penetration 8.24e-11 m
+== contact in the study runtime: grasp from an assembly document, evaluation with contact forces, impacts, snapshots, rollback
+  object moved -0.195 mm while the pads closed and then held; end: normal forces 2.500000000 / 2.500000000 N (actuators 2.5 N), friction on both pads 1.962000000 N (m g = 1.962000000 N; the split between the pads is statically indeterminate); max |generalised acceleration| of the evaluation with contact forces 1.30e-13; 2 impact steps, peak impact impulse 0.0165 N s, peak persistent normal force 2.5000 N
+  snapshot at t = 0.250000 s restored in a new runtime: max |acceleration| 1.30e-13, object force balance from the stored contact rows 2.99e-16 N
+  weak grasp F = 1.2 N: pad friction utilisation peaks at 1.000000, sliding for 0.186 s; the block ends -80.000000 mm below its start (on the floor: -80 mm) with floor force 1.962000 N (m g = 1.962 N)
+== orthotropic printed parts: constitutive matrices, material axes, patch tests, off-axis coupon, beams, strength criteria
+  off-axis coupon modulus E_x(theta) from the displacements (closed form in brackets): 0 deg 3.2000 GPa (3.2000), 30 deg 2.6917 GPa (2.6917), 45 deg 2.4105 GPa (2.4105), 90 deg 2.2000 GPa (2.2000)
+  200 mm printed cantilever, 10 mm square, 1 N tip load: flat tip deflection 0.9977 mm (Timoshenko 1.0027, -0.50%), upright 1.3312 mm (1.3362, -0.37%); Tsai-Wu strength ratio flat 44.3 (1t (tension along axis 1)), upright 22.5 (3t (interlayer tension))
+== structural dynamics: consistent mass, cantilever and free-free modes, exact modal integration, Newmark, frequency response
+  40-element cantilever (L/h = 40, nu = 0): bending 13.0305 / 81.6028 Hz (Euler-Bernoulli 13.0342 / 81.6840), effective mass fractions 0.6131 / 0.1885 (0.6131 / 0.1883); axial 806.92 Hz (806.87); 9 iterations, largest residual 2.0e-08, M-orthogonality 8.6e-16
+  step load on the tip over one period of mode 1: largest difference modal (16 modes) vs Newmark (T1/400) 0.19% of the peak; dynamic amplification 1.963
+  tip FRF: static limit 1.280200e-02 m/N (static solve 1.280200e-02), |H| at f1 3.1068e-01 (single-mode estimate 3.1068e-01)
+  free-free beam: 6 rigid-body modes (largest |w^2| 5.8e-06 vs first elastic 2.7e+05), bending 82.8598 / 82.8598 Hz (Euler-Bernoulli 82.9399); rigid modes carry 1.000000000 of the mass and 1.000000000 of the inertia about z
+  printed cantilever first bending: flat 16.5033 Hz, upright 14.2920 Hz; ratio 0.86601 (sqrt(E3/E1) = 0.86603)
+== flexible bodies in the multibody core: exact rigid equivalents of one elastic coordinate (moving mass, translating and rotating interfaces)
+  moving mass on a spinning hub (m w^2 / k = 2.3e-03): slider displacement flexible vs rigid equivalent 3.27e-05 of 9.125e-04 m (second-order phase drift expected 3.27e-05); hub angle 1.2e-05 rad; energy drift flexible 1.0e-14 J, rigid 1.0e-14 J
+  child on a translating interface of a spinning hub: child centre of mass y flexible vs rigid equivalent 3.94e-04 m over a 0.3874 m range; energy drift 2.9e-14 J
+  child on a rotating (out of plane) interface of a spinning hub: child centre of mass z flexible vs rigid equivalent 5.45e-16 m over a 0.0480 m range; energy drift 1.1e-14 J
+== flexible bodies from meshed parts: Craig-Bampton reduction (invariants, interface compliance, frequencies), static sag, tip-mass frequency, flexible pendulum
+  clamped beam, no interfaces, 8 coordinates: frequencies vs full clamped modal solve max rel. diff 1.6e-10; f1 13.0305 Hz (Euler-Bernoulli 13.0342); invariants vs Gauss integration: integral rho phi 1.1e-16 (of 1.71e-01), integral rho x cross phi 1.4e-17 (of 4.97e-02), dJ 2.9e-16 (of 4.97e-02, central difference); mass-normalisation 1.3e-15; FE mass 0.048000000 kg (0.048000000)
+  tip interface compliance vs beam theory: force y 1.28020e-02 m/N (Timoshenko 1.28048e-02), moment z 2.40000e-01 rad/N m (2.40000e-01), coupling 4.80000e-02 (4.80000e-02), axial 2.00000e-06 m/N (2.00000e-06); adding 6 fixed-interface modes changes the compliance by 1.1e-13
+  reduced cantilever (6 constraint + 6 fixed-interface modes = 12 coordinates, highest 1601 Hz): f1 13.0307 / 13.0307 Hz, full-order clamped-free 13.0305 Hz, Euler-Bernoulli 13.0342 Hz
+  cutoff 1 kHz: 10 coordinates kept, 2 dropped, largest loss of interface compliance 9.64e-02
+  gravity sag at the tip: multibody with the reduced beam (zeta 0.6, h = 1/w_max = 9.94e-05 s) -2.261166e-03 m, full-order static FE -2.261166e-03 m (relative difference 5.2e-08), Euler-Bernoulli -2.260224e-03 m
+  static initial state: tip -2.261165885e-03 m (settled damped run -2.261165877e-03 m); largest motion over 0.1 s undamped 0.0e+00 m
+  stresses from the elastic coordinates at static equilibrium under gravity: von Mises vs full-order static FE, largest difference 1.32e+03 (6 fixed-interface modes) and 1.60e+02 (24) of 3.1828e+05 Pa; bending stress next to the root vs M z / I 4.69e+03 of 3.0678e+05 Pa
+  cantilever with a tip mass (mu = 1) in the multibody: first frequency 5.7722 Hz from 5 oscillations; Euler-Bernoulli with tip mass 5.7731 Hz (lambda 1.247917)
+  flexible pendulum (E x 1, 12 coordinates, h = 2.48e-05 s): swing 1.2737 rad in 0.3 s, largest angle difference to the rigid pendulum 1.402e-03 rad, energy drift 1.02e-07 J (m g L = 2.668e-01 J)
+  flexible pendulum (E x 16, 12 coordinates, h = 6.21e-06 s): swing 1.2737 rad in 0.3 s, largest angle difference to the rigid pendulum 8.776e-05 rad, energy drift 3.81e-10 J (m g L = 2.668e-01 J)
+  elastic deviation ratio E / 16E: 15.97 (compliance ratio 16)
+== flexible bodies in assemblies and the runtime: exact round trip, interface binding, stale models refused, channels, step limit, rollback
+  flexible pendulum in the runtime: step limit 4.970e-05 s (max_step 1e-3 s), 4200 steps to 0.2 s; peak tip deflection 5.2490e-03 m (recorded history max 5.2488e-03 m), peak strain energy 1.100e-03 J (history max 1.093e-03 J)
+
+ALL MECH VERIFICATION TESTS PASSED: 227 passed, 0 failed
+python3 tools/mechflow.py
+== assembly: printed arm part, explicit base and payload, joints
+== actuator, sensor, controller, settings
+== dynamics run
+  tracking rms 3.340 deg, final -0.2100 deg; peak torque 0.3426 N m, peak current 0.432 A; electrical 0.5372 J, copper 0.1553 J; balance residual 1.08e-05 J
+  time-step check: largest relative change 4.34e-03 when halving the step
+    motor.peak_effort: 0.342646 -> 0.341161 (4.34e-03)
+    motor.peak_current_A: 0.432269 -> 0.431015 (2.90e-03)
+    mount.peak_moment: 0.251246 -> 0.250583 (2.64e-03)
+    shoulder.peak_moment: 0.251246 -> 0.250583 (2.64e-03)
+  energy: {"initial": -0.1569064, "kinetic": 3.820952286296112e-07, "potential": 0.00846760625808654, "input_work": 0.16772714704703176, "external_work": 0, "dissipated_damping": 0, "dissipated_friction": 0.002363533081144111, "dissipated_impacts": 0, "dissipated_contact_friction": 0, "dissipated_contact_impacts": 0, "projection_change": 0, "balance_residual": 1.077438742751657e-05}
+  shoulder peak moment 0.2512 N m at 0.248 s, peak force 2.219 N
+== FEM assessment of the arm at the peak hinge moment
+  isostatic support reactions 3.03e-11 N (1.36e-11 of the load scale); FEM mass 23.81 g vs rigid 23.81 g
+  largest von Mises 0.9031558057621797 MPa at [-55.99999999999999, -8, 0]
+== vibration of the printed arm: natural modes and the transient elastic response during the lift
+  clamped arm: first bending 175.23 Hz (Euler-Bernoulli 174.49 Hz, short beam L/h = 12), modes [175.2, 277.4, 1064.5, 1611.3, 1660.0, 2851.1]; 7 iterations, residual 4.2e-07
+  free-free arm: 6 rigid-body modes, first elastic 1084.7 Hz (Euler-Bernoulli bending 1110.3 Hz)
+  lift window 0.1985-0.2985 s: peak von Mises dynamic 0.8369 MPa, quasi-static 0.8369 MPa, amplification 1.0000; rigid-body load share 1.4e-13; lowest free-free mode 1085 Hz
+  quasi-static peak at t = 0.248500 s 0.836878 MPa; static assessment of the peak-moment snapshot 0.836878 MPa (Gauss points)
+== flexible arm: Craig-Bampton reduction of the printed part, coupled flexible dynamics of the lift
+  reduced arm: 5 coordinates (6 constraint + 4 fixed-interface, 5 dropped above 2000 Hz, interface compliance loss 1.00e+00); frequencies [175.2, 277.6, 1066.3, 1623.4, 1667.4] Hz; stability step 4.77e-05 s
+  tip compliance z 1.4201e-04 m/N (Timoshenko 1.4482e-04), rotation y 2.3791e-02 rad/N m (L/EI 3.0000e-02); mesh mass 23.808 g vs body 23.808 g
+  flexibility lost by the cutoff: translation [1, 0.0025, 0.0045], rotation [0.1783, 0.199, 0.2001]; before the cutoff: tip compliance z 1.4265e-04 m/N, rotation y 2.9700e-02 rad/N m
+  flexible lift: step limit 4.77e-05 s, 42000 steps; peak tip deflection 0.2806 mm at 0.237 s, peak strain energy 2.772e-04 J; final tracking error -0.2100 deg; time-step check 6.91e-03
+  held at 60.222 deg: tip deflection normal to the arm -0.10984 mm; static estimate -0.11001 mm (payload weight on the reduced compliance plus the arm's own weight, Euler-Bernoulli)
+  shoulder peak moment flexible 0.24126 N m vs rigid 0.25125 N m (-3.98%; the peaks ride on the controller's quantisation ripple, which the 30 Hz arm mode filters); mean holding effort 0.08916 vs 0.08879 N m
+  coupled stresses of the arm: peak von Mises 0.8174 MPa at 0.236 s, [-58.42264973081037, 7.577350269189625, 0.4226497308103741]; at t = 0 (static equilibrium, horizontal) 0.6457 MPa (beam bending at the root 0.7145 MPa); held at 60 deg 0.3205 MPa (ratio 0.4964, cos 0.4966)
+== URDF import asks for the root connection
+== contact: printed fingers squeeze a block (collision shapes, environment, contact study)
+  end of hold: normal forces 2.500000000 / 2.500000000 N, friction 1.961330000 N (weight 1.961330000 N); impacts: 2 steps, largest impulse 0.01250 N s; max penetration 1.71e-15 m, solver sweeps 81, unconverged steps 0
+  grasp friction utilisation 0.6538 (slip margin 0.3462); per pad 0.6761 / 0.6315
+    contact.pad_l.block.sliding_time_s: 0.0002 -> 0 (1.00e-01)
+    contact.pad_r.block.sliding_time_s: 0.0002 -> 0 (1.00e-01)
+    slide_r.peak_moment: 0.28098 -> 0.280982 (9.05e-06)
+    slide_l.peak_moment: 0.281047 -> 0.281049 (9.05e-06)
+    contact.pad_l.block.peak_normal_force_N: 2.5 -> 2.5 (1.05e-10)
+== FEM assessment of a finger: joint load and contact load on their own selections
+  contact load on the pad [0.0, 2.5, -1.014107] N; joint load [-0.0, -2.5, 1.305953] N
+  isostatic support reactions 7.90e-14 N (2.80e-14 of the load scale)
+== orthotropic printed finger: material record with sources, print axes, strength criterion
+  build direction z: largest displacement 0.000050 mm; Tsai-Wu smallest strength ratio 8334.3 (s23 (interlayer shear, plane 23)) at [9.577350269189626, 31.57735026918962, 100.42264973081036]; support reactions 2.5e-14 of the load scale; equilibrium 5.6e-14
+  build direction y: largest displacement 0.000046 mm; Tsai-Wu smallest strength ratio 8945.6 (s23 (interlayer shear, plane 23)) at [9.577350269189628, 30.42264973081037, 98.42264973081038]; support reactions 2.9e-14 of the load scale; equilibrium 6.6e-14
+
+ALL MECH FLOW TESTS PASSED: 214 passed, 0 failed
+./build/coretest
+== JSON: valid documents
+== JSON: rejected documents
+== SHA-256 and base64 known answers
+== units
+== JSON Schema validation
+== paths
+
+ALL CORE TESTS PASSED: 199 passed, 0 failed
+./build/surftest
+== closed cube
+== inverted cube is reoriented and reported
+== open box (missing top) lists the hole
+== cavity (nested shell)
+== separate bodies, duplicates, non-manifold, self-intersection
+== inconsistent winding, degenerate faces, welding
+== thin plate thickness
+
+ALL SURFACE TESTS PASSED: 30 passed, 0 failed
+./build/meshtest
+== surface patches
+== voxel hexahedral meshes
+  cylinder r=10 mm, h=2.00 mm: 740 elements, volume error 5.78%, area ratio 1.163, mean/max face distance 0.413/1.000 mm
+  cylinder r=10 mm, h=1.00 mm: 6320 elements, volume error 0.59%, area ratio 1.184, mean/max face distance 0.134/0.340 mm
+  cylinder r=10 mm, h=0.50 mm: 50560 elements, volume error 0.59%, area ratio 1.184, mean/max face distance 0.071/0.235 mm
+
+ALL MESH TESTS PASSED: 29 passed, 0 failed
+./build/femtest
+== 1. distorted element: rigid-body modes and constant strain
+== 2. patch test with distorted elements
+== 3. uniaxial tension (exact)
+== 4. cantilever, end shear load (L/h = 10, nu = 0)
+  Euler-Bernoulli 4, Timoshenko 4.024
+  mesh         full           incompatible   error (IM)  
+  10x1x1       2.68           4.01           -0.348%
+  20x2x2       3.57333        4.0175         -0.162%
+  40x4x4       3.90083        4.0222         -0.045%
+  80x8x8       3.99251        4.02358        -0.011%
+== 5. gravity
+== 6. initial (thermal) strain
+== 7. constraint analysis
+
+ALL FEM VERIFICATION TESTS PASSED: 42 passed, 0 failed
+./build/thermtest
+== tables
+== steady conduction with a heat flux
+== temperature-dependent conductivity
+== semi-infinite solid after a surface temperature step
+== spatial convergence
+== lumped cooling and time-step convergence
+== radiation equilibrium
+== fin with lateral convection
+== moving source energy
+== element activation
+== invalid input
+== thermoelastic coupling
+== anisotropic conduction
+== phase change: latent heat is conserved and not counted twice
+  melt and re-freeze of 2.106e+09 J/m^3 latent heat: worst enthalpy mismatch 8.7e-14, at most 93 Picard iterations per step
+== Stefan melting front against the similarity solution
+  500 steps: 32 Picard iterations at most, 5.0 on average
+  Stefan number 1, lambda 0.620063: front 39.16727 mm (similarity solution 39.21620 mm, -0.12 %); mushy interval 0.5 K, element 0.500 mm, dt 2 s
+== thermal contact resistance across an interface
+  series resistance 29 K/W: 3.44828 W through the wall, 17.24 K jump at a 2000 W/(m^2 K) contact
+== timing
+  96000 elements, 102541 nodes: 0.073 s per backward Euler step (assembly 0.009 s, solve 0.057 s, energy 0.006 s; 40 CG iterations, 4 threads)
+
+ALL THERMAL VERIFICATION TESTS PASSED: 72 passed, 0 failed
+./build/tsteptest
+== A1 event schedule
+== A2 step-size controller
+== A3 estimator order on a smooth problem
+  backward Euler: estimate 5.907e-02 1.585e-02 4.110e-03 1.046e-03 K for dt 20..2.5 s; halving ratios 3.726 3.858 3.928; true error 1.053e-03 K at 2.5 s (estimate/true 0.994)
+  Crank-Nicolson: estimate 3.904e-04 5.060e-05 6.441e-06 8.126e-07 K for dt 20..2.5 s; halving ratios 7.716 7.855 7.927; true error 8.121e-07 K at 2.5 s (estimate/true 1.001)
+  reference: 50000, 100000 and 200000 backward Euler steps, Richardson extrapolated; estimated reference error 6.19e-05 K
+== A4 tolerance convergence on sudden surface heating
+  tolerance 1e-02 (abs 1e+00 K):   49 accepted,   0 rejected,   147 solves, error 1.230e+00 K, closure 2.9e-13, 0.002 s
+      error at t = 1 s: 1.61e-01 K, 10 s: 7.13e-01 K, 100 s: 6.31e-01 K, 1000 s: 9.19e-01 K, 2000 s: 1.23e+00 K; largest accepted local estimate 0.17, sum 4.8
+  tolerance 1e-03 (abs 1e-01 K):  103 accepted,   0 rejected,   309 solves, error 5.471e-01 K, closure 2.6e-13, 0.004 s
+      error at t = 1 s: 9.09e-02 K, 10 s: 2.98e-01 K, 100 s: 2.79e-01 K, 1000 s: 4.30e-01 K, 2000 s: 5.47e-01 K; largest accepted local estimate 0.36, sum 24.7
+  tolerance 1e-04 (abs 1e-02 K):  261 accepted,   0 rejected,   783 solves, error 2.102e-01 K, closure 2.9e-13, 0.009 s
+      error at t = 1 s: 4.51e-02 K, 10 s: 1.11e-01 K, 100 s: 1.02e-01 K, 1000 s: 1.61e-01 K, 2000 s: 2.10e-01 K; largest accepted local estimate 0.50, sum 101.2
+  tolerance 1e-05 (abs 1e-03 K):  768 accepted,   0 rejected,  2304 solves, error 6.841e-02 K, closure 2.5e-13, 0.024 s
+      error at t = 1 s: 1.69e-02 K, 10 s: 3.69e-02 K, 100 s: 3.43e-02 K, 1000 s: 5.29e-02 K, 2000 s: 6.84e-02 K; largest accepted local estimate 0.54, sum 350.3
+== A11 work at equal accuracy: adaptive against fixed steps
+  run                          error K  solves   assemb   picard  cg iters  seconds
+  adaptive tol 1e-02          1.23e+00     147      147      147      1977    0.002
+  fixed dt 0.5                7.10e-01    4000     4000     4000     14203    0.034   (cheapest fixed step at least as accurate: 27x the solves)
+  adaptive tol 1e-03          5.47e-01     309      309      309      3372    0.004
+  fixed dt 0.2                3.00e-01   10000    10000    10000     30924    0.084   (cheapest fixed step at least as accurate: 32x the solves)
+  adaptive tol 1e-04          2.10e-01     783      783      783      6369    0.009
+  fixed dt 0.1                1.53e-01   20000    20000    20000     54353    0.166   (cheapest fixed step at least as accurate: 26x the solves)
+  adaptive tol 1e-05          6.84e-02    2304     2304     2304     14098    0.024
+  fixed dt 0.04               6.18e-02   50000    50000    50000    129040    0.400   (cheapest fixed step at least as accurate: 22x the solves)
+  fixed-step errors: 50 s 8.72e+00, 20 s 8.72e+00, 10 s 8.72e+00, 5 s 4.97e+00, 2 s 2.25e+00, 1 s 1.31e+00, 0.5 s 7.10e-01, 0.2 s 3.00e-01, 0.1 s 1.53e-01, 0.05 s 7.71e-02, 0.04 s 6.18e-02
+== A8 recovery from an oversized initial step
+  first step 2000 s: 2 rejected, 90 accepted, error 5.684e-01 K (from a 1e-3 s start: 5.471e-01 K)
+== A9 minimum step too large for the tolerance
+  MIN_STEP: minimum_step at t = 0 s: a step of 1 s has a normalised error of 532 (temperature 532 at node 64, enthalpy 393 at element 1; estimated 0.598 K / 1.89e+06 J/m^3) and the controller cannot reduce it further (minimum step 100 s, 1 consecutive rejections)
+== A6 discontinuous heating lands on the switch times
+  fixed 1 s: 12 steps, deposited 22.72 J (exact 22.72 J), final 300.710000000000 K (exact 300.710000000000 K)
+  adaptive: 4 steps, deposited 22.72 J (exact 22.72 J), final 300.710000000000 K (exact 300.710000000000 K)
+== A7 rejections do not enter the accepted budget
+  219 accepted, 4 rejected: source 1500 J (exact 1500 J), closure 3.18e-14, enthalpy mismatch 1.55e-16
+== A10 accepted state is untouched by a rejected trial
+  1198 accepted steps, 86 after rejections; 141 rejected trials compared, 0 differed; 8 replays, 8 bit-identical
+== A5 phase change against a refined reference
+  reference (backward Euler 1 / 0.5 / 0.25 s, extrapolated): front 39.18345 mm (error ~1.2e-04 mm, 3.0e-04 %), molten 1.572979e-07 m^3 (error ~4.1e-13, 2.6e-04 %)
+  temperature + enthalpy control: front 39.18201 mm (-0.004 %), molten +0.003 %, latent error 0.0004776 J, 2073 accepted / 245 rejected, 6954 solves
+  temperature-only control:       front 39.17962 mm (-0.010 %), molten +0.012 %, latent error 0.001857 J, 1179 accepted / 277 rejected, 4368 solves
+  resolution: the temperature + enthalpy molten-volume error is 11.7x the reference error, temperature-only 45.4x
+
+ALL TIME INTEGRATION TESTS PASSED: 54 passed, 0 failed
+./build/orchtest
+== D6 (core) a single participant through the orchestrator equals tint_step bit for bit
+  fixed: 100 steps, 100 solves; tint_step 0.0019 s, orchestrated 0.0019 s (best of 5)
+  adaptive: 527 steps, 1590 solves; tint_step 0.0239 s, orchestrated 0.0239 s (best of 5)
+== D1 fixed-step partitioned against monolithic
+  100 steps, 300 coupling iterations (3.00 per step); max difference 3.524e-12 K; worst heat mismatch 0.00e+00
+  cost: monolithic 0.002 s, partitioned 0.005 s
+  three-block fields at fixed steps: 300 coupling iterations, max difference 3.809e-12 K, heat mismatch 0.00e+00
+== D2 adaptive partitioned against adaptive monolithic
+  cost: monolithic adaptive 0.026 s (1590 solves), partitioned adaptive 0.131 s
+  reference 8000 fixed steps; monolithic 527 steps, error 7.960e-02 K; partitioned 527 steps (3053 coupling iterations), error 7.960e-02 K
+  partitioned: 3 error rejections, 0 coupling rejections; largest accepted temporal error 0.948, largest final coupling change 1 (both normalised by their own tolerances)
+== D3 rollback after coupling failures
+  4007 accepted steps after 1357 coupling rejections and 3 error rejections; error 5.944e-03 K (monolithic adaptive 371 steps, 6.065e-02 K)
+  monolithic replay of the accepted steps: max difference 6.787e-10 K
+  (original two-sided D3 criterion, recorded: not met)
+== D4 graph analysis
+== D5 synchronisation of quasi-static participants
+  73 steps: elastic evaluated 11 times, history-dependent 74 times
+
+ALL ORCHESTRATOR TESTS PASSED: 24 passed, 0 failed
+./build/advtest
+== E1a tridiagonal: ILU(0) is the exact LU
+  1 iterations, error 1.90e-16
+== E1b random sparse nonsymmetric system against dense LU
+  bicgstab/ilu0: 6 iterations, true residual 4.82e-14, difference to dense LU 3.03e-14
+  bicgstab/jacobi: 12 iterations, true residual 8.54e-13, difference to dense LU 6.28e-13
+== E1c advection-diffusion matrices, manufactured solution
+  cell Peclet   0.1: ILU(0) converged in 17 iterations (error 5.56e-09); Jacobi converged in 56 iterations (error 4.20e-09)
+  cell Peclet     1: ILU(0) converged in 14 iterations (error 6.91e-11); Jacobi converged in 41 iterations (error 8.56e-10)
+  cell Peclet    10: ILU(0) converged in 11 iterations (error 9.94e-11); Jacobi converged in 214 iterations (error 3.23e-11)
+  cell Peclet   100: ILU(0) converged in 12 iterations (error 1.05e-10); Jacobi failed in 4000 iterations (error 6.05e-05)
+== E1d symmetric positive-definite system: BiCGSTAB equals PCG
+  BiCGSTAB-ILU(0) 9 iterations, PCG 43 iterations, difference 1.42e-12
+== E1e singular and defective matrices are refused
+  zero row, ILU(0): ILU(0): row 3 has no diagonal entry in the pattern
+  zero row, Jacobi: Jacobi preconditioner: zero or non-finite diagonal in row 3
+  inconsistent singular system: BiCGSTAB failed after 0 iterations (11 restarts, 0 residual replacements): breakdown: the shadow residual is orthogonal to A p
+== E2a steady 1-D advection-diffusion against the exponential solution (global Peclet 20)
+  10 elements (cell Peclet 2): Galerkin 1.353e-01, SUPG 1.192e-03
+  20 elements (cell Peclet 1): Galerkin 3.455e-02, SUPG 8.901e-05
+  40 elements (cell Peclet 0.5): Galerkin 7.879e-03, SUPG 5.382e-06
+  80 elements (cell Peclet 0.25): Galerkin 1.929e-03, SUPG 3.335e-07
+  observed order 40 -> 80: Galerkin 2.03, SUPG 4.01
+== E1f the advective step uses BiCGSTAB
+== E2a' cell Peclet 10: SUPG stays bounded
+  Galerkin: error 6.672e-01, values -0.6672 .. 1.0000 (above 300 K)
+  SUPG:     error 2.790e-02, values -0.0000 .. 1.0000 (above 300 K)
+== E2b a uniform temperature stays uniform under a non-solenoidal velocity
+  largest deviation after 10 steps: 6.253e-13 K (ok)
+== E2c transient pulse against the exact solution (Crank-Nicolson, dt 0.5 s, 300 s)
+  100 elements (cell Peclet 1): consistent capacity 2.406e-03 K, lumped 2.501e-03 K
+  200 elements (cell Peclet 0.5): consistent capacity 6.020e-04 K, lumped 6.203e-04 K
+  400 elements (cell Peclet 0.25): consistent capacity 1.468e-04 K, lumped 1.589e-04 K
+  observed order 200 -> 400: consistent 2.04, lumped 1.96
+== E2d energy accounting with advection (channel, source, open ends, convective wall)
+  50 steps of 5 s: worst balance 6.21e-12, worst unexplained advective energy 7.34e-16 (ok)
+  steady: source 0.32 W, enthalpy out - in -1.63546 W, convective loss 1.95546 W, closure 4.54e-12 (ok)
+== E2e parallel-plate channel: fully developed Nusselt number (exact 5.385)
+   8 elements across: Nu = 5.39748 (+0.232 %)
+  16 elements across: Nu = 5.38790 (+0.054 %)
+  32 elements across: Nu = 5.38548 (+0.009 %)
+  observed order 1.98; extrapolated Nu = 5.38466 (-0.006 %)
+== E3a plane Poiseuille flow from the lattice Boltzmann solver (Re_H = 10)
+  H = 16 cells: tau 0.573, u_lb 0.0152, 23000 steps (37.3 s simulated, 5.3 s wall, 53 MLUPS), change 1.84e-06, density 0.99883..1.01444
+            profile deviation 0.280 % of the centreline, flow rate 1.0108 of U H
+  H = 32 cells: tau 0.646, u_lb 0.0152, 37400 steps (121 s simulated, 27.0 s wall, 68 MLUPS), change 1.84e-06, density 0.99912..1.01679
+            profile deviation 0.056 % of the centreline, flow rate 1.0110 of U H
+  deviation ratio 16 -> 32: 5.01
+== E3b parameter policy
+  the cell Reynolds number U dx / nu = 667 is too high for a stable lattice: it would need a relaxation time of 0.5003 (below 0.52). At this cell size (1 mm) the largest admissible inlet velocity is 0.135 m/s; refine the mesh or lower the velocity
+== E3c nodal mapping
+  per-section scale factors 1.00036 .. 1.04388; largest no-slip nodal speed 0 m/s; inlet flux error 8.88e-16; worst cross-section flux error 0.000 %
+== E3d lattice Boltzmann velocity in the channel energy equation (H = 16 cells, L = 30 H)
+  flow: 39400 steps, 16.0 s wall
+  Nu = 5.3832 (-0.03 %), section scale factors 1.00074 .. 1.04408, unexplained advective energy 3.36e-07 of the outflow
+== E4a conjugate heat transfer, fixed steps: partitioned against monolithic
+  40 steps; max difference 6.332e-11 K; heat mismatch 0.00e+00; interface continuity 2.40e-10 K; 0.71 s monolithic, 3.24 s partitioned
+== E4c conservation
+  source 3.2 J = stored 1.59431 J + carried away 1.60569 J; closure 1.19e-10 (monolithic 1.23e-10)
+== E4b adaptive: partitioned against monolithic
+  monolithic 66 steps (3.12 s), partitioned 66 steps (14.50 s); max difference 9.544e-11 K
+
+ALL ADVECTION TESTS PASSED: 41 passed, 0 failed
+./build/rendertest build/rendertest_out
+== PNG encoder output for the independent decoder
+== camera projection and picking rays
+== depth ordering and scene image
+  scene.png 800 x 500, 49958 bytes (4.2% of raw)
+
+ALL RENDER TESTS PASSED: 29 passed, 0 failed
+python3 tools/pngcheck.py build/rendertest_out
+  ok   pattern_rgba.png: 97x61, 4 channels, 7617 bytes
+  ok   scene.png: 800x500, 3 channels, 49958 bytes
+  ok   stripes_rgb.png: 640x17, 3 channels, 369 bytes
+  ok   text.zlib round trip
+PNG CHECK PASSED
+./build/opstest
+[warn] STL '/private/var/folders/x4/xsz53mxd3j9f9txp7wy8_bdc0000gn/T/nv_opstest_86002/workspace/demo/inputs/box-a6ebe6e079a3.stl': 1 trailing bytes after 12 binary triangles ignored
+== registry and capabilities
+== project lifecycle
+== geometry import
+== placement, units and revisions
+== diagnostics
+== save, reopen, tamper
+
+ALL OPS TESTS PASSED: 169 passed, 0 failed
+./build/ctltest
+== listener security
+== requests and responses
+== malformed messages keep the connection usable
+== framing
+== limits and timeouts
+== disconnects and retries
+== TCP with token authentication
+
+ALL CONTROL SOCKET TESTS PASSED: 47 passed, 0 failed
+./build/amtest
+== geometry and selections
+== materials and mesh
+== boundary conditions
+== static solve and beam theory
+== formulation, gravity
+== transient thermal through the operation layer
+== thermomechanical coupling through the operation layer
+== duplicates and cancellation
+== staleness after a geometry change
+== results reload in a new engine
+
+ALL AM PATH TESTS PASSED: 102 passed, 0 failed
+python3 tools/mcptest.py
+== lifecycle and negotiation
+== tool discovery
+== protocol errors
+== tool execution
+== stdout purity and shutdown
+== older protocol revisions
+== bridge mode: jobs and projects outlive the MCP client
+
+ALL MCP PROTOCOL TESTS PASSED: 310 passed, 0 failed
+python3 tools/amflow.py
+== setup through MCP tools
+== analysis job and results
+== disconnect and reconnect through navier-server
+
+ALL AM FLOW TESTS PASSED: 71 passed, 0 failed
+python3 tools/thermflow.py
+== capabilities and setup through MCP tools
+== thermal boundary conditions
+== transient thermal job and energy balance
+  bar: 1.2923 W removed, cold face 235.385 degC (analytic 235.385 degC), energy closure 1.20e-11, enthalpy mismatch 6.33e-15
+== anisotropic conductivity through the operation layer
+  anisotropic: k_x = 5.0 W/(m K) gives 0.7636 W and a 147.269 degC cold face (isotropic k = 20.0: 1.2923 W, 235.385 degC)
+== latent heat of melting through the operation layer
+  melting: 716.815 mm^3 molten, peak 1392.9 degC with latent heat and 1669.4 degC without it
+== thermomechanical run: temperature history drives the deformation
+  thermomechanical: largest displacement 0.2855 mm from the thermal expansion of the heated bar
+
+ALL THERMAL FLOW TESTS PASSED: 95 passed, 0 failed
+python3 tools/transientflow.py
+== capabilities correspond to reachable settings
+== setup: a block with a scheduled heater and convection
+== invalid schedules and settings are rejected
+== adaptive run with a switched heater and explicit output times
+  tolerance 1e-3: 14 accepted, 0 rejected, largest local estimate 0.30394340295197664, energy 199.99999999999977 J
+== schema-to-solver wiring
+  wiring: 14 -> 67 steps when the tolerance tightens; MIN_STEP at t = 5 s
+== fixed stepping is unchanged and lands on schedule changes
+== schedules persist
+
+ALL TRANSIENT FLOW TESTS PASSED: 81 passed, 0 failed
+python3 tools/restartflow.py
+== setup
+== reference: uninterrupted run
+  1534 accepted steps, 13.1 s wall
+== B1 pause mid-run and resume in the same session
+  paused at t = 538.959 s; resumed run bitwise identical to the uninterrupted run
+== B7 checkpoint request on a running job
+  B7: bitwise identical to the uninterrupted run
+== B4 cancellation keeps a resumable checkpoint
+  B4: bitwise identical to the uninterrupted run
+== B3 thermomechanical pause and resume
+  B3: temperature, displacement and von Mises frames bitwise identical
+== B6 changed specifications are refused
+== B5 damaged checkpoints
+  fallback: resumed from t = 402.9696499951828 s (previous checkpoint) after the newest was truncated; bitwise identical
+== B2 process killed after a checkpoint, resumed by a new server
+  killed after a checkpoint, resumed at t = 150.98705717182824 s in a new process: bitwise identical
+
+ALL RESTART FLOW TESTS PASSED: 154 passed, 0 failed
+python3 tools/contactflow.py
+== setup through MCP
+== C5 refused topologies
+== C1/C2 conductance interface, series resistance
+  side A 82.499941 degC (series 82.5), side B 79.999942 degC (80.0), jump 2.499999 K (2.5), rate B->A -0.49999974 W (-0.5), far faces 84.499941 / 69.999950 degC (84.5 / 70.0)
+== C8 preview
+== C4 model variants
+== C6 exterior condition reaching the interface
+== C7 mechanical bonding kept across a split thermal interface
+== C5 gaps and overlaps
+== C3 save, reopen in a new server process, reproduce
+
+ALL CONTACT FLOW TESTS PASSED: 104 passed, 0 failed
+python3 tools/chtflow.py
+== capabilities
+== E5a setup and refusals
+== E5b partitioned adaptive study
+  42 steps, 7.0 s wall; flow: tau 0.5280, Mach 0.0430, Re_h 13.3, density range 0.0169, section scale 1.0964..1.1935
+  interface: 417.7448 J into the air, jump 1.95e-08 K, conservation 1.4e-15; closure 1.7e-11; coupling 5.45 iterations per step
+== schema-to-solver wiring of the coupling and flow settings (600 s runs)
+== E5c conservation of the whole study (criterion amended, see stageE-criteria.md)
+  source 720 J = stored 302.426 J - advected into the fluid -417.574 J (discrete closure 7e-12)
+  enthalpy-flux form: stored + (out - in) = 720.17 J, closure 0.000237 (original E5c criterion 1e-6: NOT met)
+== E5g results through MCP
+== E5d monolithic against partitioned
+  partitioned 42 steps (7.0 s), monolithic 42 steps (2.8 s); max stored-temperature difference 1.03e-06 K
+== E5e pause and resume
+  paused at t = 3277.2185208557607 s; frames bitwise identical, energies True, interface heat True
+== E5f save, reopen in a new server process, reproduce
+== E5h discretization evidence
+  2 mm, tolerance 1e-3 / 0.05 K: plate peak 45.9133 degC, mean outlet face 37.9517 degC; 42 steps, 7.0 s; closure 1.7e-11, interface conservation 1.4e-15
+    enthalpy-flux closure 0.000237; unexplained advective energy 0.1705 J (0.000237 of the source)
+  2 mm, tolerance 1e-4 / 0.005 K: plate peak 45.9791 degC, mean outlet face 37.9973 degC; 83 steps, 12.0 s; closure 1.7e-11, interface conservation 4.1e-16
+    enthalpy-flux closure 0.000236; unexplained advective energy 0.1702 J (0.000236 of the source)
+  1 mm, tolerance 1e-3 / 0.05 K: plate peak 45.9717 degC, mean outlet face 37.9282 degC; 42 steps, 73.0 s; closure 3.3e-11, interface conservation 1.4e-16
+    enthalpy-flux closure 0.00013; unexplained advective energy 0.09336 J (0.00013 of the source)
+  temporal: tolerance / 10 changes the plate peak by +0.0658 K and the outlet mean by +0.0456 K
+  spatial: 1 mm cells change the plate peak by +0.0585 K and the outlet mean by -0.0235 K (two levels: no order is claimed)
+
+ALL CONJUGATE FLOW TESTS PASSED: 102 passed, 0 failed
+EXIT 0

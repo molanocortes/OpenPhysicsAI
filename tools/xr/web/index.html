@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenPhysicsAI headset</title>
+<link rel="icon" href="data:,">
+<!-- The headset link (docs/xr.md): the result on screen in the OpenPhysicsAI app, a finite-element part or a lab
+     simulation with all its frames, as a 3D object in passthrough AR on a Meta Quest, and a conversation with the AI
+     by voice. On a computer the page looks as the app's window does (docs/app/DESIGN.md, "Two buttons and one bar"):
+     the legend at the bottom left, one bar with a text field and one round button, the AI's latest words above it.
+     three.js r165 is vendored (MIT, vendor/). -->
+<script type="importmap">{ "imports": { "three": "./vendor/three.module.js" } }</script>
+<style>
+  :root { --page:#F2F1EE; --card:#FFFFFF; --ink:#111111; --ink2:#2A2A2C; --dim:#7A7A80; --hairline:#E3E1DC; --pill:#DDDAD4;
+          --accent:#E8551C; --bad:#D23B3B; }
+  html, body { margin:0; height:100%; overflow:hidden; background:var(--page); color:var(--ink);
+               font:15px/1.4 -apple-system, "SF Pro Text", Inter, Roboto, system-ui, sans-serif; }
+  canvas { position:fixed; inset:0; display:block; touch-action:none; }
+  #brand { position:fixed; left:20px; top:12px; font-size:17px; font-weight:500; }
+  #top { position:fixed; right:16px; top:9px; display:flex; gap:8px; align-items:center; }
+  .pill { font:inherit; font-size:13px; border-radius:999px; border:1px solid var(--pill); padding:6px 14px; background:var(--card);
+          color:var(--ink); cursor:pointer; }
+  .pill.dark { background:var(--ink); color:#fff; border-color:var(--ink); }
+  #mode { display:flex; background:var(--pill); border-radius:999px; padding:3px; }
+  #mode button { font:inherit; font-size:13px; border:0; border-radius:999px; padding:5px 13px; background:transparent; color:var(--dim);
+                 cursor:pointer; }
+  #mode button.on { background:var(--card); color:var(--ink); box-shadow:0 1px 3px rgba(0,0,0,.12); }
+  #legend { position:fixed; left:14px; bottom:14px; width:300px; box-sizing:border-box; padding:10px 10px 8px; background:rgba(255,255,255,.94);
+            border-radius:8px; border:1px solid var(--hairline); }
+  #lg-title { font-size:13px; margin-bottom:6px; }
+  #lg-bar { height:10px; border-radius:5px; }
+  #lg-ends { display:flex; justify-content:space-between; color:var(--dim); font:12px ui-monospace, "SF Mono", Menlo, monospace; margin-top:6px; }
+  #dockbar { position:fixed; left:50%; transform:translateX(-50%); bottom:24px; width:min(680px, calc(100vw - 64px)); }
+  #words { box-sizing:border-box; margin:0 10px 16px; padding:8px 14px 8px 16px; background:rgba(255,255,255,.92); border-radius:14px;
+           border:1px solid var(--hairline); font-size:14px; line-height:1.45; max-height:calc(3 * 1.45em + 16px); overflow:hidden;
+           display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; position:relative; }
+  #words[hidden], #legend[hidden] { display:none; }
+  /* under the name where the window is too narrow for both: the bar (680 wide, centred) meets the legend (14 + 300) below 1310 */
+  @media (max-width: 1320px) { #legend { bottom:auto; top:48px; } }
+  #words.error { color:var(--bad); } #words.note { color:var(--dim); } #words.you { font-weight:500; }
+  #words.working { padding-left:30px; }
+  #words.working::before { content:""; position:absolute; left:12px; top:15px; width:8px; height:8px; border-radius:4px;
+                           background:var(--accent); animation:breathe 1.25s ease-in-out infinite; }
+  @keyframes breathe { 0%,100% { opacity:.35 } 50% { opacity:1 } }
+  #bar { position:relative; display:flex; align-items:center; gap:12px; }
+  #q { flex:1; height:30px; box-sizing:border-box; padding:4px 14px; border-radius:15px; border:1px solid var(--hairline); background:var(--card);
+       font:inherit; font-size:13px; color:var(--ink); box-shadow:0 6px 18px rgba(0,0,0,.15); }
+  #q:focus { outline:2px solid var(--accent); outline-offset:1px; }
+  #talk { width:40px; height:40px; border-radius:20px; border:0; background:var(--ink); cursor:pointer; position:relative; flex:none; }
+  #talk:hover { background:var(--ink2); }
+  #talk.listening { background:var(--accent); }
+  #talk.listening::after { content:""; position:absolute; inset:-6px; border-radius:26px; border:2px solid var(--accent);
+                           animation:ring 1.6s ease-in-out infinite; }
+  @keyframes ring { 0%,100% { opacity:.16 } 50% { opacity:.4 } }
+  #talk svg { position:absolute; inset:0; margin:auto; }
+  #talk .stopglyph { display:none; } #talk.stop .stopglyph { display:block; } #talk.stop .micglyph { display:none; }
+</style>
+</head>
+<body>
+<div id="brand">OpenPhysicsAI</div>
+<div id="top">
+  <button id="ar" class="pill dark" hidden>Enter AR</button>
+  <button id="vr" class="pill" hidden>Enter VR</button>
+  <div id="mode"><button id="agentic" class="on">Agentic</button><button id="manual">Manual</button></div>
+</div>
+<div id="legend" hidden><div id="lg-title"></div><div id="lg-bar"></div><div id="lg-ends"><span id="lg-lo"></span><span id="lg-hi"></span></div></div>
+<div id="dockbar">
+  <div id="words" hidden></div>
+  <div id="bar">
+    <input id="q" placeholder="Ask by text or voice" aria-label="Question for the AI">
+    <button id="talk" class="mic" aria-label="Talk">
+      <svg class="micglyph" width="20" height="20" viewBox="-10 -10 20 20" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round">
+        <rect x="-1.8" y="-5.2" width="3.6" height="6.2" rx="1.8" fill="#fff" stroke="none"/>
+        <path d="M-3.4 -0.2 Q-3.4 3.2 0 3.2 Q3.4 3.2 3.4 -0.2 M0 3.2 V5 M-2.2 5 H2.2"/>
+      </svg>
+      <svg class="stopglyph" width="20" height="20" viewBox="-10 -10 20 20"><rect x="-4.5" y="-4.5" width="9" height="9" rx="1.2" fill="#fff"/></svg>
+    </button>
+  </div>
+</div>
+<script type="module" src="./app.js"></script>
+</body>
+</html>

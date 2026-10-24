@@ -1,0 +1,22 @@
+closed forms over 96 mm^2: convection 0.144000 W, radiation 0.080865 W
+== 0 degrees, cubes of 1 mm: 64 elements, printed volume 64.0000 mm^3 (+0.00 % of 64), 0.9 s
+   convection 0.143979 W (-0.015 %), radiation 0.080826 W (-0.048 %); heat into the air 10.078521448805349 J over 70 s
+== 30 degrees, cubes of 1 mm: 64 elements, printed volume 64.0000 mm^3 (+0.00 % of 64), 0.5 s
+   convection 0.191964 W (+33.309 %), radiation 0.107754 W (+33.252 %); heat into the air 13.437511431916743 J over 70 s   [outside the criterion]
+== 45 degrees, cubes of 1 mm: 64 elements, printed volume 64.0000 mm^3 (+0.00 % of 64), 0.5 s
+   convection 0.167972 W (+16.647 %), radiation 0.094291 W (+16.603 %); heat into the air 11.758049961919637 J over 70 s   [outside the criterion]
+== 0 degrees, cubes of 0.5 mm: 512 elements, printed volume 64.0000 mm^3 (+0.00 % of 64), 1.0 s
+   convection 0.143979 W (-0.015 %), radiation 0.080826 W (-0.049 %); heat into the air 10.078504274200197 J over 70 s
+== 30 degrees, cubes of 0.5 mm: 512 elements, printed volume 64.0000 mm^3 (+0.00 % of 64), 1.0 s
+   convection 0.179968 W (+24.978 %), radiation 0.101022 W (+24.926 %); heat into the air 12.597750724189044 J over 70 s   [outside the criterion]
+== 45 degrees, cubes of 0.5 mm: 464 elements, printed volume 58.0000 mm^3 (-9.37 % of 64), 1.0 s
+   convection 0.189711 W (+31.744 %), radiation 0.106485 W (+31.683 %); heat into the air 13.279804375639207 J over 70 s   [outside the criterion]
+== 0 degrees, cubes of 0.25 mm: 4096 elements, printed volume 64.0000 mm^3 (+0.00 % of 64), 20.6 s
+   convection 0.143979 W (-0.015 %), radiation 0.080825 W (-0.049 %); heat into the air 10.078499749310023 J over 70 s
+== 30 degrees, cubes of 0.25 mm: 4096 elements, printed volume 64.0000 mm^3 (+0.00 % of 64), 21.9 s
+   convection 0.185966 W (+29.143 %), radiation 0.104387 W (+29.088 %); heat into the air 13.017591404318956 J over 70 s   [outside the criterion]
+== 45 degrees, cubes of 0.25 mm: 3968 elements, printed volume 62.0000 mm^3 (-3.12 % of 64), 28.6 s
+   convection 0.191213 W (+32.787 %), radiation 0.107330 W (+32.727 %); heat into the air 13.384892056868994 J over 70 s   [outside the criterion]
+FAIL (engine 6cf5b8f)
+workspaces kept in /var/folders/x4/xsz53mxd3j9f9txp7wy8_bdc0000gn/T/navier-printskin-o6kc8alt
+=== exit 1 after 76 s

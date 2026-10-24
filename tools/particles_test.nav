@@ -1,0 +1,16 @@
+# GPU particles switched on mid-run and toggled repeatedly (a former crash path), then a perf report and a render.
+frames 60
+start
+frames 30
+particles on
+frames 30
+particles off
+frames 10
+particles on
+frames 10
+particles off
+frames 10
+particles on
+wait 700
+perf
+screenshot build/particles_test.png

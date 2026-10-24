@@ -1,0 +1,9 @@
+  cring    tet   h 1       16150 elements  R 2.0038    (point 2.0661, peak flag none, zone 1.5 mm)  1t (tension along axis 1) at (   0.50    9.93   2.50) mm  radius 9.95 mm, 2.9 deg from the apex; closed form at the applied load 2.0208  [5.1 s]
+           at a voxel staircase (GOALS.md G17 step 8): not reported; the answer names TET10: no; solved on the mesh as made (tet10)
+  cring    tet   h 0.5     99279 elements  R 2.0009    (point 2.0239, peak flag none, zone 1 mm)  1t (tension along axis 1) at (  -0.87    9.91   2.12) mm  radius 9.95 mm, -5.0 deg from the apex; closed form at the applied load 2.0208  [42.2 s]
+           at a voxel staircase (GOALS.md G17 step 8): not reported; the answer names TET10: no; solved on the mesh as made (tet10)
+  C-ring closed form (Winkler-Bach): inner-fibre stress 25.82 MPa at the apex under the requested 10 N, Xt 52.3 MPa, R 2.0252
+  ok   cring on tet: R moves -0.1 % from 1 to 0.5 mm (criterion 5 %)
+  ok   cring on tet: the governing point moves 1.43 mm (criterion 2 mm)
+  ok   C-ring on tet: R at 0.5 mm is -1.2 % from the closed form (criterion 5 %)
+PRINT MESH STUDY: 3 passed, 0 failed
